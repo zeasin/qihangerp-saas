@@ -68,6 +68,12 @@
       border: none;
       height: 100%;
       width: 100% !important;
+
+        div{
+          &:last-child{
+          display: none;
+        }
+        }
     }
 
     .el-menu-item, .el-submenu__title {

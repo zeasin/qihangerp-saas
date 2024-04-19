@@ -40,7 +40,7 @@
     "@smallwei/avue": "^2.10.15",
     "axios": "0.24.0",
     "clipboard": "2.0.8",
-    "core-js": "3.25.3",
+    "core-js": "^3.37.0",
     "echarts": "5.4.0",
     "element-china-area-data": "^6.1.0",
     "element-ui": "2.15.13",
