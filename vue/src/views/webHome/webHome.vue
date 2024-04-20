@@ -5,15 +5,17 @@
       <div id="header" class="header" :class="isTop?'theme':''">
         <div class="header-box">
           <!-- logo -->
-          <img class="header-logo" referrerpolicy="no-referrer" src="https://www.yiguaerp.com/Assets/img/logo.png" />
+          <a title="启航微信视频号小店电商系统" :href="httpsUrl">
+          <img class="header-logo" referrerpolicy="no-referrer" alt="启航微信视频号小店电商系统" src="https://www.yiguaerp.com/Assets/img/logo.png" />
+          </a>
           <!-- 导航栏 -->
           <nav class="navbar">
             <ul class="nav navbar-nav">
               <li v-for="(item,index) in navList" :key="index"><a target="_blank" :href="item.url">{{ item.title }}</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a class="to-website" href="/login">登录</a></li>
-              <li><a class="to-website concat-btn concat-login-click"><span>注册</span></a></li>
+              <li><a class="to-website" target="_blank" href="/login">登录</a></li>
+              <li><a class="to-website concat-btn concat-login-click" @click="zhuche()"><span>注册</span></a></li>
             </ul>
           </nav>
         </div>
@@ -26,7 +28,7 @@
           <div class="service p-a">
             <p class="service-title">企业微信客服</p>
             <p class="service-time">每日在线 08:00-24:00</p>
-            <img class="service-qrcode" src="https://www.yiguaerp.com/Assets/img/service-qrcode.png">
+            <img class="service-qrcode" src="./images/kf_qrcode.jpg">
             <p class="service-label">
               <i class="el-icon-full-screen" style="margin-right: 6px;"></i>
               扫码咨询客服
@@ -41,8 +43,8 @@
         <section class="section1">
           <div class="section1-content">
             <div class="section1-content-box">
-              <h1>提升电商经营效率</h1>
-              <h1>就用启航电商ERP</h1>
+              <h1>提升视频号小店经营效率</h1>
+              <h1>就用启航视频号电商系统</h1>
               <div class="flex-item-center" style="margin-top: 24px;">
                 <div class="flex-item-center" :class="index !== 0?'ml20':''" v-for="(item,index) in oneList">
                   <img class="section1-icon" :src="item.icon">
@@ -189,15 +191,15 @@
           <img class="footer-logo" src="https://www.yiguaerp.com/Assets/img/footer-logo.png" />
           <p class="footer-title-1">关于我们</p>
           <p class="footer-desc">深圳启航技术是一家电商行业老兵、拥有十余年电商系统及运营经验、启航技术拥有众多开源电商系统，包括电商ERP、OMS订单处理等电商软件。<br />启航技术致力于为电商领域提供优秀、易用、先进的电商系统，以技术提升电商创业者们的业务处理效率。</p>
-          <p class="footer-place">
-            <img src="https://www.yiguaerp.com/Assets/img/place.png" />
-            <span>深圳市宝安区107商务带</span>
-          </p>
-          <p class="beian">Copyright © 2016-2024 启航电商ERP | 深圳市启航技术工作室 | <a target="_blank" class="text-link"
+<!--          <p class="footer-place">-->
+<!--            <img src="https://www.yiguaerp.com/Assets/img/place.png" />-->
+<!--            <span>深圳市宝安区107商务带</span>-->
+<!--          </p>-->
+          <p class="beian">Copyright © 2016-2024 启航视频号电商系统 | 深圳市启航技术工作室 | <a target="_blank" class="text-link"
               href="https://beian.miit.gov.cn/">粤ICP备19018186号</a></p>
           <div class="p-a footer-service">
-            <img class="service-qrcode" src="https://www.yiguaerp.com/Assets/img/service-qrcode.png">
-            <p>扫码咨询客服</p>
+            <img class="service-qrcode" src="./images/gzh_qrcode.jpg">
+            <p>扫码关注公众号</p>
           </div>
         </div>
       </div>
@@ -211,9 +213,18 @@
 export default {
   name: 'Home',
   components: {},
+  metaInfo() {
+    return {
+      title: '微信视频号小店电商系统',
+      meta: [
+        { name: 'description', content: '视频号小店电商系统是专为微信视频号电商创业者提供的一套电商系统，旨在提升视频号小店经营效率，帮助视频号电商创业者成功。' },
+        { name: 'keywords', content: '电商ERP, 电商系统, 电商OMS订单处理系统, 视频号小店, 视频号小店电商系统' }
+      ]
+    };
+  },
   data() {
     return {
-      httpsUrl:'https://www.yiguaerp.com/',
+      httpsUrl:'http://www.qihangerp.cn/',
       scrollTop: 0, //默认距离顶部的距离
       isTop:false,
       scrollTrigger: false, //默认初始值
@@ -225,8 +236,11 @@ export default {
       },
 
       navList:[
-        {title:'启航ERP开源',url:'https://gitee.com/qiliping/qihang-erp'},
-        {title:'启航OMS开源',url:'https://gitee.com/qiliping/qihangerp-oms'}
+        {title:'电商ERP开源',url:'https://gitee.com/qiliping/qihang-erp'},
+        {title:'电商OMS开源',url:'https://gitee.com/qiliping/qihangerp-oms'},
+        {title:'视频号电商系统开源',url:'https://gitee.com/qiliping/qihangerp-weishop'},
+        {title:'拼多多电商系统开源',url:'https://gitee.com/qiliping/qihangerp-pdd'},
+        {title:'抖店电商系统开源',url:'https://gitee.com/qiliping/qihangerp-dou'},
       ],
       oneList:[
         {title:'订单发货',icon:'https://www.yiguaerp.com/Assets/img/home/deliverGoods.png'},
@@ -242,7 +256,7 @@ export default {
         {isHot:true,title:'高效售后处理', desc:'售后处理，掌控来龙去脉', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon5-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon5.png'},
       ],
       solutionList:{
-        title:'功能齐全、降本增效，电商业务全场景解决方案',
+        title:'功能齐全、降本增效，视频号小店全场景解决方案',
         contentList:[
           {
             ref:'boxSection201',
@@ -433,6 +447,9 @@ export default {
   destroyed () {
     window.removeEventListener("scroll", this.handleScroll, false);
   },
+  zhuche (){
+
+  }
 }
 </script>
 

@@ -40,7 +40,8 @@ import DictData from '@/components/DictData'
 
 import Avue from '@smallwei/avue';
 import '@smallwei/avue/lib/index.css';
-
+import MetaInfo from 'vue-meta-info'
+Vue.use(MetaInfo)
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey
