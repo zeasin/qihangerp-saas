@@ -42,7 +42,7 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/webHome',
+    path: '/home',
     component: () => import('@/views/webHome/webHome'),
     hidden: true
   },
