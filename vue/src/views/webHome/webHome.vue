@@ -153,33 +153,33 @@
 <!--        </section>-->
         <!--end 荣誉资质-->
         <!--star 服务客户-->
-        <section class="section7 section">
-          <h2 class="subheading">服务客户</h2>
-          <div class="section7-main p-r">
-            <div class="p-a" style="width: 100%;height: 100px;top: 0;left: 0px;">
-              <div class="line_odd">
-                <img class="logo_img" src="https://www.yiguaerp.com/Assets/img/home/section7-1.png">
-                <img class="logo_img" src="https://www.yiguaerp.com/Assets/img/home/section7-1.png">
-              </div>
-            </div>
-            <div class="p-a" style="width: 100%;height: 100px;top: 130px;left: 0px;">
-              <div class="line_odd-2" style="width:3962px;overflow: hidden;">
-                <div style="width: 100%;overflow-x: hidden;"><img class="logo_img p-r"
-                    style="width: 2229px;left: -248px;height: auto;" src="https://www.yiguaerp.com/Assets/img/home/section7-2.png">
-                </div>
-                <div style="width: 100%;overflow-x: hidden;"><img class="logo_img p-r"
-                    style="width: 2229px;left: -248px;height: auto;" src="https://www.yiguaerp.com/Assets/img/home/section7-2.png">
-                </div>
-              </div>
-            </div>
-            <div class="p-a" style="width: 100%;height: 100px;top: 260px;left: 0px;">
-              <div class="line_odd">
-                <img class="logo_img" src="https://www.yiguaerp.com/Assets/img/home/section7-3.png">
-                <img class="logo_img" src="https://www.yiguaerp.com/Assets/img/home/section7-3.png">
-              </div>
-            </div>
-          </div>
-        </section>
+<!--        <section class="section7 section">-->
+<!--          <h2 class="subheading">服务客户</h2>-->
+<!--          <div class="section7-main p-r">-->
+<!--            <div class="p-a" style="width: 100%;height: 100px;top: 0;left: 0px;">-->
+<!--              <div class="line_odd">-->
+<!--                <img class="logo_img" src="https://www.yiguaerp.com/Assets/img/home/section7-1.png">-->
+<!--                <img class="logo_img" src="https://www.yiguaerp.com/Assets/img/home/section7-1.png">-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="p-a" style="width: 100%;height: 100px;top: 130px;left: 0px;">-->
+<!--              <div class="line_odd-2" style="width:3962px;overflow: hidden;">-->
+<!--                <div style="width: 100%;overflow-x: hidden;"><img class="logo_img p-r"-->
+<!--                    style="width: 2229px;left: -248px;height: auto;" src="https://www.yiguaerp.com/Assets/img/home/section7-2.png">-->
+<!--                </div>-->
+<!--                <div style="width: 100%;overflow-x: hidden;"><img class="logo_img p-r"-->
+<!--                    style="width: 2229px;left: -248px;height: auto;" src="https://www.yiguaerp.com/Assets/img/home/section7-2.png">-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="p-a" style="width: 100%;height: 100px;top: 260px;left: 0px;">-->
+<!--              <div class="line_odd">-->
+<!--                <img class="logo_img" src="https://www.yiguaerp.com/Assets/img/home/section7-3.png">-->
+<!--                <img class="logo_img" src="https://www.yiguaerp.com/Assets/img/home/section7-3.png">-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </section>-->
         <!--end 服务客户-->
       </div>
 
@@ -341,10 +341,10 @@ export default {
         title:'优质服务保障',
         desc:'用心服务每一个用户',
         list:[
-          {title:'快速响应',desc:'向每位用户提供<br/>软件服务和帮助',icon:require('./images/service-1.png')},
-          {title:'1v1产品顾问',desc:'1V1专属产品顾问<br/>客服在线7*15小时',icon:require('./images/service-2.png')},
-          {title:'数据加密',desc:'数据性能安全<br/>品牌商家共同选择',icon:require('./images/service-3.png')},
-          {title:'更新迭代',desc:'定期访问用户需求<br/>软件更新升级',icon:require('./images/service-4.png')},
+          {title:'快速响应',desc:'急客户之所急<br/>精心回复客户每一个问题',icon:require('./images/service-1.png')},
+          {title:'客户至上',desc:'1v1专属产品顾问<br/>7*12小时随时响应',icon:require('./images/service-2.png')},
+          {title:'数据加密',desc:'数据加密<br/>保证数据安全',icon:require('./images/service-3.png')},
+          {title:'更新迭代',desc:'快速响应客户需求<br/>1-2个工作日及时更新',icon:require('./images/service-4.png')},
         ]
       },
       honorList:{
