@@ -41,15 +41,15 @@
         <section class="section1">
           <div class="section1-content">
             <div class="section1-content-box">
-              <h1>提升直播经营利润</h1>
-              <h1>就用易瓜ERP</h1>
+              <h1>提升电商经营效率</h1>
+              <h1>就用启航电商ERP</h1>
               <div class="flex-item-center" style="margin-top: 24px;">
                 <div class="flex-item-center" :class="index !== 0?'ml20':''" v-for="(item,index) in oneList">
                   <img class="section1-icon" :src="item.icon">
                   <p class="section1-label">{{item.title}}</p>
                 </div>
               </div>
-              <p class="section1-desc">多店订单统一管理，商品库存成本精准统计，智能生成直播利润报表，助力商家经营决策。</p>
+              <p class="section1-desc">多店订单统一管理，高效订单管理，便捷售后管理，助力商家经营提效。</p>
               <div class="p-r" style="display: inline-block;">
                 <a href="javascript:void(0)"
                   class="to-website section1-concat-btn concat-btn-click">
@@ -135,22 +135,22 @@
         </section>
         <!--end 优质服务保障-->
         <!--star 荣誉资质-->
-        <section class="section6 section">
-          <h2 class="subheading">{{honorList.title}}</h2>
-          <div class="section6-mian flex-item-center">
-            <div class="btn" @click="onLast()"><!--forbid-->
-              <p style="transform: rotate(135deg)"></p>
-            </div>
-            <div class="img-box p-r">
-              <div class="flex-item-center p-a" id="section-img" ref="sectionImg" :style="sectionImgStyle">
-                <div class="section6-img" v-for="item in honorList.list">
-                  <img :src="item.icon">
-                </div>
-              </div>
-            </div>
-            <div class="btn" @click="onNext()"><p></p></div>
-          </div>
-        </section>
+<!--        <section class="section6 section">-->
+<!--          <h2 class="subheading">{{honorList.title}}</h2>-->
+<!--          <div class="section6-mian flex-item-center">-->
+<!--            <div class="btn" @click="onLast()">&lt;!&ndash;forbid&ndash;&gt;-->
+<!--              <p style="transform: rotate(135deg)"></p>-->
+<!--            </div>-->
+<!--            <div class="img-box p-r">-->
+<!--              <div class="flex-item-center p-a" id="section-img" ref="sectionImg" :style="sectionImgStyle">-->
+<!--                <div class="section6-img" v-for="item in honorList.list">-->
+<!--                  <img :src="item.icon">-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="btn" @click="onNext()"><p></p></div>-->
+<!--          </div>-->
+<!--        </section>-->
         <!--end 荣誉资质-->
         <!--star 服务客户-->
         <section class="section7 section">
@@ -188,13 +188,13 @@
         <div class="footer-box p-r">
           <img class="footer-logo" src="https://www.yiguaerp.com/Assets/img/footer-logo.png" />
           <p class="footer-title-1">关于我们</p>
-          <p class="footer-desc">福州果集信息科技是社交媒体平台数据、产品与全链路服务提供商，致力于将大数据、AI等<br />新技术应用于社交媒体营销和电商领域，以数据和技术驱动品牌增长。</p>
+          <p class="footer-desc">深圳启航技术是一家电商行业老兵、拥有十余年电商系统及运营经验、启航技术拥有众多开源电商系统，包括电商ERP、OMS订单处理等电商软件。<br />启航技术致力于为电商领域提供优秀、易用、先进的电商系统，以技术提升电商创业者们的业务处理效率。</p>
           <p class="footer-place">
             <img src="https://www.yiguaerp.com/Assets/img/place.png" />
-            <span>福建省福州市仓山区智能产业园A3栋11-14</span>
+            <span>深圳市宝安区107商务带</span>
           </p>
-          <p class="beian">Copyright © 2014-2023 果集·易瓜ERP | 福州果集信息科技有限公司 | <a target="_blank" class="text-link"
-              href="https://beian.miit.gov.cn/">闽ICP备19018186号</a></p>
+          <p class="beian">Copyright © 2016-2024 启航电商ERP | 深圳市启航技术工作室 | <a target="_blank" class="text-link"
+              href="https://beian.miit.gov.cn/">粤ICP备19018186号</a></p>
           <div class="p-a footer-service">
             <img class="service-qrcode" src="https://www.yiguaerp.com/Assets/img/service-qrcode.png">
             <p>扫码咨询客服</p>
@@ -229,20 +229,20 @@ export default {
         {title:'易瓜打单',url:''}
       ],
       oneList:[
-        {title:'打单发货',icon:'https://www.yiguaerp.com/Assets/img/home/deliverGoods.png'},
-        {title:'商品成本',icon:'https://www.yiguaerp.com/Assets/img/home/cost.png'},
-        {title:'库存采购',icon:'https://www.yiguaerp.com/Assets/img/home/purchase.png'},
-        {title:'直播利润报表',icon:'https://www.yiguaerp.com/Assets/img/home/statement.png'},
+        {title:'订单发货',icon:'https://www.yiguaerp.com/Assets/img/home/deliverGoods.png'},
+        {title:'商品管理',icon:'https://www.yiguaerp.com/Assets/img/home/cost.png'},
+        {title:'售后处理',icon:'https://www.yiguaerp.com/Assets/img/home/purchase.png'},
+        {title:'采购管理',icon:'https://www.yiguaerp.com/Assets/img/home/statement.png'},
       ],
       twoList:[
-        {isHot:false,title:'多店统一管理', desc:'多平台无需频繁切换，面单共享', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon1-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon1.png'},
-        {isHot:false,title:'高效打单发货', desc:'智能拆合订单，巨省快递费', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon2-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon2.png'},
-        {isHot:false,title:'商品智能统计', desc:'支持统计商品多维度成本', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon3-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon3.png'},
-        {isHot:false,title:'库存成本精准', desc:'库存精准扣增，成本一目了然', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon4-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon4.png'},
-        {isHot:true,title:'直播利润报表', desc:'智能生成多平台店铺利润报表', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon5-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon5.png'},
+        {isHot:false,title:'多店统一管理', desc:'支持多店铺，方便视频号电商创业', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon1-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon1.png'},
+        {isHot:false,title:'高效订单发货', desc:'包裹信息记录，物流全程跟踪', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon2-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon2.png'},
+        {isHot:false,title:'商品管理', desc:'多店铺商品统一管理', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon3-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon3.png'},
+        {isHot:false,title:'库存记录精准', desc:'库存精准扣增，成本一目了然', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon4-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon4.png'},
+        {isHot:true,title:'高效售后处理', desc:'售后处理，掌控来龙去脉', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon5-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon5.png'},
       ],
       solutionList:{
-        title:'功能齐全、降本增效，更多直播场景解决方案',
+        title:'功能齐全、降本增效，电商业务全场景解决方案',
         contentList:[
           {
             ref:'boxSection201',
@@ -289,51 +289,51 @@ export default {
             isImageUrl:require('./images/functionIcon3-2.png'),
             isImageStyle:'p-a left-box-icon-1'
           },
-          {
-            ref:'boxSection204',
-            layout:'right',
-            leftClass:'left-box-4',
-            rightClass:'right-box-4',
-            title:'智能报表 助力提升直播利润',
-            icon:'',
-            color:'#001560',
-            btnColor:'',
-            list: ['新增集团视角，多平台多店铺经营利润自动统计','商品多维度数据分析，福利款、利润款选品更科学','多模式统计快递成本，分店统计快递费用','特色直播报表，自动统计每场直播利润','跟进直播新玩法，持续创新更多报表'],
-            image:[],
-            imageHtml:'<img class="anim-bottom-to-top p-a bottom-to-top" style="width: 587px;top: 58px;left: 61px;" src="https://www.yiguaerp.com/Assets/img/home/section2-4-1.png"><img class="anim-right-to-left p-a shadow-img right-to-left" style="width: 396px;top: 258px;left: 291px;" src="https://www.yiguaerp.com/Assets/img/home/section2-4-3.png">',
-            isImageUrl:require('./images/functionIcon4-2.png'),
-            isImageStyle:'p-a left-box-icon-2'
-          },
-          {
-            ref:'boxSection205',
-            layout:'left',
-            leftClass:'left-box-5',
-            rightClass:'right-box-5',
-            title:'团队管理 管理更安全',
-            icon:'',
-            color:'#222268',
-            btnColor:'#7C48EE',
-            list: ['支持添加多个子账号','可设置多级操作权限','员工流动管理更安全'],
-            image:[],
-            imageHtml:'<img class="anim-bottom-to-top p-a bottom-to-top" style="width: 587px;top: 54px;left: 61px;" src="https://www.yiguaerp.com/Assets/img/home/section2-5-1.png"><img class="anim-left-to-right p-a shadow-img left-to-right" style="width: 119px;top: 259.5px;left: 40px;" src="https://www.yiguaerp.com/Assets/img/home/section2-5-2.png"><img class="anim-right-to-left p-a shadow-img right-to-left" style="width: 442px;top: 211.5px;left: 252px;" src="https://www.yiguaerp.com/Assets/img/home/section2-5-3.png">',
-            isImageUrl:require('./images/functionIcon5-2.png'),
-            isImageStyle:'p-a left-box-icon-2'
-          },
+          // {
+          //   ref:'boxSection204',
+          //   layout:'right',
+          //   leftClass:'left-box-4',
+          //   rightClass:'right-box-4',
+          //   title:'智能报表 助力提升直播利润',
+          //   icon:'',
+          //   color:'#001560',
+          //   btnColor:'',
+          //   list: ['新增集团视角，多平台多店铺经营利润自动统计','商品多维度数据分析，福利款、利润款选品更科学','多模式统计快递成本，分店统计快递费用','特色直播报表，自动统计每场直播利润','跟进直播新玩法，持续创新更多报表'],
+          //   image:[],
+          //   imageHtml:'<img class="anim-bottom-to-top p-a bottom-to-top" style="width: 587px;top: 58px;left: 61px;" src="https://www.yiguaerp.com/Assets/img/home/section2-4-1.png"><img class="anim-right-to-left p-a shadow-img right-to-left" style="width: 396px;top: 258px;left: 291px;" src="https://www.yiguaerp.com/Assets/img/home/section2-4-3.png">',
+          //   isImageUrl:require('./images/functionIcon4-2.png'),
+          //   isImageStyle:'p-a left-box-icon-2'
+          // },
+          // {
+          //   ref:'boxSection205',
+          //   layout:'left',
+          //   leftClass:'left-box-5',
+          //   rightClass:'right-box-5',
+          //   title:'团队管理 管理更安全',
+          //   icon:'',
+          //   color:'#222268',
+          //   btnColor:'#7C48EE',
+          //   list: ['支持添加多个子账号','可设置多级操作权限','员工流动管理更安全'],
+          //   image:[],
+          //   imageHtml:'<img class="anim-bottom-to-top p-a bottom-to-top" style="width: 587px;top: 54px;left: 61px;" src="https://www.yiguaerp.com/Assets/img/home/section2-5-1.png"><img class="anim-left-to-right p-a shadow-img left-to-right" style="width: 119px;top: 259.5px;left: 40px;" src="https://www.yiguaerp.com/Assets/img/home/section2-5-2.png"><img class="anim-right-to-left p-a shadow-img right-to-left" style="width: 442px;top: 211.5px;left: 252px;" src="https://www.yiguaerp.com/Assets/img/home/section2-5-3.png">',
+          //   isImageUrl:require('./images/functionIcon5-2.png'),
+          //   isImageStyle:'p-a left-box-icon-2'
+          // },
         ]
       },
       moreuseList:{
         title:'更多适用功能',
-        desc:'充分满足直播商家需求，打单轻松易售上手',
+        desc:'充分满足视频号小店商家需求，电商经营轻松易上手',
         list:[
           {title:'订单审核',icon:require('./images/moreuse-1.png')},
           {title:'订单发货',icon:require('./images/moreuse-2.png')},
           {title:'售后管理',icon:require('./images/moreuse-3.png')},
-          {title:'线下店铺',icon:require('./images/moreuse-4.png')},
+          {title:'店铺管理',icon:require('./images/moreuse-4.png')},
           {title:'商品同步',icon:require('./images/moreuse-5.png')},
           {title:'供应商管理',icon:require('./images/moreuse-6.png')},
           {title:'采购入库',icon:require('./images/moreuse-7.png')},
-          {title:'库存分仓',icon:require('./images/moreuse-8.png')},
-          {title:'直播数据',icon:require('./images/moreuse-9.png')},
+          {title:'出入库记录',icon:require('./images/moreuse-8.png')},
+          {title:'店铺数据',icon:require('./images/moreuse-9.png')},
           {title:'更多',icon:require('./images/moreuse-10.png')}
         ]
       },
@@ -342,9 +342,9 @@ export default {
         desc:'用心服务每一个用户',
         list:[
           {title:'快速响应',desc:'向每位用户提供<br/>软件服务和帮助',icon:require('./images/service-1.png')},
-          {title:'快速响应',desc:'向每位用户提供<br/>软件服务和帮助',icon:require('./images/service-2.png')},
-          {title:'快速响应',desc:'向每位用户提供<br/>软件服务和帮助',icon:require('./images/service-3.png')},
-          {title:'快速响应',desc:'向每位用户提供<br/>软件服务和帮助',icon:require('./images/service-4.png')},
+          {title:'1v1产品顾问',desc:'1V1专属产品顾问<br/>客服在线7*15小时',icon:require('./images/service-2.png')},
+          {title:'数据加密',desc:'数据性能安全<br/>品牌商家共同选择',icon:require('./images/service-3.png')},
+          {title:'更新迭代',desc:'定期访问用户需求<br/>软件更新升级',icon:require('./images/service-4.png')},
         ]
       },
       honorList:{
