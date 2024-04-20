@@ -9,10 +9,10 @@
           <!-- 导航栏 -->
           <nav class="navbar">
             <ul class="nav navbar-nav">
-              <li v-for="(item,index) in navList" :key="index"><a>{{ item.title }}</a></li>
+              <li v-for="(item,index) in navList" :key="index"><a target="_blank" :href="item.url">{{ item.title }}</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a class="to-website">登录</a></li>
+              <li><a class="to-website" href="/login">登录</a></li>
               <li><a class="to-website concat-btn concat-login-click"><span>注册</span></a></li>
             </ul>
           </nav>
@@ -225,8 +225,8 @@ export default {
       },
 
       navList:[
-        {title:'易瓜ERP',url:''},
-        {title:'易瓜打单',url:''}
+        {title:'启航ERP开源',url:'https://gitee.com/qiliping/qihang-erp'},
+        {title:'启航OMS开源',url:'https://gitee.com/qiliping/qihangerp-oms'}
       ],
       oneList:[
         {title:'订单发货',icon:'https://www.yiguaerp.com/Assets/img/home/deliverGoods.png'},
