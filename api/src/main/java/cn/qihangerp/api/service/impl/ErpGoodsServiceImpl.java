@@ -1,6 +1,7 @@
 package cn.qihangerp.api.service.impl;
 
 import cn.qihangerp.api.domain.*;
+import cn.qihangerp.api.domain.vo.GoodsSpecListVo;
 import cn.qihangerp.api.mapper.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -161,6 +162,11 @@ public class ErpGoodsServiceImpl extends ServiceImpl<ErpGoodsMapper, ErpGoods>
         mapper.deleteBatchIds(idList);
 
         return 1;
+    }
+
+    @Override
+    public List<GoodsSpecListVo> searchGoodsSpec(Long tenantId,Long supplierId,String keyword) {
+        return mapper.searchGoodsSpec(tenantId,supplierId,keyword);
     }
 }
 

@@ -1,6 +1,7 @@
 package cn.qihangerp.api.controller;
 
 
+import cn.qihangerp.api.domain.vo.GoodsSpecListVo;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,13 +38,13 @@ public class GoodsController extends BaseController
      * 搜索商品SKU
      * 条件：商品编码、SKU、商品名称
      */
-//    @GetMapping("/searchSku")
-//    public TableDataInfo searchSkuBy(String keyword)
-//    {
-//        List<GoodsSpecListVo> list = goodsService.searchGoodsSpec(keyword);
-//        return getDataTable(list);
-//    }
-//
+    @GetMapping("/searchSku")
+    public TableDataInfo searchSkuBy(Long supplierId,String keyword)
+    {
+        List<GoodsSpecListVo> list = goodsService.searchGoodsSpec(getUserId(),supplierId,keyword);
+        return getDataTable(list);
+    }
+
     @GetMapping("/sku_list")
     public TableDataInfo skuList(ErpGoodsSku bo, PageQuery pageQuery)
     {

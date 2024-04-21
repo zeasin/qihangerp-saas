@@ -57,4 +57,36 @@
         low_qty,high_qty,create_by,
         create_time,update_by,update_time
     </sql>
+    <resultMap type="GoodsSpecListVo" id="GoodsSpecListVoResult">
+        <result property="id"    column="id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="name"    column="name"    />
+        <result property="number"    column="number"    />
+        <result property="specNum"    column="spec_num"    />
+        <result property="colorValue"    column="color_value"    />
+        <result property="colorImage"    column="color_image"    />
+        <result property="sizeValue"    column="size_value"    />
+        <result property="styleValue"    column="style_value"    />
+        <result property="purPrice"    column="pur_price"    />
+    </resultMap>
+    <select id="searchGoodsSpec" parameterType="GoodsSpecListVo" resultMap="GoodsSpecListVoResult">
+        SELECT spec.id,spec.goods_id,g.number,g.`name`,spec.spec_num,spec.color_value,spec.color_image,spec.size_value,spec.style_value,spec.pur_price
+        FROM `erp_goods_sku` as spec
+        LEFT JOIN erp_goods as g on g.id = spec.goods_id
+        <where>
+            and g.tenant_id = #{tenantId}
+            <if test="supplierId != null  and supplierId != ''">
+                and g.supplier_id = #{supplierId}
+            </if>
+            <if test="keyword != null  and keyword != ''">
+                and
+                (
+                g.name like concat('%', #{keyword}, '%')
+                or g.number like concat(#{keyword}, '%')
+                or spec.spec_num like concat(#{keyword}, '%')
+                )
+            </if>
+        </where>
+    </select>
+
 </mapper>

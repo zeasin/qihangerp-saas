@@ -1,7 +1,10 @@
 package cn.qihangerp.api.mapper;
 
 import cn.qihangerp.api.domain.ErpGoods;
+import cn.qihangerp.api.domain.vo.GoodsSpecListVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
 * @author TW
@@ -10,7 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity cn.qihangerp.api.domain.ErpGoods
 */
 public interface ErpGoodsMapper extends BaseMapper<ErpGoods> {
-
+    List<GoodsSpecListVo> searchGoodsSpec(Long tenantId,Long supplierId,String keyword);
 }
 
 

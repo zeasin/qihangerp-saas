@@ -69,13 +69,14 @@
 
     <el-table v-loading="loading" :data="purchaseOrderList" @selection-change="handleSelectionChange">
 <!--      <el-table-column type="selection" width="55" align="center" />-->
-      <el-table-column label="ID" align="center" prop="id" />
+<!--      <el-table-column label="ID" align="center" prop="id" />-->
+      <el-table-column label="单号" align="center" prop="orderNo" />
       <el-table-column label="供应商" align="center" prop="contactId" >
         <template slot-scope="scope">
-          <span>{{ supplierList.find(x=>x.id === scope.row.contactId)?supplierList.find(x=>x.id === scope.row.contactId).name :'' }}</span>
+          <span>{{ supplierList.find(x=>x.id === scope.row.supplierId)?supplierList.find(x=>x.id === scope.row.supplierId).name :'' }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="单号" align="center" prop="orderNo" />
+
       <el-table-column label="下单日期" align="center" prop="orderDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.orderDate, '{y}-{m}-{d}') }}</span>
@@ -86,7 +87,7 @@
       <el-table-column label="审核人" align="center" prop="auditUser" />
       <el-table-column label="审核时间" align="center" prop="auditTime" >
         <template slot-scope="scope">
-          {{ dateToString(scope.row.auditTime) }}
+          {{ scope.row.auditTime>0? dateToString(scope.row.auditTime) : ''}}
         </template>
       </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />

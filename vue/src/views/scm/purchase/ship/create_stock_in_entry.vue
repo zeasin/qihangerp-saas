@@ -23,7 +23,7 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="供应商" prop="supplier">
-        <el-input v-model="form.supplier" disabled />
+        <el-input v-model="form.supplierId" disabled />
       </el-form-item>
       <el-form-item label="总金额">
         <el-input v-model="form.orderAmount" disabled />
@@ -99,7 +99,7 @@
             <el-table-column prop="inQty" label="需入库数量">
                 <template slot-scope="scope">
                     <el-input v-model.number="scope.row.inQty" placeholder="填写需入库的数量" />
-                </template>   
+                </template>
             </el-table-column>
             <el-table-column prop="amount" label="总金额"> </el-table-column>
           </el-table>
@@ -120,7 +120,7 @@
         <el-form-item label="物流公司"><el-input v-model="ship.shipCompany" disabled /> </el-form-item>
         <el-form-item label="物流单号"><el-input v-model="ship.shipNo" disabled /> </el-form-item>
         <el-form-item label="备注"><el-input v-model="ship.remark" disabled /> </el-form-item>
-        
+
       </el-row>
       <el-row>
         <el-form-item label="商品单位"><el-input v-model="ship.orderGoodsUnit" disabled /> </el-form-item>
@@ -130,7 +130,7 @@
       <el-form-item>
 
         <el-button type="primary" style="margin-left: 128px;" @click="submitForm">生成采购入库单</el-button>
-        
+
       </el-form-item>
     </el-form>
   </div>
@@ -146,7 +146,7 @@ export default {
     return {
       form: {
         id: null,
-        
+        orderId: null,
       },
       ship:{},
       itemList:[],
@@ -155,32 +155,37 @@ export default {
   },
   mounted() {
     this.form.id = this.$route.query.id;
+    this.form.orderId = this.$route.query.orderId;
     this.getDetail();
   },
   created() {},
   methods: {
     getDetail() {
-      getPurchaseOrder(this.form.id).then((res) => {
+      getPurchaseOrder(this.$route.query.orderId).then((res) => {
         this.form = res.data;
-        console.log("采购单详情", res.data);
+        this.form.orderId = res.data.id
+        this.form.id = null;
+        // console.log("采购单详情", res.data);
+        getPurchaseOrderShip(this.$route.query.id).then((response) => {
+          this.ship = response.data;
+          this.form.id = response.data.id;
+          // console.log("物流详情", this.ship);
+        });
       });
 
-      getPurchaseOrderShip(this.form.id).then((response) => {
-        this.ship = response.data;
-        console.log("物流详情", this.ship);
-      });
-      listPurchaseOrderItem({orderId:this.form.id}).then(res =>{
+
+      listPurchaseOrderItem({orderId:this.form.orderId}).then(res =>{
         if(res.rows){
             res.rows.forEach(x=>{
                 const g = {
                     ...x
                 }
                 x.inQty = x.quantity
-                
+
             })
         }
             this.itemList = res.rows
-            console.log('采购单明细',res)
+            // console.log('采购单明细',res)
         })
     },
     submitForm() {
@@ -193,7 +198,7 @@ export default {
                 if(res.code === 200){
                     // 调用全局挂载的方法,关闭当前标签页
                     this.$store.dispatch("tagsView/delView", this.$route);
-                    this.$router.push('/scm/purchase/ship');                           
+                    this.$router.push('/scm/purchase/ship');
                 }
             })
         }

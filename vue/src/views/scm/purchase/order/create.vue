@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <el-form :model="form" ref="form" size="small" :rules="rules" :inline="true" label-width="98px">
-      <el-form-item label="供应商" prop="contactId">
-        <el-select v-model="form.contactId" filterable  placeholder="请选择供应商名称">
+      <el-form-item label="供应商" prop="supplierId">
+        <el-select v-model="form.supplierId" filterable  placeholder="请选择供应商名称">
           <el-option v-for="item in supplierList" :key="item.id" :label="item.name" :value="item.id">
           </el-option>
         </el-select>
@@ -111,7 +111,7 @@ export default {
     return {
       // 表单参数
       form: {
-        contactId: null,
+        supplierId: null,
         orderDate: null,
         goodsList: [],
         orderAmount:0.00
@@ -119,7 +119,7 @@ export default {
 
       // 表单校验
       rules: {
-        contactId: [{ required: true, message: '供应商不能为空' }],
+        supplierId: [{ required: true, message: '供应商不能为空' }],
         orderDate: [{ required: true, message: '采购日期不能为空' }],
         goodsList: [{ required: true, message: '采购商品不能为空' }],
       },
@@ -168,6 +168,7 @@ export default {
     searchSku(query) {
       this.skuListLoading = true;
       const qw = {
+        supplierId:this.form.supplierId,
         keyword: query
       }
       searchSku(qw).then(res => {

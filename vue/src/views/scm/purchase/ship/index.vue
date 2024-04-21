@@ -77,20 +77,20 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="采购单ID" align="center" prop="id" />
-      <el-table-column label="采购订单编号" align="center" prop="orderNo" />
+<!--      <el-table-column label="采购单ID" align="center" prop="id" />-->
+      <el-table-column label="采购单编号" align="center" prop="orderNo" />
       <el-table-column
-        label="采购订单商品规格数"
+        label="采购商品规格数"
         align="center"
         prop="orderSpecUnit"
       />
       <el-table-column
-        label="采购订单商品数"
+        label="采购商品数"
         align="center"
         prop="orderGoodsUnit"
       />
       <el-table-column
-        label="采购订单总件数"
+        label="采购总件数"
         align="center"
         prop="orderSpecUnitTotal"
       />
@@ -380,11 +380,11 @@ export default {
     },
     /** 详情按钮操作 */
     handleDetail(row) {
-      this.$router.push({path :"/scm/purchase/order/detail", query: { id: row.id }});
+      this.$router.push({path :"/scm/purchase/order/detail", query: { id: row.orderId }});
     },
     handleCreateEntry(row){
       // this.$router.push("/scm/purchase/ship/create_stock_in_entry", { id: row.id });
-      this.$router.push({path : "/scm/purchase/ship/create_stock_in_entry", query: { id: row.id }})
+      this.$router.push({path : "/scm/purchase/ship/create_stock_in_entry", query: { id: row.id , orderId:row.orderId }})
     },
     /** 修改按钮操作 */
     handleConfirmReceipt(row) {
