@@ -1,5 +1,6 @@
 package cn.qihangerp.api.service;
 
+import cn.qihangerp.api.common.exception.ServiceException;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -70,7 +71,7 @@ public class SysLoginService
             else
             {
 //                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
-//                throw new ServiceException(e.getMessage());
+                throw new ServiceException(e.getMessage());
             }
         }
         finally

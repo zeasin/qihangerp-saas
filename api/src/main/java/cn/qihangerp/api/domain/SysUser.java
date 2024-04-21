@@ -1,6 +1,8 @@
 package cn.qihangerp.api.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.util.Map;
 
@@ -52,6 +54,8 @@ public class SysUser
 
     /** 最后登录时间 */
     private Date loginDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private String expirationDate;
 
     /** 角色组 */
     private Long[] roleIds;
@@ -114,7 +118,16 @@ public class SysUser
 
     public static boolean isAdmin(Long userId)
     {
-        return userId != null && 1L == userId;
+//        return userId != null && 1L == userId;
+        return true;
+    }
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     public Long getDeptId()

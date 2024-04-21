@@ -1,5 +1,6 @@
 package cn.qihangerp.api.common.security;
 
+import cn.qihangerp.api.common.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import cn.qihangerp.api.common.utils.StringUtils;
 import cn.qihangerp.api.domain.SysUser;
 import cn.qihangerp.api.service.ISysUserService;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,8 +32,8 @@ public class UserDetailsServiceImpl implements UserDetailsService
     @Autowired
     private ISysUserService userService;
 
-//    @Autowired
-//    private SysPasswordService passwordService;
+    @Autowired
+    private SysPasswordService passwordService;
 
 //    @Autowired
 //    private SysPermissionService permissionService;
@@ -55,8 +57,19 @@ public class UserDetailsServiceImpl implements UserDetailsService
             log.info("登录用户：{} 已被停用.", username);
             throw new ServiceException(MessageUtils.message("user.blocked"));
         }
+        if(user==null||user.getExpirationDate()==null){
+            log.info("登录用户：{} 已过期.", username);
+            throw new ServiceException(MessageUtils.message("user.expiration"));
+        }else{
+            Date expirationDate = DateUtils.dateTime("yyyy-MM-dd",user.getExpirationDate());
+            if(expirationDate.before(new Date())){
+                log.info("登录用户：{} 已过期.", username);
+                throw new ServiceException(MessageUtils.message("user.expiration"));
+            }
+        }
 
-//        passwordService.validate(user);
+        passwordService.validate(user);
+
 
         return createLoginUser(user);
     }

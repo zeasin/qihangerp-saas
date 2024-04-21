@@ -90,16 +90,23 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="商品" width="350">
+      <el-table-column label="商品" width="400">
           <template slot-scope="scope">
             <el-row v-for="item in scope.row.itemList" :key="item.id" :gutter="20">
-
             <div style="float: left;display: flex;align-items: center;" >
               <el-image  style="width: 70px; height: 70px;" :src="item.goodsImg"></el-image>
               <div style="margin-left:10px">
               <p>{{item.goodsTitle}}</p>
-              <p>{{item.goodsSpec}}&nbsp;
-                <el-tag size="small">x {{item.quantity}}</el-tag>
+              <p>
+                <div>
+                {{JSON.parse(item.goodsSpec)[0].attr_key}}&nbsp;： {{JSON.parse(item.goodsSpec)[0].attr_value}}&nbsp;
+                </div>
+                <div>
+                {{JSON.parse(item.goodsSpec)[1].attr_key}}&nbsp;： {{JSON.parse(item.goodsSpec)[1].attr_value}}&nbsp;
+                </div>
+                <div>
+                数量：<el-tag size="small">x {{item.quantity}}</el-tag>
+                </div>
                 </p>
               </div>
             </div>
@@ -170,12 +177,7 @@
 
             <el-descriptions-item label="店铺">
               {{ shopList.find(x=>x.id === form.shopId)?shopList.find(x=>x.id === form.shopId).name:'' }}
-              <el-tag size="small" v-if="form.shopType === 4">淘宝天猫</el-tag>
-              <el-tag size="small" v-if="form.shopType === 5">拼多多</el-tag>
-              <el-tag size="small" v-if="form.shopType === 6">抖店</el-tag>
-              <el-tag size="small" v-if="form.shopType === 7">小红书</el-tag>
-              <el-tag size="small" v-if="form.shopType === 13">快手小店</el-tag>
-              <el-tag size="small" v-if="form.shopType === 99">其他</el-tag>
+              <el-tag size="small" v-if="form.shopType === 5">视频号小店</el-tag>
             </el-descriptions-item>
 
 

@@ -5,10 +5,11 @@
       <div class="bgRight"></div>
       <h3 class="title">启航视频号电商系统</h3>
       <div class="login-form">
-        <div class="tabs" v-if="n !==3">
-          <div class="item" :class="n==1?'on':''" @click="n=1">密码登录</div>
-          <div class="item" :class="n==2?'on':''" @click="n=2">验证码登录</div>
-        </div>
+        <div class="zhuce"  v-if="n !==3">登录</div>
+<!--        <div class="tabs" v-if="n !==3">-->
+<!--          <div class="item" :class="n==1?'on':''" @click="n=1">密码登录</div>-->
+<!--          <div class="item" :class="n==2?'on':''" @click="n=2">验证码登录</div>-->
+<!--        </div>-->
         <div class="zhuce" v-else>注册</div>
         <!--star 密码登录-->
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" v-if="n==1">
@@ -152,7 +153,7 @@
     </div>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2023-2024 qihangec.tech All Rights Reserved.</span>
+      <span>Copyright © 2023-2024 qihangerp.tech All Rights Reserved.</span>
     </div>
   </div>
 </template>

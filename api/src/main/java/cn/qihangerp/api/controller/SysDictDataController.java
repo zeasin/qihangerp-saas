@@ -1,5 +1,6 @@
 package cn.qihangerp.api.controller;
 
+import cn.qihangerp.api.common.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -35,6 +36,7 @@ public class SysDictDataController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysDictData dictData)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return getDataTable(new ArrayList<>());
 //        startPage();
         List<SysDictData> list = dictDataService.selectDictDataList(dictData);
         return getDataTable(list);
@@ -48,6 +50,7 @@ public class SysDictDataController extends BaseController
     @GetMapping(value = "/{dictCode}")
     public AjaxResult getInfo(@PathVariable Long dictCode)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         return success(dictDataService.selectDictDataById(dictCode));
     }
 
@@ -57,6 +60,7 @@ public class SysDictDataController extends BaseController
     @GetMapping(value = "/type/{dictType}")
     public AjaxResult dictType(@PathVariable String dictType)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         List<SysDictData> data = dictTypeService.selectDictDataByType(dictType);
         if (StringUtils.isNull(data))
         {
@@ -72,6 +76,7 @@ public class SysDictDataController extends BaseController
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysDictData dict)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         dict.setCreateBy(getUsername());
         return toAjax(dictDataService.insertDictData(dict));
     }
@@ -82,6 +87,7 @@ public class SysDictDataController extends BaseController
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysDictData dict)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         dict.setUpdateBy(getUsername());
         return toAjax(dictDataService.updateDictData(dict));
     }
@@ -92,6 +98,7 @@ public class SysDictDataController extends BaseController
     @DeleteMapping("/{dictCodes}")
     public AjaxResult remove(@PathVariable Long[] dictCodes)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         dictDataService.deleteDictDataByIds(dictCodes);
         return success();
     }

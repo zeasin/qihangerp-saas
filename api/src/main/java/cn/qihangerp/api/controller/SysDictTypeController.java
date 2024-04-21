@@ -1,5 +1,6 @@
 package cn.qihangerp.api.controller;
 
+import cn.qihangerp.api.common.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -10,6 +11,7 @@ import cn.qihangerp.api.common.TableDataInfo;
 import cn.qihangerp.api.domain.SysDictType;
 import cn.qihangerp.api.service.ISysDictTypeService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +30,7 @@ public class SysDictTypeController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysDictType dictType)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return getDataTable(new ArrayList<>());
 //        startPage(false);
         List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
         return getDataTable(list);
@@ -41,6 +44,7 @@ public class SysDictTypeController extends BaseController
     @GetMapping(value = "/{dictId}")
     public AjaxResult getInfo(@PathVariable Long dictId)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         return success(dictTypeService.selectDictTypeById(dictId));
     }
 
@@ -50,6 +54,7 @@ public class SysDictTypeController extends BaseController
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysDictType dict)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         if (!dictTypeService.checkDictTypeUnique(dict))
         {
             return error("新增字典'" + dict.getDictName() + "'失败，字典类型已存在");
@@ -64,6 +69,7 @@ public class SysDictTypeController extends BaseController
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysDictType dict)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         if (!dictTypeService.checkDictTypeUnique(dict))
         {
             return error("修改字典'" + dict.getDictName() + "'失败，字典类型已存在");
@@ -78,6 +84,7 @@ public class SysDictTypeController extends BaseController
     @DeleteMapping("/{dictIds}")
     public AjaxResult remove(@PathVariable Long[] dictIds)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         dictTypeService.deleteDictTypeByIds(dictIds);
         return success();
     }
@@ -88,6 +95,7 @@ public class SysDictTypeController extends BaseController
     @DeleteMapping("/refreshCache")
     public AjaxResult refreshCache()
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         dictTypeService.resetDictCache();
         return success();
     }
@@ -98,6 +106,7 @@ public class SysDictTypeController extends BaseController
     @GetMapping("/optionselect")
     public AjaxResult optionselect()
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         List<SysDictType> dictTypes = dictTypeService.selectDictTypeAll();
         return success(dictTypes);
     }

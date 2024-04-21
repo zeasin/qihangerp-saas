@@ -1,5 +1,6 @@
 package cn.qihangerp.api.controller;
 
+import cn.qihangerp.api.common.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +18,7 @@ import cn.qihangerp.api.service.ISysRoleService;
 import cn.qihangerp.api.service.ISysUserService;
 import cn.qihangerp.api.service.SysPermissionService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,6 +47,7 @@ public class SysRoleController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysRole role)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return getDataTable(new ArrayList<>());
 //        startPage(false);
         List<SysRole> list = roleService.selectRoleList(role);
         return getDataTable(list);
@@ -59,6 +62,7 @@ public class SysRoleController extends BaseController
     @GetMapping(value = "/{roleId}")
     public AjaxResult getInfo(@PathVariable Long roleId)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         roleService.checkRoleDataScope(roleId);
         return success(roleService.selectRoleById(roleId));
     }
@@ -70,6 +74,7 @@ public class SysRoleController extends BaseController
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysRole role)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         if (!roleService.checkRoleNameUnique(role))
         {
             return error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
@@ -90,6 +95,7 @@ public class SysRoleController extends BaseController
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysRole role)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         roleService.checkRoleAllowed(role);
         roleService.checkRoleDataScope(role.getRoleId());
         if (!roleService.checkRoleNameUnique(role))
@@ -124,6 +130,7 @@ public class SysRoleController extends BaseController
     @PutMapping("/dataScope")
     public AjaxResult dataScope(@RequestBody SysRole role)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         roleService.checkRoleAllowed(role);
         roleService.checkRoleDataScope(role.getRoleId());
         return toAjax(roleService.authDataScope(role));
@@ -136,6 +143,7 @@ public class SysRoleController extends BaseController
     @PutMapping("/changeStatus")
     public AjaxResult changeStatus(@RequestBody SysRole role)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         roleService.checkRoleAllowed(role);
         roleService.checkRoleDataScope(role.getRoleId());
         role.setUpdateBy(getUsername());
@@ -149,6 +157,7 @@ public class SysRoleController extends BaseController
     @DeleteMapping("/{roleIds}")
     public AjaxResult remove(@PathVariable Long[] roleIds)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         return toAjax(roleService.deleteRoleByIds(roleIds));
     }
 
@@ -159,6 +168,7 @@ public class SysRoleController extends BaseController
     @GetMapping("/optionselect")
     public AjaxResult optionselect()
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         return success(roleService.selectRoleAll());
     }
 
@@ -169,6 +179,7 @@ public class SysRoleController extends BaseController
     @GetMapping("/authUser/allocatedList")
     public TableDataInfo allocatedList(SysUser user)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) getDataTable(new ArrayList<>());
 //        startPage();
         List<SysUser> list = userService.selectAllocatedList(user);
         return getDataTable(list);
@@ -181,6 +192,7 @@ public class SysRoleController extends BaseController
     @GetMapping("/authUser/unallocatedList")
     public TableDataInfo unallocatedList(SysUser user)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) getDataTable(new ArrayList<>());
 //        startPage();
         List<SysUser> list = userService.selectUnallocatedList(user);
         return getDataTable(list);
@@ -193,6 +205,7 @@ public class SysRoleController extends BaseController
     @PutMapping("/authUser/cancel")
     public AjaxResult cancelAuthUser(@RequestBody SysUserRole userRole)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         return toAjax(roleService.deleteAuthUser(userRole));
     }
 
@@ -203,6 +216,7 @@ public class SysRoleController extends BaseController
     @PutMapping("/authUser/cancelAll")
     public AjaxResult cancelAuthUserAll(Long roleId, Long[] userIds)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         return toAjax(roleService.deleteAuthUsers(roleId, userIds));
     }
 
@@ -213,6 +227,7 @@ public class SysRoleController extends BaseController
     @PutMapping("/authUser/selectAll")
     public AjaxResult selectAuthUserAll(Long roleId, Long[] userIds)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         roleService.checkRoleDataScope(roleId);
         return toAjax(roleService.insertAuthUsers(roleId, userIds));
     }
@@ -224,6 +239,7 @@ public class SysRoleController extends BaseController
     @GetMapping(value = "/deptTree/{roleId}")
     public AjaxResult deptTree(@PathVariable("roleId") Long roleId)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         AjaxResult ajax = AjaxResult.success();
 //        ajax.put("checkedKeys", deptService.selectDeptListByRoleId(roleId));
 //        ajax.put("depts", deptService.selectDeptTreeList(new SysDept()));

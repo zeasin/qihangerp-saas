@@ -1,5 +1,6 @@
 package cn.qihangerp.api.controller;
 
+import cn.qihangerp.api.common.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -30,10 +31,13 @@ public class SysMenuController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:menu:list')")
     @GetMapping("/list")
-    public AjaxResult list(SysMenu menu)
-    {
+    public AjaxResult list(SysMenu menu) {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) {
+            return AjaxResult.error("没有权限");
+        }
         List<SysMenu> menus = menuService.selectMenuList(menu, getUserId());
         return success(menus);
+
     }
 
     /**
@@ -43,6 +47,8 @@ public class SysMenuController extends BaseController
     @GetMapping(value = "/{menuId}")
     public AjaxResult getInfo(@PathVariable Long menuId)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
+
         return success(menuService.selectMenuById(menuId));
     }
 
@@ -52,6 +58,7 @@ public class SysMenuController extends BaseController
     @GetMapping("/treeselect")
     public AjaxResult treeselect(SysMenu menu)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         List<SysMenu> menus = menuService.selectMenuList(menu, getUserId());
         return success(menuService.buildMenuTreeSelect(menus));
     }
@@ -62,6 +69,7 @@ public class SysMenuController extends BaseController
     @GetMapping(value = "/roleMenuTreeselect/{roleId}")
     public AjaxResult roleMenuTreeselect(@PathVariable("roleId") Long roleId)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         List<SysMenu> menus = menuService.selectMenuList(getUserId());
         AjaxResult ajax = AjaxResult.success();
         ajax.put("checkedKeys", menuService.selectMenuListByRoleId(roleId));
@@ -75,6 +83,7 @@ public class SysMenuController extends BaseController
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysMenu menu)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         if (!menuService.checkMenuNameUnique(menu))
         {
             return error("新增菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
@@ -93,6 +102,7 @@ public class SysMenuController extends BaseController
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysMenu menu)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         if (!menuService.checkMenuNameUnique(menu))
         {
             return error("修改菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
@@ -115,6 +125,7 @@ public class SysMenuController extends BaseController
     @DeleteMapping("/{menuId}")
     public AjaxResult remove(@PathVariable("menuId") Long menuId)
     {
+        if (SecurityUtils.getLoginUser().getUserId() != 1) return AjaxResult.error("没有权限");
         if (menuService.hasChildByMenuId(menuId))
         {
             return warn("存在子菜单,不允许删除");
