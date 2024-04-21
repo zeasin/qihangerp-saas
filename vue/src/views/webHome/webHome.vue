@@ -6,7 +6,7 @@
         <div class="header-box">
           <!-- logo -->
           <a title="启航微信视频号小店电商系统" :href="httpsUrl">
-          <img class="header-logo" referrerpolicy="no-referrer" alt="启航微信视频号小店电商系统" src="https://www.yiguaerp.com/Assets/img/logo.png" />
+          <img class="header-logo" referrerpolicy="no-referrer" alt="启航微信视频号小店电商系统" src="./images/logo.png" />
           </a>
           <!-- 导航栏 -->
           <nav class="navbar">
@@ -188,7 +188,7 @@
       <!--star footer -->
       <div class="footer">
         <div class="footer-box p-r">
-          <img class="footer-logo" src="https://www.yiguaerp.com/Assets/img/footer-logo.png" />
+          <img class="footer-logo" src="./images/footer-logo.png" />
           <p class="footer-title-1">关于我们</p>
           <p class="footer-desc">深圳启航技术是一家电商行业老兵、拥有十余年电商系统及运营经验、启航技术拥有众多开源电商系统，包括电商ERP、OMS订单处理等电商软件。<br />启航技术致力于为电商领域提供优秀、易用、先进的电商系统，以技术提升电商创业者们的业务处理效率。</p>
 <!--          <p class="footer-place">-->
