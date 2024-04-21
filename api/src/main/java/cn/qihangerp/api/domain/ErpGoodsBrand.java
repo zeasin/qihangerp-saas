@@ -13,7 +13,7 @@ public class ErpGoodsBrand implements Serializable {
     /**
      * 主键ID
      */
-    private Integer id;
+    private String id;
 
     /**
      * 品牌名

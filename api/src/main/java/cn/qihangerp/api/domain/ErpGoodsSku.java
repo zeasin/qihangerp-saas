@@ -18,7 +18,11 @@ public class ErpGoodsSku implements Serializable {
     /**
      * 商品id
      */
-    private Long goodsId;
+    private String goodsId;
+    /**
+     * 租户id（sys_user_id）
+     */
+    private Long tenantId;
 
     /**
      * 规格名

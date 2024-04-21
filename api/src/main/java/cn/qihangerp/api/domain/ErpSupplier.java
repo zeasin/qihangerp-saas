@@ -13,7 +13,12 @@ public class ErpSupplier implements Serializable {
     /**
      * 
      */
-    private Long id;
+    private String id;
+
+    /**
+     * 租户id
+     */
+    private Long tenantId;
 
     /**
      * 供应商名称
@@ -28,7 +33,7 @@ public class ErpSupplier implements Serializable {
     /**
      * 税率
      */
-    private Double taxrate;
+    private Double taxRate;
 
     /**
      * 期初应付款
@@ -38,17 +43,17 @@ public class ErpSupplier implements Serializable {
     /**
      * 期初预付款
      */
-    private Double periodmoney;
+    private Double periodMoney;
 
     /**
      * 初期往来余额
      */
-    private Double difmoney;
+    private Double difMoney;
 
     /**
      * 余额日期
      */
-    private Date begindate;
+    private Date beginDate;
 
     /**
      * 备注
@@ -63,7 +68,7 @@ public class ErpSupplier implements Serializable {
     /**
      * 联系人
      */
-    private String linkman;
+    private String contactMan;
 
     /**
      * 联系方式
@@ -96,24 +101,34 @@ public class ErpSupplier implements Serializable {
     private String pinyin;
 
     /**
-     * 0启用   1禁用
+     * 1启用   0禁用
      */
     private Integer disable;
 
     /**
      * 0正常 1删除
      */
-    private Integer isdelete;
-
-    /**
-     * 分管采购员
-     */
-    private String purchasername;
+    private Integer isDelete;
 
     /**
      * 创建时间
      */
-    private Date createtime;
+    private Date createTime;
+
+    /**
+     * 
+     */
+    private String createBy;
+
+    /**
+     * 
+     */
+    private Date updateTime;
+
+    /**
+     * 
+     */
+    private String updateBy;
 
     private static final long serialVersionUID = 1L;
 }

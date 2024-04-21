@@ -1,17 +1,16 @@
 package cn.qihangerp.api.controller;
 
+import cn.qihangerp.api.common.*;
+import cn.qihangerp.api.domain.ErpGoodsCategory;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import cn.qihangerp.api.common.BaseController;
-import cn.qihangerp.api.common.PageQuery;
-import cn.qihangerp.api.common.PageResult;
-import cn.qihangerp.api.common.TableDataInfo;
+import org.springframework.web.bind.annotation.*;
 import cn.qihangerp.api.domain.ErpGoods;
 import cn.qihangerp.api.domain.ErpSupplier;
 import cn.qihangerp.api.service.ErpSupplierService;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -23,6 +22,7 @@ public class SupplierController extends BaseController{
     @GetMapping("/list")
     public TableDataInfo list(ErpSupplier bo, PageQuery pageQuery)
     {
+        bo.setTenantId(getUserId());
         PageResult<ErpSupplier> pageResult = supplierService.queryPageList(bo, pageQuery);
         return getDataTable(pageResult);
     }
@@ -30,7 +30,44 @@ public class SupplierController extends BaseController{
     @GetMapping("/list_all")
     public TableDataInfo listAll()
     {
-        List<ErpSupplier> list = supplierService.list();
+        List<ErpSupplier> list = supplierService.list(new LambdaQueryWrapper<ErpSupplier>().eq(ErpSupplier::getTenantId,getUserId()));
         return getDataTable(list);
     }
+
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Long id)
+    {
+        return success(supplierService.getById(id));
+    }
+
+
+    /**
+     * 新增
+     */
+    @PostMapping
+    public AjaxResult add(@RequestBody ErpSupplier bo)
+    {
+        bo.setTenantId(getUserId());
+        bo.setCreateBy("手动添加");
+        bo.setCreateTime(new Date());
+        return toAjax(supplierService.save(bo));
+    }
+
+    @PutMapping
+    public AjaxResult edit(@RequestBody ErpSupplier bo)
+    {
+        bo.setTenantId(null);
+        bo.setCreateTime(null);
+        bo.setCreateBy(null);
+        bo.setUpdateBy("手动更新");
+        bo.setUpdateTime(new Date());
+        return toAjax(supplierService.updateById(bo));
+    }
+
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids)
+    {
+        return toAjax(supplierService.removeBatchByIds(Arrays.stream(ids).toList()));
+    }
+
 }

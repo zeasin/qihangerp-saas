@@ -89,7 +89,7 @@
       <!-- <el-table-column label="单位名称" align="center" prop="unitName" /> -->
       <el-table-column label="商品分类" align="center" prop="categoryId" >
         <template slot-scope="scope">
-          <el-tag size="small">{{categoryList.find(x=>x.id === scope.row.categoryId).name}}</el-tag>
+          <el-tag size="small">{{categoryList.find(x=>x.id === scope.row.categoryId)?categoryList.find(x=>x.id === scope.row.categoryId).name:''}}</el-tag>
         </template>
       </el-table-column>
       <!-- <el-table-column label="条码" align="center" prop="barCode" /> -->
@@ -343,7 +343,7 @@ export default {
   created() {
     listCategory(this.queryParams).then(response => {
         this.categoryList = response.rows
-        this.categoryTree = this.buildTree(response.rows,0)
+        this.categoryTree = this.buildTree(response.rows,"0")
       });
     listAllSupplier({}).then(response => {
       this.supplierList = response.rows;

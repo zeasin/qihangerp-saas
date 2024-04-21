@@ -17,62 +17,11 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-
-      <el-form-item label="余额日期" prop="beginDate">
-        <el-date-picker clearable
-          v-model="queryParams.beginDate"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择余额日期">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="联系人" prop="linkMan">
-        <el-input
-          v-model="queryParams.linkMan"
-          placeholder="请输入联系人"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="联系方式" prop="contact">
-        <el-input
-          v-model="queryParams.contact"
-          placeholder="请输入联系方式"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="省" prop="province">
-        <el-input
-          v-model="queryParams.province"
-          placeholder="请输入省"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="市" prop="city">
-        <el-input
-          v-model="queryParams.city"
-          placeholder="请输入市"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="状态" prop="disable">
-        <el-input
-          v-model="queryParams.disable"
-          placeholder="请输入0启用   1禁用"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="分管采购员" prop="purchaserName">
-        <el-input
-          v-model="queryParams.purchaserName"
-          placeholder="请输入分管采购员"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="form.disable" placeholder="请选择状态">
+          <el-option label="启用" value="1"></el-option>
+          <el-option label="禁用" value="0"></el-option>
+        </el-select>
       </el-form-item>
 
       <el-form-item>
@@ -114,45 +63,28 @@
           v-hasPermi="['scm:supplier:remove']"
         >删除</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['scm:supplier:export']"
-        >导出</el-button>
-      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="supplierList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键" align="center" prop="id" />
+<!--      <el-table-column label="主键" align="center" prop="id" />-->
       <el-table-column label="供应商名称" align="center" prop="name" />
       <el-table-column label="供应商编码" align="center" prop="number" />
-      <el-table-column label="税率" align="center" prop="taxRate" />
-      <el-table-column label="期初应付款" align="center" prop="amount" />
-      <el-table-column label="期初预付款" align="center" prop="periodMoney" />
-      <el-table-column label="初期往来余额" align="center" prop="difMoney" />
-      <el-table-column label="余额日期" align="center" prop="beginDate" width="180">
+      <el-table-column label="联系人" align="center" prop="contactMan" />
+      <el-table-column label="联系方式" align="center" prop="contact" />
+      <el-table-column label="职位" align="center" prop="place" />
+      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="地址" align="center" prop="address" />
+      <el-table-column label="状态" align="center" prop="disable" >
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.beginDate, '{y}-{m}-{d}') }}</span>
+          <el-tag size="small" v-if="scope.row.disable === 0">禁用</el-tag>
+          <el-tag size="small" v-if="scope.row.disable === 1">启用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="职位" align="center" prop="place" />
-      <el-table-column label="联系人" align="center" prop="linkMan" />
-      <el-table-column label="联系方式" align="center" prop="contact" />
-      <el-table-column label="省" align="center" prop="province" />
-      <el-table-column label="市" align="center" prop="city" />
-      <el-table-column label="区县" align="center" prop="county" />
-      <el-table-column label="拼音" align="center" prop="pinYin" />
-      <el-table-column label="分管采购员" align="center" prop="purchaserName" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.createTime)}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -185,62 +117,33 @@
 
     <!-- 添加或修改供应商管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="88px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="供应商名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入供应商名称" />
         </el-form-item>
         <el-form-item label="供应商编码" prop="number">
           <el-input v-model="form.number" placeholder="请输入供应商编码" />
         </el-form-item>
-        <el-form-item label="税率" prop="taxRate">
-          <el-input v-model="form.taxRate" placeholder="请输入税率" />
-        </el-form-item>
-        <el-form-item label="期初应付款" prop="amount">
-          <el-input v-model="form.amount" placeholder="请输入期初应付款" />
-        </el-form-item>
-        <el-form-item label="期初预付款" prop="periodMoney">
-          <el-input v-model="form.periodMoney" placeholder="请输入期初预付款" />
-        </el-form-item>
-        <el-form-item label="初期往来余额" prop="difMoney">
-          <el-input v-model="form.difMoney" placeholder="请输入初期往来余额" />
-        </el-form-item>
-        <el-form-item label="余额日期" prop="beginDate">
-          <el-date-picker clearable
-            v-model="form.beginDate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择余额日期">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" placeholder="请输入备注" />
-        </el-form-item>
-        <el-form-item label="职位" prop="place">
-          <el-input v-model="form.place" placeholder="请输入职位" />
-        </el-form-item>
-        <el-form-item label="联系人" prop="linkMan">
-          <el-input v-model="form.linkMan" placeholder="请输入联系人" />
+        <el-form-item label="联系人" prop="contactMan">
+          <el-input v-model="form.contactMan" placeholder="请输入联系人" />
         </el-form-item>
         <el-form-item label="联系方式" prop="contact">
           <el-input v-model="form.contact" placeholder="请输入联系方式" />
         </el-form-item>
-        <el-form-item label="省" prop="province">
-          <el-input v-model="form.province" placeholder="请输入省" />
+        <el-form-item label="职位" prop="place">
+          <el-input v-model="form.place" placeholder="请输入职位" />
         </el-form-item>
-        <el-form-item label="市" prop="city">
-          <el-input v-model="form.city" placeholder="请输入市" />
-        </el-form-item>
-        <el-form-item label="区县" prop="county">
-          <el-input v-model="form.county" placeholder="请输入区县" />
-        </el-form-item>
-        <el-form-item label="详细地址" prop="address">
+        <el-form-item label="地址" prop="address">
           <el-input v-model="form.address" placeholder="请输入详细地址" />
         </el-form-item>
-        <el-form-item label="拼音" prop="pinYin">
-          <el-input v-model="form.pinYin" placeholder="请输入拼音" />
+        <el-form-item label="备注" prop="remark">
+          <el-input type="textarea" v-model="form.remark" placeholder="请输入备注" />
         </el-form-item>
-        <el-form-item label="分管采购员" prop="purchaserName">
-          <el-input v-model="form.purchaserName" placeholder="请输入分管采购员" />
+        <el-form-item label="状态" prop="disable">
+          <el-select v-model="form.disable" placeholder="请选择状态">
+            <el-option label="启用" value="1"></el-option>
+            <el-option label="禁用" value="0"></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -281,29 +184,17 @@ export default {
         pageNum: 1,
         pageSize: 10,
         name: null,
-        number: null,
-        taxRate: null,
-        amount: null,
-        periodMoney: null,
-        difMoney: null,
-        beginDate: null,
-        place: null,
-        linkMan: null,
-        contact: null,
-        province: null,
-        city: null,
-        county: null,
-        address: null,
-        pinYin: null,
-        disable: null,
-        isDelete: null,
-        purchaserName: null,
-        createTime: null
+        number: null
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
+        name: [{ required: true, message: "不能为空", trigger: "blur" }],
+        number: [{ required: true, message: "不能为空", trigger: "blur" }],
+        contactMan: [{ required: true, message: "不能为空", trigger: "blur" }],
+        contact: [{ required: true, message: "不能为空", trigger: "blur" }],
+        disable: [{ required: true, message: "不能为空", trigger: "blur" }],
       }
     };
   },
@@ -372,7 +263,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加供应商管理";
+      this.title = "添加供应商";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -380,8 +271,9 @@ export default {
       const id = row.id || this.ids
       getSupplier(id).then(response => {
         this.form = response.data;
+        this.form.disable = response.data.disable+''
         this.open = true;
-        this.title = "修改供应商管理";
+        this.title = "修改供应商";
       });
     },
     /** 提交按钮 */

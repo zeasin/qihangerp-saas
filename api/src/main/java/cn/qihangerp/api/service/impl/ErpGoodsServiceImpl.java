@@ -35,7 +35,7 @@ public class ErpGoodsServiceImpl extends ServiceImpl<ErpGoodsMapper, ErpGoods>
     @Override
     public PageResult<ErpGoods> queryPageList(ErpGoods bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ErpGoods> queryWrapper = new LambdaQueryWrapper<>();
-//        queryWrapper.eq(bo.getErpSkuId()!=null,OGoodsSku::getErpSkuId,bo.getErpSkuId());
+        queryWrapper.eq(ErpGoods::getTenantId,bo.getTenantId());
 //        queryWrapper.eq(bo.getErpGoodsId()!=null,OGoodsSku::getErpGoodsId,bo.getErpGoodsId());
 //        queryWrapper.eq(StringUtils.hasText(bo.getSkuNum()),OGoodsSku::getSkuNum,bo.getSkuNum());
         Page<ErpGoods> pages = mapper.selectPage(pageQuery.build(), queryWrapper);
@@ -46,7 +46,7 @@ public class ErpGoodsServiceImpl extends ServiceImpl<ErpGoodsMapper, ErpGoods>
     @Override
     public PageResult<ErpGoodsSku> querySkuPageList(ErpGoodsSku bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ErpGoodsSku> queryWrapper = new LambdaQueryWrapper<>();
-//        queryWrapper.eq(bo.getErpSkuId()!=null,OGoodsSku::getErpSkuId,bo.getErpSkuId());
+        queryWrapper.eq(ErpGoodsSku::getTenantId,bo.getTenantId());
 //        queryWrapper.eq(bo.getErpGoodsId()!=null,OGoodsSku::getErpGoodsId,bo.getErpGoodsId());
 //        queryWrapper.eq(StringUtils.hasText(bo.getSkuNum()),OGoodsSku::getSkuNum,bo.getSkuNum());
         Page<ErpGoodsSku> pages = skuMapper.selectPage(pageQuery.build(), queryWrapper);

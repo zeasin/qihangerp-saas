@@ -49,6 +49,7 @@ public class GoodsController extends BaseController
     @GetMapping("/sku_list")
     public TableDataInfo skuList(ErpGoodsSku bo, PageQuery pageQuery)
     {
+        bo.setTenantId(getUserId());
         var pageList = goodsService.querySkuPageList(bo,pageQuery);
         return getDataTable(pageList);
     }
@@ -60,6 +61,7 @@ public class GoodsController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(ErpGoods goods, PageQuery pageQuery)
     {
+        goods.setTenantId(getUserId());
         PageResult<ErpGoods> pageResult = goodsService.queryPageList(goods, pageQuery);
         return getDataTable(pageResult);
     }

@@ -6,16 +6,17 @@
 
     <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.ErpSupplier">
             <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="number" column="number" jdbcType="VARCHAR"/>
-            <result property="taxrate" column="taxRate" jdbcType="DOUBLE"/>
+            <result property="taxRate" column="tax_rate" jdbcType="DOUBLE"/>
             <result property="amount" column="amount" jdbcType="DOUBLE"/>
-            <result property="periodmoney" column="periodMoney" jdbcType="DOUBLE"/>
-            <result property="difmoney" column="difMoney" jdbcType="DOUBLE"/>
-            <result property="begindate" column="beginDate" jdbcType="DATE"/>
+            <result property="periodMoney" column="period_money" jdbcType="DOUBLE"/>
+            <result property="difMoney" column="dif_money" jdbcType="DOUBLE"/>
+            <result property="beginDate" column="begin_date" jdbcType="DATE"/>
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
             <result property="place" column="place" jdbcType="VARCHAR"/>
-            <result property="linkman" column="linkMan" jdbcType="VARCHAR"/>
+            <result property="contactMan" column="contact_man" jdbcType="VARCHAR"/>
             <result property="contact" column="contact" jdbcType="VARCHAR"/>
             <result property="province" column="province" jdbcType="VARCHAR"/>
             <result property="city" column="city" jdbcType="VARCHAR"/>
@@ -23,18 +24,21 @@
             <result property="address" column="address" jdbcType="VARCHAR"/>
             <result property="pinyin" column="pinYin" jdbcType="VARCHAR"/>
             <result property="disable" column="disable" jdbcType="TINYINT"/>
-            <result property="isdelete" column="isDelete" jdbcType="TINYINT"/>
-            <result property="purchasername" column="purchaserName" jdbcType="VARCHAR"/>
-            <result property="createtime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name,number,
-        taxRate,amount,periodMoney,
-        difMoney,beginDate,remark,
-        place,linkMan,contact,
-        province,city,county,
-        address,pinYin,disable,
-        isDelete,purchaserName,createTime
+        id,tenant_id,name,
+        number,tax_rate,amount,
+        period_money,dif_money,begin_date,
+        remark,place,contact_man,
+        contact,province,city,
+        county,address,pinYin,
+        disable,is_delete,create_time,
+        create_by,update_time,update_by
     </sql>
 </mapper>

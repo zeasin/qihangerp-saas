@@ -19,7 +19,11 @@ public class ErpGoods implements Serializable {
     /**
      * 主键id
      */
-    private Long id;
+    private String id;
+    /**
+     * 租户id（sys_user_id）
+     */
+    private Long tenantId;
 
     /**
      * 商品名称
