@@ -47,7 +47,7 @@ export function updateGoods(data) {
 // 删除商品管理
 export function delGoods(id) {
   return request({
-    url: '/goods/goods/' + id,
+    url: '/goods/' + id,
     method: 'delete'
   })
 }

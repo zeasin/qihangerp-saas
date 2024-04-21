@@ -34,6 +34,7 @@ public class ErpGoodsCategory implements Serializable {
      * 上架分类id
      */
     private String parentId;
+    private String topId;
 
     /**
      * 分类路径

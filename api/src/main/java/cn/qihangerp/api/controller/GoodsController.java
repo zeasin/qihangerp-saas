@@ -17,9 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 商品管理Controller
@@ -90,7 +88,10 @@ public class GoodsController extends BaseController
     @PostMapping("/add")
     public AjaxResult add(@RequestBody ErpGoods goods)
     {
+        goods.setTenantId(getUserId());
         goods.setCreateBy(getUsername());
+        goods.setCreateTime(new Date());
+        goods.setStatus(1);
         int result = goodsService.insertGoods(goods);
         if(result == -1) new AjaxResult(501,"商品编码已存在");
         return toAjax(1);
@@ -121,15 +122,15 @@ public class GoodsController extends BaseController
 //        return toAjax(skuService.updateById(sku));
 //    }
 //
-//    /**
-//     * 删除商品管理
-//     */
-//    @PreAuthorize("@ss.hasPermi('goods:goods:remove')")
-//    @DeleteMapping("/{ids}")
-//    public AjaxResult remove(@PathVariable Long[] ids)
-//    {
-//        return toAjax(goodsService.deleteGoodsByIds(ids));
-//    }
+    /**
+     * 删除商品管理
+     */
+    @PreAuthorize("@ss.hasPermi('goods:goods:remove')")
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids)
+    {
+        return toAjax(goodsService.deleteGoods(ids));
+    }
 //
 //    @RequestMapping(value = "/goods_sku_import", method = RequestMethod.POST)
 //    public AjaxResult orderSendExcel(@RequestPart("file") MultipartFile file) throws IOException, InvalidFormatException {

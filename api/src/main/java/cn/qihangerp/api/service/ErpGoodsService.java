@@ -15,4 +15,5 @@ public interface ErpGoodsService extends IService<ErpGoods> {
     PageResult<ErpGoods> queryPageList(ErpGoods bo, PageQuery pageQuery);
     PageResult<ErpGoodsSku> querySkuPageList(ErpGoodsSku bo, PageQuery pageQuery);
     int insertGoods(ErpGoods goods);
+    int deleteGoods(Long[] ids);
 }

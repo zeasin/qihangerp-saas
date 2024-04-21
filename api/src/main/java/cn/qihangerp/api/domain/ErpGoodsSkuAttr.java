@@ -32,12 +32,12 @@ public class ErpGoodsSkuAttr implements Serializable {
     /**
      * 
      */
-    private Integer kid;
+    private String kid;
 
     /**
      * 
      */
-    private Integer vid;
+    private String vid;
 
     /**
      * 

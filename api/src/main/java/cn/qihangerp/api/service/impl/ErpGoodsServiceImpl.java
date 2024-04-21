@@ -1,24 +1,23 @@
 package cn.qihangerp.api.service.impl;
 
+import cn.qihangerp.api.domain.*;
+import cn.qihangerp.api.mapper.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.PageResult;
-import cn.qihangerp.api.domain.ErpGoods;
-import cn.qihangerp.api.domain.ErpGoodsSku;
-import cn.qihangerp.api.domain.ErpGoodsSkuAttr;
 import cn.qihangerp.api.domain.bo.GoodsSpecAddBo;
-import cn.qihangerp.api.mapper.ErpGoodsSkuAttrMapper;
-import cn.qihangerp.api.mapper.ErpGoodsSkuMapper;
 import cn.qihangerp.api.service.ErpGoodsService;
-import cn.qihangerp.api.mapper.ErpGoodsMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
 * @author TW
@@ -32,6 +31,8 @@ public class ErpGoodsServiceImpl extends ServiceImpl<ErpGoodsMapper, ErpGoods>
     private final ErpGoodsMapper mapper;
     private final ErpGoodsSkuMapper skuMapper;
     private final ErpGoodsSkuAttrMapper skuAttrMapper;
+    private final ErpGoodsCategoryAttributeValueMapper attributeValueMapper;
+    private final ErpGoodsCategoryAttributeMapper attributeMapper;
     @Override
     public PageResult<ErpGoods> queryPageList(ErpGoods bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ErpGoods> queryWrapper = new LambdaQueryWrapper<>();
@@ -58,6 +59,7 @@ public class ErpGoodsServiceImpl extends ServiceImpl<ErpGoodsMapper, ErpGoods>
     @Override
     public int insertGoods(ErpGoods goods)
     {
+        if(goods.getTenantId()==null)return -200;
         // 查询编码是否存在
 
 //        ErpGoods goods1 = mapper.selectGoodsByNumber(goods.getNumber());
@@ -71,6 +73,7 @@ public class ErpGoodsServiceImpl extends ServiceImpl<ErpGoodsMapper, ErpGoods>
         // 2、添加规格表erp_goods_spec
         for (GoodsSpecAddBo bo:goods.getSpecList()) {
             ErpGoodsSku spec = new ErpGoodsSku();
+            spec.setTenantId(goods.getTenantId());
             spec.setGoodsId(goods.getId());
             spec.setSpecNum(bo.getSpecNum());
             spec.setColorId(bo.getColorId());
@@ -94,42 +97,69 @@ public class ErpGoodsServiceImpl extends ServiceImpl<ErpGoodsMapper, ErpGoods>
 
         // 3、添加规格属性表erp_goods_spec_attr
         if(goods.getColorValues()!=null) {
-            for (Integer val:goods.getColorValues()) {
-                ErpGoodsSkuAttr specAttr = new ErpGoodsSkuAttr();
-                specAttr.setGoodsId(goods.getId());
-                specAttr.setType("color");
-                specAttr.setK("颜色");
-                specAttr.setKid(114);
-                specAttr.setVid(val);
-                skuAttrMapper.insert(specAttr);
+            for (Long val:goods.getColorValues()) {
+                ErpGoodsCategoryAttributeValue value = attributeValueMapper.selectById(val);
+                if(value!=null) {
+                    ErpGoodsCategoryAttribute attr = attributeMapper.selectById(value.getCategoryAttributeId());
+                    ErpGoodsSkuAttr specAttr = new ErpGoodsSkuAttr();
+                    specAttr.setGoodsId(goods.getId());
+                    specAttr.setType(attr!=null?attr.getCode(): "color");
+                    specAttr.setK(attr!=null?attr.getTitle():"颜色");
+                    specAttr.setKid(value.getCategoryAttributeId());
+                    specAttr.setVid(val.toString());
+                    skuAttrMapper.insert(specAttr);
+                }
             }
 
         }
         if(goods.getSizeValues()!=null) {
-            for (Integer val:goods.getSizeValues()) {
-                ErpGoodsSkuAttr specAttr = new ErpGoodsSkuAttr();
-                specAttr.setGoodsId(goods.getId());
-                specAttr.setType("size");
-                specAttr.setK("尺码");
-                specAttr.setKid(115);
-                specAttr.setVid(val);
-                skuAttrMapper.insert(specAttr);
+            for (Long val:goods.getSizeValues()) {
+                ErpGoodsCategoryAttributeValue value = attributeValueMapper.selectById(val);
+                if(value!=null) {
+                    ErpGoodsCategoryAttribute attr = attributeMapper.selectById(value.getCategoryAttributeId());
+                    ErpGoodsSkuAttr specAttr = new ErpGoodsSkuAttr();
+                    specAttr.setGoodsId(goods.getId());
+                    specAttr.setType(attr!=null?attr.getCode():"size");
+                    specAttr.setK(attr!=null?attr.getTitle():"尺码");
+                    specAttr.setKid(value.getCategoryAttributeId());
+                    specAttr.setVid(val.toString());
+                    skuAttrMapper.insert(specAttr);
+                }
             }
 
         }
-        if(goods.getColorValues()!=null) {
-            for (Integer val:goods.getColorValues()) {
-                ErpGoodsSkuAttr specAttr = new ErpGoodsSkuAttr();
-                specAttr.setGoodsId(goods.getId());
-                specAttr.setType("style");
-                specAttr.setK("款式");
-                specAttr.setKid(116);
-                specAttr.setVid(val);
-                skuAttrMapper.insert(specAttr);
+        if(goods.getStyleValues()!=null) {
+            for (Long val:goods.getStyleValues()) {
+                ErpGoodsCategoryAttributeValue value = attributeValueMapper.selectById(val);
+                if(value!=null) {
+                    ErpGoodsCategoryAttribute attr = attributeMapper.selectById(value.getCategoryAttributeId());
+                    ErpGoodsSkuAttr specAttr = new ErpGoodsSkuAttr();
+                    specAttr.setGoodsId(goods.getId());
+                    specAttr.setType(attr!=null?attr.getCode():"style");
+                    specAttr.setK(attr!=null?attr.getTitle():"款式");
+                    specAttr.setKid(value.getCategoryAttributeId());
+                    specAttr.setVid(val.toString());
+                    skuAttrMapper.insert(specAttr);
+                }
             }
 
         }
 //        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        return 1;
+    }
+
+    @Transactional
+    @Override
+    public int deleteGoods(Long[] ids) {
+        List<Long> idList = Arrays.stream(ids).toList();
+
+        // 删除 erp_goods_sku_attr
+        skuAttrMapper.delete(new LambdaQueryWrapper<ErpGoodsSkuAttr>().in(ErpGoodsSkuAttr::getGoodsId,idList));
+        // 删除 erp_goods_sku
+        skuMapper.delete(new LambdaQueryWrapper<ErpGoodsSku>().in(ErpGoodsSku::getGoodsId,idList));
+        // 删除 erp_goods
+        mapper.deleteBatchIds(idList);
+
         return 1;
     }
 }

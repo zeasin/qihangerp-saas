@@ -1,22 +1,22 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
-      <el-form-item label="ERP商品ID" prop="goodsId">
-        <el-input
-          v-model="queryParams.erpGoodsId"
-          placeholder="请输入ERP商品ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="ERP商品SKUID" prop="goodsId">
-        <el-input
-          v-model="queryParams.erpSkuId"
-          placeholder="请输入ERP商品SKUID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="ERP商品ID" prop="goodsId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.erpGoodsId"-->
+<!--          placeholder="请输入ERP商品ID"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="ERP商品SKUID" prop="goodsId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.erpSkuId"-->
+<!--          placeholder="请输入ERP商品SKUID"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
       <el-form-item label="SKU编码" prop="skuNum">
         <el-input
           v-model="queryParams.skuNum"
@@ -44,34 +44,42 @@
             v-hasPermi="['goods:goods:add']"
           >添加商品SKU</el-button>
         </el-col>
-        <el-col :span="1.5">
-          <el-button
-            type="success"
-            plain
-            icon="el-icon-edit"
-            size="mini"
-            @click="handleImport"
-            v-hasPermi="['goods:goods:edit']"
-          >导入商品SKU</el-button>
-        </el-col>
+<!--        <el-col :span="1.5">-->
+<!--          <el-button-->
+<!--            type="success"-->
+<!--            plain-->
+<!--            icon="el-icon-edit"-->
+<!--            size="mini"-->
+<!--            @click="handleImport"-->
+<!--            v-hasPermi="['goods:goods:edit']"-->
+<!--          >导入商品SKU</el-button>-->
+<!--        </el-col>-->
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="goodsSpecList" @selection-change="handleSelectionChange">
 <!--      <el-table-column type="selection" width="55" align="center" />-->
-      <el-table-column label="ERP Sku ID" align="center" prop="erpSkuId" />
-      <el-table-column label="ERP商品ID" align="center" prop="erpGoodsId" />
-      <el-table-column label="Sku名" align="center" prop="skuName" />
-      <el-table-column label="Sku编码" align="center" prop="skuNum" />
-<!--      <el-table-column label="颜色" align="center" prop="colorValue" />-->
-      <el-table-column label="颜色图片" align="center" prop="colorImage" width="100">
+
+      <el-table-column label="Sku规格" align="center" prop="specName" >
         <template slot-scope="scope">
-          <image-preview :src="scope.row.colorImage" :width="50" :height="50"/>
+          <el-tag size="small" v-if="scope.row.colorValue">{{ scope.row.colorValue }}</el-tag>
+          <el-tag size="small" v-if="scope.row.sizeValue">{{ scope.row.sizeValue }}</el-tag>
+          <el-tag size="small" v-if="scope.row.styleValue">{{ scope.row.styleValue }}</el-tag>
+
         </template>
       </el-table-column>
-      <el-table-column label="尺码" align="center" prop="sizeValue" />
-      <el-table-column label="款式" align="center" prop="styleValue" />
+      <el-table-column label="Sku编码" align="center" prop="specNum" />
+<!--      <el-table-column label="颜色图片" align="center" prop="colorImage" width="100">-->
+<!--        <template slot-scope="scope">-->
+<!--          <image-preview :src="scope.row.colorImage" :width="50" :height="50"/>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="尺码" align="center" prop="sizeValue" />-->
+<!--      <el-table-column label="款式" align="center" prop="styleValue" />-->
+      <el-table-column label="预计采购价格" align="center" prop="purPrice" />
+      <el-table-column label="建议批发价" align="center" prop="wholePrice" />
+      <el-table-column label="建议零售价" align="center" prop="retailPrice" />
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="状态" align="center" prop="status" >
         <template slot-scope="scope">
@@ -79,18 +87,18 @@
           <el-tag size="small" v-if="scope.row.status===2">已下架</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['api:goodsSpec:edit']"
-          >修改</el-button>
+<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-edit"-->
+<!--            @click="handleUpdate(scope.row)"-->
+<!--            v-hasPermi="['api:goodsSpec:edit']"-->
+<!--          >修改</el-button>-->
 
-        </template>
-      </el-table-column>
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
 
     <pagination

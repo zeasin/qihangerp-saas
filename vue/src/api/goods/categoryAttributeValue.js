@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+export function listCategoryAttributeValueByCategory(id) {
+  return request({
+    url: '/goods/category/attr_value_by_category/'+id,
+    method: 'get'
+  })
+}
+
+
 // 查询商品分类属性值列表
 export function listCategoryAttributeValue(id) {
   return request({

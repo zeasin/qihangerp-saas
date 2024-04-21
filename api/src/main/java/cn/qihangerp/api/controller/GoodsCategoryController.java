@@ -16,9 +16,8 @@ import cn.qihangerp.api.service.ErpGoodsCategoryService;
 import cn.qihangerp.api.service.ErpGoodsService;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @AllArgsConstructor
@@ -49,12 +48,26 @@ public class GoodsCategoryController extends BaseController {
      * 新增商品分类
      */
     @PostMapping
-    public AjaxResult add(@RequestBody ErpGoodsCategory erpGoodsCategory)
+    public AjaxResult add(@RequestBody ErpGoodsCategory bo)
     {
-        erpGoodsCategory.setTenantId(getUserId());
-        erpGoodsCategory.setCreateBy("手动添加");
-        erpGoodsCategory.setCreateTime(new Date());
-        return toAjax(categoryService.save(erpGoodsCategory));
+        bo.setTenantId(getUserId());
+        bo.setCreateBy("手动添加");
+        bo.setCreateTime(new Date());
+        // 添加分类的时候把最顶级的ID找出来
+        if(bo.getParentId().equals("0")){
+            bo.setTopId("0");
+        }else{
+            ErpGoodsCategory parent = categoryService.getById(bo.getParentId());
+
+            if(parent!=null) {
+                if(parent.getTopId().equals("0")){
+                    bo.setTopId(parent.getId());
+                }else{
+                    bo.setTopId(parent.getTopId());
+                }
+            }
+        }
+        return toAjax(categoryService.save(bo));
     }
 
     /**
@@ -180,5 +193,35 @@ public class GoodsCategoryController extends BaseController {
         return toAjax(attributeValueService.removeBatchByIds(Arrays.stream(ids).toList()));
     }
 
+    /**
+     * 根据分类id，获取他的所有规格属性值
+     * @param id
+     * @return
+     */
+    @GetMapping("/attr_value_by_category/{id}")
+    public AjaxResult attrValueByCategoryId(@PathVariable("id") String id)
+    {
+        ErpGoodsCategory category = categoryService.getById(id);
+        if(category!=null && category.getTenantId()==getUserId()){
+            Map<String, List<ErpGoodsCategoryAttributeValue>> resultMap = new HashMap<>();
+            List<ErpGoodsCategoryAttribute> attributes = attributeService.list(new LambdaQueryWrapper<ErpGoodsCategoryAttribute>().eq(ErpGoodsCategoryAttribute::getCategoryId, id).eq(ErpGoodsCategoryAttribute::getType, 1));
+            List<String> collect = attributes.stream().map(x -> x.getId()).collect(Collectors.toList());
+            List<ErpGoodsCategoryAttributeValue> values = attributeValueService.list(
+                    new LambdaQueryWrapper<ErpGoodsCategoryAttributeValue>().in(ErpGoodsCategoryAttributeValue::getCategoryAttributeId, collect).eq(ErpGoodsCategoryAttributeValue::getIsDelete, 0)
+            );
+            Map<String, List<ErpGoodsCategoryAttributeValue>> collect1 = values.stream().collect(Collectors.groupingBy(x -> x.getCategoryAttributeId()));
+            collect1.forEach((key,value)->{
+                ErpGoodsCategoryAttribute erpGoodsCategoryAttribute = attributes.stream().filter(x -> x.getId().equals(key)).findFirst().orElse(null);
+                if(erpGoodsCategoryAttribute!=null) {
+                    resultMap.put(erpGoodsCategoryAttribute.getCode(),value);
+                }
+            });
 
+
+            return AjaxResult.success(resultMap);
+        }
+
+
+        return AjaxResult.success();
+    }
 }

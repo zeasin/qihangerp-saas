@@ -3,9 +3,9 @@
     <el-form ref="form" :model="form" :rules="rules" label-width="108px">
 
         <el-form-item label="商品分类" prop="categoryId">
-          <treeselect :options="dataList" placeholder="请选择上级菜单" v-model="form.categoryId" style="width:220px"/>
+          <treeselect :options="categoryList" placeholder="请选择上级菜单" v-model="form.categoryId" @select="categoryChange" style="width:220px"/>
         </el-form-item>
-        <el-form-item label="供应商id" prop="supplierId">
+        <el-form-item label="供应商" prop="supplierId">
           <!-- <el-input v-model="form.supplierId" placeholder="请输入供应商id" /> -->
           <el-select v-model="form.supplierId" filterable  placeholder="请选择供应商名称">
             <el-option v-for="item in supplierList" :key="item.id" :label="item.name" :value="item.id">
@@ -15,22 +15,22 @@
         <el-form-item label="商品名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入商品名称" />
         </el-form-item>
-        <el-form-item label="商品图片" prop="image">
-           <image-upload v-model="form.image" :limit="1"/>
-           <el-input v-model="form.image" placeholder="请输入商品图片" />
-        </el-form-item>
+<!--        <el-form-item label="商品图片" prop="image">-->
+<!--           <image-upload v-model="form.image" :limit="1"/>-->
+<!--           <el-input v-model="form.image" placeholder="请输入商品图片" />-->
+<!--        </el-form-item>-->
         <el-form-item label="商品编号" prop="number" >
           <el-input v-model="form.number" placeholder="请输入商品编号" style="width:220px"/>
         </el-form-item>
          <el-form-item label="预计采购价格" prop="purPrice">
           <el-input type="number" v-model.number="form.purPrice" placeholder="请输入预计采购价格" style="width:220px"/>
         </el-form-item>
-        <!-- <el-form-item label="建议批发价" prop="wholePrice">
+        <el-form-item label="建议批发价" prop="wholePrice">
           <el-input type="number" v-model.number="form.wholePrice" placeholder="请输入建议批发价" style="width:220px"/>
         </el-form-item>
         <el-form-item label="建议零售价" prop="retailPrice">
           <el-input type="number" v-model.number="form.retailPrice" placeholder="请输入建议零售价" style="width:220px"/>
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item label="单位名称" prop="unitName">
           <el-input v-model="form.unitName" placeholder="请输入单位名称" style="width:220px" />
         </el-form-item>
@@ -40,65 +40,9 @@
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
-        <!-- <el-form-item label="衣长/裙长/裤长" prop="length">
-          <el-input v-model="form.length" placeholder="请输入衣长/裙长/裤长" />
-        </el-form-item>
-        <el-form-item label="高度/袖长" prop="height">
-          <el-input v-model="form.height" placeholder="请输入高度/袖长" />
-        </el-form-item>
-        <el-form-item label="宽度/胸阔(围)" prop="width">
-          <el-input v-model="form.width" placeholder="请输入宽度/胸阔(围)" />
-        </el-form-item>
-        <el-form-item label="肩阔" prop="width1">
-          <el-input v-model="form.width1" placeholder="请输入肩阔" />
-        </el-form-item>
-        <el-form-item label="腰阔" prop="width2">
-          <el-input v-model="form.width2" placeholder="请输入腰阔" />
-        </el-form-item>
-        <el-form-item label="臀阔" prop="width3">
-          <el-input v-model="form.width3" placeholder="请输入臀阔" />
-        </el-form-item>
-        <el-form-item label="重量" prop="weight">
-          <el-input v-model="form.weight" placeholder="请输入重量" />
-        </el-form-item>
-        <el-form-item label="0启用   1禁用" prop="disable">
-          <el-input v-model="form.disable" placeholder="请输入0启用   1禁用" />
-        </el-form-item>
-        <el-form-item label="保质期" prop="period">
-          <el-input v-model="form.period" placeholder="请输入保质期" />
-        </el-form-item> -->
-
-        <!-- <el-form-item label="单位成本" prop="unitCost">
-          <el-input v-model="form.unitCost" placeholder="请输入单位成本" />
-        </el-form-item> -->
-
-       <!--  <el-form-item label="品牌id" prop="brandId">
-          <el-input v-model="form.brandId" placeholder="请输入品牌id" />
-        </el-form-item> -->
-        <!-- <el-form-item label="属性1：季节" prop="attr1">
-          <el-input v-model="form.attr1" placeholder="请输入属性1：季节" />
-        </el-form-item>
-        <el-form-item label="属性2：分类" prop="attr2">
-          <el-input v-model="form.attr2" placeholder="请输入属性2：分类" />
-        </el-form-item>
-        <el-form-item label="属性3：风格" prop="attr3">
-          <el-input v-model="form.attr3" placeholder="请输入属性3：风格" />
-        </el-form-item>
-        <el-form-item label="属性4：年份" prop="attr4">
-          <el-input v-model="form.attr4" placeholder="请输入属性4：年份" />
-        </el-form-item>
-        <el-form-item label="属性5：面料" prop="attr5">
-          <el-input v-model="form.attr5" placeholder="请输入属性5：面料" />
-        </el-form-item> -->
         <el-form-item label="外链url" prop="linkUrl">
           <el-input v-model="form.linkUrl" placeholder="请输入内容" />
         </el-form-item>
-       <!--  <el-form-item label="最低库存" prop="lowQty">
-          <el-input v-model="form.lowQty" placeholder="请输入最低库存" />
-        </el-form-item>
-        <el-form-item label="最高库存" prop="highQty">
-          <el-input v-model="form.highQty" placeholder="请输入最高库存" />
-        </el-form-item> -->
         <el-form-item label="发货地" prop="provinces">
           <el-cascader style="width:250px"
             size="large"
@@ -214,7 +158,7 @@
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { listCategory } from "@/api/goods/category";
-import { listCategoryAttributeValue } from "@/api/goods/categoryAttributeValue";
+import { listCategoryAttributeValue,listCategoryAttributeValueByCategory } from "@/api/goods/categoryAttributeValue";
 import { addGoods } from "@/api/goods/goods";
 import { getToken } from "@/utils/auth";
 import {
@@ -253,9 +197,9 @@ export default {
       },
       supplierList: [],
       pcaTextArr,
-      dataList:[{
-          id: 'fruits',
-          label: 'Fruits',
+      categoryList:[{
+          id: '',
+          label: '',
           children: [],
       }],
       // 表单校验
@@ -284,19 +228,34 @@ export default {
     listAllSupplier({}).then(response => {
       this.supplierList = response.rows;
     });
-    listCategoryAttributeValue(114).then(resp=>{
-      this.colorList = resp.rows
-    })
-    listCategoryAttributeValue(115).then(resp=>{
-      this.sizeList = resp.rows
-    })
-    listCategoryAttributeValue(116).then(resp=>{
-      this.styleList = resp.rows
-    })
+
   },
   methods: {
-    getRowDate(row){
-
+    categoryChange(val){
+      console.log('===========',val)
+      if(val.topId === "0"){
+        listCategoryAttributeValueByCategory(val.id).then(resp=>{
+          this.colorList = resp.data['color']
+          this.sizeList = resp.data['size']
+          this.styleList = resp.data['styleList']
+        })
+        // listCategoryAttributeValue(114).then(resp=>{
+        //   this.colorList = resp.rows
+        // })
+        // listCategoryAttributeValue(115).then(resp=>{
+        //   this.sizeList = resp.rows
+        // })
+        // listCategoryAttributeValue(116).then(resp=>{
+        //   this.styleList = resp.rows
+        // })
+      }else{
+        listCategoryAttributeValueByCategory(val.topId).then(resp=>{
+          // console.log("======333333333344444======",resp)
+          this.colorList = resp.data['color']
+          this.sizeList = resp.data['size']
+          this.styleList = resp.data['styleList']
+        })
+      }
     },
     // 上传前loading加载
     handleBeforeUpload(file) {
@@ -380,6 +339,7 @@ export default {
     normalizer(node) {
       return {
         id: node.id,
+        topId: node.topId,
         label: node.value
       };
     },
@@ -390,6 +350,7 @@ export default {
           let node = {
             id: list[i].id,
             label: list[i].name,
+            topId:list[i].topId,
             children: this.buildTree(list, list[i].id)
           };
           tree.push(node);
@@ -401,7 +362,7 @@ export default {
     getCategoryList() {
       // this.loading = true;
       listCategory(this.queryParams).then(response => {
-        this.dataList = this.buildTree(response.rows,0)
+        this.categoryList = this.buildTree(response.rows,"0")
         // console.log("构建后的list",this.categoryList)
         // this.total = response.total;
         this.loading = false;

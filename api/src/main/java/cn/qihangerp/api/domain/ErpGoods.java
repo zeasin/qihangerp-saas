@@ -48,7 +48,7 @@ public class ErpGoods implements Serializable {
     /**
      * 商品分类ID
      */
-    private Integer categoryId;
+    private String categoryId;
 
     /**
      * 条码
@@ -133,12 +133,12 @@ public class ErpGoods implements Serializable {
     /**
      * 供应商id
      */
-    private Integer supplierId;
+    private String supplierId;
 
     /**
      * 品牌id
      */
-    private Integer brandId;
+    private String brandId;
 
     /**
      * 属性1：季节
@@ -201,13 +201,13 @@ public class ErpGoods implements Serializable {
     private Date updateTime;
 
     @TableField(exist = false)
-    private Integer[] colorValues;
+    private Long[] colorValues;
     @TableField(exist = false)
     private Map<Long,String> colorImages;
     @TableField(exist = false)
-    private Integer[] sizeValues;
+    private Long[] sizeValues;
     @TableField(exist = false)
-    private Integer[] styleValues;
+    private Long[] styleValues;
 
     @TableField(exist = false)
     private List<GoodsSpecAddBo> specList;

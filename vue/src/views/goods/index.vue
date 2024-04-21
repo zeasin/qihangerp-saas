@@ -33,23 +33,12 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="条码" prop="barCode">
-        <el-input
-          v-model="queryParams.barCode"
-          placeholder="请输入条码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="状态" prop="disable">
+        <el-select v-model="queryParams.disable" placeholder="请选择状态">
+          <el-option label="启用" value="1"></el-option>
+          <el-option label="禁用" value="0"></el-option>
+        </el-select>
       </el-form-item>
-
-      <!-- <el-form-item label="状态" prop="disable">
-        <el-input
-          v-model="queryParams.disable"
-          placeholder="请输入0启用   1禁用"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item> -->
 
 
 
@@ -78,13 +67,13 @@
 
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column label="ID" align="center" prop="id" />
+<!--      <el-table-column label="ID" align="center" prop="id" />-->
       <el-table-column label="商品名称" align="center" prop="name" />
-      <el-table-column label="商品图片" align="center" prop="image" width="100">
-        <template slot-scope="scope">
-          <image-preview :src="scope.row.image" :width="50" :height="50"/>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="商品图片" align="center" prop="image" width="100">-->
+<!--        <template slot-scope="scope">-->
+<!--          <image-preview :src="scope.row.image" :width="50" :height="50"/>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="商品编号" align="center" prop="number" />
       <!-- <el-table-column label="单位名称" align="center" prop="unitName" /> -->
       <el-table-column label="商品分类" align="center" prop="categoryId" >
@@ -130,13 +119,13 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['goods:goods:edit']"
-          >修改</el-button>
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-edit"-->
+<!--            @click="handleUpdate(scope.row)"-->
+<!--            v-hasPermi="['goods:goods:edit']"-->
+<!--          >修改</el-button>-->
           <el-button
             size="mini"
             type="text"
