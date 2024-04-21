@@ -4,12 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import cn.qihangerp.api.common.*;
 import cn.qihangerp.api.domain.ErpAfterSale;
-import cn.qihangerp.api.domain.ErpOrderShipping;
-import cn.qihangerp.api.domain.SysLogisticsCompany;
-import cn.qihangerp.api.domain.SysShop;
 import cn.qihangerp.api.service.ErpAfterSaleService;
-import cn.qihangerp.api.service.SysLogisticsCompanyService;
-
 import java.util.Date;
 
 @AllArgsConstructor

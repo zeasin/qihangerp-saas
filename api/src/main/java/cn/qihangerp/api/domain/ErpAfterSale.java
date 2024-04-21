@@ -23,7 +23,7 @@ public class ErpAfterSale implements Serializable {
     /**
      * 店铺id
      */
-    private Integer shopId;
+    private Long shopId;
 
     /**
      * 店铺类型

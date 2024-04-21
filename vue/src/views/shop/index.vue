@@ -9,17 +9,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-       <el-form-item label="平台" prop="type">
-        <el-select v-model="queryParams.type" placeholder="请选择平台" clearable>
-         <el-option
-            v-for="item in typeList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id">
-          </el-option>
-        </el-select>
-      </el-form-item>
-
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -48,27 +37,17 @@
           v-hasPermi="['shop:shop:edit']"
         >修改</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['shop:shop:remove']"
-        >删除</el-button>
-      </el-col>
+
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="shopList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="店铺ID" align="center" prop="id" />
+<!--      <el-table-column type="selection" width="55" align="center" />-->
+<!--      <el-table-column label="店铺ID" align="center" prop="id" />-->
       <el-table-column label="店铺名" align="center" prop="name" />
       <el-table-column label="平台" align="center" prop="type" >
         <template slot-scope="scope">
-          <el-tag >{{typeList.find(x=>x.id === scope.row.type).name}}</el-tag>
+          <el-tag v-if="scope.row.type===5">微店视频号小店</el-tag>
         </template>
       </el-table-column>
        <el-table-column label="appKey" align="center" prop="appKey" />
@@ -77,22 +56,6 @@
       <el-table-column label="描述" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-
-            <el-button
-              type="primary"
-              plain
-              icon="el-icon-s-goods"
-              size="mini"
-              @click="handleGoodsList(scope.row)"
-            >店铺商品管理</el-button>
-          <el-button
-            type="primary"
-            plain
-            icon="el-icon-edit"
-            size="mini"
-            @click="handleLogistics(scope.row)"
-          >快递公司库</el-button>
-
           <el-row>
           <el-button
             size="mini"
@@ -210,9 +173,6 @@ export default {
     };
   },
   created() {
-    listPlatform().then(res => {
-      this.typeList = res.rows;
-    })
     this.getList();
   },
   methods: {
@@ -315,36 +275,11 @@ export default {
     handleDelete(row) {
       const ids = row.id || this.ids;
       this.$modal.confirm('是否确认删除店铺编号为"' + ids + '"的数据项？').then(function() {
-        return delShop(ids);
+        return delShop(row.id);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
-    },
-    handleGoodsList(row){
-      console.log('=======商品list=====',row)
-      if(row.type === 1){
-        this.$router.push({path:'/shop/goods/tao_goods_list',query:{shopId:row.id}})
-      }else if(row.type === 2){
-        this.$router.push({path:'/shop/goods/jd_goods_list',query:{shopId:row.id}})
-      }else if(row.type === 3){
-        this.$router.push({path:'/shop/goods/dou_goods_list',query:{shopId:row.id}})
-      }else if(row.type === 4){
-        this.$router.push({path:'/shop/goods/pdd_goods_list',query:{shopId:row.id}})
-      } else if(row.type === 5){
-        this.$router.push({path:'/shop/goods/wei_goods_list',query:{shopId:row.id}})
-      }
-    },
-    handleLogistics(row) {
-      if(row.type === 1){
-        this.$router.push({path:"/shop/logistics_companies",query:{id:row.type}})
-      }else  if(row.type === 2){
-        this.$router.push({path:"/shop/logistics_companies",query:{id:row.type,shopId:row.id}})
-      } else  if(row.type === 3){
-        this.$router.push({path:"/shop/logistics_companies",query:{id:row.type,shopId:row.id}})
-      } else  if(row.type === 4){
-        this.$router.push({path:"/shop/logistics_companies",query:{id:row.type,shopId:row.id}})
-      }
     }
   }
 };

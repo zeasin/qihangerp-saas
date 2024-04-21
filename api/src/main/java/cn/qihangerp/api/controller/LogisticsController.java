@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import cn.qihangerp.api.common.*;
 import cn.qihangerp.api.domain.SysLogisticsCompany;
-import cn.qihangerp.api.domain.SysShop;
 import cn.qihangerp.api.service.SysLogisticsCompanyService;
 
 @AllArgsConstructor

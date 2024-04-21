@@ -13,6 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface WeiOrderService extends IService<WeiOrder> {
     PageResult<WeiOrder> queryPageList(WeiOrder bo, PageQuery pageQuery);
-    ResultVo<Integer> saveOrder(Integer shopId, WeiOrder order);
+    ResultVo<Integer> saveOrder(Long shopId, WeiOrder order);
     ResultVo<Integer> orderConfirm(String[] ids);
 }

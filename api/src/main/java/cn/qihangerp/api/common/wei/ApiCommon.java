@@ -1,6 +1,7 @@
 package cn.qihangerp.api.common.wei;
 
 
+import cn.qihangerp.api.service.ShopService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -12,12 +13,12 @@ import cn.qihangerp.api.common.wei.service.TokenApiService;
 import cn.qihangerp.api.common.wei.vo.ShopApiResultVo;
 import cn.qihangerp.api.common.wei.vo.Token;
 import cn.qihangerp.api.service.SysPlatformService;
-import cn.qihangerp.api.service.SysShopService;
+
 
 @AllArgsConstructor
 @Component
 public class ApiCommon {
-    private final SysShopService shopService;
+    private final ShopService shopService;
     private final SysPlatformService platformService;
     /**
      * 更新前的检查
@@ -26,8 +27,8 @@ public class ApiCommon {
      * @return
      * @throws
      */
-    public ResultVo<ShopApiParams> checkBefore(Integer shopId) {
-        var shop = shopService.selectShopById(shopId.longValue());
+    public ResultVo<ShopApiParams> checkBefore(Long shopId) {
+        var shop = shopService.getById(shopId);
         if (shop == null) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR,"参数错误，没有找到店铺");
         }

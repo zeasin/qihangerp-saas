@@ -21,7 +21,7 @@ public class WeiOrder implements Serializable {
     /**
      * 店铺id
      */
-    private Integer shopId;
+    private Long shopId;
 
     /**
      * 订单号

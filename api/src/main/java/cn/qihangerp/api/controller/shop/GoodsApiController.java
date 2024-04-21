@@ -1,5 +1,8 @@
 package cn.qihangerp.api.controller.shop;
 
+import cn.qihangerp.api.domain.ShopGoods;
+import cn.qihangerp.api.domain.ShopGoodsSku;
+import cn.qihangerp.api.service.ShopGoodsService;
 import com.alibaba.fastjson2.JSONObject;
 
 import lombok.AllArgsConstructor;
@@ -19,9 +22,6 @@ import cn.qihangerp.api.common.wei.bo.GoodsListApiBo;
 import cn.qihangerp.api.common.wei.service.GoodsApiService;
 import cn.qihangerp.api.common.wei.vo.GoodsDetailVo;
 import cn.qihangerp.api.common.wei.vo.GoodsListVo;
-import cn.qihangerp.api.domain.WeiGoods;
-import cn.qihangerp.api.domain.WeiGoodsSku;
-import cn.qihangerp.api.service.WeiGoodsService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,7 +32,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GoodsApiController {
     private final ApiCommon apiCommon;
-    private final WeiGoodsService weiGoodsService;
+    private final ShopGoodsService shopGoodsService;
 
     @RequestMapping(value = "/pull_list", method = RequestMethod.POST)
     public AjaxResult pullList(@RequestBody PullRequest params) throws Exception {
@@ -64,22 +64,23 @@ public class GoodsApiController {
                     GoodsDetailVo goodsDetail = remoting.getGoodsDetail(accessToken, apiBo1);
                     if(goodsDetail.getErrcode()==0){
                         // 保存到数据库
-                        WeiGoods goods = new WeiGoods();
+                        ShopGoods goods = new ShopGoods();
                         BeanUtils.copyProperties(goodsDetail.getProduct(),goods);
+                        goods.setProductId(goods.getProductId());
                         goods.setHeadImg(goodsDetail.getProduct().getHead_imgs().getString(0));
                         goods.setHeadImgs(JSONObject.toJSONString(goodsDetail.getProduct().getHead_imgs()));
                         goods.setDescInfo(JSONObject.toJSONString(goodsDetail.getProduct().getDesc_info()));
                         goods.setAttrs(JSONObject.toJSONString(goodsDetail.getProduct().getAttrs()));
-                        List<WeiGoodsSku> skuList = new ArrayList<>();
+                        List<ShopGoodsSku> skuList = new ArrayList<>();
                         for (var sku:goodsDetail.getProduct().getSkus()) {
-                            WeiGoodsSku goodsSku = new WeiGoodsSku();
+                            ShopGoodsSku goodsSku = new ShopGoodsSku();
                             BeanUtils.copyProperties(sku,goodsSku);
                             goodsSku.setSkuAttrs(JSONObject.toJSONString(sku.getSku_attrs()));
                             goodsSku.setSkuDeliverInfo(JSONObject.toJSONString(sku.getSku_deliver_info()));
                             skuList.add(goodsSku);
                         }
                         goods.setSkus(skuList);
-                        weiGoodsService.saveAndUpdateGoods(params.getShopId(),goods);
+                        shopGoodsService.saveAndUpdateGoods(params.getShopId(),goods);
                     }
                 }
 

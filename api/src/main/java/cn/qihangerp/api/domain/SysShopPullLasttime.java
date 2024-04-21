@@ -19,7 +19,7 @@ public class SysShopPullLasttime implements Serializable {
     /**
      * 店铺id
      */
-    private Integer shopId;
+    private Long shopId;
 
     /**
      * 类型（ORDER:订单，REFUND:退款）

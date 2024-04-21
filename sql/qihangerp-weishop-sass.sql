@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 21/04/2024 11:55:45
+ Date: 21/04/2024 19:55:16
 */
 
 SET NAMES utf8mb4;
@@ -67,12 +67,13 @@ CREATE TABLE `erp_after_sale`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_goods`;
 CREATE TABLE `erp_goods`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `id` bigint NOT NULL COMMENT '主键id',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '商品名称',
   `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品图片地址',
   `number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '商品编号',
   `unit_name` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '单位名称',
-  `category_id` int NULL DEFAULT 0 COMMENT '商品分类ID',
+  `category_id` bigint NULL DEFAULT 0 COMMENT '商品分类ID',
   `bar_code` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '条码',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '备注',
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '状态1销售中2已下架',
@@ -83,14 +84,14 @@ CREATE TABLE `erp_goods`  (
   `width2` float NOT NULL DEFAULT 0 COMMENT '腰阔',
   `width3` float NOT NULL DEFAULT 0 COMMENT '臀阔',
   `weight` float NOT NULL DEFAULT 0 COMMENT '重量',
-  `disable` tinyint(1) NULL DEFAULT 0 COMMENT '0启用   1禁用',
+  `disable` tinyint(1) NULL DEFAULT 0 COMMENT '1启用   0禁用',
   `period` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '保质期',
   `pur_price` decimal(8, 2) NULL DEFAULT 0.00 COMMENT '预计采购价格',
   `whole_price` decimal(8, 2) NULL DEFAULT 0.00 COMMENT '建议批发价',
   `retail_price` decimal(8, 2) NULL DEFAULT 0.00 COMMENT '建议零售价',
   `unit_cost` decimal(8, 2) NULL DEFAULT NULL COMMENT '单位成本',
-  `supplier_id` int NULL DEFAULT 0 COMMENT '供应商id',
-  `brand_id` int NULL DEFAULT 0 COMMENT '品牌id',
+  `supplier_id` bigint NULL DEFAULT 0 COMMENT '供应商id',
+  `brand_id` bigint NULL DEFAULT 0 COMMENT '品牌id',
   `attr1` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '属性1：季节',
   `attr2` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '属性2：分类',
   `attr3` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '属性3：风格',
@@ -111,75 +112,17 @@ CREATE TABLE `erp_goods`  (
 -- ----------------------------
 -- Records of erp_goods
 -- ----------------------------
-INSERT INTO `erp_goods` VALUES (9, 'HN8026牛仔短裤', 'http://img.huayiyungou.com/niuzaiduanku/HN8026.jpg', 'HN8026', '', 27, '', '80-130斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 19.00, 0.00, 29.00, NULL, 26, 0, '夏季', '', '', '2021', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (10, 'HN858牛仔短裤', 'http://img.huayiyungou.com/niuzaiduanku/HN858.jpg', 'HN858', '', 27, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 20.00, 0.00, 39.00, NULL, 26, 0, '夏季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (11, 'HN608牛仔短裤', 'http://img.huayiyungou.com/niuzaiduanku/HN608.jpg', 'HN608', '', 27, '', '建议80-120斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 19.00, 0.00, 29.00, NULL, 26, 0, '夏季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (12, 'HN270牛仔短裤', 'http://img.huayiyungou.com/niuzaiduanku/HN270.jpg', 'HN270', '', 27, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 19.00, 0.00, 29.00, NULL, 26, 0, '夏季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (13, '681直筒拖地牛仔裤夏款', 'https://cbu01.alicdn.com/img/ibank/O1CN01qHvRwi2FOyGhhNR4M_!!2208857268871-0-cib.jpg', 'HN681', '', 28, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 49.00, NULL, 26, 0, '夏季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (14, '708灰色牛仔短裤', 'https://cbu01.alicdn.com/img/ibank/O1CN011fcYH72FOyGTbaYJO_!!2208857268871-0-cib.jpg', 'HN708', '', 27, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 24.00, 0.00, 40.00, NULL, 26, 0, '夏季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (15, '661高腰复古牛仔裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01rXl5A92FOyBlp8KB2_!!2208857268871-0-cib.jpg', 'HN661', '', 28, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 49.00, NULL, 26, 0, '夏季', '', '', '2021', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (16, '678高腰直筒开叉拖地牛仔裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01adpyGm2FOyBpyqNJ5_!!2208857268871-0-cib.jpg', 'HN678', '', 28, '', '建议80-125斤', 1, 97, 0, 0, 0, 66, 93.5, 0, 0, '', 29.00, 0.00, 59.00, NULL, 26, 0, '夏季', '', '', '2021', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (17, '抽绳修身短袖T恤', 'http://img.huayikeji.com/gm40mpqfc53scyxjou2epwqhjqbqp8cv', '0320220801', '', 3, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 12.00, 0.00, 12.00, NULL, 28, 0, '夏季', '', '', '2022', '棉', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (18, 'HN0014前开叉微喇叭牛仔裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01kdGpaF2FOyFHMzMrK_!!2208857268871-0-cib.jpg', 'HN0014', '', 29, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 32.00, 0.00, 39.00, NULL, 26, 0, '夏季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (19, 'HN025紧身毛边小脚铅笔裤', 'http://img.huayikeji.com/eih7qcgodthjs3v6oiwl49s0ngs6opjs', 'HN025', '', 31, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '春秋季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (20, 'HN029小脚九分铅笔裤弹力紧身', 'https://cbu01.alicdn.com/img/ibank/O1CN01ptoyH92FOyCPES9l4_!!2208857268871-0-cib.jpg', 'HN029', '', 31, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '春秋季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (21, 'HN0015裤脚开叉牛仔裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01xcpzIU2FOyBl2dOl6_!!2208857268871-0-cib.jpg', 'HN015', '', 29, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 30.00, 0.00, 39.00, NULL, 26, 0, '夏季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (22, 'HN0020九分铅笔小脚裤子', 'https://cbu01.alicdn.com/img/ibank/O1CN01hMirkD2FOyA8dH5gg_!!2208857268871-0-cib.jpg', 'HN020', '', 31, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '夏季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (23, 'HN0024小脚裤弹力九分铅笔牛仔裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01pMo6Nw2FOyH7h62R2_!!2208857268871-0-cib.jpg', 'HN024', '', 31, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '春秋季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (24, 'HN0012竖条纹阔腿牛仔裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01fNcjNj2FOyFLNrkHL_!!2208857268871-0-cib.jpg', 'HN012', '', 28, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 31.00, 0.00, 49.00, NULL, 26, 0, '春秋季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (25, 'OXN691中腰薄款破洞七分小脚裤', 'http://img.huayikeji.com/76yre98jhd5mgvkhgvqcdlktdthof0z0', 'OXN0691', '', 28, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 42.00, 0.00, 79.00, NULL, 29, 0, '春秋季', '裤子', '瑞丽', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (26, 'HN0630松紧腰九分老爹哈伦裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01emC4ZW2FOyCPWDBJP_!!2208857268871-0-cib.jpg', 'HN0630', '', 30, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '春秋季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (27, 'HN023小直筒牛仔裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01oWnpE72FOyGvFmm8P_!!2208857268871-0-cib.jpg', 'HN023', '', 31, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '春秋季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (28, 'HN670高腰哈伦牛仔裤', 'https://cbu01.alicdn.com/img/ibank/2020/033/066/21020660330_900849200.jpg', 'HN670', '', 30, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '春秋季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (29, 'HNP182弹力紧身贴标牛仔短裤女ins', 'https://cbu01.alicdn.com/img/ibank/O1CN01O6JSPt2FOyGJVlNSt_!!2208857268871-0-cib.jpg', 'HNP182', '', 27, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 21.00, 0.00, 29.00, NULL, 26, 0, '夏季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (30, 'HN672微喇牛仔裤女', 'https://cbu01.alicdn.com/img/ibank/O1CN01O9k7a72FOyF40eXdL_!!2208857268871-0-cib.jpg', 'HN672', '', 29, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '春秋季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (31, 'HN801九分哈伦萝卜老爹裤', 'https://cbu01.alicdn.com/img/ibank/2020/995/164/22330461599_900849200.jpg', 'HN801', '', 30, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 28.00, 0.00, 39.00, NULL, 26, 0, '春秋季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (32, 'HN697双扣后松紧高腰宽松萝卜牛仔裤', 'https://cbu01.alicdn.com/img/ibank/O1CN011EipyD2FOyGlVSb58_!!2208857268871-0-cib.jpg', 'HN697', '', 30, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '春秋季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (33, 'HN0801高腰弹力直筒哈伦老爹萝卜裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01veMucP2FOyCvGWh20_!!2208857268871-0-cib.jpg', 'HN0801', '', 30, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 25.00, 0.00, 39.00, NULL, 26, 0, '不分季节', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (34, 'HN621高腰直筒宽松破洞牛仔裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01DMb5Yv2FOyEph4yYB_!!2208857268871-0-cib.jpg', 'HN621', '', 28, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '不分季节', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (35, 'HN662高腰直筒牛仔裤女泫雅bf风小雏菊绣花', 'https://cbu01.alicdn.com/img/ibank/2020/732/346/22406643237_900849200.jpg', 'HN662', '', 28, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '不分季节', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (36, 'HN692松紧高腰宽松直筒萝卜哈伦九分裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01FDRxMp2FOyDOB1iTE_!!2208857268871-0-cib.jpg', 'HN692', '', 30, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '不分季节', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (37, 'HN106高腰弹力紧身小脚九分铅笔裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01xwzF522FOyCIOnqKM_!!2208857268871-0-cib.jpg', 'HN106', '', 31, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 31.00, 0.00, 39.00, NULL, 26, 0, '不分季节', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (38, 'HN663高腰阔腿裤宽松直筒爱心刺绣拖地长裤潮', 'https://cbu01.alicdn.com/img/ibank/O1CN01ARPAL32FOyAcs8t96_!!2208857268871-0-cib.jpg', 'HN663', '', 28, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 30.00, 0.00, 39.00, NULL, 26, 0, '不分季节', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (39, 'HN022高腰弹力九分小脚铅笔裤', 'https://cbu01.alicdn.com/img/ibank/O1CN018JTrMY2FOyA4kgljs_!!2208857268871-0-cib.jpg', 'HN022', '', 31, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 30.00, 0.00, 39.00, NULL, 26, 0, '不分季节', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (40, 'HN668高腰哈伦松紧腰小个子束脚老爹九分裤子', 'https://cbu01.alicdn.com/img/ibank/O1CN01lUqTwm2FOy9rP6Jod_!!2208857268871-0-cib.jpg', 'HN668', '', 30, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 30.00, 0.00, 39.00, NULL, 26, 0, '不分季节', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (41, 'HN667可调节高腰直筒牛仔裤女', 'https://cbu01.alicdn.com/img/ibank/O1CN01J3Quqe2FOyH5tjtiy_!!2208857268871-0-cib.jpg', 'HN667', '', 28, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '不分季节', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (42, 'HN222高腰宽松阔腿牛仔裤', 'https://cbu01.alicdn.com/img/ibank/2020/176/214/19868412671_900849200.jpg', 'HN222', '', 28, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 30.00, 0.00, 39.00, NULL, 26, 0, '不分季节', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (43, 'HN694半松紧高腰牛仔裤老爹裤', 'https://cbu01.alicdn.com/img/ibank/2020/842/093/21808390248_900849200.jpg', 'HN694', '', 30, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '不分季节', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (44, 'HN660高腰直筒牛仔裤女腰围可调春秋季', 'https://cbu01.alicdn.com/img/ibank/O1CN01DIe7Es2FOyCYIZFWt_!!2208857268871-0-cib.jpg', 'HN660', '', 28, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 31.00, 0.00, 39.00, NULL, 26, 0, '不分季节', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (45, 'HN686牛仔裤女宽松vibe风', 'https://cbu01.alicdn.com/img/ibank/O1CN01E4FgMe2FOyCf3EUih_!!2208857268871-0-cib.jpg', 'HN686', '', 28, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 31.00, 0.00, 39.00, NULL, 26, 0, '不分季节', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (46, 'HN021豹纹加绒牛仔裤女铅笔小脚裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01Nak9ys2FOyE9IvLef_!!2208857268871-0-cib.jpg', 'HN021', '', 31, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 31.00, 0.00, 39.00, NULL, 26, 0, '冬季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (47, 'JKL805高腰阔腿牛仔裤女直筒宽松', 'https://cbu01.alicdn.com/img/ibank/O1CN01KtZqKM2Arl3fk5KtK_!!2513908257-0-cib.jpg', 'JKL805', '', 28, '', '建议80-145斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 40.00, 5.00, 69.00, NULL, 31, 0, '不分季节', '', '', '2022', '棉85% 聚酯纤维6.5% 再生纤维素纤维8.5%', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (48, 'HN180高腰牛仔裤女秋季九分老爹裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01D94VIz2FOyCZdAhrE_!!2208857268871-0-cib.jpg', 'HN180', '', 30, '', '建议80-125斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 29.00, 0.00, 39.00, NULL, 26, 0, '春秋季', '', '', '2022', '牛仔布', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (49, 'JKL9098哈伦裤', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9098.jpg', 'JKL9098', '', 30, '', '有弹力', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 48.00, 0.00, 69.00, NULL, 31, 0, '不分季节', '', '', '2022', '棉72% 聚酯纤维25.5% 氨纶2.5%', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (53, 'JKL9907小直筒烟管裤', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9907.jpg', 'JKL9907', '', 32, '', '建议80-140斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 40.00, 0.00, 89.00, NULL, 31, 0, '不分季节', '微弹', '高腰', '2022', '棉72% 聚酯纤维25.5% 氨纶2.5%', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (54, 'JKL6010松紧腰哈伦裤', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6010.jpg', 'JKL6010', '', 30, '', '建议80-145斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 43.00, 0.00, 69.00, NULL, 31, 0, '不分季节', '无弹', '高腰', '2022', '70%棉     20%聚酯纤维     10%再生纤维素纤维', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (55, 'JKL906阔腿牛仔裤', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL906.jpg', 'JKL906', '', 28, '', '建议80-145斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 42.00, 0.00, 69.00, NULL, 31, 0, '不分季节', '无弹', '高腰', '2022', '棉85% 聚酯纤维6.5% 再生纤维素纤维8.5%', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (56, 'JKL9977喇叭牛仔裤锁边', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/9977.jpg', 'JKL9977', '', 29, '', '建议70-145斤', 1, 99, 0, 0, 103, 58, 75, 0, 0, '', 50.00, 0.00, 89.00, NULL, 31, 0, '不分季节', '中弹', '高腰', '2022', '72%棉 25.5%聚酯纤维 2.5%氨纶', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (59, 'JKL9978喇叭牛仔裤毛边', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/9978.jpg', 'JKL9978', '', 29, '', '建议70-145斤', 1, 99, 0, 0, 103, 58, 75, 0, 0, '', 50.00, 0.00, 89.00, NULL, 31, 0, '不分季节', '中弹', '高腰', '2022', '72%棉 25.5%聚酯纤维 2.5%氨纶', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (60, 'JKL9950高腰阔腿直筒牛仔裤', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9950_11.jpg', 'JKL9950', '', 28, '', '建议70-145斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 46.00, 0.00, 79.00, NULL, 31, 0, '不分季节', '中弹', '高腰', '2022', '72%棉 25.5%聚酯纤维 2.5%氨纶', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (61, 'JKL8990高腰阔腿牛仔裤', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL8990.jpg', 'JKL8990', '', 28, '', '建议80-145斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 43.00, 0.00, 79.00, NULL, 31, 0, '不分季节', '无弹', '高腰', '2022', '棉93.6% 粘纤4.7% 聚酯纤维1.7%', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (62, 'JKL9938牛仔微喇裤裤脚开叉', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_黑色.jpg', 'JKL9938', '', 29, '', '建议70-150斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 44.00, 0.00, 79.00, NULL, 31, 0, '不分季节', '高弹', '高腰', '2022', '72%棉 25.5%聚酯纤维 2.5%氨纶', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (63, 'JKL6001小脚牛仔裤', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 'JKL6001', '', 31, '', '建议80-145斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 40.00, 0.00, 69.00, NULL, 31, 0, '不分季节', '中弹', '高腰', '2022', '棉：98% 氨纶：2%', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (64, 'JKL9909开叉微喇叭裤', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 'JKL9909', '', 29, '', '建议80-145斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 50.00, 0.00, 89.00, NULL, 31, 0, '不分季节', '高弹', '高腰', '2022', '72%棉 25.5%聚酯纤维 2.5%氨纶', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (65, 'GZYYZ7277复古显瘦灯芯绒a字半身裙', 'https://cbu01.alicdn.com/img/ibank/O1CN01lfHUDo1p3HVme2o7Q_!!2214743335304-0-cib.jpg', 'GZYYZ7277', '', 8, '', '建议80-135斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 54.00, 0.00, 79.00, NULL, 32, 0, '不分季节', '无弹', '高腰', '2022', '棉，涤纶（聚酯纤维）', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (66, 'JKL1973复古蓝哈伦牛仔裤长裤', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1973_复古蓝.jpg', 'JKL1973', '', 30, '', '建议80-135斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 44.00, 0.00, 79.00, NULL, 31, 0, '不分季节', '无弹', '高腰', '2022', '棉85%再生纤维素纤维8.5%聚酯纤维6.5%', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (67, 'JKL1951阔腿长裤加长裤', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 'JKL1951', '', 28, '', '建议80-135斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 42.00, 0.00, 79.00, NULL, 31, 0, '不分季节', '无弹', '高腰', '2022', '棉85%再生纤维素纤维8.5%聚酯纤维6.5%', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (68, 'JKL3112松紧腰束脚哈伦裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01rCYlbl2Arl3CqVwkG_!!2513908257-0-cib.jpg', 'JKL3112', '', 30, '', '建议80-135斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 42.00, 0.00, 69.00, NULL, 31, 0, '春秋季', '无弹', '高腰', '2022', '72%棉 25.5%聚酯纤维 2.5%氨纶', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (69, 'KH9734微喇叭牛仔裤女开叉', 'https://gd1.alicdn.com/imgextra/i2/49616689/O1CN01NkZm6L1zHc5upnyRW_!!49616689.jpg_400x400.jpg', 'KH9734', '', 29, '', '建议80-135斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 39.00, 0.00, 69.00, NULL, 33, 0, '春秋季', '高弹', '高腰', '2022', '69%棉  29.5%聚酯纤维 1.5%氨纶', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (70, 'KH9826小脚牛仔裤女', 'https://gd3.alicdn.com/imgextra/i2/49616689/O1CN01j5qyuA1zHc63KaMAY_!!49616689.jpg_400x400.jpg', 'KH9826', '', 31, '', '建议80-135斤', 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 40.00, 0.00, 79.00, NULL, 33, 0, '春秋季', '中弹', '高腰', '2022', '69%棉  29.5%聚酯纤维 1.5%氨纶', NULL, 0, 0, 'admin', '2023-12-29 15:55:39', 'admin', '2023-12-29 15:55:39');
-INSERT INTO `erp_goods` VALUES (71, 'aaa', 'aaa', 'aaaaa', '', 2, '', '', 1, 0, 0, 0, 0, 0, 0, 0, 0, '0', 12.00, 0.00, 0.00, NULL, 33, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 'admin', '2024-01-14 21:52:30', NULL, NULL);
-INSERT INTO `erp_goods` VALUES (74, '测试测试', 'http://localhost:8080/preview/images/47', 'A0012D', '', 2, '', '', 1, 0, 0, 0, 0, 0, 0, 0, 0, '0', 12.00, 0.00, 0.00, NULL, 33, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 'admin', '2024-01-16 10:34:33', NULL, NULL);
-INSERT INTO `erp_goods` VALUES (1778696459749048321, '爱的', 'https://cbu01.alicdn.com/img/ibank/O1CN01Fl00xq2LWeaeyzP63_!!2213235819700-0-cib.jpg', 'add34232', '', 2, '', '', 1, 0, 0, 0, 0, 0, 0, 0, 0, '0', 122.00, 0.00, 0.00, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 'admin', '2024-04-12 16:07:37', NULL, NULL);
+INSERT INTO `erp_goods` VALUES (1781988656060411906, 100, '男士流行夏季牛仔裤黑色', NULL, 'NZK000232', '', 1781968397051912193, '', '', 1, 0, 0, 0, 0, 0, 0, 0, 0, '0', 120.00, 0.00, 0.00, NULL, 1781960910751948802, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, '15818590119', '2024-04-21 18:09:38', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_goods_brand
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_goods_brand`;
 CREATE TABLE `erp_goods_brand`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `id` bigint NOT NULL COMMENT '主键ID',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '品牌名',
-  `status` int NULL DEFAULT NULL COMMENT '状态',
+  `status` int NOT NULL COMMENT '状态',
+  `tenant_id` bigint NOT NULL COMMENT '租户id（sys_user_id）',
   `create_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `create_time` datetime NULL DEFAULT NULL,
   `update_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
@@ -190,22 +133,24 @@ CREATE TABLE `erp_goods_brand`  (
 -- ----------------------------
 -- Records of erp_goods_brand
 -- ----------------------------
-INSERT INTO `erp_goods_brand` VALUES (1, '梦小妮', 1, 'admin', '2023-12-29 13:44:29', 'admin', '2023-12-29 13:44:29');
+INSERT INTO `erp_goods_brand` VALUES (1, '梦小妮', 1, 100, 'admin', '2023-12-29 13:44:29', 'admin', '2023-12-29 13:44:29');
 
 -- ----------------------------
 -- Table structure for erp_goods_category
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_goods_category`;
 CREATE TABLE `erp_goods_category`  (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL,
   `number` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '分类编码',
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '分类名称',
-  `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `parent_id` int NULL DEFAULT NULL COMMENT '上架分类id',
+  `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
+  `top_id` bigint NULL DEFAULT NULL COMMENT '最顶级id',
+  `parent_id` bigint NULL DEFAULT NULL COMMENT '上架分类id',
   `path` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '分类路径',
   `sort` int NULL DEFAULT 0 COMMENT '排序值',
   `image` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片',
-  `isDelete` tinyint(1) NULL DEFAULT 0 COMMENT '0正常  1删除',
+  `is_delete` tinyint(1) NULL DEFAULT 0 COMMENT '0正常  1删除',
+  `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户id',
   `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
@@ -216,47 +161,51 @@ CREATE TABLE `erp_goods_category`  (
 -- ----------------------------
 -- Records of erp_goods_category
 -- ----------------------------
-INSERT INTO `erp_goods_category` VALUES (1, 'NVZHUANG', '女装', NULL, 0, '0', 0, '', 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (2, 'MAOYI', '毛衣/针织衫', NULL, 1, '0|1', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (3, 'TXU', 'T恤', NULL, 1, '0|1', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (4, 'LIANYIQUN', '连衣裙', NULL, 1, '0|1', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (5, 'XIUXIANKU', '休闲裤', NULL, 1, '0|1', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (6, 'WAITAO', '外套', NULL, 1, '0|1', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (7, 'ZHENZHIPJ', '内衣/背心', NULL, 1, '0|1', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (8, 'SUOZHI', '半身裙', NULL, 1, '0|1', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (9, NULL, '衬衫', NULL, 1, '0|1', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (10, NULL, '箱包', NULL, 0, '0|1', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (11, NULL, '双肩包', NULL, 10, '0|10', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (12, NULL, '单肩包', NULL, 10, '0|10', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (13, NULL, '套装', NULL, 1, '0|1', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (14, NULL, '短裙', NULL, 10, '0|8', 0, NULL, 1, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (15, NULL, '半身裙', NULL, 10, '0|8', 0, NULL, 1, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (16, NULL, '连衣裙', NULL, 10, '0|1', 0, NULL, 1, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (17, NULL, '针织裤', NULL, 10, '0|1', 0, NULL, 1, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (18, NULL, '针织短裙', NULL, 10, '0|1', 0, NULL, 1, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (19, NULL, '针织外套', NULL, 10, '0|1', 0, NULL, 1, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (20, NULL, '针织背心', NULL, 10, '0|1', 0, NULL, 1, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (21, NULL, 'T恤衫', NULL, 10, '0|8', 0, NULL, 1, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (22, NULL, '梭织衬衫', NULL, 10, '0|8', 0, NULL, 1, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (23, 'BAIHUO', '百货', NULL, 0, '0', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (24, NULL, '调味调料', NULL, 23, '0|23', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (25, NULL, '小百货', NULL, 23, '0|23', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (26, 'NIUZAI', '牛仔裤', NULL, 1, '0|1|26', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (27, NULL, '牛仔短裤', NULL, 26, '0|26', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (28, NULL, '阔腿裤', NULL, 26, '0|26', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (29, NULL, '喇叭裤', NULL, 26, '0|26', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (30, NULL, '哈伦裤', '哈伦萝卜老爹裤', 26, '0|26', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (31, NULL, '铅笔裤', '小脚裤、紧身裤、铅笔裤', 26, '0|26', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (32, NULL, '直筒裤', '小直筒烟管裤', 26, '0|26', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
-INSERT INTO `erp_goods_category` VALUES (33, NULL, '背带裤', '', 26, '0|26', 0, NULL, 0, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (1, 'NVZHUANG', '女装', NULL, NULL, 0, '0', 0, '', 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (2, 'MAOYI', '毛衣/针织衫', NULL, NULL, 1, '0|1', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (3, 'TXU', 'T恤', NULL, NULL, 1, '0|1', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (4, 'LIANYIQUN', '连衣裙', NULL, NULL, 1, '0|1', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (5, 'XIUXIANKU', '休闲裤', NULL, NULL, 1, '0|1', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (6, 'WAITAO', '外套', NULL, NULL, 1, '0|1', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (7, 'ZHENZHIPJ', '内衣/背心', NULL, NULL, 1, '0|1', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (8, 'SUOZHI', '半身裙', NULL, NULL, 1, '0|1', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (9, NULL, '衬衫', NULL, NULL, 1, '0|1', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (10, NULL, '箱包', NULL, NULL, 0, '0|1', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (11, NULL, '双肩包', NULL, NULL, 10, '0|10', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (12, NULL, '单肩包', NULL, NULL, 10, '0|10', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (13, NULL, '套装', NULL, NULL, 1, '0|1', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (14, NULL, '短裙', NULL, NULL, 10, '0|8', 0, NULL, 1, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (15, NULL, '半身裙', NULL, NULL, 10, '0|8', 0, NULL, 1, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (16, NULL, '连衣裙', NULL, NULL, 10, '0|1', 0, NULL, 1, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (17, NULL, '针织裤', NULL, NULL, 10, '0|1', 0, NULL, 1, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (18, NULL, '针织短裙', NULL, NULL, 10, '0|1', 0, NULL, 1, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (19, NULL, '针织外套', NULL, NULL, 10, '0|1', 0, NULL, 1, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (20, NULL, '针织背心', NULL, NULL, 10, '0|1', 0, NULL, 1, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (21, NULL, 'T恤衫', NULL, NULL, 10, '0|8', 0, NULL, 1, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (22, NULL, '梭织衬衫', NULL, NULL, 10, '0|8', 0, NULL, 1, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (23, 'BAIHUO', '百货', NULL, NULL, 0, '0', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (24, NULL, '调味调料', NULL, NULL, 23, '0|23', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (25, NULL, '小百货', NULL, NULL, 23, '0|23', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (26, 'NIUZAI', '牛仔裤', NULL, NULL, 1, '0|1|26', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (27, NULL, '牛仔短裤', NULL, NULL, 26, '0|26', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (28, NULL, '阔腿裤', NULL, NULL, 26, '0|26', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (29, NULL, '喇叭裤', NULL, NULL, 26, '0|26', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (30, NULL, '哈伦裤', '哈伦萝卜老爹裤', NULL, 26, '0|26', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (31, NULL, '铅笔裤', '小脚裤、紧身裤、铅笔裤', NULL, 26, '0|26', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (32, NULL, '直筒裤', '小直筒烟管裤', NULL, 26, '0|26', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (33, NULL, '背带裤', '', NULL, 26, '0|26', 0, NULL, 0, NULL, 'admin', '2023-12-29 14:42:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (1781916938344173569, 'A0222D', '男装', NULL, 0, 0, '', 0, NULL, 0, 100, '手动添加', '2024-04-21 13:24:39', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (1781917406537551873, 'A220252', '上衣1', NULL, 1781916938344173569, 1781916938344173569, '', 4, NULL, 0, 100, '手动添加', '2024-04-21 13:26:31', '手动更新', '2024-04-21 16:39:10');
+INSERT INTO `erp_goods_category` VALUES (1781968290021662722, 'KUZI', '裤子', NULL, 1781916938344173569, 1781916938344173569, '', 0, NULL, 0, 100, '手动添加', '2024-04-21 16:48:42', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (1781968397051912193, 'nzk', '牛仔裤', NULL, 1781916938344173569, 1781968290021662722, '', 0, NULL, 0, 100, '手动添加', '2024-04-21 16:49:08', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_goods_category_attribute
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_goods_category_attribute`;
 CREATE TABLE `erp_goods_category_attribute`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  `category_id` int NOT NULL,
+  `id` bigint NOT NULL COMMENT '主键id',
+  `category_id` bigint NOT NULL,
   `type` int NOT NULL DEFAULT 0 COMMENT '类型：0属性1规格',
   `title` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '\'属性名\'',
   `code` char(5) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '固定值color颜色size尺码style款式',
@@ -269,18 +218,20 @@ CREATE TABLE `erp_goods_category_attribute`  (
 INSERT INTO `erp_goods_category_attribute` VALUES (114, 1, 1, '颜色', 'color');
 INSERT INTO `erp_goods_category_attribute` VALUES (115, 1, 1, '尺码', 'size');
 INSERT INTO `erp_goods_category_attribute` VALUES (116, 1, 1, '款式', 'style');
+INSERT INTO `erp_goods_category_attribute` VALUES (1781941806087319554, 1781916938344173569, 1, '颜色', 'color');
+INSERT INTO `erp_goods_category_attribute` VALUES (1781941897267294210, 1781916938344173569, 1, '尺码', 'size');
 
 -- ----------------------------
 -- Table structure for erp_goods_category_attribute_value
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_goods_category_attribute_value`;
 CREATE TABLE `erp_goods_category_attribute_value`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键，属性值id',
-  `category_attribute_id` int NULL DEFAULT NULL COMMENT '属性id',
+  `id` bigint NOT NULL COMMENT '主键，属性值id',
+  `category_attribute_id` bigint NULL DEFAULT NULL COMMENT '属性id',
   `value` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '属性值文本',
   `sku_code` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '生成SKU的编码',
-  `orderNum` int NULL DEFAULT 0,
-  `isDelete` int NOT NULL DEFAULT 0,
+  `order_num` int NULL DEFAULT 0,
+  `is_delete` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 424 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
@@ -403,6 +354,7 @@ INSERT INTO `erp_goods_category_attribute_value` VALUES (420, 116, '单裤', 'D'
 INSERT INTO `erp_goods_category_attribute_value` VALUES (421, 116, '加绒', 'R', 0, 0);
 INSERT INTO `erp_goods_category_attribute_value` VALUES (422, 116, '长裤加绒', 'CR', 65, 0);
 INSERT INTO `erp_goods_category_attribute_value` VALUES (423, 116, '加长裤加绒', 'JCR', 67, 0);
+INSERT INTO `erp_goods_category_attribute_value` VALUES (1673551873, 1781941806087319554, '红色', '00', 0, 0);
 
 -- ----------------------------
 -- Table structure for erp_goods_inventory
@@ -464,6 +416,7 @@ DROP TABLE IF EXISTS `erp_goods_sku`;
 CREATE TABLE `erp_goods_sku`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `goods_id` bigint NOT NULL COMMENT '商品id',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   `spec_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '规格名',
   `spec_num` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '规格编码',
   `color_id` int NULL DEFAULT 0 COMMENT '颜色id',
@@ -491,1326 +444,7 @@ CREATE TABLE `erp_goods_sku`  (
 -- ----------------------------
 -- Records of erp_goods_sku
 -- ----------------------------
-INSERT INTO `erp_goods_sku` VALUES (23, 9, '', '2720210080260001', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01eJxjQM2FOyB3IsiuU_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (24, 9, '', '2720210080260002', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01eJxjQM2FOyB3IsiuU_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (25, 9, '', '2720210080260003', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01eJxjQM2FOyB3IsiuU_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (26, 9, '', '2720210080260004', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01eJxjQM2FOyB3IsiuU_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (27, 9, '', '2720210080260005', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01eJxjQM2FOyB3IsiuU_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (28, 9, '', '2720210080260101', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AfNgvA2FOyAvwXZxv_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (29, 9, '', '2720210080260102', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AfNgvA2FOyAvwXZxv_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (30, 9, '', '2720210080260103', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AfNgvA2FOyAvwXZxv_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (31, 9, '', '2720210080260104', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AfNgvA2FOyAvwXZxv_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (32, 9, '', '2720210080260105', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AfNgvA2FOyAvwXZxv_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (33, 9, '', '2720210080260201', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN016mr0RO2FOyB3ItCEP_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (34, 9, '', '2720210080260202', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN016mr0RO2FOyB3ItCEP_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (35, 9, '', '2720210080260203', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN016mr0RO2FOyB3ItCEP_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (36, 9, '', '2720210080260204', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN016mr0RO2FOyB3ItCEP_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (37, 9, '', '2720210080260205', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN016mr0RO2FOyB3ItCEP_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (38, 9, '', '2720210080260301', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01PHFmsX2FOyB14fPie_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (39, 9, '', '2720210080260302', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01PHFmsX2FOyB14fPie_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (40, 9, '', '2720210080260303', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01PHFmsX2FOyB14fPie_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (41, 9, '', '2720210080260304', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01PHFmsX2FOyB14fPie_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (42, 9, '', '2720210080260305', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01PHFmsX2FOyB14fPie_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (43, 10, '', '27202208580101', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01SJelLi2FOyFPEQgvg_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (44, 10, '', '27202208580102', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01SJelLi2FOyFPEQgvg_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (45, 10, '', '27202208580103', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01SJelLi2FOyFPEQgvg_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (46, 10, '', '27202208580104', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01SJelLi2FOyFPEQgvg_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (47, 10, '', '27202208580105', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01SJelLi2FOyFPEQgvg_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (48, 10, '', '27202208580201', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AWoRY32FOyFNn0erQ_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (49, 10, '', '27202208580202', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AWoRY32FOyFNn0erQ_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (50, 10, '', '27202208580203', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AWoRY32FOyFNn0erQ_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (51, 10, '', '27202208580204', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AWoRY32FOyFNn0erQ_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (52, 10, '', '27202208580205', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AWoRY32FOyFNn0erQ_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (53, 10, '', '27202208580301', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01jpsOio2FOyFVLvlmx_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (54, 10, '', '27202208580302', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01jpsOio2FOyFVLvlmx_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (55, 10, '', '27202208580303', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01jpsOio2FOyFVLvlmx_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (56, 10, '', '27202208580304', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01jpsOio2FOyFVLvlmx_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (57, 10, '', '27202208580305', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01jpsOio2FOyFVLvlmx_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 20.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (58, 11, '', '27202206080101', 322, '白色', 'http://img.huayikeji.com/zggrr12gadsncs7q4ecdy2v47cj7g073', 341, 'S', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (59, 11, '', '27202206080102', 322, '白色', 'http://img.huayikeji.com/zggrr12gadsncs7q4ecdy2v47cj7g073', 342, 'M', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (60, 11, '', '27202206080103', 322, '白色', 'http://img.huayikeji.com/zggrr12gadsncs7q4ecdy2v47cj7g073', 343, 'L', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (61, 11, '', '27202206080104', 322, '白色', 'http://img.huayikeji.com/zggrr12gadsncs7q4ecdy2v47cj7g073', 344, 'XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (62, 11, '', '27202206080105', 322, '白色', 'http://img.huayikeji.com/zggrr12gadsncs7q4ecdy2v47cj7g073', 345, '2XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (63, 11, '', '27202206080201', 308, '黑色', 'http://img.huayikeji.com/jx2xgaui8rrw8ol4kazfgr0p7u3c3iqe', 341, 'S', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (64, 11, '', '27202206080202', 308, '黑色', 'http://img.huayikeji.com/jx2xgaui8rrw8ol4kazfgr0p7u3c3iqe', 342, 'M', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (65, 11, '', '27202206080203', 308, '黑色', 'http://img.huayikeji.com/jx2xgaui8rrw8ol4kazfgr0p7u3c3iqe', 343, 'L', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (66, 11, '', '27202206080204', 308, '黑色', 'http://img.huayikeji.com/jx2xgaui8rrw8ol4kazfgr0p7u3c3iqe', 344, 'XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (67, 11, '', '27202206080205', 308, '黑色', 'http://img.huayikeji.com/jx2xgaui8rrw8ol4kazfgr0p7u3c3iqe', 345, '2XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (68, 11, '', '27202206080301', 389, '黑灰色', 'http://img.huayikeji.com/8gfzlq5mtu373cl4snlbpr1tsdty6fkp', 341, 'S', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (69, 11, '', '27202206080302', 389, '黑灰色', 'http://img.huayikeji.com/8gfzlq5mtu373cl4snlbpr1tsdty6fkp', 342, 'M', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (70, 11, '', '27202206080303', 389, '黑灰色', 'http://img.huayikeji.com/8gfzlq5mtu373cl4snlbpr1tsdty6fkp', 343, 'L', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (71, 11, '', '27202206080304', 389, '黑灰色', 'http://img.huayikeji.com/8gfzlq5mtu373cl4snlbpr1tsdty6fkp', 344, 'XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (72, 11, '', '27202206080305', 389, '黑灰色', 'http://img.huayikeji.com/8gfzlq5mtu373cl4snlbpr1tsdty6fkp', 345, '2XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (73, 11, '', '27202206080401', 361, '浅蓝色', 'http://img.huayikeji.com/o91btx5iuz3qyl55u022m6zonzk7aykv', 341, 'S', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (74, 11, '', '27202206080402', 361, '浅蓝色', 'http://img.huayikeji.com/o91btx5iuz3qyl55u022m6zonzk7aykv', 342, 'M', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (75, 11, '', '27202206080403', 361, '浅蓝色', 'http://img.huayikeji.com/o91btx5iuz3qyl55u022m6zonzk7aykv', 343, 'L', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (76, 11, '', '27202206080404', 361, '浅蓝色', 'http://img.huayikeji.com/o91btx5iuz3qyl55u022m6zonzk7aykv', 344, 'XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (77, 11, '', '27202206080405', 361, '浅蓝色', 'http://img.huayikeji.com/o91btx5iuz3qyl55u022m6zonzk7aykv', 345, '2XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (78, 11, '', '27202206080501', 319, '深蓝色', 'http://img.huayikeji.com/j7xyuq39n4fc7sb84yctn47iqsce9hkw', 341, 'S', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (79, 11, '', '27202206080502', 319, '深蓝色', 'http://img.huayikeji.com/j7xyuq39n4fc7sb84yctn47iqsce9hkw', 342, 'M', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (80, 11, '', '27202206080503', 319, '深蓝色', 'http://img.huayikeji.com/j7xyuq39n4fc7sb84yctn47iqsce9hkw', 343, 'L', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (81, 11, '', '27202206080504', 319, '深蓝色', 'http://img.huayikeji.com/j7xyuq39n4fc7sb84yctn47iqsce9hkw', 344, 'XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (82, 11, '', '27202206080505', 319, '深蓝色', 'http://img.huayikeji.com/j7xyuq39n4fc7sb84yctn47iqsce9hkw', 345, '2XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (83, 12, '', '27202202700101', 308, '黑色', 'http://img.huayikeji.com/0wx2dy9e6yhrd2vy1y7lrr4e0bd1vvh3', 341, 'S', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (84, 12, '', '27202202700102', 308, '黑色', 'http://img.huayikeji.com/0wx2dy9e6yhrd2vy1y7lrr4e0bd1vvh3', 342, 'M', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (85, 12, '', '27202202700103', 308, '黑色', 'http://img.huayikeji.com/0wx2dy9e6yhrd2vy1y7lrr4e0bd1vvh3', 343, 'L', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (86, 12, '', '27202202700104', 308, '黑色', 'http://img.huayikeji.com/0wx2dy9e6yhrd2vy1y7lrr4e0bd1vvh3', 344, 'XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (87, 12, '', '27202202700105', 308, '黑色', 'http://img.huayikeji.com/0wx2dy9e6yhrd2vy1y7lrr4e0bd1vvh3', 345, '2XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (88, 13, '', '28202206810101', 356, '复古蓝', 'http://img.huayikeji.com/6xzfygyzbjppcn51wxfmuoaikp4p0o7w', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (89, 13, '', '28202206810102', 356, '复古蓝', 'http://img.huayikeji.com/6xzfygyzbjppcn51wxfmuoaikp4p0o7w', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (90, 13, '', '28202206810103', 356, '复古蓝', 'http://img.huayikeji.com/6xzfygyzbjppcn51wxfmuoaikp4p0o7w', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (91, 13, '', '28202206810104', 356, '复古蓝', 'http://img.huayikeji.com/6xzfygyzbjppcn51wxfmuoaikp4p0o7w', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (92, 13, '', '28202206810105', 356, '复古蓝', 'http://img.huayikeji.com/6xzfygyzbjppcn51wxfmuoaikp4p0o7w', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (93, 13, '', '28202206810201', 361, '浅蓝色', 'http://img.huayikeji.com/eis9r0e4dnb7kis9qaia5xu4j9brkoof', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (94, 13, '', '28202206810202', 361, '浅蓝色', 'http://img.huayikeji.com/eis9r0e4dnb7kis9qaia5xu4j9brkoof', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (95, 13, '', '28202206810203', 361, '浅蓝色', 'http://img.huayikeji.com/eis9r0e4dnb7kis9qaia5xu4j9brkoof', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (96, 13, '', '28202206810204', 361, '浅蓝色', 'http://img.huayikeji.com/eis9r0e4dnb7kis9qaia5xu4j9brkoof', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (97, 13, '', '28202206810205', 361, '浅蓝色', 'http://img.huayikeji.com/eis9r0e4dnb7kis9qaia5xu4j9brkoof', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (98, 13, '', '28202206810301', 389, '黑灰色', 'http://img.huayikeji.com/2nqlidwzpxb5x836krxpge56x2l8003p', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (99, 13, '', '28202206810302', 389, '黑灰色', 'http://img.huayikeji.com/2nqlidwzpxb5x836krxpge56x2l8003p', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (100, 13, '', '28202206810303', 389, '黑灰色', 'http://img.huayikeji.com/2nqlidwzpxb5x836krxpge56x2l8003p', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (101, 13, '', '28202206810304', 389, '黑灰色', 'http://img.huayikeji.com/2nqlidwzpxb5x836krxpge56x2l8003p', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (102, 13, '', '28202206810305', 389, '黑灰色', 'http://img.huayikeji.com/2nqlidwzpxb5x836krxpge56x2l8003p', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (103, 14, '', '27202207080101', 0, '灰色', 'http://img.huayikeji.com/5ztnyd9ahc2g6xw2l05kmcmcpk2rx6vh', 341, 'S', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (104, 14, '', '27202207080102', 0, '灰色', 'http://img.huayikeji.com/5ztnyd9ahc2g6xw2l05kmcmcpk2rx6vh', 342, 'M', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (105, 14, '', '27202207080103', 0, '灰色', 'http://img.huayikeji.com/5ztnyd9ahc2g6xw2l05kmcmcpk2rx6vh', 343, 'L', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (106, 14, '', '27202207080104', 0, '灰色', 'http://img.huayikeji.com/5ztnyd9ahc2g6xw2l05kmcmcpk2rx6vh', 344, 'XL', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (107, 14, '', '27202207080105', 0, '灰色', 'http://img.huayikeji.com/5ztnyd9ahc2g6xw2l05kmcmcpk2rx6vh', 345, '2XL', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (108, 14, '', '27202207080201', 308, '黑色', 'http://img.huayikeji.com/wx72lmbomku46xjskbp8nrsj346wamnk', 341, 'S', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (109, 14, '', '27202207080202', 308, '黑色', 'http://img.huayikeji.com/wx72lmbomku46xjskbp8nrsj346wamnk', 342, 'M', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (110, 14, '', '27202207080203', 308, '黑色', 'http://img.huayikeji.com/wx72lmbomku46xjskbp8nrsj346wamnk', 343, 'L', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (111, 14, '', '27202207080204', 308, '黑色', 'http://img.huayikeji.com/wx72lmbomku46xjskbp8nrsj346wamnk', 344, 'XL', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (112, 14, '', '27202207080205', 308, '黑色', 'http://img.huayikeji.com/wx72lmbomku46xjskbp8nrsj346wamnk', 345, '2XL', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (113, 14, '', '27202207080301', 361, '浅蓝色', 'http://img.huayikeji.com/jg9g9ntyor1c0khja0v6jn8qc0jzslgw', 341, 'S', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (114, 14, '', '27202207080302', 361, '浅蓝色', 'http://img.huayikeji.com/jg9g9ntyor1c0khja0v6jn8qc0jzslgw', 342, 'M', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (115, 14, '', '27202207080303', 361, '浅蓝色', 'http://img.huayikeji.com/jg9g9ntyor1c0khja0v6jn8qc0jzslgw', 343, 'L', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (116, 14, '', '27202207080304', 361, '浅蓝色', 'http://img.huayikeji.com/jg9g9ntyor1c0khja0v6jn8qc0jzslgw', 344, 'XL', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (117, 14, '', '27202207080305', 361, '浅蓝色', 'http://img.huayikeji.com/jg9g9ntyor1c0khja0v6jn8qc0jzslgw', 345, '2XL', 0, '', NULL, 24.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (118, 15, '', '28202106610101', 356, '复古蓝', 'http://img.huayikeji.com/2a125jimb6nh37qjqp9k7jkov8hyo3ek', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (119, 15, '', '28202106610102', 356, '复古蓝', 'http://img.huayikeji.com/2a125jimb6nh37qjqp9k7jkov8hyo3ek', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (120, 15, '', '28202106610103', 356, '复古蓝', 'http://img.huayikeji.com/2a125jimb6nh37qjqp9k7jkov8hyo3ek', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (121, 15, '', '28202106610104', 356, '复古蓝', 'http://img.huayikeji.com/2a125jimb6nh37qjqp9k7jkov8hyo3ek', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (122, 15, '', '28202106610105', 356, '复古蓝', 'http://img.huayikeji.com/2a125jimb6nh37qjqp9k7jkov8hyo3ek', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (123, 15, '', '28202106610201', 361, '浅蓝色', 'http://img.huayikeji.com/600qtwzefc9qj9njwwoza2zllzph4p6n', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (124, 15, '', '28202106610202', 361, '浅蓝色', 'http://img.huayikeji.com/600qtwzefc9qj9njwwoza2zllzph4p6n', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (125, 15, '', '28202106610203', 361, '浅蓝色', 'http://img.huayikeji.com/600qtwzefc9qj9njwwoza2zllzph4p6n', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (126, 15, '', '28202106610204', 361, '浅蓝色', 'http://img.huayikeji.com/600qtwzefc9qj9njwwoza2zllzph4p6n', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (127, 15, '', '28202106610205', 361, '浅蓝色', 'http://img.huayikeji.com/600qtwzefc9qj9njwwoza2zllzph4p6n', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (128, 15, '', '28202106610301', 389, '黑灰色', 'http://img.huayikeji.com/qj2p2e89qmlk1fa0n1f43xr23a8r6gmc', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (129, 15, '', '28202106610302', 389, '黑灰色', 'http://img.huayikeji.com/qj2p2e89qmlk1fa0n1f43xr23a8r6gmc', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (130, 15, '', '28202106610303', 389, '黑灰色', 'http://img.huayikeji.com/qj2p2e89qmlk1fa0n1f43xr23a8r6gmc', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (131, 15, '', '28202106610304', 389, '黑灰色', 'http://img.huayikeji.com/qj2p2e89qmlk1fa0n1f43xr23a8r6gmc', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (132, 15, '', '28202106610305', 389, '黑灰色', 'http://img.huayikeji.com/qj2p2e89qmlk1fa0n1f43xr23a8r6gmc', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (133, 15, '', '28202106610401', 308, '黑色', 'http://img.huayikeji.com/zb6q0hbaqi6r9z1glijty6olfaijtnvv', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (134, 15, '', '28202106610402', 308, '黑色', 'http://img.huayikeji.com/zb6q0hbaqi6r9z1glijty6olfaijtnvv', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (135, 15, '', '28202106610403', 308, '黑色', 'http://img.huayikeji.com/zb6q0hbaqi6r9z1glijty6olfaijtnvv', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (136, 15, '', '28202106610404', 308, '黑色', 'http://img.huayikeji.com/zb6q0hbaqi6r9z1glijty6olfaijtnvv', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (137, 15, '', '28202106610405', 308, '黑色', 'http://img.huayikeji.com/zb6q0hbaqi6r9z1glijty6olfaijtnvv', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (138, 15, '', '28202106610501', 0, '粉色', 'http://img.huayikeji.com/icme41bh1veeeqadhqflep3rl3p0tsvq', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (139, 15, '', '28202106610502', 0, '粉色', 'http://img.huayikeji.com/icme41bh1veeeqadhqflep3rl3p0tsvq', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (140, 15, '', '28202106610503', 0, '粉色', 'http://img.huayikeji.com/icme41bh1veeeqadhqflep3rl3p0tsvq', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (141, 15, '', '28202106610504', 0, '粉色', 'http://img.huayikeji.com/icme41bh1veeeqadhqflep3rl3p0tsvq', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (142, 15, '', '28202106610505', 0, '粉色', 'http://img.huayikeji.com/icme41bh1veeeqadhqflep3rl3p0tsvq', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (143, 15, '', '28202106610601', 0, '黄色', 'http://img.huayikeji.com/ma9jyuic0d3p1mqt3afzahoev5ypzzby', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (144, 15, '', '28202106610602', 0, '黄色', 'http://img.huayikeji.com/ma9jyuic0d3p1mqt3afzahoev5ypzzby', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (145, 15, '', '28202106610603', 0, '黄色', 'http://img.huayikeji.com/ma9jyuic0d3p1mqt3afzahoev5ypzzby', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (146, 15, '', '28202106610604', 0, '黄色', 'http://img.huayikeji.com/ma9jyuic0d3p1mqt3afzahoev5ypzzby', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (147, 15, '', '28202106610605', 0, '黄色', 'http://img.huayikeji.com/ma9jyuic0d3p1mqt3afzahoev5ypzzby', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (148, 15, '', '28202106610701', 0, '薄荷绿', 'http://img.huayikeji.com/5e4mbxb12qt8j1hi2yrd92io21m8izrs', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (149, 15, '', '28202106610702', 0, '薄荷绿', 'http://img.huayikeji.com/5e4mbxb12qt8j1hi2yrd92io21m8izrs', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (150, 15, '', '28202106610703', 0, '薄荷绿', 'http://img.huayikeji.com/5e4mbxb12qt8j1hi2yrd92io21m8izrs', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (151, 15, '', '28202106610704', 0, '薄荷绿', 'http://img.huayikeji.com/5e4mbxb12qt8j1hi2yrd92io21m8izrs', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (152, 15, '', '28202106610705', 0, '薄荷绿', 'http://img.huayikeji.com/5e4mbxb12qt8j1hi2yrd92io21m8izrs', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (153, 15, '', '28202106610801', 0, '卡其色', 'http://img.huayikeji.com/us3g4u9qqoj3g8vxeedcjd8clv5estoo', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (154, 15, '', '28202106610802', 0, '卡其色', 'http://img.huayikeji.com/us3g4u9qqoj3g8vxeedcjd8clv5estoo', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (155, 15, '', '28202106610803', 0, '卡其色', 'http://img.huayikeji.com/us3g4u9qqoj3g8vxeedcjd8clv5estoo', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (156, 15, '', '28202106610804', 0, '卡其色', 'http://img.huayikeji.com/us3g4u9qqoj3g8vxeedcjd8clv5estoo', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (157, 15, '', '28202106610805', 0, '卡其色', 'http://img.huayikeji.com/us3g4u9qqoj3g8vxeedcjd8clv5estoo', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (158, 16, '', '28202106780001', 361, '浅蓝色', 'http://img.huayikeji.com/ux09zfd120aalurr55707gndmhn1rf21', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (159, 16, '', '28202106780002', 361, '浅蓝色', 'http://img.huayikeji.com/ux09zfd120aalurr55707gndmhn1rf21', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (160, 16, '', '28202106780003', 361, '浅蓝色', 'http://img.huayikeji.com/ux09zfd120aalurr55707gndmhn1rf21', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (161, 16, '', '28202106780004', 361, '浅蓝色', 'http://img.huayikeji.com/ux09zfd120aalurr55707gndmhn1rf21', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (162, 16, '', '28202106780005', 361, '浅蓝色', 'http://img.huayikeji.com/ux09zfd120aalurr55707gndmhn1rf21', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (163, 17, '', '03202208010101', 308, '黑色', 'http://img.huayikeji.com/gm40mpqfc53scyxjou2epwqhjqbqp8cv', 342, 'M', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (164, 17, '', '03202208010102', 308, '黑色', 'http://img.huayikeji.com/gm40mpqfc53scyxjou2epwqhjqbqp8cv', 343, 'L', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (165, 17, '', '03202208010103', 308, '黑色', 'http://img.huayikeji.com/gm40mpqfc53scyxjou2epwqhjqbqp8cv', 344, 'XL', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (166, 17, '', '03202208010104', 308, '黑色', 'http://img.huayikeji.com/gm40mpqfc53scyxjou2epwqhjqbqp8cv', 345, '2XL', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (167, 17, '', '03202208010201', 322, '白色', 'http://img.huayikeji.com/k1bcjvacakh7t65tt541z636hrbv086m', 342, 'M', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (168, 17, '', '03202208010202', 322, '白色', 'http://img.huayikeji.com/k1bcjvacakh7t65tt541z636hrbv086m', 343, 'L', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (169, 17, '', '03202208010203', 322, '白色', 'http://img.huayikeji.com/k1bcjvacakh7t65tt541z636hrbv086m', 344, 'XL', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (170, 17, '', '03202208010204', 322, '白色', 'http://img.huayikeji.com/k1bcjvacakh7t65tt541z636hrbv086m', 345, '2XL', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (171, 17, '', '03202208010301', 0, '粉色', 'http://img.huayikeji.com/wsqqp8sdqc5e8x9noarg9fswdo17wtu4', 342, 'M', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (172, 17, '', '03202208010302', 0, '粉色', 'http://img.huayikeji.com/wsqqp8sdqc5e8x9noarg9fswdo17wtu4', 343, 'L', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (173, 17, '', '03202208010303', 0, '粉色', 'http://img.huayikeji.com/wsqqp8sdqc5e8x9noarg9fswdo17wtu4', 344, 'XL', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (174, 17, '', '03202208010304', 0, '粉色', 'http://img.huayikeji.com/wsqqp8sdqc5e8x9noarg9fswdo17wtu4', 345, '2XL', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (175, 17, '', '03202208010401', 0, '深灰色', 'http://img.huayikeji.com/68dgqc2s773upieznl528i0sqs8ib484', 342, 'M', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (176, 17, '', '03202208010402', 0, '深灰色', 'http://img.huayikeji.com/68dgqc2s773upieznl528i0sqs8ib484', 343, 'L', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (177, 17, '', '03202208010403', 0, '深灰色', 'http://img.huayikeji.com/68dgqc2s773upieznl528i0sqs8ib484', 344, 'XL', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (178, 17, '', '03202208010404', 0, '深灰色', 'http://img.huayikeji.com/68dgqc2s773upieznl528i0sqs8ib484', 345, '2XL', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (179, 18, '', 'HN202200140101', 308, '黑色', 'http://img.huayikeji.com/pofzt3pqrtravmzd1jrnd605xqu0usic', 341, 'S', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (180, 18, '', 'HN202200140102', 308, '黑色', 'http://img.huayikeji.com/pofzt3pqrtravmzd1jrnd605xqu0usic', 342, 'M', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (181, 18, '', 'HN202200140103', 308, '黑色', 'http://img.huayikeji.com/pofzt3pqrtravmzd1jrnd605xqu0usic', 343, 'L', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (182, 18, '', 'HN202200140104', 308, '黑色', 'http://img.huayikeji.com/pofzt3pqrtravmzd1jrnd605xqu0usic', 344, 'XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (183, 18, '', 'HN202200140105', 308, '黑色', 'http://img.huayikeji.com/pofzt3pqrtravmzd1jrnd605xqu0usic', 345, '2XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (184, 18, '', 'HN202200140201', 356, '复古蓝', 'http://img.huayikeji.com/tc51gyersphju6cgsns937bc3x7m2ph5', 341, 'S', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (185, 18, '', 'HN202200140202', 356, '复古蓝', 'http://img.huayikeji.com/tc51gyersphju6cgsns937bc3x7m2ph5', 342, 'M', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (186, 18, '', 'HN202200140203', 356, '复古蓝', 'http://img.huayikeji.com/tc51gyersphju6cgsns937bc3x7m2ph5', 343, 'L', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (187, 18, '', 'HN202200140204', 356, '复古蓝', 'http://img.huayikeji.com/tc51gyersphju6cgsns937bc3x7m2ph5', 344, 'XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (188, 18, '', 'HN202200140205', 356, '复古蓝', 'http://img.huayikeji.com/tc51gyersphju6cgsns937bc3x7m2ph5', 345, '2XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (189, 18, '', 'HN202200140301', 361, '浅蓝色', 'http://img.huayikeji.com/l1dj9ovhl9xkcln5lrv09txbvbd4i4ug', 341, 'S', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (190, 18, '', 'HN202200140302', 361, '浅蓝色', 'http://img.huayikeji.com/l1dj9ovhl9xkcln5lrv09txbvbd4i4ug', 342, 'M', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (191, 18, '', 'HN202200140303', 361, '浅蓝色', 'http://img.huayikeji.com/l1dj9ovhl9xkcln5lrv09txbvbd4i4ug', 343, 'L', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (192, 18, '', 'HN202200140304', 361, '浅蓝色', 'http://img.huayikeji.com/l1dj9ovhl9xkcln5lrv09txbvbd4i4ug', 344, 'XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (193, 18, '', 'HN202200140305', 361, '浅蓝色', 'http://img.huayikeji.com/l1dj9ovhl9xkcln5lrv09txbvbd4i4ug', 345, '2XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (194, 19, '', 'HN202200250125', 308, '黑色', 'http://img.huayikeji.com/eih7qcgodthjs3v6oiwl49s0ngs6opjs', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (195, 19, '', 'HN202200250126', 308, '黑色', 'http://img.huayikeji.com/eih7qcgodthjs3v6oiwl49s0ngs6opjs', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (196, 19, '', 'HN202200250107', 308, '黑色', 'http://img.huayikeji.com/eih7qcgodthjs3v6oiwl49s0ngs6opjs', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (197, 19, '', 'HN202200250128', 308, '黑色', 'http://img.huayikeji.com/eih7qcgodthjs3v6oiwl49s0ngs6opjs', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (198, 19, '', 'HN202200250129', 308, '黑色', 'http://img.huayikeji.com/eih7qcgodthjs3v6oiwl49s0ngs6opjs', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (199, 19, '', 'HN202200250130', 308, '黑色', 'http://img.huayikeji.com/eih7qcgodthjs3v6oiwl49s0ngs6opjs', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (200, 19, '', 'HN202200250131', 308, '黑色', 'http://img.huayikeji.com/eih7qcgodthjs3v6oiwl49s0ngs6opjs', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (201, 19, '', 'HN202200250132', 308, '黑色', 'http://img.huayikeji.com/eih7qcgodthjs3v6oiwl49s0ngs6opjs', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (202, 19, '', 'HN202200250225', 389, '黑灰色', 'http://img.huayikeji.com/x29km17ivbfkzzcuqvjrxwpzo52l9jzf', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (203, 19, '', 'HN202200250226', 389, '黑灰色', 'http://img.huayikeji.com/x29km17ivbfkzzcuqvjrxwpzo52l9jzf', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (204, 19, '', 'HN202200250227', 389, '黑灰色', 'http://img.huayikeji.com/x29km17ivbfkzzcuqvjrxwpzo52l9jzf', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (205, 19, '', 'HN202200250228', 389, '黑灰色', 'http://img.huayikeji.com/x29km17ivbfkzzcuqvjrxwpzo52l9jzf', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (206, 19, '', 'HN202200250229', 389, '黑灰色', 'http://img.huayikeji.com/x29km17ivbfkzzcuqvjrxwpzo52l9jzf', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (207, 19, '', 'HN202200250230', 389, '黑灰色', 'http://img.huayikeji.com/x29km17ivbfkzzcuqvjrxwpzo52l9jzf', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (208, 19, '', 'HN202200250231', 389, '黑灰色', 'http://img.huayikeji.com/x29km17ivbfkzzcuqvjrxwpzo52l9jzf', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (209, 19, '', 'HN202200250232', 389, '黑灰色', 'http://img.huayikeji.com/x29km17ivbfkzzcuqvjrxwpzo52l9jzf', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (210, 19, '', 'HN202200250325', 361, '浅蓝色', 'http://img.huayikeji.com/kh86knehjulsigqzexr4jgknbkrwcarr', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (211, 19, '', 'HN202200250326', 361, '浅蓝色', 'http://img.huayikeji.com/kh86knehjulsigqzexr4jgknbkrwcarr', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (212, 19, '', 'HN202200250327', 361, '浅蓝色', 'http://img.huayikeji.com/kh86knehjulsigqzexr4jgknbkrwcarr', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (213, 19, '', 'HN202200250328', 361, '浅蓝色', 'http://img.huayikeji.com/kh86knehjulsigqzexr4jgknbkrwcarr', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (214, 19, '', 'HN202200250329', 361, '浅蓝色', 'http://img.huayikeji.com/kh86knehjulsigqzexr4jgknbkrwcarr', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (215, 19, '', 'HN202200250330', 361, '浅蓝色', 'http://img.huayikeji.com/kh86knehjulsigqzexr4jgknbkrwcarr', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (216, 19, '', 'HN202200250331', 361, '浅蓝色', 'http://img.huayikeji.com/kh86knehjulsigqzexr4jgknbkrwcarr', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (217, 19, '', 'HN202200250332', 361, '浅蓝色', 'http://img.huayikeji.com/kh86knehjulsigqzexr4jgknbkrwcarr', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (218, 19, '', 'HN202200250425', 336, '蓝灰色', 'http://img.huayikeji.com/wgn8xbsgs3mac0j8uqc7xcebeziu3lc2', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (219, 19, '', 'HN202200250426', 336, '蓝灰色', 'http://img.huayikeji.com/wgn8xbsgs3mac0j8uqc7xcebeziu3lc2', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (220, 19, '', 'HN202200250427', 336, '蓝灰色', 'http://img.huayikeji.com/wgn8xbsgs3mac0j8uqc7xcebeziu3lc2', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (221, 19, '', 'HN202200250428', 336, '蓝灰色', 'http://img.huayikeji.com/wgn8xbsgs3mac0j8uqc7xcebeziu3lc2', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (222, 19, '', 'HN202200250429', 336, '蓝灰色', 'http://img.huayikeji.com/wgn8xbsgs3mac0j8uqc7xcebeziu3lc2', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (223, 19, '', 'HN202200250430', 336, '蓝灰色', 'http://img.huayikeji.com/wgn8xbsgs3mac0j8uqc7xcebeziu3lc2', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (224, 19, '', 'HN202200250431', 336, '蓝灰色', 'http://img.huayikeji.com/wgn8xbsgs3mac0j8uqc7xcebeziu3lc2', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (225, 19, '', 'HN202200250432', 336, '蓝灰色', 'http://img.huayikeji.com/wgn8xbsgs3mac0j8uqc7xcebeziu3lc2', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (226, 20, '', 'HN202200290125', 308, '黑色', 'http://img.huayikeji.com/rbmhovahs9a3hqvq28z2d00h3qt6ko38', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (227, 20, '', 'HN202200290126', 308, '黑色', 'http://img.huayikeji.com/rbmhovahs9a3hqvq28z2d00h3qt6ko38', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (228, 20, '', 'HN202200290127', 308, '黑色', 'http://img.huayikeji.com/rbmhovahs9a3hqvq28z2d00h3qt6ko38', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (229, 20, '', 'HN202200290128', 308, '黑色', 'http://img.huayikeji.com/rbmhovahs9a3hqvq28z2d00h3qt6ko38', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (230, 20, '', 'HN202200290129', 308, '黑色', 'http://img.huayikeji.com/rbmhovahs9a3hqvq28z2d00h3qt6ko38', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (231, 20, '', 'HN202200290130', 308, '黑色', 'http://img.huayikeji.com/rbmhovahs9a3hqvq28z2d00h3qt6ko38', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (232, 20, '', 'HN202200290131', 308, '黑色', 'http://img.huayikeji.com/rbmhovahs9a3hqvq28z2d00h3qt6ko38', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (233, 20, '', 'HN202200290132', 308, '黑色', 'http://img.huayikeji.com/rbmhovahs9a3hqvq28z2d00h3qt6ko38', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (234, 20, '', 'HN202200290225', 389, '黑灰色', 'http://img.huayikeji.com/k0vt2gtit508e8yt36o04jdijk1ukgr4', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (235, 20, '', 'HN202200290226', 389, '黑灰色', 'http://img.huayikeji.com/k0vt2gtit508e8yt36o04jdijk1ukgr4', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (236, 20, '', 'HN202200290227', 389, '黑灰色', 'http://img.huayikeji.com/k0vt2gtit508e8yt36o04jdijk1ukgr4', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (237, 20, '', 'HN202200290228', 389, '黑灰色', 'http://img.huayikeji.com/k0vt2gtit508e8yt36o04jdijk1ukgr4', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (238, 20, '', 'HN202200290229', 389, '黑灰色', 'http://img.huayikeji.com/k0vt2gtit508e8yt36o04jdijk1ukgr4', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (239, 20, '', 'HN202200290230', 389, '黑灰色', 'http://img.huayikeji.com/k0vt2gtit508e8yt36o04jdijk1ukgr4', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (240, 20, '', 'HN202200290231', 389, '黑灰色', 'http://img.huayikeji.com/k0vt2gtit508e8yt36o04jdijk1ukgr4', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (241, 20, '', 'HN202200290232', 389, '黑灰色', 'http://img.huayikeji.com/k0vt2gtit508e8yt36o04jdijk1ukgr4', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (242, 20, '', 'HN202200290325', 356, '复古蓝', 'http://img.huayikeji.com/crqikzuy0nm2e4yem856va2xk48i7cf4', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (243, 20, '', 'HN202200290326', 356, '复古蓝', 'http://img.huayikeji.com/crqikzuy0nm2e4yem856va2xk48i7cf4', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (244, 20, '', 'HN202200290327', 356, '复古蓝', 'http://img.huayikeji.com/crqikzuy0nm2e4yem856va2xk48i7cf4', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (245, 20, '', 'HN202200290328', 356, '复古蓝', 'http://img.huayikeji.com/crqikzuy0nm2e4yem856va2xk48i7cf4', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (246, 20, '', 'HN202200290329', 356, '复古蓝', 'http://img.huayikeji.com/crqikzuy0nm2e4yem856va2xk48i7cf4', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (247, 20, '', 'HN202200290330', 356, '复古蓝', 'http://img.huayikeji.com/crqikzuy0nm2e4yem856va2xk48i7cf4', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (248, 20, '', 'HN202200290331', 356, '复古蓝', 'http://img.huayikeji.com/crqikzuy0nm2e4yem856va2xk48i7cf4', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (249, 20, '', 'HN202200290332', 356, '复古蓝', 'http://img.huayikeji.com/crqikzuy0nm2e4yem856va2xk48i7cf4', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (250, 21, '', 'HN202200150125', 361, '浅蓝色', 'http://img.huayikeji.com/jw7wxsu4uwiv7khvaocru7t9yhhdodol', 394, 'XS', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (251, 21, '', 'HN202200150126', 361, '浅蓝色', 'http://img.huayikeji.com/jw7wxsu4uwiv7khvaocru7t9yhhdodol', 341, 'S', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (252, 21, '', 'HN202200150127', 361, '浅蓝色', 'http://img.huayikeji.com/jw7wxsu4uwiv7khvaocru7t9yhhdodol', 342, 'M', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (253, 21, '', 'HN202200150128', 361, '浅蓝色', 'http://img.huayikeji.com/jw7wxsu4uwiv7khvaocru7t9yhhdodol', 343, 'L', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (254, 21, '', 'HN202200150129', 361, '浅蓝色', 'http://img.huayikeji.com/jw7wxsu4uwiv7khvaocru7t9yhhdodol', 344, 'XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (255, 21, '', 'HN202200150130', 361, '浅蓝色', 'http://img.huayikeji.com/jw7wxsu4uwiv7khvaocru7t9yhhdodol', 345, '2XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (256, 21, '', 'HN202200150225', 356, '复古蓝', 'http://img.huayikeji.com/o1pijvy2umsa8mlgfkyjbgs3vwmotkdh', 394, 'XS', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (257, 21, '', 'HN202200150226', 356, '复古蓝', 'http://img.huayikeji.com/o1pijvy2umsa8mlgfkyjbgs3vwmotkdh', 341, 'S', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (258, 21, '', 'HN202200150227', 356, '复古蓝', 'http://img.huayikeji.com/o1pijvy2umsa8mlgfkyjbgs3vwmotkdh', 342, 'M', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (259, 21, '', 'HN202200150228', 356, '复古蓝', 'http://img.huayikeji.com/o1pijvy2umsa8mlgfkyjbgs3vwmotkdh', 343, 'L', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (260, 21, '', 'HN202200150229', 356, '复古蓝', 'http://img.huayikeji.com/o1pijvy2umsa8mlgfkyjbgs3vwmotkdh', 344, 'XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (261, 21, '', 'HN202200150230', 356, '复古蓝', 'http://img.huayikeji.com/o1pijvy2umsa8mlgfkyjbgs3vwmotkdh', 345, '2XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (262, 21, '', 'HN202200150325', 308, '黑色', 'http://img.huayikeji.com/1mcrsm44mbg8ekvlayfjwulvdzzhl9ym', 394, 'XS', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (263, 21, '', 'HN202200150326', 308, '黑色', 'http://img.huayikeji.com/1mcrsm44mbg8ekvlayfjwulvdzzhl9ym', 341, 'S', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (264, 21, '', 'HN202200150327', 308, '黑色', 'http://img.huayikeji.com/1mcrsm44mbg8ekvlayfjwulvdzzhl9ym', 342, 'M', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (265, 21, '', 'HN202200150328', 308, '黑色', 'http://img.huayikeji.com/1mcrsm44mbg8ekvlayfjwulvdzzhl9ym', 343, 'L', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (266, 21, '', 'HN202200150329', 308, '黑色', 'http://img.huayikeji.com/1mcrsm44mbg8ekvlayfjwulvdzzhl9ym', 344, 'XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (267, 21, '', 'HN202200150330', 308, '黑色', 'http://img.huayikeji.com/1mcrsm44mbg8ekvlayfjwulvdzzhl9ym', 345, '2XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (268, 22, '', 'HN202200200125', 308, '黑色', 'http://img.huayikeji.com/b2z1rl4pv3rzhotpxeoru2k8okkscy0f', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (269, 22, '', 'HN202200200126', 308, '黑色', 'http://img.huayikeji.com/b2z1rl4pv3rzhotpxeoru2k8okkscy0f', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (270, 22, '', 'HN202200200127', 308, '黑色', 'http://img.huayikeji.com/b2z1rl4pv3rzhotpxeoru2k8okkscy0f', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (271, 22, '', 'HN202200200128', 308, '黑色', 'http://img.huayikeji.com/b2z1rl4pv3rzhotpxeoru2k8okkscy0f', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (272, 22, '', 'HN202200200129', 308, '黑色', 'http://img.huayikeji.com/b2z1rl4pv3rzhotpxeoru2k8okkscy0f', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (273, 22, '', 'HN202200200130', 308, '黑色', 'http://img.huayikeji.com/b2z1rl4pv3rzhotpxeoru2k8okkscy0f', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (274, 22, '', 'HN202200200131', 308, '黑色', 'http://img.huayikeji.com/b2z1rl4pv3rzhotpxeoru2k8okkscy0f', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (275, 22, '', 'HN202200200132', 308, '黑色', 'http://img.huayikeji.com/b2z1rl4pv3rzhotpxeoru2k8okkscy0f', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (276, 22, '', 'HN202200200225', 389, '黑灰色', 'http://img.huayikeji.com/1xye55g2xefzzxm883tvxq5v1z75r82z', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (277, 22, '', 'HN202200200226', 389, '黑灰色', 'http://img.huayikeji.com/1xye55g2xefzzxm883tvxq5v1z75r82z', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (278, 22, '', 'HN202200200227', 389, '黑灰色', 'http://img.huayikeji.com/1xye55g2xefzzxm883tvxq5v1z75r82z', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (279, 22, '', 'HN202200200228', 389, '黑灰色', 'http://img.huayikeji.com/1xye55g2xefzzxm883tvxq5v1z75r82z', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (280, 22, '', 'HN202200200229', 389, '黑灰色', 'http://img.huayikeji.com/1xye55g2xefzzxm883tvxq5v1z75r82z', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (281, 22, '', 'HN202200200230', 389, '黑灰色', 'http://img.huayikeji.com/1xye55g2xefzzxm883tvxq5v1z75r82z', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (282, 22, '', 'HN202200200231', 389, '黑灰色', 'http://img.huayikeji.com/1xye55g2xefzzxm883tvxq5v1z75r82z', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (283, 22, '', 'HN202200200232', 389, '黑灰色', 'http://img.huayikeji.com/1xye55g2xefzzxm883tvxq5v1z75r82z', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (284, 22, '', 'HN202200200325', 361, '浅蓝色', 'http://img.huayikeji.com/ms87oxxsvn3fi422bsil1rgnqbko3wf8', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (285, 22, '', 'HN202200200326', 361, '浅蓝色', 'http://img.huayikeji.com/ms87oxxsvn3fi422bsil1rgnqbko3wf8', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (286, 22, '', 'HN202200200327', 361, '浅蓝色', 'http://img.huayikeji.com/ms87oxxsvn3fi422bsil1rgnqbko3wf8', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (287, 22, '', 'HN202200200328', 361, '浅蓝色', 'http://img.huayikeji.com/ms87oxxsvn3fi422bsil1rgnqbko3wf8', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (288, 22, '', 'HN202200200329', 361, '浅蓝色', 'http://img.huayikeji.com/ms87oxxsvn3fi422bsil1rgnqbko3wf8', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (289, 22, '', 'HN202200200330', 361, '浅蓝色', 'http://img.huayikeji.com/ms87oxxsvn3fi422bsil1rgnqbko3wf8', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (290, 22, '', 'HN202200200331', 361, '浅蓝色', 'http://img.huayikeji.com/ms87oxxsvn3fi422bsil1rgnqbko3wf8', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (291, 22, '', 'HN202200200332', 361, '浅蓝色', 'http://img.huayikeji.com/ms87oxxsvn3fi422bsil1rgnqbko3wf8', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (292, 22, '', 'HN202200200425', 336, '蓝灰色', 'http://img.huayikeji.com/32e4srov0ypum7hy03oxtwc8p6jejy4g', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (293, 22, '', 'HN202200200426', 336, '蓝灰色', 'http://img.huayikeji.com/32e4srov0ypum7hy03oxtwc8p6jejy4g', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (294, 22, '', 'HN202200200427', 336, '蓝灰色', 'http://img.huayikeji.com/32e4srov0ypum7hy03oxtwc8p6jejy4g', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (295, 22, '', 'HN202200200428', 336, '蓝灰色', 'http://img.huayikeji.com/32e4srov0ypum7hy03oxtwc8p6jejy4g', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (296, 22, '', 'HN202200200429', 336, '蓝灰色', 'http://img.huayikeji.com/32e4srov0ypum7hy03oxtwc8p6jejy4g', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (297, 22, '', 'HN202200200430', 336, '蓝灰色', 'http://img.huayikeji.com/32e4srov0ypum7hy03oxtwc8p6jejy4g', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (298, 22, '', 'HN202200200431', 336, '蓝灰色', 'http://img.huayikeji.com/32e4srov0ypum7hy03oxtwc8p6jejy4g', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (299, 22, '', 'HN202200200435', 336, '蓝灰色', 'http://img.huayikeji.com/32e4srov0ypum7hy03oxtwc8p6jejy4g', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (300, 23, '', 'HN202200240125', 308, '黑色', 'http://img.huayikeji.com/po0fayle1t2gsas9jh0rhkgytkyze9ig', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (301, 23, '', 'HN202200240126', 308, '黑色', 'http://img.huayikeji.com/po0fayle1t2gsas9jh0rhkgytkyze9ig', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (302, 23, '', 'HN202200240127', 308, '黑色', 'http://img.huayikeji.com/po0fayle1t2gsas9jh0rhkgytkyze9ig', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (303, 23, '', 'HN202200240128', 308, '黑色', 'http://img.huayikeji.com/po0fayle1t2gsas9jh0rhkgytkyze9ig', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (304, 23, '', 'HN202200240129', 308, '黑色', 'http://img.huayikeji.com/po0fayle1t2gsas9jh0rhkgytkyze9ig', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (305, 23, '', 'HN202200240130', 308, '黑色', 'http://img.huayikeji.com/po0fayle1t2gsas9jh0rhkgytkyze9ig', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (306, 23, '', 'HN202200240131', 308, '黑色', 'http://img.huayikeji.com/po0fayle1t2gsas9jh0rhkgytkyze9ig', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (307, 23, '', 'HN202200240132', 308, '黑色', 'http://img.huayikeji.com/po0fayle1t2gsas9jh0rhkgytkyze9ig', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (308, 23, '', 'HN202200240225', 389, '黑灰色', 'http://img.huayikeji.com/k2klo0djjmqvrg72zqkwpz303zyxbpik', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (309, 23, '', 'HN202200240226', 389, '黑灰色', 'http://img.huayikeji.com/k2klo0djjmqvrg72zqkwpz303zyxbpik', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (310, 23, '', 'HN202200240227', 389, '黑灰色', 'http://img.huayikeji.com/k2klo0djjmqvrg72zqkwpz303zyxbpik', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (311, 23, '', 'HN202200240228', 389, '黑灰色', 'http://img.huayikeji.com/k2klo0djjmqvrg72zqkwpz303zyxbpik', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (312, 23, '', 'HN202200240229', 389, '黑灰色', 'http://img.huayikeji.com/k2klo0djjmqvrg72zqkwpz303zyxbpik', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (313, 23, '', 'HN202200240230', 389, '黑灰色', 'http://img.huayikeji.com/k2klo0djjmqvrg72zqkwpz303zyxbpik', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (314, 23, '', 'HN202200240231', 389, '黑灰色', 'http://img.huayikeji.com/k2klo0djjmqvrg72zqkwpz303zyxbpik', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (315, 23, '', 'HN202200240232', 389, '黑灰色', 'http://img.huayikeji.com/k2klo0djjmqvrg72zqkwpz303zyxbpik', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (316, 23, '', 'HN202200240325', 361, '浅蓝色', 'http://img.huayikeji.com/jobye46pas210pj9ltbh81kagpn87uuj', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (317, 23, '', 'HN202200240326', 361, '浅蓝色', 'http://img.huayikeji.com/jobye46pas210pj9ltbh81kagpn87uuj', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (318, 23, '', 'HN202200240327', 361, '浅蓝色', 'http://img.huayikeji.com/jobye46pas210pj9ltbh81kagpn87uuj', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (319, 23, '', 'HN202200240328', 361, '浅蓝色', 'http://img.huayikeji.com/jobye46pas210pj9ltbh81kagpn87uuj', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (320, 23, '', 'HN202200240329', 361, '浅蓝色', 'http://img.huayikeji.com/jobye46pas210pj9ltbh81kagpn87uuj', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (321, 23, '', 'HN202200240330', 361, '浅蓝色', 'http://img.huayikeji.com/jobye46pas210pj9ltbh81kagpn87uuj', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (322, 23, '', 'HN202200240331', 361, '浅蓝色', 'http://img.huayikeji.com/jobye46pas210pj9ltbh81kagpn87uuj', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (323, 23, '', 'HN202200240332', 361, '浅蓝色', 'http://img.huayikeji.com/jobye46pas210pj9ltbh81kagpn87uuj', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (324, 23, '', 'HN202200240425', 336, '蓝灰色', 'http://img.huayikeji.com/66vexicx9dqs2terim416pbyw6cimwzr', 0, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (325, 23, '', 'HN202200240426', 336, '蓝灰色', 'http://img.huayikeji.com/66vexicx9dqs2terim416pbyw6cimwzr', 0, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (326, 23, '', 'HN202200240427', 336, '蓝灰色', 'http://img.huayikeji.com/66vexicx9dqs2terim416pbyw6cimwzr', 0, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (327, 23, '', 'HN202200240428', 336, '蓝灰色', 'http://img.huayikeji.com/66vexicx9dqs2terim416pbyw6cimwzr', 0, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (328, 23, '', 'HN202200240429', 336, '蓝灰色', 'http://img.huayikeji.com/66vexicx9dqs2terim416pbyw6cimwzr', 0, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (329, 23, '', 'HN202200240430', 336, '蓝灰色', 'http://img.huayikeji.com/66vexicx9dqs2terim416pbyw6cimwzr', 0, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (330, 23, '', 'HN202200240431', 336, '蓝灰色', 'http://img.huayikeji.com/66vexicx9dqs2terim416pbyw6cimwzr', 0, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (331, 23, '', 'HN202200240432', 336, '蓝灰色', 'http://img.huayikeji.com/66vexicx9dqs2terim416pbyw6cimwzr', 0, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (332, 24, '', 'HN202200120101', 319, '深蓝色', 'http://img.huayikeji.com/tglr5vq19k3f9kpt25bn3hxvwue8s8o9', 341, 'S', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (333, 24, '', 'HN202200120102', 319, '深蓝色', 'http://img.huayikeji.com/tglr5vq19k3f9kpt25bn3hxvwue8s8o9', 342, 'M', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (334, 24, '', 'HN202200120103', 319, '深蓝色', 'http://img.huayikeji.com/tglr5vq19k3f9kpt25bn3hxvwue8s8o9', 343, 'L', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (335, 24, '', 'HN202200120104', 319, '深蓝色', 'http://img.huayikeji.com/tglr5vq19k3f9kpt25bn3hxvwue8s8o9', 344, 'XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (336, 24, '', 'HN202200120105', 319, '深蓝色', 'http://img.huayikeji.com/tglr5vq19k3f9kpt25bn3hxvwue8s8o9', 345, '2XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (337, 25, '', 'OXN06910125', 361, '浅蓝色', 'http://img.huayikeji.com/76yre98jhd5mgvkhgvqcdlktdthof0z0', 0, '25', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (338, 25, '', 'OXN06910126', 361, '浅蓝色', 'http://img.huayikeji.com/76yre98jhd5mgvkhgvqcdlktdthof0z0', 0, '26', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (339, 25, '', 'OXN06910127', 361, '浅蓝色', 'http://img.huayikeji.com/76yre98jhd5mgvkhgvqcdlktdthof0z0', 0, '27', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (340, 25, '', 'OXN06910128', 361, '浅蓝色', 'http://img.huayikeji.com/76yre98jhd5mgvkhgvqcdlktdthof0z0', 0, '28', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (341, 25, '', 'OXN06910129', 361, '浅蓝色', 'http://img.huayikeji.com/76yre98jhd5mgvkhgvqcdlktdthof0z0', 0, '29', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (342, 25, '', 'OXN06910130', 361, '浅蓝色', 'http://img.huayikeji.com/76yre98jhd5mgvkhgvqcdlktdthof0z0', 0, '30', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (343, 25, '', 'OXN06910131', 361, '浅蓝色', 'http://img.huayikeji.com/76yre98jhd5mgvkhgvqcdlktdthof0z0', 0, '31', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (344, 25, '', 'OXN06910132', 361, '浅蓝色', 'http://img.huayikeji.com/76yre98jhd5mgvkhgvqcdlktdthof0z0', 0, '32', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (345, 25, '', 'OXN06910225', 319, '深蓝色', 'http://img.huayikeji.com/tmx42ow0jykbhjrid8d41cr1lsvaidql', 0, '25', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (346, 25, '', 'OXN06910226', 319, '深蓝色', 'http://img.huayikeji.com/tmx42ow0jykbhjrid8d41cr1lsvaidql', 0, '26', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (347, 25, '', 'OXN06910227', 319, '深蓝色', 'http://img.huayikeji.com/tmx42ow0jykbhjrid8d41cr1lsvaidql', 0, '27', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (348, 25, '', 'OXN06910228', 319, '深蓝色', 'http://img.huayikeji.com/tmx42ow0jykbhjrid8d41cr1lsvaidql', 0, '28', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (349, 25, '', 'OXN06910229', 319, '深蓝色', 'http://img.huayikeji.com/tmx42ow0jykbhjrid8d41cr1lsvaidql', 0, '29', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (350, 25, '', 'OXN06910230', 319, '深蓝色', 'http://img.huayikeji.com/tmx42ow0jykbhjrid8d41cr1lsvaidql', 0, '30', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (351, 25, '', 'OXN06910231', 319, '深蓝色', 'http://img.huayikeji.com/tmx42ow0jykbhjrid8d41cr1lsvaidql', 0, '31', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (352, 25, '', 'OXN06910232', 319, '深蓝色', 'http://img.huayikeji.com/tmx42ow0jykbhjrid8d41cr1lsvaidql', 0, '32', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (353, 26, '', 'HN06300101', 389, '黑灰色', 'http://img.huayikeji.com/kcjtgriwhgpz0njn420akyrcfflk6yrd', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (354, 26, '', 'HN06300102', 389, '黑灰色', 'http://img.huayikeji.com/kcjtgriwhgpz0njn420akyrcfflk6yrd', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (355, 26, '', 'HN06300103', 389, '黑灰色', 'http://img.huayikeji.com/kcjtgriwhgpz0njn420akyrcfflk6yrd', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (356, 26, '', 'HN06300104', 389, '黑灰色', 'http://img.huayikeji.com/kcjtgriwhgpz0njn420akyrcfflk6yrd', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (357, 26, '', 'HN06300105', 389, '黑灰色', 'http://img.huayikeji.com/kcjtgriwhgpz0njn420akyrcfflk6yrd', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (358, 26, '', 'HN06300201', 361, '浅蓝色', 'http://img.huayikeji.com/86rh8lzpijus7pc7zcx4ld052uyzew7p', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (359, 26, '', 'HN06300202', 361, '浅蓝色', 'http://img.huayikeji.com/86rh8lzpijus7pc7zcx4ld052uyzew7p', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (360, 26, '', 'HN06300203', 361, '浅蓝色', 'http://img.huayikeji.com/86rh8lzpijus7pc7zcx4ld052uyzew7p', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (361, 26, '', 'HN06300204', 361, '浅蓝色', 'http://img.huayikeji.com/86rh8lzpijus7pc7zcx4ld052uyzew7p', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (362, 26, '', 'HN06300205', 361, '浅蓝色', 'http://img.huayikeji.com/86rh8lzpijus7pc7zcx4ld052uyzew7p', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (363, 26, '', 'HN06300301', 319, '深蓝色', 'http://img.huayikeji.com/6193racfe6v2gls3c5582rxs6h6xpvqo', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (364, 26, '', 'HN06300302', 319, '深蓝色', 'http://img.huayikeji.com/6193racfe6v2gls3c5582rxs6h6xpvqo', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (365, 26, '', 'HN06300303', 319, '深蓝色', 'http://img.huayikeji.com/6193racfe6v2gls3c5582rxs6h6xpvqo', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (366, 26, '', 'HN06300304', 319, '深蓝色', 'http://img.huayikeji.com/6193racfe6v2gls3c5582rxs6h6xpvqo', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (367, 26, '', 'HN06300305', 319, '深蓝色', 'http://img.huayikeji.com/6193racfe6v2gls3c5582rxs6h6xpvqo', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (368, 27, '', 'HN0234025', 356, '复古蓝', 'http://img.huayikeji.com/g0gsgjfmuvl7jkl22sdbfpbcvb2ozki1', 401, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (369, 27, '', 'HN0234026', 356, '复古蓝', 'http://img.huayikeji.com/g0gsgjfmuvl7jkl22sdbfpbcvb2ozki1', 402, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (370, 27, '', 'HN0234027', 356, '复古蓝', 'http://img.huayikeji.com/g0gsgjfmuvl7jkl22sdbfpbcvb2ozki1', 403, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (371, 27, '', 'HN0234028', 356, '复古蓝', 'http://img.huayikeji.com/g0gsgjfmuvl7jkl22sdbfpbcvb2ozki1', 404, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (372, 27, '', 'HN0234029', 356, '复古蓝', 'http://img.huayikeji.com/g0gsgjfmuvl7jkl22sdbfpbcvb2ozki1', 405, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (373, 27, '', 'HN0234030', 356, '复古蓝', 'http://img.huayikeji.com/g0gsgjfmuvl7jkl22sdbfpbcvb2ozki1', 406, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (374, 27, '', 'HN0234031', 356, '复古蓝', 'http://img.huayikeji.com/g0gsgjfmuvl7jkl22sdbfpbcvb2ozki1', 407, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (375, 27, '', 'HN0234032', 356, '复古蓝', 'http://img.huayikeji.com/g0gsgjfmuvl7jkl22sdbfpbcvb2ozki1', 408, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (376, 27, '', 'HN0237525', 389, '黑灰色', 'http://img.huayikeji.com/zydifc6i4epw9fnf192l6la94vu18pyw', 401, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (377, 27, '', 'HN0237526', 389, '黑灰色', 'http://img.huayikeji.com/zydifc6i4epw9fnf192l6la94vu18pyw', 402, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (378, 27, '', 'HN0237527', 389, '黑灰色', 'http://img.huayikeji.com/zydifc6i4epw9fnf192l6la94vu18pyw', 403, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (379, 27, '', 'HN0237528', 389, '黑灰色', 'http://img.huayikeji.com/zydifc6i4epw9fnf192l6la94vu18pyw', 404, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (380, 27, '', 'HN0237529', 389, '黑灰色', 'http://img.huayikeji.com/zydifc6i4epw9fnf192l6la94vu18pyw', 405, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (381, 27, '', 'HN0237530', 389, '黑灰色', 'http://img.huayikeji.com/zydifc6i4epw9fnf192l6la94vu18pyw', 406, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (382, 27, '', 'HN0237531', 389, '黑灰色', 'http://img.huayikeji.com/zydifc6i4epw9fnf192l6la94vu18pyw', 407, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (383, 27, '', 'HN0237532', 389, '黑灰色', 'http://img.huayikeji.com/zydifc6i4epw9fnf192l6la94vu18pyw', 408, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (384, 27, '', 'HN0232925', 336, '蓝灰色', 'http://img.huayikeji.com/6mux70whkwvf28pb6k9avl8ql7m9hnyo', 401, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (385, 27, '', 'HN0232926', 336, '蓝灰色', 'http://img.huayikeji.com/6mux70whkwvf28pb6k9avl8ql7m9hnyo', 402, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (386, 27, '', 'HN0232927', 336, '蓝灰色', 'http://img.huayikeji.com/6mux70whkwvf28pb6k9avl8ql7m9hnyo', 403, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (387, 27, '', 'HN0232928', 336, '蓝灰色', 'http://img.huayikeji.com/6mux70whkwvf28pb6k9avl8ql7m9hnyo', 404, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (388, 27, '', 'HN0232929', 336, '蓝灰色', 'http://img.huayikeji.com/6mux70whkwvf28pb6k9avl8ql7m9hnyo', 405, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (389, 27, '', 'HN0232930', 336, '蓝灰色', 'http://img.huayikeji.com/6mux70whkwvf28pb6k9avl8ql7m9hnyo', 406, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (390, 27, '', 'HN0232931', 336, '蓝灰色', 'http://img.huayikeji.com/6mux70whkwvf28pb6k9avl8ql7m9hnyo', 407, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (391, 27, '', 'HN0232932', 336, '蓝灰色', 'http://img.huayikeji.com/6mux70whkwvf28pb6k9avl8ql7m9hnyo', 408, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (392, 27, '', 'HN0230125', 308, '黑色', 'http://img.huayikeji.com/8p4iw27ejggt0fr66jpbbwxrif65aey7', 401, '25', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (393, 27, '', 'HN0230126', 308, '黑色', 'http://img.huayikeji.com/8p4iw27ejggt0fr66jpbbwxrif65aey7', 402, '26', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (394, 27, '', 'HN0230127', 308, '黑色', 'http://img.huayikeji.com/8p4iw27ejggt0fr66jpbbwxrif65aey7', 403, '27', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (395, 27, '', 'HN0230128', 308, '黑色', 'http://img.huayikeji.com/8p4iw27ejggt0fr66jpbbwxrif65aey7', 404, '28', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (396, 27, '', 'HN0230129', 308, '黑色', 'http://img.huayikeji.com/8p4iw27ejggt0fr66jpbbwxrif65aey7', 405, '29', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (397, 27, '', 'HN0230130', 308, '黑色', 'http://img.huayikeji.com/8p4iw27ejggt0fr66jpbbwxrif65aey7', 406, '30', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (398, 27, '', 'HN0230131', 308, '黑色', 'http://img.huayikeji.com/8p4iw27ejggt0fr66jpbbwxrif65aey7', 407, '31', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (399, 27, '', 'HN0230132', 308, '黑色', 'http://img.huayikeji.com/8p4iw27ejggt0fr66jpbbwxrif65aey7', 408, '32', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (400, 9, '', 'HN80264001', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01gpoCDV2FOyAxsRAur_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (401, 9, '', 'HN80264002', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01gpoCDV2FOyAxsRAur_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (402, 9, '', 'HN80264003', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01gpoCDV2FOyAxsRAur_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (403, 9, '', 'HN80264004', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01gpoCDV2FOyAxsRAur_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (404, 9, '', 'HN80264005', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01gpoCDV2FOyAxsRAur_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (405, 9, '', 'HN80267501', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01xa9IvK2FOyB0MYQJW_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (406, 9, '', 'HN80267502', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01xa9IvK2FOyB0MYQJW_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (407, 9, '', 'HN80267503', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01xa9IvK2FOyB0MYQJW_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (408, 9, '', 'HN80267504', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01xa9IvK2FOyB0MYQJW_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (409, 9, '', 'HN80267505', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01xa9IvK2FOyB0MYQJW_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 19.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (410, 28, '', 'HN6705001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/033/066/21020660330_900849200.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (411, 28, '', 'HN6705002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/033/066/21020660330_900849200.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (412, 28, '', 'HN6705003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/033/066/21020660330_900849200.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (413, 28, '', 'HN6705004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/033/066/21020660330_900849200.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (414, 28, '', 'HN6705005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/033/066/21020660330_900849200.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (415, 28, '', 'HN6707501', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/657/708/20862807756_900849200.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (416, 28, '', 'HN6707502', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/657/708/20862807756_900849200.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (417, 28, '', 'HN6707503', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/657/708/20862807756_900849200.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (418, 28, '', 'HN6707504', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/657/708/20862807756_900849200.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (419, 28, '', 'HN6707505', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/657/708/20862807756_900849200.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (420, 28, '', 'HN6704001', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/2020/080/060/20938060080_900849200.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (421, 28, '', 'HN6704002', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/2020/080/060/20938060080_900849200.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (422, 28, '', 'HN6704003', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/2020/080/060/20938060080_900849200.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (423, 28, '', 'HN6704004', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/2020/080/060/20938060080_900849200.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (424, 28, '', 'HN6704005', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/2020/080/060/20938060080_900849200.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (425, 29, '', 'HNP1820101', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01O6JSPt2FOyGJVlNSt_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (426, 29, '', 'HNP1820102', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01O6JSPt2FOyGJVlNSt_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (427, 29, '', 'HNP1820103', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01O6JSPt2FOyGJVlNSt_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (428, 29, '', 'HNP1820104', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01O6JSPt2FOyGJVlNSt_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (429, 29, '', 'HNP1820105', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01O6JSPt2FOyGJVlNSt_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (430, 29, '', 'HNP1821501', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01nMB3GV2FOyGSIAxrm_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (431, 29, '', 'HNP1821502', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01nMB3GV2FOyGSIAxrm_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (432, 29, '', 'HNP1821503', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01nMB3GV2FOyGSIAxrm_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (433, 29, '', 'HNP1821504', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01nMB3GV2FOyGSIAxrm_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (434, 29, '', 'HNP1821505', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01nMB3GV2FOyGSIAxrm_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (435, 29, '', 'HNP1825001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yp4pfJ2FOyGRQhOVF_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (436, 29, '', 'HNP1825002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yp4pfJ2FOyGRQhOVF_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (437, 29, '', 'HNP1825003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yp4pfJ2FOyGRQhOVF_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (438, 29, '', 'HNP1825004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yp4pfJ2FOyGRQhOVF_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (439, 29, '', 'HNP1825005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yp4pfJ2FOyGRQhOVF_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 21.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (440, 30, '', 'HN6724001', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01O9k7a72FOyF40eXdL_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (441, 30, '', 'HN6724002', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01O9k7a72FOyF40eXdL_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (442, 30, '', 'HN6724003', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01O9k7a72FOyF40eXdL_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (443, 30, '', 'HN6724004', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01O9k7a72FOyF40eXdL_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (444, 30, '', 'HN6724005', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01O9k7a72FOyF40eXdL_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (445, 31, '', 'HN8010101', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/2020/995/164/22330461599_900849200.jpg', 341, 'S', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (446, 31, '', 'HN8010102', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/2020/995/164/22330461599_900849200.jpg', 342, 'M', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (447, 31, '', 'HN8010103', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/2020/995/164/22330461599_900849200.jpg', 343, 'L', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (448, 31, '', 'HN8010104', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/2020/995/164/22330461599_900849200.jpg', 344, 'XL', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (449, 31, '', 'HN8010105', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/2020/995/164/22330461599_900849200.jpg', 345, '2XL', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (450, 31, '', 'HN8017501', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/343/344/22330443343_900849200.jpg', 341, 'S', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (451, 31, '', 'HN8017502', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/343/344/22330443343_900849200.jpg', 342, 'M', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (452, 31, '', 'HN8017503', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/343/344/22330443343_900849200.jpg', 343, 'L', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (453, 31, '', 'HN8017504', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/343/344/22330443343_900849200.jpg', 344, 'XL', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (454, 31, '', 'HN8017505', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/343/344/22330443343_900849200.jpg', 345, '2XL', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (455, 31, '', 'HN8014001', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/2020/195/327/22411723591_900849200.jpg', 341, 'S', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (456, 31, '', 'HN8014002', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/2020/195/327/22411723591_900849200.jpg', 342, 'M', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (457, 31, '', 'HN8014003', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/2020/195/327/22411723591_900849200.jpg', 343, 'L', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (458, 31, '', 'HN8014004', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/2020/195/327/22411723591_900849200.jpg', 344, 'XL', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (459, 31, '', 'HN8014005', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/2020/195/327/22411723591_900849200.jpg', 345, '2XL', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (460, 31, '', 'HN8012901', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/2020/281/876/22411678182_900849200.jpg', 341, 'S', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (461, 31, '', 'HN8012902', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/2020/281/876/22411678182_900849200.jpg', 342, 'M', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (462, 31, '', 'HN8012903', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/2020/281/876/22411678182_900849200.jpg', 343, 'L', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (463, 31, '', 'HN8012904', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/2020/281/876/22411678182_900849200.jpg', 344, 'XL', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (464, 31, '', 'HN8012905', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/2020/281/876/22411678182_900849200.jpg', 345, '2XL', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (465, 31, '', 'HN8015001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/024/282/22502282420_900849200.jpg', 341, 'S', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (466, 31, '', 'HN8015002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/024/282/22502282420_900849200.jpg', 342, 'M', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (467, 31, '', 'HN8015003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/024/282/22502282420_900849200.jpg', 343, 'L', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (468, 31, '', 'HN8015004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/024/282/22502282420_900849200.jpg', 344, 'XL', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (469, 31, '', 'HN8015005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/024/282/22502282420_900849200.jpg', 345, '2XL', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (470, 31, '', 'HN8011001', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/2020/685/864/22502468586_900849200.jpg', 341, 'S', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (471, 31, '', 'HN8011002', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/2020/685/864/22502468586_900849200.jpg', 342, 'M', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (472, 31, '', 'HN8011003', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/2020/685/864/22502468586_900849200.jpg', 343, 'L', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (473, 31, '', 'HN8011004', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/2020/685/864/22502468586_900849200.jpg', 344, 'XL', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (474, 31, '', 'HN8011005', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/2020/685/864/22502468586_900849200.jpg', 345, '2XL', 0, '', NULL, 28.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (475, 32, '', 'HN6975001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN011EipyD2FOyGlVSb58_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (476, 32, '', 'HN6975002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN011EipyD2FOyGlVSb58_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (477, 32, '', 'HN6975003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN011EipyD2FOyGlVSb58_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (478, 32, '', 'HN6975004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN011EipyD2FOyGlVSb58_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (479, 32, '', 'HN6975005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN011EipyD2FOyGlVSb58_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (480, 32, '', 'HN6977501', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01zhhpHl2FOyGk0i8Nf_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (481, 32, '', 'HN6977502', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01zhhpHl2FOyGk0i8Nf_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (482, 32, '', 'HN6977503', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01zhhpHl2FOyGk0i8Nf_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (483, 32, '', 'HN6977504', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01zhhpHl2FOyGk0i8Nf_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (484, 32, '', 'HN6977505', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01zhhpHl2FOyGk0i8Nf_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (485, 32, '', 'HN6971001', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/O1CN01u87ebo2FOyGsDbhyd_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (486, 32, '', 'HN6971002', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/O1CN01u87ebo2FOyGsDbhyd_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (487, 32, '', 'HN6971003', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/O1CN01u87ebo2FOyGsDbhyd_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (488, 32, '', 'HN6971004', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/O1CN01u87ebo2FOyGsDbhyd_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (489, 32, '', 'HN6971005', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/O1CN01u87ebo2FOyGsDbhyd_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (490, 33, '', 'HN08010101', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01veMucP2FOyCvGWh20_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (491, 33, '', 'HN08010102', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01veMucP2FOyCvGWh20_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (492, 33, '', 'HN08010103', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01veMucP2FOyCvGWh20_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (493, 33, '', 'HN08010104', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01veMucP2FOyCvGWh20_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (494, 33, '', 'HN08010105', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01veMucP2FOyCvGWh20_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (495, 33, '', 'HN08017501', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01T4m3Jm2FOyCuMBQ9v_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (496, 33, '', 'HN08017502', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01T4m3Jm2FOyCuMBQ9v_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (497, 33, '', 'HN08017503', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01T4m3Jm2FOyCuMBQ9v_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (498, 33, '', 'HN08017504', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01T4m3Jm2FOyCuMBQ9v_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (499, 33, '', 'HN08017505', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01T4m3Jm2FOyCuMBQ9v_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (500, 33, '', 'HN08012901', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01eWGzKH2FOyCrd3HjP_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (501, 33, '', 'HN08012902', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01eWGzKH2FOyCrd3HjP_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (502, 33, '', 'HN08012903', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01eWGzKH2FOyCrd3HjP_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (503, 33, '', 'HN08012904', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01eWGzKH2FOyCrd3HjP_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (504, 33, '', 'HN08012905', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01eWGzKH2FOyCrd3HjP_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (505, 33, '', 'HN08014001', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01zJ8R7I2FOyCr3v2cC_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (506, 33, '', 'HN08014002', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01zJ8R7I2FOyCr3v2cC_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (507, 33, '', 'HN08014003', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01zJ8R7I2FOyCr3v2cC_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (508, 33, '', 'HN08014004', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01zJ8R7I2FOyCr3v2cC_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (509, 33, '', 'HN08014005', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01zJ8R7I2FOyCr3v2cC_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (510, 34, '', 'HN6210101', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01DMb5Yv2FOyEph4yYB_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (511, 34, '', 'HN6210102', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01DMb5Yv2FOyEph4yYB_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (512, 34, '', 'HN6210103', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01DMb5Yv2FOyEph4yYB_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (513, 34, '', 'HN6210104', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01DMb5Yv2FOyEph4yYB_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (514, 34, '', 'HN6210105', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01DMb5Yv2FOyEph4yYB_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (515, 34, '', 'HN6217501', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01HLBVQl2FOyEn4nMnB_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (516, 34, '', 'HN6217502', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01HLBVQl2FOyEn4nMnB_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (517, 34, '', 'HN6217503', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01HLBVQl2FOyEn4nMnB_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (518, 34, '', 'HN6217504', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01HLBVQl2FOyEn4nMnB_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (519, 34, '', 'HN6217505', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01HLBVQl2FOyEn4nMnB_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (520, 34, '', 'HN6215001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01YPm5Yc2FOyEkRHf9E_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (521, 34, '', 'HN6215002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01YPm5Yc2FOyEkRHf9E_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (522, 34, '', 'HN6215003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01YPm5Yc2FOyEkRHf9E_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (523, 34, '', 'HN6215004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01YPm5Yc2FOyEkRHf9E_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (524, 34, '', 'HN6215005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01YPm5Yc2FOyEkRHf9E_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (525, 34, '', 'HN6214001', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01TLlyFy2FOyEkRLLyI_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (526, 34, '', 'HN6214002', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01TLlyFy2FOyEkRLLyI_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (527, 34, '', 'HN6214003', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01TLlyFy2FOyEkRLLyI_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (528, 34, '', 'HN6214004', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01TLlyFy2FOyEkRLLyI_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (529, 34, '', 'HN6214005', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01TLlyFy2FOyEkRLLyI_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (530, 35, '', 'HN6625001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/732/346/22406643237_900849200.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (531, 35, '', 'HN6625002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/732/346/22406643237_900849200.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (532, 35, '', 'HN6625003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/732/346/22406643237_900849200.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (533, 35, '', 'HN6625004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/732/346/22406643237_900849200.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (534, 35, '', 'HN6625005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/732/346/22406643237_900849200.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (535, 36, '', 'HN6927501', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01FDRxMp2FOyDOB1iTE_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (536, 36, '', 'HN6927502', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01FDRxMp2FOyDOB1iTE_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (537, 36, '', 'HN6927503', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01FDRxMp2FOyDOB1iTE_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (538, 36, '', 'HN6927504', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01FDRxMp2FOyDOB1iTE_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (539, 36, '', 'HN6927505', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01FDRxMp2FOyDOB1iTE_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (540, 36, '', 'HN6925001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Kn6Ove2FOyDUNlzou_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (541, 36, '', 'HN6925002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Kn6Ove2FOyDUNlzou_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (542, 36, '', 'HN6925003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Kn6Ove2FOyDUNlzou_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (543, 36, '', 'HN6925004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Kn6Ove2FOyDUNlzou_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (544, 36, '', 'HN6925005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Kn6Ove2FOyDUNlzou_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (545, 37, '', 'HN1060101', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01xwzF522FOyCIOnqKM_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (546, 37, '', 'HN1060102', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01xwzF522FOyCIOnqKM_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (547, 37, '', 'HN1060103', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01xwzF522FOyCIOnqKM_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (548, 37, '', 'HN1060104', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01xwzF522FOyCIOnqKM_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (549, 37, '', 'HN1060105', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01xwzF522FOyCIOnqKM_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (550, 37, '', 'HN1064001', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01C6Sn4s2FOyCMDu0n5_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (551, 37, '', 'HN1064002', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01C6Sn4s2FOyCMDu0n5_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (552, 37, '', 'HN1064003', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01C6Sn4s2FOyCMDu0n5_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (553, 37, '', 'HN1064004', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01C6Sn4s2FOyCMDu0n5_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (554, 37, '', 'HN1064005', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01C6Sn4s2FOyCMDu0n5_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (555, 37, '', 'HN1062901', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN013vTM8R2FOyCEFuCQk_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (556, 37, '', 'HN1062902', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN013vTM8R2FOyCEFuCQk_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (557, 37, '', 'HN1062903', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN013vTM8R2FOyCEFuCQk_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (558, 37, '', 'HN1062904', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN013vTM8R2FOyCEFuCQk_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (559, 37, '', 'HN1062905', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN013vTM8R2FOyCEFuCQk_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (560, 38, '', 'HN6635001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01ARPAL32FOyAcs8t96_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (561, 38, '', 'HN6635002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01ARPAL32FOyAcs8t96_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (562, 38, '', 'HN6635003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01ARPAL32FOyAcs8t96_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (563, 38, '', 'HN6635004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01ARPAL32FOyAcs8t96_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (564, 38, '', 'HN6635005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01ARPAL32FOyAcs8t96_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (565, 38, '', 'HN6637501', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01y01tnq2FOyAbctZxT_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (566, 38, '', 'HN6637502', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01y01tnq2FOyAbctZxT_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (567, 38, '', 'HN6637503', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01y01tnq2FOyAbctZxT_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (568, 38, '', 'HN6637504', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01y01tnq2FOyAbctZxT_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (569, 38, '', 'HN6637505', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01y01tnq2FOyAbctZxT_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (570, 39, '', 'HN0220126', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN018JTrMY2FOyA4kgljs_!!2208857268871-0-cib.jpg', 402, '26', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (571, 39, '', 'HN0220127', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN018JTrMY2FOyA4kgljs_!!2208857268871-0-cib.jpg', 403, '27', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (572, 39, '', 'HN0220128', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN018JTrMY2FOyA4kgljs_!!2208857268871-0-cib.jpg', 404, '28', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (573, 39, '', 'HN0220129', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN018JTrMY2FOyA4kgljs_!!2208857268871-0-cib.jpg', 405, '29', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (574, 39, '', 'HN0220130', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN018JTrMY2FOyA4kgljs_!!2208857268871-0-cib.jpg', 406, '30', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (575, 39, '', 'HN0220131', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN018JTrMY2FOyA4kgljs_!!2208857268871-0-cib.jpg', 407, '31', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (576, 39, '', 'HN0220132', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN018JTrMY2FOyA4kgljs_!!2208857268871-0-cib.jpg', 408, '32', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (577, 39, '', 'HN0222926', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN012TyoAb2FOyA5iihhy_!!2208857268871-0-cib.jpg', 402, '26', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (578, 39, '', 'HN0222927', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN012TyoAb2FOyA5iihhy_!!2208857268871-0-cib.jpg', 403, '27', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (579, 39, '', 'HN0222928', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN012TyoAb2FOyA5iihhy_!!2208857268871-0-cib.jpg', 404, '28', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (580, 39, '', 'HN0222929', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN012TyoAb2FOyA5iihhy_!!2208857268871-0-cib.jpg', 405, '29', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (581, 39, '', 'HN0222930', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN012TyoAb2FOyA5iihhy_!!2208857268871-0-cib.jpg', 406, '30', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (582, 39, '', 'HN0222931', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN012TyoAb2FOyA5iihhy_!!2208857268871-0-cib.jpg', 407, '31', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (583, 39, '', 'HN0222932', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN012TyoAb2FOyA5iihhy_!!2208857268871-0-cib.jpg', 408, '32', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (584, 40, '', 'HN6685001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01lUqTwm2FOy9rP6Jod_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (585, 40, '', 'HN6685002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01lUqTwm2FOy9rP6Jod_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (586, 40, '', 'HN6685003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01lUqTwm2FOy9rP6Jod_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (587, 40, '', 'HN6685004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01lUqTwm2FOy9rP6Jod_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (588, 40, '', 'HN6685005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01lUqTwm2FOy9rP6Jod_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (589, 40, '', 'HN6681201', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01D3ndSV2FOy9hbKsqA_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (590, 40, '', 'HN6681202', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01D3ndSV2FOy9hbKsqA_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (591, 40, '', 'HN6681203', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01D3ndSV2FOy9hbKsqA_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (592, 40, '', 'HN6681204', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01D3ndSV2FOy9hbKsqA_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (593, 40, '', 'HN6681205', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01D3ndSV2FOy9hbKsqA_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (594, 40, '', 'HN6687501', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01YsByd92FOy9lGqpvL_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (595, 40, '', 'HN6687502', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01YsByd92FOy9lGqpvL_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (596, 40, '', 'HN6687503', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01YsByd92FOy9lGqpvL_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (597, 40, '', 'HN6687504', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01YsByd92FOy9lGqpvL_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (598, 40, '', 'HN6687505', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01YsByd92FOy9lGqpvL_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (599, 41, '', 'HN6675001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01J3Quqe2FOyH5tjtiy_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (600, 41, '', 'HN6675002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01J3Quqe2FOyH5tjtiy_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (601, 41, '', 'HN6675003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01J3Quqe2FOyH5tjtiy_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (602, 41, '', 'HN6675004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01J3Quqe2FOyH5tjtiy_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (603, 41, '', 'HN6675005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01J3Quqe2FOyH5tjtiy_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (604, 41, '', 'HN6674001', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01a2j3nN2FOyHBXnetl_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (605, 41, '', 'HN6674002', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01a2j3nN2FOyHBXnetl_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (606, 41, '', 'HN6674003', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01a2j3nN2FOyHBXnetl_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (607, 41, '', 'HN6674004', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01a2j3nN2FOyHBXnetl_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (608, 41, '', 'HN6674005', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01a2j3nN2FOyHBXnetl_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (609, 42, '', 'HN2221226', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/176/214/19868412671_900849200.jpg', 402, '26', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (610, 42, '', 'HN2221227', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/176/214/19868412671_900849200.jpg', 403, '27', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (611, 42, '', 'HN2221228', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/176/214/19868412671_900849200.jpg', 404, '28', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (612, 42, '', 'HN2221229', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/176/214/19868412671_900849200.jpg', 405, '29', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (613, 42, '', 'HN2221230', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/176/214/19868412671_900849200.jpg', 406, '30', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (614, 42, '', 'HN2221231', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/176/214/19868412671_900849200.jpg', 407, '31', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (615, 42, '', 'HN2221232', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/176/214/19868412671_900849200.jpg', 408, '32', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (616, 42, '', 'HN2225026', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/537/457/19941754735_900849200.jpg', 402, '26', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (617, 42, '', 'HN2225027', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/537/457/19941754735_900849200.jpg', 403, '27', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (618, 42, '', 'HN2225028', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/537/457/19941754735_900849200.jpg', 404, '28', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (619, 42, '', 'HN2225029', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/537/457/19941754735_900849200.jpg', 405, '29', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (620, 42, '', 'HN2225030', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/537/457/19941754735_900849200.jpg', 406, '30', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (621, 42, '', 'HN2225031', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/537/457/19941754735_900849200.jpg', 407, '31', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (622, 42, '', 'HN2225032', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/537/457/19941754735_900849200.jpg', 408, '32', 0, '', NULL, 30.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (623, 43, '', 'HN6945001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/842/093/21808390248_900849200.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (624, 43, '', 'HN6945002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/842/093/21808390248_900849200.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (625, 43, '', 'HN6945003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/842/093/21808390248_900849200.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (626, 43, '', 'HN6945004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/842/093/21808390248_900849200.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (627, 43, '', 'HN6945005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/842/093/21808390248_900849200.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (628, 43, '', 'HN6947501', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/705/941/21730149507_900849200.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (629, 43, '', 'HN6947502', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/705/941/21730149507_900849200.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (630, 43, '', 'HN6947503', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/705/941/21730149507_900849200.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (631, 43, '', 'HN6947504', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/705/941/21730149507_900849200.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (632, 43, '', 'HN6947505', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/705/941/21730149507_900849200.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (633, 44, '', 'HN6600101', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01DIe7Es2FOyCYIZFWt_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (634, 44, '', 'HN6600102', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01DIe7Es2FOyCYIZFWt_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (635, 44, '', 'HN6600103', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01DIe7Es2FOyCYIZFWt_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (636, 44, '', 'HN6600104', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01DIe7Es2FOyCYIZFWt_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (637, 44, '', 'HN6600105', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01DIe7Es2FOyCYIZFWt_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (638, 44, '', 'HN6605001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN016QWq2N2FOyCSH3gt9_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (639, 44, '', 'HN6605002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN016QWq2N2FOyCSH3gt9_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (640, 44, '', 'HN6605003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN016QWq2N2FOyCSH3gt9_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (641, 44, '', 'HN6605004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN016QWq2N2FOyCSH3gt9_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (642, 44, '', 'HN6605005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN016QWq2N2FOyCSH3gt9_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (643, 44, '', 'HN6607501', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01evRAWu2FOyCUPwcyo_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (644, 44, '', 'HN6607502', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01evRAWu2FOyCUPwcyo_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (645, 44, '', 'HN6607503', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01evRAWu2FOyCUPwcyo_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (646, 44, '', 'HN6607504', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01evRAWu2FOyCUPwcyo_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (647, 44, '', 'HN6607505', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01evRAWu2FOyCUPwcyo_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (648, 44, '', 'HN6604001', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01ZxdpVe2FOyCUVHjc2_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (649, 44, '', 'HN6604002', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01ZxdpVe2FOyCUVHjc2_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (650, 44, '', 'HN6604003', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01ZxdpVe2FOyCUVHjc2_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (651, 44, '', 'HN6604004', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01ZxdpVe2FOyCUVHjc2_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (652, 44, '', 'HN6604005', 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01ZxdpVe2FOyCUVHjc2_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (653, 45, '', 'HN6861501', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01E4FgMe2FOyCf3EUih_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (654, 45, '', 'HN6861502', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01E4FgMe2FOyCf3EUih_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (655, 45, '', 'HN6861503', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01E4FgMe2FOyCf3EUih_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (656, 45, '', 'HN6861504', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01E4FgMe2FOyCf3EUih_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (657, 45, '', 'HN6861505', 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01E4FgMe2FOyCf3EUih_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (658, 45, '', 'HN6860101', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01WpxUo32FOyCb3IFRu_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (659, 45, '', 'HN6860102', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01WpxUo32FOyCb3IFRu_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (660, 45, '', 'HN6860103', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01WpxUo32FOyCb3IFRu_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (661, 45, '', 'HN6860104', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01WpxUo32FOyCb3IFRu_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (662, 45, '', 'HN6860105', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01WpxUo32FOyCb3IFRu_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (663, 45, '', 'HN6865001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01LNgHTm2FOyCf3KXQX_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (664, 45, '', 'HN6865002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01LNgHTm2FOyCf3KXQX_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (665, 45, '', 'HN6865003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01LNgHTm2FOyCf3KXQX_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (666, 45, '', 'HN6865004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01LNgHTm2FOyCf3KXQX_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (667, 45, '', 'HN6865005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01LNgHTm2FOyCf3KXQX_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (668, 45, '', 'HN6867501', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01A6gZ4a2FOyChQ6oRF_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (669, 45, '', 'HN6867502', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01A6gZ4a2FOyChQ6oRF_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (670, 45, '', 'HN6867503', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01A6gZ4a2FOyChQ6oRF_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (671, 45, '', 'HN6867504', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01A6gZ4a2FOyChQ6oRF_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (672, 45, '', 'HN6867505', 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01A6gZ4a2FOyChQ6oRF_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (673, 46, '', 'HN0210126', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Nak9ys2FOyE9IvLef_!!2208857268871-0-cib.jpg', 402, '26', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (674, 46, '', 'HN0210127', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Nak9ys2FOyE9IvLef_!!2208857268871-0-cib.jpg', 403, '27', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (675, 46, '', 'HN0210128', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Nak9ys2FOyE9IvLef_!!2208857268871-0-cib.jpg', 404, '28', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (676, 46, '', 'HN0210129', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Nak9ys2FOyE9IvLef_!!2208857268871-0-cib.jpg', 405, '29', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (677, 46, '', 'HN0210130', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Nak9ys2FOyE9IvLef_!!2208857268871-0-cib.jpg', 406, '30', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (678, 46, '', 'HN0210131', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Nak9ys2FOyE9IvLef_!!2208857268871-0-cib.jpg', 407, '31', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (679, 46, '', 'HN0210132', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Nak9ys2FOyE9IvLef_!!2208857268871-0-cib.jpg', 408, '32', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (680, 46, '', 'HN0212826', 336, '烟灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Oi8GB62FOyEARfNQF_!!2208857268871-0-cib.jpg', 402, '26', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (681, 46, '', 'HN0212827', 336, '烟灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Oi8GB62FOyEARfNQF_!!2208857268871-0-cib.jpg', 403, '27', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (682, 46, '', 'HN0212828', 336, '烟灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Oi8GB62FOyEARfNQF_!!2208857268871-0-cib.jpg', 404, '28', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (683, 46, '', 'HN0212829', 336, '烟灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Oi8GB62FOyEARfNQF_!!2208857268871-0-cib.jpg', 405, '29', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (684, 46, '', 'HN0212830', 336, '烟灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Oi8GB62FOyEARfNQF_!!2208857268871-0-cib.jpg', 406, '30', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (685, 46, '', 'HN0212831', 336, '烟灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Oi8GB62FOyEARfNQF_!!2208857268871-0-cib.jpg', 407, '31', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (686, 46, '', 'HN0212832', 336, '烟灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Oi8GB62FOyEARfNQF_!!2208857268871-0-cib.jpg', 408, '32', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (687, 46, '', 'HN0215026', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yMCDYu2FOyEARqBVY_!!2208857268871-0-cib.jpg', 402, '26', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (688, 46, '', 'HN0215027', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yMCDYu2FOyEARqBVY_!!2208857268871-0-cib.jpg', 403, '27', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (689, 46, '', 'HN0215028', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yMCDYu2FOyEARqBVY_!!2208857268871-0-cib.jpg', 404, '28', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (690, 46, '', 'HN0215029', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yMCDYu2FOyEARqBVY_!!2208857268871-0-cib.jpg', 405, '29', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (691, 46, '', 'HN0215030', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yMCDYu2FOyEARqBVY_!!2208857268871-0-cib.jpg', 406, '30', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (692, 46, '', 'HN0215031', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yMCDYu2FOyEARqBVY_!!2208857268871-0-cib.jpg', 407, '31', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (693, 46, '', 'HN0215032', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yMCDYu2FOyEARqBVY_!!2208857268871-0-cib.jpg', 408, '32', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (694, 46, '', 'HN0212926', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01SzZ7qE2FOyE5Ahn5c_!!2208857268871-0-cib.jpg', 402, '26', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (695, 46, '', 'HN0212927', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01SzZ7qE2FOyE5Ahn5c_!!2208857268871-0-cib.jpg', 403, '27', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (696, 46, '', 'HN0212928', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01SzZ7qE2FOyE5Ahn5c_!!2208857268871-0-cib.jpg', 404, '28', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (697, 46, '', 'HN0212929', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01SzZ7qE2FOyE5Ahn5c_!!2208857268871-0-cib.jpg', 405, '29', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (698, 46, '', 'HN0212930', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01SzZ7qE2FOyE5Ahn5c_!!2208857268871-0-cib.jpg', 406, '30', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (699, 46, '', 'HN0212931', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01SzZ7qE2FOyE5Ahn5c_!!2208857268871-0-cib.jpg', 407, '31', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (700, 46, '', 'HN0212932', 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01SzZ7qE2FOyE5Ahn5c_!!2208857268871-0-cib.jpg', 408, '32', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (701, 46, '', 'HN02110026', 0, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01GXj19V2FOyDvtRpMI_!!2208857268871-0-cib.jpg', 402, '26', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (702, 46, '', 'HN02110027', 0, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01GXj19V2FOyDvtRpMI_!!2208857268871-0-cib.jpg', 403, '27', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (703, 46, '', 'HN02110028', 0, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01GXj19V2FOyDvtRpMI_!!2208857268871-0-cib.jpg', 404, '28', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (704, 46, '', 'HN02110029', 0, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01GXj19V2FOyDvtRpMI_!!2208857268871-0-cib.jpg', 405, '29', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (705, 46, '', 'HN02110030', 0, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01GXj19V2FOyDvtRpMI_!!2208857268871-0-cib.jpg', 406, '30', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (706, 46, '', 'HN02110031', 0, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01GXj19V2FOyDvtRpMI_!!2208857268871-0-cib.jpg', 407, '31', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (707, 46, '', 'HN02110032', 0, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01GXj19V2FOyDvtRpMI_!!2208857268871-0-cib.jpg', 408, '32', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (708, 46, '', 'HN02128026', 0, '烟灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01nw66Rp2FOyECsleSF_!!2208857268871-0-cib.jpg', 402, '26', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (709, 46, '', 'HN02128027', 0, '烟灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01nw66Rp2FOyECsleSF_!!2208857268871-0-cib.jpg', 403, '27', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (710, 46, '', 'HN02128028', 0, '烟灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01nw66Rp2FOyECsleSF_!!2208857268871-0-cib.jpg', 404, '28', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (711, 46, '', 'HN02128029', 0, '烟灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01nw66Rp2FOyECsleSF_!!2208857268871-0-cib.jpg', 405, '29', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (712, 46, '', 'HN02128030', 0, '烟灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01nw66Rp2FOyECsleSF_!!2208857268871-0-cib.jpg', 406, '30', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (713, 46, '', 'HN02128031', 0, '烟灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01nw66Rp2FOyECsleSF_!!2208857268871-0-cib.jpg', 407, '31', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (714, 46, '', 'HN02128032', 0, '烟灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01nw66Rp2FOyECsleSF_!!2208857268871-0-cib.jpg', 408, '32', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (715, 46, '', 'HN02129026', 0, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tCa6sF2FOyE8JtRoh_!!2208857268871-0-cib.jpg', 402, '26', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (716, 46, '', 'HN02129027', 0, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tCa6sF2FOyE8JtRoh_!!2208857268871-0-cib.jpg', 403, '27', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (717, 46, '', 'HN02129028', 0, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tCa6sF2FOyE8JtRoh_!!2208857268871-0-cib.jpg', 404, '28', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (718, 46, '', 'HN02129029', 0, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tCa6sF2FOyE8JtRoh_!!2208857268871-0-cib.jpg', 405, '29', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (719, 46, '', 'HN02129030', 0, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tCa6sF2FOyE8JtRoh_!!2208857268871-0-cib.jpg', 406, '30', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (720, 46, '', 'HN02129031', 0, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tCa6sF2FOyE8JtRoh_!!2208857268871-0-cib.jpg', 407, '31', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (721, 46, '', 'HN02129032', 0, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tCa6sF2FOyE8JtRoh_!!2208857268871-0-cib.jpg', 408, '32', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (722, 46, '', 'HN02150026', 0, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01XHjrys2FOyE9si0Q8_!!2208857268871-0-cib.jpg', 402, '26', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (723, 46, '', 'HN02150027', 0, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01XHjrys2FOyE9si0Q8_!!2208857268871-0-cib.jpg', 403, '27', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (724, 46, '', 'HN02150028', 0, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01XHjrys2FOyE9si0Q8_!!2208857268871-0-cib.jpg', 404, '28', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (725, 46, '', 'HN02150029', 0, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01XHjrys2FOyE9si0Q8_!!2208857268871-0-cib.jpg', 405, '29', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (726, 46, '', 'HN02150030', 0, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01XHjrys2FOyE9si0Q8_!!2208857268871-0-cib.jpg', 406, '30', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (727, 46, '', 'HN02150031', 0, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01XHjrys2FOyE9si0Q8_!!2208857268871-0-cib.jpg', 407, '31', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (728, 46, '', 'HN02150032', 0, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01XHjrys2FOyE9si0Q8_!!2208857268871-0-cib.jpg', 408, '32', 0, '', NULL, 31.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (729, 47, '', 'JKL8051209', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01KtZqKM2Arl3fk5KtK_!!2513908257-0-cib.jpg', 394, 'XS', 0, '长款', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (730, 47, '', 'JKL8051201', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01KtZqKM2Arl3fk5KtK_!!2513908257-0-cib.jpg', 341, 'S', 0, '长款', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (731, 47, '', 'JKL8051202', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01KtZqKM2Arl3fk5KtK_!!2513908257-0-cib.jpg', 342, 'M', 0, '长款', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (732, 47, '', 'JKL8051203', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01KtZqKM2Arl3fk5KtK_!!2513908257-0-cib.jpg', 343, 'L', 0, '长款', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (733, 47, '', 'JKL8051204', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01KtZqKM2Arl3fk5KtK_!!2513908257-0-cib.jpg', 344, 'XL', 0, '长款', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (734, 47, '', 'JKL8051205', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01KtZqKM2Arl3fk5KtK_!!2513908257-0-cib.jpg', 345, '2XL', 0, '长款', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (735, 47, '', 'JKL80512009', 0, '深蓝色加长', 'https://cbu01.alicdn.com/img/ibank/O1CN01fz1zp42Arl3SMD5sS_!!2513908257-0-cib.jpg', 394, 'XS', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (736, 47, '', 'JKL80512001', 0, '深蓝色加长', 'https://cbu01.alicdn.com/img/ibank/O1CN01fz1zp42Arl3SMD5sS_!!2513908257-0-cib.jpg', 341, 'S', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (737, 47, '', 'JKL80512002', 0, '深蓝色加长', 'https://cbu01.alicdn.com/img/ibank/O1CN01fz1zp42Arl3SMD5sS_!!2513908257-0-cib.jpg', 342, 'M', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (738, 47, '', 'JKL80512003', 0, '深蓝色加长', 'https://cbu01.alicdn.com/img/ibank/O1CN01fz1zp42Arl3SMD5sS_!!2513908257-0-cib.jpg', 343, 'L', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (739, 47, '', 'JKL80512004', 0, '深蓝色加长', 'https://cbu01.alicdn.com/img/ibank/O1CN01fz1zp42Arl3SMD5sS_!!2513908257-0-cib.jpg', 344, 'XL', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (740, 47, '', 'JKL80512005', 0, '深蓝色加长', 'https://cbu01.alicdn.com/img/ibank/O1CN01fz1zp42Arl3SMD5sS_!!2513908257-0-cib.jpg', 345, '2XL', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (741, 33, '', 'HN08015001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Kv2ymz2FOyCNsDP1S_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (742, 33, '', 'HN08015002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Kv2ymz2FOyCNsDP1S_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (743, 33, '', 'HN08015003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Kv2ymz2FOyCNsDP1S_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (744, 33, '', 'HN08015004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Kv2ymz2FOyCNsDP1S_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (745, 33, '', 'HN08015005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Kv2ymz2FOyCNsDP1S_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (746, 33, '', 'HN08011001', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/O1CN01O3yq8p2FOyCOMzdUR_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (747, 33, '', 'HN08011002', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/O1CN01O3yq8p2FOyCOMzdUR_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (748, 33, '', 'HN08011003', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/O1CN01O3yq8p2FOyCOMzdUR_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (749, 33, '', 'HN08011004', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/O1CN01O3yq8p2FOyCOMzdUR_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (750, 33, '', 'HN08011005', 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/O1CN01O3yq8p2FOyCOMzdUR_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 25.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (751, 33, '', 'HN080110101', 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01wWwtXm2FOyDIpC0BY_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (752, 33, '', 'HN080110102', 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01wWwtXm2FOyDIpC0BY_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (753, 33, '', 'HN080110103', 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01wWwtXm2FOyDIpC0BY_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (754, 33, '', 'HN080110104', 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01wWwtXm2FOyDIpC0BY_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (755, 33, '', 'HN080110105', 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01wWwtXm2FOyDIpC0BY_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (756, 33, '', 'HN080117501', 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01lqQeRn2FOyDLJRi9c_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (757, 33, '', 'HN080117502', 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01lqQeRn2FOyDLJRi9c_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (758, 33, '', 'HN080117503', 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01lqQeRn2FOyDLJRi9c_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (759, 33, '', 'HN080117504', 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01lqQeRn2FOyDLJRi9c_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (760, 33, '', 'HN080117505', 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01lqQeRn2FOyDLJRi9c_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (761, 33, '', 'HN080112901', 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tQBYWC2FOyD8HYB3p_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (762, 33, '', 'HN080112902', 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tQBYWC2FOyD8HYB3p_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (763, 33, '', 'HN080112903', 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tQBYWC2FOyD8HYB3p_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (764, 33, '', 'HN080112904', 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tQBYWC2FOyD8HYB3p_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (765, 33, '', 'HN080112905', 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tQBYWC2FOyD8HYB3p_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (766, 33, '', 'HN080114001', 412, '复古蓝加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tS1yRE2FOyDMvwj7p_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (767, 33, '', 'HN080114002', 412, '复古蓝加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tS1yRE2FOyDMvwj7p_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (768, 33, '', 'HN080114003', 412, '复古蓝加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tS1yRE2FOyDMvwj7p_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (769, 33, '', 'HN080114004', 412, '复古蓝加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tS1yRE2FOyDMvwj7p_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (770, 33, '', 'HN080114005', 412, '复古蓝加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tS1yRE2FOyDMvwj7p_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (771, 33, '', 'HN080115001', 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN010gs0ON2FOyDNfPddh_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (772, 33, '', 'HN080115002', 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN010gs0ON2FOyDNfPddh_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (773, 33, '', 'HN080115003', 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN010gs0ON2FOyDNfPddh_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (774, 33, '', 'HN080115004', 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN010gs0ON2FOyDNfPddh_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (775, 33, '', 'HN080115005', 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN010gs0ON2FOyDNfPddh_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 32.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (776, 22, '', 'HN2022002010125', 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01yUmRNW2FOyDTbXvyF_!!2208857268871-0-cib.jpg', 401, '25', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (777, 22, '', 'HN2022002010126', 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01yUmRNW2FOyDTbXvyF_!!2208857268871-0-cib.jpg', 402, '26', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (778, 22, '', 'HN2022002010127', 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01yUmRNW2FOyDTbXvyF_!!2208857268871-0-cib.jpg', 403, '27', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (779, 22, '', 'HN2022002010128', 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01yUmRNW2FOyDTbXvyF_!!2208857268871-0-cib.jpg', 404, '28', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (780, 22, '', 'HN2022002010129', 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01yUmRNW2FOyDTbXvyF_!!2208857268871-0-cib.jpg', 405, '29', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (781, 22, '', 'HN2022002010130', 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01yUmRNW2FOyDTbXvyF_!!2208857268871-0-cib.jpg', 406, '30', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (782, 22, '', 'HN2022002010131', 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01yUmRNW2FOyDTbXvyF_!!2208857268871-0-cib.jpg', 407, '31', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (783, 22, '', 'HN2022002010132', 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01yUmRNW2FOyDTbXvyF_!!2208857268871-0-cib.jpg', 408, '32', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (784, 22, '', 'HN2022002017525', 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN016nREfS2FOyDXxglpQ_!!2208857268871-0-cib.jpg', 401, '25', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (785, 22, '', 'HN2022002017526', 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN016nREfS2FOyDXxglpQ_!!2208857268871-0-cib.jpg', 402, '26', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (786, 22, '', 'HN2022002017527', 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN016nREfS2FOyDXxglpQ_!!2208857268871-0-cib.jpg', 403, '27', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (787, 22, '', 'HN2022002017528', 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN016nREfS2FOyDXxglpQ_!!2208857268871-0-cib.jpg', 404, '28', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (788, 22, '', 'HN2022002017529', 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN016nREfS2FOyDXxglpQ_!!2208857268871-0-cib.jpg', 405, '29', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (789, 22, '', 'HN2022002017530', 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN016nREfS2FOyDXxglpQ_!!2208857268871-0-cib.jpg', 406, '30', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (790, 22, '', 'HN2022002017531', 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN016nREfS2FOyDXxglpQ_!!2208857268871-0-cib.jpg', 407, '31', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (791, 22, '', 'HN2022002017532', 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN016nREfS2FOyDXxglpQ_!!2208857268871-0-cib.jpg', 408, '32', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (792, 22, '', 'HN2022002012925', 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN0121IGEy2FOyDeZm8MH_!!2208857268871-0-cib.jpg', 401, '25', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (793, 22, '', 'HN2022002012926', 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN0121IGEy2FOyDeZm8MH_!!2208857268871-0-cib.jpg', 402, '26', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (794, 22, '', 'HN2022002012927', 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN0121IGEy2FOyDeZm8MH_!!2208857268871-0-cib.jpg', 403, '27', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (795, 22, '', 'HN2022002012928', 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN0121IGEy2FOyDeZm8MH_!!2208857268871-0-cib.jpg', 404, '28', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (796, 22, '', 'HN2022002012929', 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN0121IGEy2FOyDeZm8MH_!!2208857268871-0-cib.jpg', 405, '29', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (797, 22, '', 'HN2022002012930', 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN0121IGEy2FOyDeZm8MH_!!2208857268871-0-cib.jpg', 406, '30', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (798, 22, '', 'HN2022002012931', 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN0121IGEy2FOyDeZm8MH_!!2208857268871-0-cib.jpg', 407, '31', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (799, 22, '', 'HN2022002012932', 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN0121IGEy2FOyDeZm8MH_!!2208857268871-0-cib.jpg', 408, '32', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (800, 22, '', 'HN2022002015025', 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN013dvLD62FOyDS4ElK6_!!2208857268871-0-cib.jpg', 401, '25', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (801, 22, '', 'HN2022002015026', 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN013dvLD62FOyDS4ElK6_!!2208857268871-0-cib.jpg', 402, '26', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (802, 22, '', 'HN2022002015027', 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN013dvLD62FOyDS4ElK6_!!2208857268871-0-cib.jpg', 403, '27', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (803, 22, '', 'HN2022002015028', 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN013dvLD62FOyDS4ElK6_!!2208857268871-0-cib.jpg', 404, '28', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (804, 22, '', 'HN2022002015029', 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN013dvLD62FOyDS4ElK6_!!2208857268871-0-cib.jpg', 405, '29', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (805, 22, '', 'HN2022002015030', 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN013dvLD62FOyDS4ElK6_!!2208857268871-0-cib.jpg', 406, '30', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (806, 22, '', 'HN2022002015031', 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN013dvLD62FOyDS4ElK6_!!2208857268871-0-cib.jpg', 407, '31', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (807, 22, '', 'HN2022002015032', 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN013dvLD62FOyDS4ElK6_!!2208857268871-0-cib.jpg', 408, '32', 0, '', NULL, 35.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (808, 48, '', 'HN1805001', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01D94VIz2FOyCZdAhrE_!!2208857268871-0-cib.jpg', 341, 'S', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (809, 48, '', 'HN1805002', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01D94VIz2FOyCZdAhrE_!!2208857268871-0-cib.jpg', 342, 'M', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (810, 48, '', 'HN1805003', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01D94VIz2FOyCZdAhrE_!!2208857268871-0-cib.jpg', 343, 'L', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (811, 48, '', 'HN1805004', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01D94VIz2FOyCZdAhrE_!!2208857268871-0-cib.jpg', 344, 'XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (812, 48, '', 'HN1805005', 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01D94VIz2FOyCZdAhrE_!!2208857268871-0-cib.jpg', 345, '2XL', 0, '', NULL, 29.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (813, 49, '', 'JKL90984026', 356, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 402, '26', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (814, 49, '', 'JKL90984027', 356, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 403, '27', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (815, 49, '', 'JKL90984028', 356, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 404, '28', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (816, 49, '', 'JKL90984029', 356, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 405, '29', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (817, 49, '', 'JKL90984030', 356, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 406, '30', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (818, 49, '', 'JKL90984031', 356, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 407, '31', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (819, 49, '', 'JKL90984032', 356, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 408, '32', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (820, 49, '', 'JKL90982926', 336, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 402, '26', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (821, 49, '', 'JKL90982927', 336, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 403, '27', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (822, 49, '', 'JKL90982928', 336, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 404, '28', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (823, 49, '', 'JKL90982929', 336, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 405, '29', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (824, 49, '', 'JKL90982930', 336, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 406, '30', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (825, 49, '', 'JKL90982931', 336, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 407, '31', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (826, 49, '', 'JKL90982932', 336, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 408, '32', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (827, 49, '', 'JKL90980126', 308, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 402, '26', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (828, 49, '', 'JKL90980127', 308, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 403, '27', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (829, 49, '', 'JKL90980128', 308, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 404, '28', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (830, 49, '', 'JKL90980129', 308, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 405, '29', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (831, 49, '', 'JKL90980130', 308, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 406, '30', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (832, 49, '', 'JKL90980131', 308, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 407, '31', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (833, 49, '', 'JKL90980132', 308, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 408, '32', 416, '长裤', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (834, 49, '', 'JKL909814026', 412, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 402, '26', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (835, 49, '', 'JKL909814027', 412, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 403, '27', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (836, 49, '', 'JKL909814028', 412, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 404, '28', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (837, 49, '', 'JKL909814029', 412, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 405, '29', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (838, 49, '', 'JKL909814030', 412, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 406, '30', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (839, 49, '', 'JKL909814031', 412, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 407, '31', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (840, 49, '', 'JKL909814032', 412, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 408, '32', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (841, 49, '', 'JKL909812926', 411, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 402, '26', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (842, 49, '', 'JKL909812927', 411, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 403, '27', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (843, 49, '', 'JKL909812928', 411, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 404, '28', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (844, 49, '', 'JKL909812929', 411, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 405, '29', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (845, 49, '', 'JKL909812930', 411, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 406, '30', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (846, 49, '', 'JKL909812931', 411, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 407, '31', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (847, 49, '', 'JKL909812932', 411, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 408, '32', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (848, 49, '', 'JKL909810126', 409, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 402, '26', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (849, 49, '', 'JKL909810127', 409, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 403, '27', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (850, 49, '', 'JKL909810128', 409, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 404, '28', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (851, 49, '', 'JKL909810129', 409, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 405, '29', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (852, 49, '', 'JKL909810130', 409, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 406, '30', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (853, 49, '', 'JKL909810131', 409, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 407, '31', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (854, 49, '', 'JKL909810132', 409, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 408, '32', 422, '长裤加绒', NULL, 56.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (855, 49, '', 'JKL90984826', 367, '复古蓝九分', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 402, '26', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (856, 49, '', 'JKL90984827', 367, '复古蓝九分', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 403, '27', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (857, 49, '', 'JKL90984828', 367, '复古蓝九分', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 404, '28', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (858, 49, '', 'JKL90984829', 367, '复古蓝九分', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 405, '29', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (859, 49, '', 'JKL90984830', 367, '复古蓝九分', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 406, '30', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (860, 49, '', 'JKL90984831', 367, '复古蓝九分', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 407, '31', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (861, 49, '', 'JKL90984832', 367, '复古蓝九分', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4', 408, '32', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (862, 49, '', 'JKL90986426', 379, '蓝灰色九分', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 402, '26', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (863, 49, '', 'JKL90986427', 379, '蓝灰色九分', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 403, '27', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (864, 49, '', 'JKL90986428', 379, '蓝灰色九分', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 404, '28', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (865, 49, '', 'JKL90986429', 379, '蓝灰色九分', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 405, '29', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (866, 49, '', 'JKL90986430', 379, '蓝灰色九分', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 406, '30', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (867, 49, '', 'JKL90986431', 379, '蓝灰色九分', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 407, '31', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (868, 49, '', 'JKL90986432', 379, '蓝灰色九分', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp', 408, '32', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (869, 49, '', 'JKL90986526', 380, '黑色九分', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 402, '26', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (870, 49, '', 'JKL90986527', 380, '黑色九分', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 403, '27', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (871, 49, '', 'JKL90986528', 380, '黑色九分', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 404, '28', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (872, 49, '', 'JKL90986529', 380, '黑色九分', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 405, '29', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (873, 49, '', 'JKL90986530', 380, '黑色九分', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 406, '30', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (874, 49, '', 'JKL90986531', 380, '黑色九分', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 407, '31', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (875, 49, '', 'JKL90986532', 380, '黑色九分', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2', 408, '32', 0, '', NULL, 48.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (879, 53, '', 'JKL99070125JIU', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 401, '25', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (880, 53, '', 'JKL99070125BA', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 401, '25', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (881, 53, '', 'JKL99070125JR', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 401, '25', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (882, 53, '', 'JKL99070126JIU', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 402, '26', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (883, 53, '', 'JKL99070126BA', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 402, '26', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (884, 53, '', 'JKL99070126JR', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 402, '26', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (885, 53, '', 'JKL99070127JIU', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 403, '27', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (886, 53, '', 'JKL99070127BA', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 403, '27', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (887, 53, '', 'JKL99070127JR', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 403, '27', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (888, 53, '', 'JKL99070128JIU', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 404, '28', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (889, 53, '', 'JKL99070128BA', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 404, '28', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (890, 53, '', 'JKL99070128JR', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 404, '28', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (891, 53, '', 'JKL99070129JIU', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 405, '29', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (892, 53, '', 'JKL99070129BA', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 405, '29', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (893, 53, '', 'JKL99070129JR', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 405, '29', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (894, 53, '', 'JKL99070130JIU', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 406, '30', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (895, 53, '', 'JKL99070130BA', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 406, '30', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (896, 53, '', 'JKL99070130JR', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 406, '30', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (897, 53, '', 'JKL99070131JIU', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 407, '31', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (898, 53, '', 'JKL99070131BA', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 407, '31', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (899, 53, '', 'JKL99070131JR', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 407, '31', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (900, 53, '', 'JKL99070132JIU', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 408, '32', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (901, 53, '', 'JKL99070132BA', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 408, '32', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (902, 53, '', 'JKL99070132JR', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BdL9qd2Arl3f70ZFz_!!2513908257-0-cib.jpg', 408, '32', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (903, 53, '', 'JKL99072825JIU', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 401, '25', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (904, 53, '', 'JKL99072825BA', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 401, '25', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (905, 53, '', 'JKL99072825JR', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 401, '25', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (906, 53, '', 'JKL99072826JIU', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 402, '26', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (907, 53, '', 'JKL99072826BA', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 402, '26', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (908, 53, '', 'JKL99072826JR', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 402, '26', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (909, 53, '', 'JKL99072827JIU', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 403, '27', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (910, 53, '', 'JKL99072827BA', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 403, '27', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (911, 53, '', 'JKL99072827JR', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 403, '27', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (912, 53, '', 'JKL99072828JIU', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 404, '28', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (913, 53, '', 'JKL99072828BA', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 404, '28', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (914, 53, '', 'JKL99072828JR', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 404, '28', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (915, 53, '', 'JKL99072829JIU', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 405, '29', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (916, 53, '', 'JKL99072829BA', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 405, '29', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (917, 53, '', 'JKL99072829JR', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 405, '29', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (918, 53, '', 'JKL99072830JIU', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 406, '30', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (919, 53, '', 'JKL99072830BA', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 406, '30', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (920, 53, '', 'JKL99072830JR', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 406, '30', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (921, 53, '', 'JKL99072831JIU', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 407, '31', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (922, 53, '', 'JKL99072831BA', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 407, '31', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (923, 53, '', 'JKL99072831JR', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 407, '31', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (924, 53, '', 'JKL99072832JIU', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 408, '32', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (925, 53, '', 'JKL99072832BA', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 408, '32', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (926, 53, '', 'JKL99072832JR', 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80', 408, '32', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (927, 53, '', 'JKL99074725JIU', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 401, '25', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (928, 53, '', 'JKL99074725BA', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 401, '25', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (929, 53, '', 'JKL99074725JR', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 401, '25', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (930, 53, '', 'JKL99074726JIU', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 402, '26', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (931, 53, '', 'JKL99074726BA', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 402, '26', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (932, 53, '', 'JKL99074726JR', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 402, '26', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (933, 53, '', 'JKL99074727JIU', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 403, '27', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (934, 53, '', 'JKL99074727BA', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 403, '27', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (935, 53, '', 'JKL99074727JR', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 403, '27', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (936, 53, '', 'JKL99074728JIU', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 404, '28', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (937, 53, '', 'JKL99074728BA', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 404, '28', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (938, 53, '', 'JKL99074728JR', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 404, '28', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (939, 53, '', 'JKL99074729JIU', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 405, '29', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (940, 53, '', 'JKL99074729BA', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 405, '29', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (941, 53, '', 'JKL99074729JR', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 405, '29', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (942, 53, '', 'JKL99074730JIU', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 406, '30', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (943, 53, '', 'JKL99074730BA', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 406, '30', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (944, 53, '', 'JKL99074730JR', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 406, '30', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (945, 53, '', 'JKL99074731JIU', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 407, '31', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (946, 53, '', 'JKL99074731BA', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 407, '31', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (947, 53, '', 'JKL99074731JR', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 407, '31', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (948, 53, '', 'JKL99074732JIU', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 408, '32', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (949, 53, '', 'JKL99074732BA', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 408, '32', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (950, 53, '', 'JKL99074732JR', 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9', 408, '32', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (951, 53, '', 'JKL99075125JIU', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 401, '25', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (952, 53, '', 'JKL99075125BA', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 401, '25', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (953, 53, '', 'JKL99075125JR', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 401, '25', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (954, 53, '', 'JKL99075126JIU', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 402, '26', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (955, 53, '', 'JKL99075126BA', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 402, '26', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (956, 53, '', 'JKL99075126JR', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 402, '26', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (957, 53, '', 'JKL99075127JIU', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 403, '27', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (958, 53, '', 'JKL99075127BA', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 403, '27', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (959, 53, '', 'JKL99075127JR', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 403, '27', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (960, 53, '', 'JKL99075128JIU', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 404, '28', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (961, 53, '', 'JKL99075128BA', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 404, '28', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (962, 53, '', 'JKL99075128JR', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 404, '28', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (963, 53, '', 'JKL99075129JIU', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 405, '29', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (964, 53, '', 'JKL99075129BA', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 405, '29', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (965, 53, '', 'JKL99075129JR', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 405, '29', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (966, 53, '', 'JKL99075130JIU', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 406, '30', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (967, 53, '', 'JKL99075130BA', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 406, '30', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (968, 53, '', 'JKL99075130JR', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 406, '30', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (969, 53, '', 'JKL99075131JIU', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 407, '31', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (970, 53, '', 'JKL99075131BA', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 407, '31', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (971, 53, '', 'JKL99075131JR', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 407, '31', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (972, 53, '', 'JKL99075132JIU', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 408, '32', 417, '九分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (973, 53, '', 'JKL99075132BA', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 408, '32', 418, '八分', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (974, 53, '', 'JKL99075132JR', 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6', 408, '32', 419, '九分加绒', NULL, 53.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (975, 54, '', 'JKL60103526', 351, '蓝色', 'http://img.huayikeji.com/fex2kmy8mmraboudesodz9mig2wcbidi', 402, '26', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (976, 54, '', 'JKL60103527', 351, '蓝色', 'http://img.huayikeji.com/fex2kmy8mmraboudesodz9mig2wcbidi', 403, '27', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (977, 54, '', 'JKL60103528', 351, '蓝色', 'http://img.huayikeji.com/fex2kmy8mmraboudesodz9mig2wcbidi', 404, '28', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (978, 54, '', 'JKL60103529', 351, '蓝色', 'http://img.huayikeji.com/fex2kmy8mmraboudesodz9mig2wcbidi', 405, '29', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (979, 54, '', 'JKL60103530', 351, '蓝色', 'http://img.huayikeji.com/fex2kmy8mmraboudesodz9mig2wcbidi', 406, '30', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (980, 54, '', 'JKL60103531', 351, '蓝色', 'http://img.huayikeji.com/fex2kmy8mmraboudesodz9mig2wcbidi', 407, '31', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (981, 54, '', 'JKL60107526', 389, '黑灰色', 'http://img.huayikeji.com/8okq5agwo00vy221pyylgvu47va7pet4', 402, '26', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (982, 54, '', 'JKL60107527', 389, '黑灰色', 'http://img.huayikeji.com/8okq5agwo00vy221pyylgvu47va7pet4', 403, '27', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (983, 54, '', 'JKL60107528', 389, '黑灰色', 'http://img.huayikeji.com/8okq5agwo00vy221pyylgvu47va7pet4', 404, '28', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (984, 54, '', 'JKL60107529', 389, '黑灰色', 'http://img.huayikeji.com/8okq5agwo00vy221pyylgvu47va7pet4', 405, '29', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (985, 54, '', 'JKL60107530', 389, '黑灰色', 'http://img.huayikeji.com/8okq5agwo00vy221pyylgvu47va7pet4', 406, '30', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (986, 54, '', 'JKL60107531', 389, '黑灰色', 'http://img.huayikeji.com/8okq5agwo00vy221pyylgvu47va7pet4', 407, '31', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (987, 55, '', 'JKL9064009', 356, '复古蓝', 'http://img.huayikeji.com/egma3seljl77hcbpjpw9ks000kkf3rs5', 394, 'XS', 0, '', NULL, 47.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (988, 55, '', 'JKL9064001', 356, '复古蓝', 'http://img.huayikeji.com/egma3seljl77hcbpjpw9ks000kkf3rs5', 341, 'S', 0, '', NULL, 47.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (989, 55, '', 'JKL9064002', 356, '复古蓝', 'http://img.huayikeji.com/egma3seljl77hcbpjpw9ks000kkf3rs5', 342, 'M', 0, '', NULL, 47.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (990, 55, '', 'JKL9064003', 356, '复古蓝', 'http://img.huayikeji.com/egma3seljl77hcbpjpw9ks000kkf3rs5', 343, 'L', 0, '', NULL, 47.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (991, 55, '', 'JKL9064004', 356, '复古蓝', 'http://img.huayikeji.com/egma3seljl77hcbpjpw9ks000kkf3rs5', 344, 'XL', 0, '', NULL, 47.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (992, 55, '', 'JKL9064005', 356, '复古蓝', 'http://img.huayikeji.com/egma3seljl77hcbpjpw9ks000kkf3rs5', 345, '2XL', 0, '', NULL, 47.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (993, 55, '', 'JKL9065009', 361, '浅蓝色', 'http://img.huayikeji.com/zgtp829lecxrqml16kqkfuo5ajxoh49h', 394, 'XS', 0, '', NULL, 47.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (994, 55, '', 'JKL9065001', 361, '浅蓝色', 'http://img.huayikeji.com/zgtp829lecxrqml16kqkfuo5ajxoh49h', 341, 'S', 0, '', NULL, 47.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (995, 55, '', 'JKL9065002', 361, '浅蓝色', 'http://img.huayikeji.com/zgtp829lecxrqml16kqkfuo5ajxoh49h', 342, 'M', 0, '', NULL, 47.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (996, 55, '', 'JKL9065003', 361, '浅蓝色', 'http://img.huayikeji.com/zgtp829lecxrqml16kqkfuo5ajxoh49h', 343, 'L', 0, '', NULL, 47.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (997, 55, '', 'JKL9065004', 361, '浅蓝色', 'http://img.huayikeji.com/zgtp829lecxrqml16kqkfuo5ajxoh49h', 344, 'XL', 0, '', NULL, 47.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (998, 55, '', 'JKL9065005', 361, '浅蓝色', 'http://img.huayikeji.com/zgtp829lecxrqml16kqkfuo5ajxoh49h', 345, '2XL', 0, '', NULL, 47.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (999, 56, '', 'JKL99774009CK', 356, '复古蓝', 'http://img.huayikeji.com/0ac55odg8e0d7y714svpcvtoqfxld5dk', 394, 'XS', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1000, 56, '', 'JKL99774009JC', 356, '复古蓝', 'http://img.huayikeji.com/0ac55odg8e0d7y714svpcvtoqfxld5dk', 394, 'XS', 415, '加长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1001, 56, '', 'JKL99774001CK', 356, '复古蓝', 'http://img.huayikeji.com/0ac55odg8e0d7y714svpcvtoqfxld5dk', 341, 'S', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1002, 56, '', 'JKL99774001JC', 356, '复古蓝', 'http://img.huayikeji.com/0ac55odg8e0d7y714svpcvtoqfxld5dk', 341, 'S', 415, '加长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1003, 56, '', 'JKL99774002CK', 356, '复古蓝', 'http://img.huayikeji.com/0ac55odg8e0d7y714svpcvtoqfxld5dk', 342, 'M', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1004, 56, '', 'JKL99774002JC', 356, '复古蓝', 'http://img.huayikeji.com/0ac55odg8e0d7y714svpcvtoqfxld5dk', 342, 'M', 415, '加长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1005, 56, '', 'JKL99774003CK', 356, '复古蓝', 'http://img.huayikeji.com/0ac55odg8e0d7y714svpcvtoqfxld5dk', 343, 'L', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1006, 56, '', 'JKL99774003JC', 356, '复古蓝', 'http://img.huayikeji.com/0ac55odg8e0d7y714svpcvtoqfxld5dk', 343, 'L', 415, '加长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1007, 56, '', 'JKL99774004CK', 356, '复古蓝', 'http://img.huayikeji.com/0ac55odg8e0d7y714svpcvtoqfxld5dk', 344, 'XL', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1008, 56, '', 'JKL99774004JC', 356, '复古蓝', 'http://img.huayikeji.com/0ac55odg8e0d7y714svpcvtoqfxld5dk', 344, 'XL', 415, '加长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1009, 56, '', 'JKL99774005CK', 356, '复古蓝', 'http://img.huayikeji.com/0ac55odg8e0d7y714svpcvtoqfxld5dk', 345, '2XL', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1010, 56, '', 'JKL99774005JC', 356, '复古蓝', 'http://img.huayikeji.com/0ac55odg8e0d7y714svpcvtoqfxld5dk', 345, '2XL', 415, '加长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1031, 59, '', 'JKL99784009CK', 356, '复古蓝', 'http://img.huayikeji.com/n732o54er4aigs0vl0k2mmu1koqwgu6k', 394, 'XS', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1032, 59, '', 'JKL99784009JC', 356, '复古蓝', 'http://img.huayikeji.com/n732o54er4aigs0vl0k2mmu1koqwgu6k', 394, 'XS', 415, '加长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1033, 59, '', 'JKL99784001CK', 356, '复古蓝', 'http://img.huayikeji.com/n732o54er4aigs0vl0k2mmu1koqwgu6k', 341, 'S', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1034, 59, '', 'JKL99784001JC', 356, '复古蓝', 'http://img.huayikeji.com/n732o54er4aigs0vl0k2mmu1koqwgu6k', 341, 'S', 415, '加长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1035, 59, '', 'JKL99784002CK', 356, '复古蓝', 'http://img.huayikeji.com/n732o54er4aigs0vl0k2mmu1koqwgu6k', 342, 'M', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1036, 59, '', 'JKL99784002JC', 356, '复古蓝', 'http://img.huayikeji.com/n732o54er4aigs0vl0k2mmu1koqwgu6k', 342, 'M', 415, '加长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1037, 59, '', 'JKL99784003CK', 356, '复古蓝', 'http://img.huayikeji.com/n732o54er4aigs0vl0k2mmu1koqwgu6k', 343, 'L', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1038, 59, '', 'JKL99784003JC', 356, '复古蓝', 'http://img.huayikeji.com/n732o54er4aigs0vl0k2mmu1koqwgu6k', 343, 'L', 415, '加长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1039, 59, '', 'JKL99784004CK', 356, '复古蓝', 'http://img.huayikeji.com/n732o54er4aigs0vl0k2mmu1koqwgu6k', 344, 'XL', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1040, 59, '', 'JKL99784004JC', 356, '复古蓝', 'http://img.huayikeji.com/n732o54er4aigs0vl0k2mmu1koqwgu6k', 344, 'XL', 415, '加长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1041, 59, '', 'JKL99784005CK', 356, '复古蓝', 'http://img.huayikeji.com/n732o54er4aigs0vl0k2mmu1koqwgu6k', 345, '2XL', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1042, 59, '', 'JKL99784005JC', 356, '复古蓝', 'http://img.huayikeji.com/n732o54er4aigs0vl0k2mmu1koqwgu6k', 345, '2XL', 415, '加长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1043, 60, '', 'JKL99505025', 361, '浅蓝色', 'http://img.huayikeji.com/lmk2699b6lpcoraaxij10kemlqmkqfgr', 401, '25', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1044, 60, '', 'JKL99505026', 361, '浅蓝色', 'http://img.huayikeji.com/lmk2699b6lpcoraaxij10kemlqmkqfgr', 402, '26', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1045, 60, '', 'JKL99505027', 361, '浅蓝色', 'http://img.huayikeji.com/lmk2699b6lpcoraaxij10kemlqmkqfgr', 403, '27', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1046, 60, '', 'JKL99505028', 361, '浅蓝色', 'http://img.huayikeji.com/lmk2699b6lpcoraaxij10kemlqmkqfgr', 404, '28', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1047, 60, '', 'JKL99505029', 361, '浅蓝色', 'http://img.huayikeji.com/lmk2699b6lpcoraaxij10kemlqmkqfgr', 405, '29', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1048, 60, '', 'JKL99505030', 361, '浅蓝色', 'http://img.huayikeji.com/lmk2699b6lpcoraaxij10kemlqmkqfgr', 406, '30', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1049, 60, '', 'JKL99505031', 361, '浅蓝色', 'http://img.huayikeji.com/lmk2699b6lpcoraaxij10kemlqmkqfgr', 407, '31', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1050, 60, '', 'JKL99505032', 361, '浅蓝色', 'http://img.huayikeji.com/lmk2699b6lpcoraaxij10kemlqmkqfgr', 408, '32', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1051, 60, '', 'JKL99501225', 319, '深蓝色', 'http://img.huayikeji.com/fzvbk24z186xmk1nmtsobbasv4quxv8q', 401, '25', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1052, 60, '', 'JKL99501226', 319, '深蓝色', 'http://img.huayikeji.com/fzvbk24z186xmk1nmtsobbasv4quxv8q', 402, '26', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1053, 60, '', 'JKL99501227', 319, '深蓝色', 'http://img.huayikeji.com/fzvbk24z186xmk1nmtsobbasv4quxv8q', 403, '27', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1054, 60, '', 'JKL99501228', 319, '深蓝色', 'http://img.huayikeji.com/fzvbk24z186xmk1nmtsobbasv4quxv8q', 404, '28', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1055, 60, '', 'JKL99501229', 319, '深蓝色', 'http://img.huayikeji.com/fzvbk24z186xmk1nmtsobbasv4quxv8q', 405, '29', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1056, 60, '', 'JKL99501230', 319, '深蓝色', 'http://img.huayikeji.com/fzvbk24z186xmk1nmtsobbasv4quxv8q', 406, '30', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1057, 60, '', 'JKL99501231', 319, '深蓝色', 'http://img.huayikeji.com/fzvbk24z186xmk1nmtsobbasv4quxv8q', 407, '31', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1058, 60, '', 'JKL99501232', 319, '深蓝色', 'http://img.huayikeji.com/fzvbk24z186xmk1nmtsobbasv4quxv8q', 408, '32', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1059, 60, '', 'JKL99505925', 374, '深蓝色加绒', 'http://img.huayikeji.com/0yzpga8017ikg8on2ejo03dgo2uulzbi', 401, '25', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1060, 60, '', 'JKL99505926', 374, '深蓝色加绒', 'http://img.huayikeji.com/0yzpga8017ikg8on2ejo03dgo2uulzbi', 402, '26', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1061, 60, '', 'JKL99505927', 374, '深蓝色加绒', 'http://img.huayikeji.com/0yzpga8017ikg8on2ejo03dgo2uulzbi', 403, '27', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1062, 60, '', 'JKL99505928', 374, '深蓝色加绒', 'http://img.huayikeji.com/0yzpga8017ikg8on2ejo03dgo2uulzbi', 404, '28', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1063, 60, '', 'JKL99505929', 374, '深蓝色加绒', 'http://img.huayikeji.com/0yzpga8017ikg8on2ejo03dgo2uulzbi', 405, '29', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1064, 60, '', 'JKL99505930', 374, '深蓝色加绒', 'http://img.huayikeji.com/0yzpga8017ikg8on2ejo03dgo2uulzbi', 406, '30', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1065, 60, '', 'JKL99505931', 374, '深蓝色加绒', 'http://img.huayikeji.com/0yzpga8017ikg8on2ejo03dgo2uulzbi', 407, '31', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1066, 60, '', 'JKL99505932', 374, '深蓝色加绒', 'http://img.huayikeji.com/0yzpga8017ikg8on2ejo03dgo2uulzbi', 408, '32', 0, '', NULL, 41.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1067, 61, '', 'JKL89903509', 351, '蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022/JKL8990_蓝色.jpg', 394, 'XS', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1068, 61, '', 'JKL89903501', 351, '蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022/JKL8990_蓝色.jpg', 341, 'S', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1069, 61, '', 'JKL89903502', 351, '蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022/JKL8990_蓝色.jpg', 342, 'M', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1070, 61, '', 'JKL89903503', 351, '蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022/JKL8990_蓝色.jpg', 343, 'L', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1071, 61, '', 'JKL89903504', 351, '蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022/JKL8990_蓝色.jpg', 344, 'XL', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1072, 61, '', 'JKL89903505', 351, '蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022/JKL8990_蓝色.jpg', 345, '2XL', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1073, 61, '', 'JKL89907509', 389, '黑灰色', 'http://img.huayiyungou.com/ecom_goods_img_2022/JKL8990_黑色.jpg', 394, 'XS', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1074, 61, '', 'JKL89907501', 389, '黑灰色', 'http://img.huayiyungou.com/ecom_goods_img_2022/JKL8990_黑色.jpg', 341, 'S', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1075, 61, '', 'JKL89907502', 389, '黑灰色', 'http://img.huayiyungou.com/ecom_goods_img_2022/JKL8990_黑色.jpg', 342, 'M', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1076, 61, '', 'JKL89907503', 389, '黑灰色', 'http://img.huayiyungou.com/ecom_goods_img_2022/JKL8990_黑色.jpg', 343, 'L', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1077, 61, '', 'JKL89907504', 389, '黑灰色', 'http://img.huayiyungou.com/ecom_goods_img_2022/JKL8990_黑色.jpg', 344, 'XL', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1078, 61, '', 'JKL89907505', 389, '黑灰色', 'http://img.huayiyungou.com/ecom_goods_img_2022/JKL8990_黑色.jpg', 345, '2XL', 0, '', NULL, 43.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1079, 62, '', 'JKL99380109JIU', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_黑色.jpg', 394, 'XS', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1080, 62, '', 'JKL99380109CK', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_黑色.jpg', 394, 'XS', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1081, 62, '', 'JKL99380101JIU', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_黑色.jpg', 341, 'S', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1082, 62, '', 'JKL99380101CK', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_黑色.jpg', 341, 'S', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1083, 62, '', 'JKL99380102JIU', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_黑色.jpg', 342, 'M', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1084, 62, '', 'JKL99380102CK', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_黑色.jpg', 342, 'M', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1085, 62, '', 'JKL99380103JIU', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_黑色.jpg', 343, 'L', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1086, 62, '', 'JKL99380103CK', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_黑色.jpg', 343, 'L', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1087, 62, '', 'JKL99380104JIU', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_黑色.jpg', 344, 'XL', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1088, 62, '', 'JKL99380104CK', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_黑色.jpg', 344, 'XL', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1089, 62, '', 'JKL99380105JIU', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_黑色.jpg', 345, '2XL', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1090, 62, '', 'JKL99380105CK', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_黑色.jpg', 345, '2XL', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1091, 62, '', 'JKL99384009JIU', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_复古蓝.jpg', 394, 'XS', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1092, 62, '', 'JKL99384009CK', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_复古蓝.jpg', 394, 'XS', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1093, 62, '', 'JKL99384001JIU', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_复古蓝.jpg', 341, 'S', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1094, 62, '', 'JKL99384001CK', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_复古蓝.jpg', 341, 'S', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1095, 62, '', 'JKL99384002JIU', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_复古蓝.jpg', 342, 'M', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1096, 62, '', 'JKL99384002CK', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_复古蓝.jpg', 342, 'M', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1097, 62, '', 'JKL99384003JIU', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_复古蓝.jpg', 343, 'L', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1098, 62, '', 'JKL99384003CK', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_复古蓝.jpg', 343, 'L', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1099, 62, '', 'JKL99384004JIU', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_复古蓝.jpg', 344, 'XL', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1100, 62, '', 'JKL99384004CK', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_复古蓝.jpg', 344, 'XL', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1101, 62, '', 'JKL99384005JIU', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_复古蓝.jpg', 345, '2XL', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1102, 62, '', 'JKL99384005CK', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_复古蓝.jpg', 345, '2XL', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1103, 62, '', 'JKL99385009JIU', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_浅蓝色.jpg', 394, 'XS', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1104, 62, '', 'JKL99385009CK', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_浅蓝色.jpg', 394, 'XS', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1105, 62, '', 'JKL99385001JIU', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_浅蓝色.jpg', 341, 'S', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1106, 62, '', 'JKL99385001CK', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_浅蓝色.jpg', 341, 'S', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1107, 62, '', 'JKL99385002JIU', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_浅蓝色.jpg', 342, 'M', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1108, 62, '', 'JKL99385002CK', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_浅蓝色.jpg', 342, 'M', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1109, 62, '', 'JKL99385003JIU', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_浅蓝色.jpg', 343, 'L', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1110, 62, '', 'JKL99385003CK', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_浅蓝色.jpg', 343, 'L', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1111, 62, '', 'JKL99385004JIU', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_浅蓝色.jpg', 344, 'XL', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1112, 62, '', 'JKL99385004CK', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_浅蓝色.jpg', 344, 'XL', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1113, 62, '', 'JKL99385005JIU', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_浅蓝色.jpg', 345, '2XL', 417, '九分', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1114, 62, '', 'JKL99385005CK', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_浅蓝色.jpg', 345, '2XL', 416, '长款', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1115, 63, '', 'JKL600101258', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 401, '25', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1116, 63, '', 'JKL600101259', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 401, '25', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1117, 63, '', 'JKL600101268', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 402, '26', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1118, 63, '', 'JKL600101269', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 402, '26', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1119, 63, '', 'JKL600101278', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 403, '27', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1120, 63, '', 'JKL600101279', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 403, '27', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1121, 63, '', 'JKL600101288', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 404, '28', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1122, 63, '', 'JKL600101289', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 404, '28', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1123, 63, '', 'JKL600101298', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 405, '29', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1124, 63, '', 'JKL600101299', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 405, '29', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1125, 63, '', 'JKL600101308', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 406, '30', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1126, 63, '', 'JKL600101309', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 406, '30', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1127, 63, '', 'JKL600101318', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 407, '31', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1128, 63, '', 'JKL600101319', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 407, '31', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1129, 63, '', 'JKL600101328', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 408, '32', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1130, 63, '', 'JKL600101329', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg', 408, '32', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1131, 63, '', 'JKL600128258', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 401, '25', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1132, 63, '', 'JKL600128259', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 401, '25', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1133, 63, '', 'JKL600128268', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 402, '26', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1134, 63, '', 'JKL600128269', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 402, '26', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1135, 63, '', 'JKL600128278', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 403, '27', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1136, 63, '', 'JKL600128279', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 403, '27', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1137, 63, '', 'JKL600128288', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 404, '28', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1138, 63, '', 'JKL600128289', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 404, '28', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1139, 63, '', 'JKL600128298', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 405, '29', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1140, 63, '', 'JKL600128299', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 405, '29', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1141, 63, '', 'JKL600128308', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 406, '30', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1142, 63, '', 'JKL600128309', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 406, '30', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1143, 63, '', 'JKL600128318', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 407, '31', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1144, 63, '', 'JKL600128319', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 407, '31', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1145, 63, '', 'JKL600128328', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 408, '32', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1146, 63, '', 'JKL600128329', 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg', 408, '32', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1147, 63, '', 'JKL600151258', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 401, '25', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1148, 63, '', 'JKL600151259', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 401, '25', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1149, 63, '', 'JKL600151268', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 402, '26', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1150, 63, '', 'JKL600151269', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 402, '26', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1151, 63, '', 'JKL600151278', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 403, '27', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1152, 63, '', 'JKL600151279', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 403, '27', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1153, 63, '', 'JKL600151288', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 404, '28', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1154, 63, '', 'JKL600151289', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 404, '28', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1155, 63, '', 'JKL600151298', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 405, '29', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1156, 63, '', 'JKL600151299', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 405, '29', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1157, 63, '', 'JKL600151308', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 406, '30', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1158, 63, '', 'JKL600151309', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 406, '30', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1159, 63, '', 'JKL600151318', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 407, '31', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1160, 63, '', 'JKL600151319', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 407, '31', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1161, 63, '', 'JKL600151328', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 408, '32', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1162, 63, '', 'JKL600151329', 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg', 408, '32', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1163, 63, '', 'JKL600147258', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 401, '25', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1164, 63, '', 'JKL600147259', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 401, '25', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1165, 63, '', 'JKL600147268', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 402, '26', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1166, 63, '', 'JKL600147269', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 402, '26', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1167, 63, '', 'JKL600147278', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 403, '27', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1168, 63, '', 'JKL600147279', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 403, '27', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1169, 63, '', 'JKL600147288', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 404, '28', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1170, 63, '', 'JKL600147289', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 404, '28', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1171, 63, '', 'JKL600147298', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 405, '29', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1172, 63, '', 'JKL600147299', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 405, '29', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1173, 63, '', 'JKL600147308', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 406, '30', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1174, 63, '', 'JKL600147309', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 406, '30', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1175, 63, '', 'JKL600147318', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 407, '31', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1176, 63, '', 'JKL600147319', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 407, '31', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1177, 63, '', 'JKL600147328', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 408, '32', 420, '单裤', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1178, 63, '', 'JKL600147329', 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg', 408, '32', 421, '加绒', NULL, 45.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1179, 64, '', 'JKL99090125JIU', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 401, '25', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1180, 64, '', 'JKL99090125CK', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 401, '25', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1181, 64, '', 'JKL99090126JIU', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 402, '26', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1182, 64, '', 'JKL99090126CK', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 402, '26', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1183, 64, '', 'JKL99090127JIU', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 403, '27', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1184, 64, '', 'JKL99090127CK', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 403, '27', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1185, 64, '', 'JKL99090128JIU', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 404, '28', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1186, 64, '', 'JKL99090128CK', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 404, '28', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1187, 64, '', 'JKL99090129JIU', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 405, '29', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1188, 64, '', 'JKL99090129CK', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 405, '29', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1189, 64, '', 'JKL99090130JIU', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 406, '30', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1190, 64, '', 'JKL99090130CK', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 406, '30', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1191, 64, '', 'JKL99090131JIU', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 407, '31', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1192, 64, '', 'JKL99090131CK', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 407, '31', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1193, 64, '', 'JKL99090132JIU', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 408, '32', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1194, 64, '', 'JKL99090132CK', 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg', 408, '32', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1195, 64, '', 'JKL99091225JIU', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 401, '25', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1196, 64, '', 'JKL99091225CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 401, '25', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1197, 64, '', 'JKL99091226JIU', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 402, '26', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1198, 64, '', 'JKL99091226CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 402, '26', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1199, 64, '', 'JKL99091227JIU', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 403, '27', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1200, 64, '', 'JKL99091227CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 403, '27', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1201, 64, '', 'JKL99091228JIU', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 404, '28', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1202, 64, '', 'JKL99091228CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 404, '28', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1203, 64, '', 'JKL99091229JIU', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 405, '29', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1204, 64, '', 'JKL99091229CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 405, '29', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1205, 64, '', 'JKL99091230JIU', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 406, '30', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1206, 64, '', 'JKL99091230CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 406, '30', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1207, 64, '', 'JKL99091231JIU', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 407, '31', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1208, 64, '', 'JKL99091231CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 407, '31', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1209, 64, '', 'JKL99091232JIU', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 408, '32', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1210, 64, '', 'JKL99091232CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg', 408, '32', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1211, 64, '', 'JKL99095025JIU', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 401, '25', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1212, 64, '', 'JKL99095025CK', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 401, '25', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1213, 64, '', 'JKL99095026JIU', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 402, '26', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1214, 64, '', 'JKL99095026CK', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 402, '26', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1215, 64, '', 'JKL99095027JIU', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 403, '27', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1216, 64, '', 'JKL99095027CK', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 403, '27', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1217, 64, '', 'JKL99095028JIU', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 404, '28', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1218, 64, '', 'JKL99095028CK', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 404, '28', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1219, 64, '', 'JKL99095029JIU', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 405, '29', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1220, 64, '', 'JKL99095029CK', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 405, '29', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1221, 64, '', 'JKL99095030JIU', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 406, '30', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1222, 64, '', 'JKL99095030CK', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 406, '30', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1223, 64, '', 'JKL99095031JIU', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 407, '31', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1224, 64, '', 'JKL99095031CK', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 407, '31', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1225, 64, '', 'JKL99095032JIU', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 408, '32', 417, '九分', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1226, 64, '', 'JKL99095032CK', 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG', 408, '32', 416, '长款', NULL, 50.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1227, 65, '', 'GZYYZ72770100', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01lfHUDo1p3HVme2o7Q_!!2214743335304-0-cib.jpg', 340, '均码', 0, '', NULL, 54.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1228, 65, '', 'GZYYZ72773100', 338, '咖啡色', 'https://cbu01.alicdn.com/img/ibank/O1CN01kneLsV1p3HVu8u1xi_!!2214743335304-0-cib.jpg', 340, '均码', 0, '', NULL, 54.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1229, 65, '', 'GZYYZ72776200', 377, '墨绿色', 'https://cbu01.alicdn.com/img/ibank/O1CN01nPrwCh1p3HVouHmtq_!!2214743335304-0-cib.jpg', 340, '均码', 0, '', NULL, 54.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1230, 66, '', 'JKL197340098', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1973_复古蓝.jpg', 394, 'XS', 420, '单裤', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1231, 66, '', 'JKL197340099', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1973_复古蓝.jpg', 394, 'XS', 421, '加绒', NULL, 52.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1232, 66, '', 'JKL197340018', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1973_复古蓝.jpg', 341, 'S', 420, '单裤', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1233, 66, '', 'JKL197340019', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1973_复古蓝.jpg', 341, 'S', 421, '加绒', NULL, 52.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1234, 66, '', 'JKL197340028', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1973_复古蓝.jpg', 342, 'M', 420, '单裤', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1235, 66, '', 'JKL197340029', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1973_复古蓝.jpg', 342, 'M', 421, '加绒', NULL, 52.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1236, 66, '', 'JKL197340038', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1973_复古蓝.jpg', 343, 'L', 420, '单裤', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1237, 66, '', 'JKL197340039', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1973_复古蓝.jpg', 343, 'L', 421, '加绒', NULL, 52.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1238, 66, '', 'JKL197340048', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1973_复古蓝.jpg', 344, 'XL', 420, '单裤', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1239, 66, '', 'JKL197340049', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1973_复古蓝.jpg', 344, 'XL', 421, '加绒', NULL, 52.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1240, 66, '', 'JKL197340058', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1973_复古蓝.jpg', 345, '2XL', 420, '单裤', NULL, 44.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1241, 66, '', 'JKL197340059', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1973_复古蓝.jpg', 345, '2XL', 421, '加绒', NULL, 52.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1242, 67, '', 'JKL19511225CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 401, '25', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1243, 67, '', 'JKL19511225CR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 401, '25', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1244, 67, '', 'JKL19511225JC', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 401, '25', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1245, 67, '', 'JKL19511225JCR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 401, '25', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1246, 67, '', 'JKL19511226CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 402, '26', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1247, 67, '', 'JKL19511226CR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 402, '26', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1248, 67, '', 'JKL19511226JC', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 402, '26', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1249, 67, '', 'JKL19511226JCR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 402, '26', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1250, 67, '', 'JKL19511227CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 403, '27', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1251, 67, '', 'JKL19511227CR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 403, '27', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1252, 67, '', 'JKL19511227JC', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 403, '27', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1253, 67, '', 'JKL19511227JCR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 403, '27', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1254, 67, '', 'JKL19511228CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 404, '28', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1255, 67, '', 'JKL19511228CR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 404, '28', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1256, 67, '', 'JKL19511228JC', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 404, '28', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1257, 67, '', 'JKL19511228JCR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 404, '28', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1258, 67, '', 'JKL19511229CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 405, '29', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1259, 67, '', 'JKL19511229CR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 405, '29', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1260, 67, '', 'JKL19511229JC', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 405, '29', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1261, 67, '', 'JKL19511229JCR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 405, '29', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1262, 67, '', 'JKL19511230CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 406, '30', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1263, 67, '', 'JKL19511230CR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 406, '30', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1264, 67, '', 'JKL19511230JC', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 406, '30', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1265, 67, '', 'JKL19511230JCR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 406, '30', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1266, 67, '', 'JKL19511231CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 407, '31', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1267, 67, '', 'JKL19511231CR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 407, '31', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1268, 67, '', 'JKL19511231JC', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 407, '31', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1269, 67, '', 'JKL19511231JCR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 407, '31', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1270, 67, '', 'JKL19511232CK', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 408, '32', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1271, 67, '', 'JKL19511232CR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 408, '32', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1272, 67, '', 'JKL19511232JC', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 408, '32', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1273, 67, '', 'JKL19511232JCR', 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg', 408, '32', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1274, 67, '', 'JKL19514025CK', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 401, '25', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1275, 67, '', 'JKL19514025CR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 401, '25', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1276, 67, '', 'JKL19514025JC', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 401, '25', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1277, 67, '', 'JKL19514025JCR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 401, '25', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1278, 67, '', 'JKL19514026CK', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 402, '26', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1279, 67, '', 'JKL19514026CR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 402, '26', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1280, 67, '', 'JKL19514026JC', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 402, '26', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1281, 67, '', 'JKL19514026JCR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 402, '26', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1282, 67, '', 'JKL19514027CK', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 403, '27', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1283, 67, '', 'JKL19514027CR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 403, '27', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1284, 67, '', 'JKL19514027JC', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 403, '27', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1285, 67, '', 'JKL19514027JCR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 403, '27', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1286, 67, '', 'JKL19514028CK', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 404, '28', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1287, 67, '', 'JKL19514028CR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 404, '28', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1288, 67, '', 'JKL19514028JC', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 404, '28', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1289, 67, '', 'JKL19514028JCR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 404, '28', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1290, 67, '', 'JKL19514029CK', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 405, '29', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1291, 67, '', 'JKL19514029CR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 405, '29', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1292, 67, '', 'JKL19514029JC', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 405, '29', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1293, 67, '', 'JKL19514029JCR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 405, '29', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1294, 67, '', 'JKL19514030CK', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 406, '30', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1295, 67, '', 'JKL19514030CR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 406, '30', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1296, 67, '', 'JKL19514030JC', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 406, '30', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1297, 67, '', 'JKL19514030JCR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 406, '30', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1298, 67, '', 'JKL19514031CK', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 407, '31', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1299, 67, '', 'JKL19514031CR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 407, '31', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1300, 67, '', 'JKL19514031JC', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 407, '31', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1301, 67, '', 'JKL19514031JCR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 407, '31', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1302, 67, '', 'JKL19514032CK', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 408, '32', 416, '长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1303, 67, '', 'JKL19514032CR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 408, '32', 422, '长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1304, 67, '', 'JKL19514032JC', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 408, '32', 415, '加长裤', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1305, 67, '', 'JKL19514032JCR', 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png', 408, '32', 423, '加长裤加绒', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1306, 62, '', 'JKL99387009', 384, '深蓝长款', '', 394, 'XS', 0, '', NULL, 0.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1307, 62, '', 'JKL99387001', 384, '深蓝长款', '', 341, 'S', 0, '', NULL, 0.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1308, 62, '', 'JKL99387002', 384, '深蓝长款', '', 342, 'M', 0, '', NULL, 0.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1309, 62, '', 'JKL99387003', 384, '深蓝长款', '', 343, 'L', 0, '', NULL, 0.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1310, 62, '', 'JKL99387004', 384, '深蓝长款', '', 344, 'XL', 0, '', NULL, 0.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1311, 62, '', 'JKL99387005', 384, '深蓝长款', '', 345, '2XL', 0, '', NULL, 0.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1312, 62, '', 'JKL99386909', 383, '深蓝九分', '', 394, 'XS', 0, '', NULL, 0.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1313, 62, '', 'JKL99386901', 383, '深蓝九分', '', 341, 'S', 0, '', NULL, 0.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1314, 62, '', 'JKL99386902', 383, '深蓝九分', '', 342, 'M', 0, '', NULL, 0.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1315, 62, '', 'JKL99386903', 383, '深蓝九分', '', 343, 'L', 0, '', NULL, 0.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1316, 62, '', 'JKL99386904', 383, '深蓝九分', '', 344, 'XL', 0, '', NULL, 0.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1317, 62, '', 'JKL99386905', 383, '深蓝九分', '', 345, '2XL', 0, '', NULL, 0.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1318, 68, '', 'JKL31121201', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01rCYlbl2Arl3CqVwkG_!!2513908257-0-cib.jpg', 341, 'S', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1319, 68, '', 'JKL31121202', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01rCYlbl2Arl3CqVwkG_!!2513908257-0-cib.jpg', 342, 'M', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1320, 68, '', 'JKL31121203', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01rCYlbl2Arl3CqVwkG_!!2513908257-0-cib.jpg', 343, 'L', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1321, 68, '', 'JKL31121204', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01rCYlbl2Arl3CqVwkG_!!2513908257-0-cib.jpg', 344, 'XL', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1322, 68, '', 'JKL31121205', 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01rCYlbl2Arl3CqVwkG_!!2513908257-0-cib.jpg', 345, '2XL', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1323, 68, '', 'JKL31120701', 314, '烟灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01vLP3RW2Arl35fOv3d_!!2513908257-0-cib.jpg', 341, 'S', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1324, 68, '', 'JKL31120702', 314, '烟灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01vLP3RW2Arl35fOv3d_!!2513908257-0-cib.jpg', 342, 'M', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1325, 68, '', 'JKL31120703', 314, '烟灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01vLP3RW2Arl35fOv3d_!!2513908257-0-cib.jpg', 343, 'L', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1326, 68, '', 'JKL31120704', 314, '烟灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01vLP3RW2Arl35fOv3d_!!2513908257-0-cib.jpg', 344, 'XL', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1327, 68, '', 'JKL31120705', 314, '烟灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01vLP3RW2Arl35fOv3d_!!2513908257-0-cib.jpg', 345, '2XL', 0, '', NULL, 42.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1328, 69, '', 'KH97347526', 389, '黑灰色', 'https://gd1.alicdn.com/imgextra/i2/49616689/O1CN01NkZm6L1zHc5upnyRW_!!49616689.jpg_400x400.jpg', 402, '26', 0, '', NULL, 39.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1329, 69, '', 'KH97347527', 389, '黑灰色', 'https://gd1.alicdn.com/imgextra/i2/49616689/O1CN01NkZm6L1zHc5upnyRW_!!49616689.jpg_400x400.jpg', 403, '27', 0, '', NULL, 39.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1330, 69, '', 'KH97347528', 389, '黑灰色', 'https://gd1.alicdn.com/imgextra/i2/49616689/O1CN01NkZm6L1zHc5upnyRW_!!49616689.jpg_400x400.jpg', 404, '28', 0, '', NULL, 39.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1331, 69, '', 'KH97347529', 389, '黑灰色', 'https://gd1.alicdn.com/imgextra/i2/49616689/O1CN01NkZm6L1zHc5upnyRW_!!49616689.jpg_400x400.jpg', 405, '29', 0, '', NULL, 39.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1332, 69, '', 'KH97347530', 389, '黑灰色', 'https://gd1.alicdn.com/imgextra/i2/49616689/O1CN01NkZm6L1zHc5upnyRW_!!49616689.jpg_400x400.jpg', 406, '30', 0, '', NULL, 39.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1333, 69, '', 'KH97347531', 389, '黑灰色', 'https://gd1.alicdn.com/imgextra/i2/49616689/O1CN01NkZm6L1zHc5upnyRW_!!49616689.jpg_400x400.jpg', 407, '31', 0, '', NULL, 39.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1334, 69, '', 'KH97347532', 389, '黑灰色', 'https://gd1.alicdn.com/imgextra/i2/49616689/O1CN01NkZm6L1zHc5upnyRW_!!49616689.jpg_400x400.jpg', 408, '32', 0, '', NULL, 39.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1335, 69, '', 'KH97345026', 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i1/49616689/O1CN01bzPmrs1zHc5ynDOyo_!!49616689.jpg_400x400.jpg', 402, '26', 0, '', NULL, 39.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1336, 69, '', 'KH97345027', 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i1/49616689/O1CN01bzPmrs1zHc5ynDOyo_!!49616689.jpg_400x400.jpg', 403, '27', 0, '', NULL, 39.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1337, 69, '', 'KH97345028', 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i1/49616689/O1CN01bzPmrs1zHc5ynDOyo_!!49616689.jpg_400x400.jpg', 404, '28', 0, '', NULL, 39.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1338, 69, '', 'KH97345029', 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i1/49616689/O1CN01bzPmrs1zHc5ynDOyo_!!49616689.jpg_400x400.jpg', 405, '29', 0, '', NULL, 39.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1339, 69, '', 'KH97345030', 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i1/49616689/O1CN01bzPmrs1zHc5ynDOyo_!!49616689.jpg_400x400.jpg', 406, '30', 0, '', NULL, 39.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1340, 69, '', 'KH97345031', 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i1/49616689/O1CN01bzPmrs1zHc5ynDOyo_!!49616689.jpg_400x400.jpg', 407, '31', 0, '', NULL, 39.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1341, 69, '', 'KH97345032', 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i1/49616689/O1CN01bzPmrs1zHc5ynDOyo_!!49616689.jpg_400x400.jpg', 408, '32', 0, '', NULL, 39.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1342, 70, '', 'KH98265026', 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i2/49616689/O1CN01j5qyuA1zHc63KaMAY_!!49616689.jpg_400x400.jpg', 402, '26', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1343, 70, '', 'KH98265027', 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i2/49616689/O1CN01j5qyuA1zHc63KaMAY_!!49616689.jpg_400x400.jpg', 403, '27', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1344, 70, '', 'KH98265028', 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i2/49616689/O1CN01j5qyuA1zHc63KaMAY_!!49616689.jpg_400x400.jpg', 404, '28', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1345, 70, '', 'KH98265029', 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i2/49616689/O1CN01j5qyuA1zHc63KaMAY_!!49616689.jpg_400x400.jpg', 405, '29', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1346, 70, '', 'KH98265030', 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i2/49616689/O1CN01j5qyuA1zHc63KaMAY_!!49616689.jpg_400x400.jpg', 406, '30', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1347, 70, '', 'KH98265031', 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i2/49616689/O1CN01j5qyuA1zHc63KaMAY_!!49616689.jpg_400x400.jpg', 407, '31', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1348, 70, '', 'KH98265032', 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i2/49616689/O1CN01j5qyuA1zHc63KaMAY_!!49616689.jpg_400x400.jpg', 408, '32', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1349, 70, '', 'KH98260126', 308, '黑色', 'https://gd2.alicdn.com/imgextra/i4/49616689/O1CN01GAdjtB1zHc5yvskHx_!!49616689.jpg_400x400.jpg', 402, '26', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1350, 70, '', 'KH98260127', 308, '黑色', 'https://gd2.alicdn.com/imgextra/i4/49616689/O1CN01GAdjtB1zHc5yvskHx_!!49616689.jpg_400x400.jpg', 403, '27', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1351, 70, '', 'KH98260128', 308, '黑色', 'https://gd2.alicdn.com/imgextra/i4/49616689/O1CN01GAdjtB1zHc5yvskHx_!!49616689.jpg_400x400.jpg', 404, '28', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1352, 70, '', 'KH98260129', 308, '黑色', 'https://gd2.alicdn.com/imgextra/i4/49616689/O1CN01GAdjtB1zHc5yvskHx_!!49616689.jpg_400x400.jpg', 405, '29', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1353, 70, '', 'KH98260130', 308, '黑色', 'https://gd2.alicdn.com/imgextra/i4/49616689/O1CN01GAdjtB1zHc5yvskHx_!!49616689.jpg_400x400.jpg', 406, '30', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1354, 70, '', 'KH98260131', 308, '黑色', 'https://gd2.alicdn.com/imgextra/i4/49616689/O1CN01GAdjtB1zHc5yvskHx_!!49616689.jpg_400x400.jpg', 407, '31', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1355, 70, '', 'KH98260132', 308, '黑色', 'https://gd2.alicdn.com/imgextra/i4/49616689/O1CN01GAdjtB1zHc5yvskHx_!!49616689.jpg_400x400.jpg', 408, '32', 0, '', NULL, 40.00, 0.00, 0.00, 0.00, '', 0, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1356, 71, '', 'aaaaa15030', 413, '浅蓝色加绒', 'aaa', 406, '30', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 1, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1357, 71, '', 'aaaaa15029', 413, '浅蓝色加绒', 'aaa', 405, '29', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 1, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1358, 71, '', 'aaaaa14030', 412, '复古蓝加绒', 'aaa', 406, '30', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 1, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1359, 71, '', 'aaaaa14029', 412, '复古蓝加绒', 'aaa', 405, '29', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 1, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1368, 74, '', 'A0012D15032', 413, '浅蓝色加绒', 'http://localhost:8080/preview/images/48', 408, '32', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 1, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1369, 74, '', 'A0012D15031', 413, '浅蓝色加绒', 'http://localhost:8080/preview/images/48', 407, '31', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 1, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1370, 74, '', 'A0012D14032', 412, '复古蓝加绒', 'http://localhost:8080/preview/images/49', 408, '32', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 1, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1371, 74, '', 'A0012D14031', 412, '复古蓝加绒', 'http://localhost:8080/preview/images/49', 407, '31', 0, '', NULL, 12.00, 0.00, 0.00, 0.00, '', 1, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1778696459749048322, 1778696459749048321, '', 'add342320102', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Fl00xq2LWeaeyzP63_!!2213235819700-0-cib.jpg', 342, 'M', 0, '', NULL, 122.00, 0.00, 0.00, 0.00, '', 1, 0, 0, 0);
-INSERT INTO `erp_goods_sku` VALUES (1778696459749048323, 1778696459749048321, '', 'add342320101', 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Fl00xq2LWeaeyzP63_!!2213235819700-0-cib.jpg', 341, 'S', 0, '', NULL, 122.00, 0.00, 0.00, 0.00, '', 1, 0, 0, 0);
+INSERT INTO `erp_goods_sku` VALUES (1781988656068800513, 1781988656060411906, 100, '', 'NZK00023200', 1673551873, '红色', NULL, 0, '', 0, '', NULL, 105.00, 0.00, 0.00, 0.00, '', 1, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for erp_goods_sku_attr
@@ -1821,8 +455,8 @@ CREATE TABLE `erp_goods_sku_attr`  (
   `goods_id` bigint NOT NULL,
   `type` char(5) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   `k` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
-  `kid` int NULL DEFAULT NULL,
-  `vid` int NULL DEFAULT NULL,
+  `kid` bigint NULL DEFAULT NULL,
+  `vid` bigint NULL DEFAULT NULL,
   `v` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   `img` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
@@ -1831,600 +465,7 @@ CREATE TABLE `erp_goods_sku_attr`  (
 -- ----------------------------
 -- Records of erp_goods_sku_attr
 -- ----------------------------
-INSERT INTO `erp_goods_sku_attr` VALUES (1, 1, 'color', '颜色', 1, 0, '250ml', 'http://img.huayikeji.com/wveyzkbvilkzaj3eu9084pmqb9405hag');
-INSERT INTO `erp_goods_sku_attr` VALUES (2, 4, 'color', '颜色', 1, 0, '香辣味1瓶+麻辣味1瓶', 'http://img.huayikeji.com/kw5i7anb3tydpu8kz0f7o8jrszuczlw1');
-INSERT INTO `erp_goods_sku_attr` VALUES (3, 4, 'color', '颜色', 1, 0, '麻辣味420g*2瓶中辣', 'http://img.huayikeji.com/8ltvsrs9huscohzi2qd20qj0daynz012');
-INSERT INTO `erp_goods_sku_attr` VALUES (4, 4, 'color', '颜色', 1, 0, '香辣味420g*2瓶微辣', 'http://img.huayikeji.com/z01l0tjah6vwpwdp4yhppthum9l44our');
-INSERT INTO `erp_goods_sku_attr` VALUES (5, 5, 'color', '颜色', 1, 0, '5A精品', 'http://img.huayikeji.com/kx3ikkjuand5huibpsh3s4o7jsuzilfa');
-INSERT INTO `erp_goods_sku_attr` VALUES (6, 6, 'color', '颜色', 1, 0, '甜味型20袋', 'http://img.huayikeji.com/u4ga7xp1swww4t7y40eh3gvgs3kikf83');
-INSERT INTO `erp_goods_sku_attr` VALUES (7, 7, 'color', '颜色', 1, 0, '深蓝色', 'http://img.huayikeji.com/0lzoyn7adrkv8iv7xjy8kcejl9yelkcg');
-INSERT INTO `erp_goods_sku_attr` VALUES (8, 7, 'color', '颜色', 1, 0, '浅蓝色', 'http://img.huayikeji.com/ahc832bn59qoxq7vlrnvue9lrsiqxsbd');
-INSERT INTO `erp_goods_sku_attr` VALUES (9, 7, 'color', '颜色', 1, 0, '欧美白', 'http://img.huayikeji.com/df8eqd6e9t46vfjx3j7tk84z72yhc3uy');
-INSERT INTO `erp_goods_sku_attr` VALUES (10, 7, 'size', '尺码', 2, 0, '5寸', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (11, 7, 'size', '尺码', 2, 0, '6寸', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (12, 7, 'size', '尺码', 2, 0, '8寸', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (13, 8, 'color', '颜色', 1, 0, '30g * 5包', 'http://img.huayikeji.com/0n40n4ctz61o2rtdlt9wldmxucsio789');
-INSERT INTO `erp_goods_sku_attr` VALUES (14, 9, 'color', '颜色', 1, 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01eJxjQM2FOyB3IsiuU_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (15, 9, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AfNgvA2FOyAvwXZxv_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (16, 9, 'color', '颜色', 1, 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01F1W2O12FOyB2UfQnX_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (17, 9, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01PHFmsX2FOyB14fPie_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (18, 9, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (19, 9, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (20, 9, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (21, 9, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (22, 9, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (23, 10, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01SJelLi2FOyFPEQgvg_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (24, 10, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AWoRY32FOyFNn0erQ_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (25, 10, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01jpsOio2FOyFVLvlmx_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (26, 10, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (27, 10, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (28, 10, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (29, 10, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (30, 10, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (31, 11, 'color', '颜色', 1, 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN013LdA8s2FOyBfwOjXh_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (32, 11, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01giGdo92FOyBjYLUBx_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (33, 11, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN017OhDC42FOyBpOE5Xh_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (34, 11, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN018SPmsV1Bs2ghEUUei_!!0-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (35, 11, 'color', '颜色', 1, 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01BMEINy2FOyBhvpaPZ_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (36, 11, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (37, 11, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (38, 11, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (39, 11, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (40, 11, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (41, 12, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01UR16Tw2FOyJNPJHCZ_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (42, 12, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (43, 12, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (44, 12, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (45, 12, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (46, 12, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (47, 13, 'color', '颜色', 1, 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01gJpwlK2FOyGoJJ3sH_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (48, 13, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01wZ3ye12FOyGhhUDOe_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (49, 13, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01453F082FOyGp5H3Gv_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (50, 13, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (51, 13, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (52, 13, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (53, 13, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (54, 13, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (55, 14, 'color', '颜色', 1, 331, '灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01J0a5Ij2FOyGVsqune_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (56, 14, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01i45X3r2FOyGVsraSQ_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (57, 14, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yx4kr52FOyGOtErWx_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (58, 14, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (59, 14, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (60, 14, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (61, 14, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (62, 14, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (63, 15, 'color', '颜色', 1, 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01rXl5A92FOyBlp8KB2_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (64, 15, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01lW8xsq2FOyBboDwmS_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (65, 15, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01eRnnro2FOyBl7HmaB_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (66, 15, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN010pmtuT2FOyGqBp6dx_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (67, 15, 'color', '颜色', 1, 324, '粉色', 'https://cbu01.alicdn.com/img/ibank/O1CN01jE2Cq12FOyGlWgGFO_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (68, 15, 'color', '颜色', 1, 359, '黄色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Fc0SiP2FOyGwQA0CS_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (69, 15, 'color', '颜色', 1, 0, '薄荷绿', 'https://cbu01.alicdn.com/img/ibank/O1CN010KmHBz2FOyGrTpnqo_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (70, 15, 'color', '颜色', 1, 335, '卡其色', 'https://cbu01.alicdn.com/img/ibank/O1CN01VRmnz72FOyGuOVemn_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (71, 15, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (72, 15, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (73, 15, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (74, 15, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (75, 15, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (76, 16, 'color', '颜色', 1, 0, '浅蓝色', 'http://img.huayikeji.com/ux09zfd120aalurr55707gndmhn1rf21');
-INSERT INTO `erp_goods_sku_attr` VALUES (77, 16, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (78, 16, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (79, 16, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (80, 16, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (81, 16, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (82, 17, 'color', '颜色', 1, 308, '黑色', 'http://img.huayikeji.com/gm40mpqfc53scyxjou2epwqhjqbqp8cv');
-INSERT INTO `erp_goods_sku_attr` VALUES (83, 17, 'color', '颜色', 1, 322, '白色', 'http://img.huayikeji.com/k1bcjvacakh7t65tt541z636hrbv086m');
-INSERT INTO `erp_goods_sku_attr` VALUES (84, 17, 'color', '颜色', 1, 0, '粉色', 'http://img.huayikeji.com/wsqqp8sdqc5e8x9noarg9fswdo17wtu4');
-INSERT INTO `erp_goods_sku_attr` VALUES (85, 17, 'color', '颜色', 1, 0, '深灰色', 'http://img.huayikeji.com/68dgqc2s773upieznl528i0sqs8ib484');
-INSERT INTO `erp_goods_sku_attr` VALUES (86, 17, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (87, 17, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (88, 17, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (89, 17, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (90, 18, 'color', '颜色', 1, 308, '黑色', 'http://img.huayikeji.com/pofzt3pqrtravmzd1jrnd605xqu0usic');
-INSERT INTO `erp_goods_sku_attr` VALUES (91, 18, 'color', '颜色', 1, 0, '复古蓝', 'http://img.huayikeji.com/tc51gyersphju6cgsns937bc3x7m2ph5');
-INSERT INTO `erp_goods_sku_attr` VALUES (92, 18, 'color', '颜色', 1, 0, '浅蓝色', 'http://img.huayikeji.com/l1dj9ovhl9xkcln5lrv09txbvbd4i4ug');
-INSERT INTO `erp_goods_sku_attr` VALUES (93, 18, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (94, 18, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (95, 18, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (96, 18, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (97, 18, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (98, 19, 'color', '颜色', 1, 308, '黑色', 'http://img.huayikeji.com/eih7qcgodthjs3v6oiwl49s0ngs6opjs');
-INSERT INTO `erp_goods_sku_attr` VALUES (99, 19, 'color', '颜色', 1, 0, '黑灰色', 'http://img.huayikeji.com/x29km17ivbfkzzcuqvjrxwpzo52l9jzf');
-INSERT INTO `erp_goods_sku_attr` VALUES (100, 19, 'color', '颜色', 1, 0, '浅蓝色', 'http://img.huayikeji.com/kh86knehjulsigqzexr4jgknbkrwcarr');
-INSERT INTO `erp_goods_sku_attr` VALUES (101, 19, 'color', '颜色', 1, 0, '蓝灰色', 'http://img.huayikeji.com/wgn8xbsgs3mac0j8uqc7xcebeziu3lc2');
-INSERT INTO `erp_goods_sku_attr` VALUES (102, 19, 'size', '尺码', 2, 0, '25', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (103, 19, 'size', '尺码', 2, 0, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (104, 19, 'size', '尺码', 2, 0, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (105, 19, 'size', '尺码', 2, 0, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (106, 19, 'size', '尺码', 2, 0, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (107, 19, 'size', '尺码', 2, 0, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (108, 19, 'size', '尺码', 2, 0, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (109, 19, 'size', '尺码', 2, 0, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (110, 20, 'color', '颜色', 1, 308, '黑色', 'http://img.huayikeji.com/rbmhovahs9a3hqvq28z2d00h3qt6ko38');
-INSERT INTO `erp_goods_sku_attr` VALUES (111, 20, 'color', '颜色', 1, 0, '黑灰色', 'http://img.huayikeji.com/k0vt2gtit508e8yt36o04jdijk1ukgr4');
-INSERT INTO `erp_goods_sku_attr` VALUES (112, 20, 'color', '颜色', 1, 0, '复古蓝', 'http://img.huayikeji.com/crqikzuy0nm2e4yem856va2xk48i7cf4');
-INSERT INTO `erp_goods_sku_attr` VALUES (113, 20, 'size', '尺码', 2, 0, '25', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (114, 20, 'size', '尺码', 2, 0, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (115, 20, 'size', '尺码', 2, 0, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (116, 20, 'size', '尺码', 2, 0, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (117, 20, 'size', '尺码', 2, 0, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (118, 20, 'size', '尺码', 2, 0, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (119, 20, 'size', '尺码', 2, 0, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (120, 20, 'size', '尺码', 2, 0, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (121, 21, 'color', '颜色', 1, 0, '浅蓝色', 'http://img.huayikeji.com/jw7wxsu4uwiv7khvaocru7t9yhhdodol');
-INSERT INTO `erp_goods_sku_attr` VALUES (122, 21, 'color', '颜色', 1, 0, '复古蓝', 'http://img.huayikeji.com/o1pijvy2umsa8mlgfkyjbgs3vwmotkdh');
-INSERT INTO `erp_goods_sku_attr` VALUES (123, 21, 'color', '颜色', 1, 308, '黑色', 'http://img.huayikeji.com/1mcrsm44mbg8ekvlayfjwulvdzzhl9ym');
-INSERT INTO `erp_goods_sku_attr` VALUES (124, 21, 'size', '尺码', 2, 394, 'XS', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (125, 21, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (126, 21, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (127, 21, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (128, 21, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (129, 21, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (130, 22, 'color', '颜色', 1, 308, '黑色', 'http://img.huayikeji.com/b2z1rl4pv3rzhotpxeoru2k8okkscy0f');
-INSERT INTO `erp_goods_sku_attr` VALUES (131, 22, 'color', '颜色', 1, 0, '黑灰色', 'http://img.huayikeji.com/1xye55g2xefzzxm883tvxq5v1z75r82z');
-INSERT INTO `erp_goods_sku_attr` VALUES (132, 22, 'color', '颜色', 1, 0, '浅蓝色', 'http://img.huayikeji.com/ms87oxxsvn3fi422bsil1rgnqbko3wf8');
-INSERT INTO `erp_goods_sku_attr` VALUES (133, 22, 'color', '颜色', 1, 0, '蓝灰色', 'http://img.huayikeji.com/32e4srov0ypum7hy03oxtwc8p6jejy4g');
-INSERT INTO `erp_goods_sku_attr` VALUES (134, 22, 'size', '尺码', 2, 0, '25', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (135, 22, 'size', '尺码', 2, 0, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (136, 22, 'size', '尺码', 2, 0, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (137, 22, 'size', '尺码', 2, 0, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (138, 22, 'size', '尺码', 2, 0, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (139, 22, 'size', '尺码', 2, 0, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (140, 22, 'size', '尺码', 2, 0, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (141, 22, 'size', '尺码', 2, 0, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (142, 23, 'color', '颜色', 1, 308, '黑色', 'http://img.huayikeji.com/po0fayle1t2gsas9jh0rhkgytkyze9ig');
-INSERT INTO `erp_goods_sku_attr` VALUES (143, 23, 'color', '颜色', 1, 389, '黑灰色', 'http://img.huayikeji.com/k2klo0djjmqvrg72zqkwpz303zyxbpik');
-INSERT INTO `erp_goods_sku_attr` VALUES (144, 23, 'color', '颜色', 1, 361, '浅蓝色', 'http://img.huayikeji.com/jobye46pas210pj9ltbh81kagpn87uuj');
-INSERT INTO `erp_goods_sku_attr` VALUES (145, 23, 'color', '颜色', 1, 336, '蓝灰色', 'http://img.huayikeji.com/66vexicx9dqs2terim416pbyw6cimwzr');
-INSERT INTO `erp_goods_sku_attr` VALUES (146, 23, 'size', '尺码', 2, 0, '25', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (147, 23, 'size', '尺码', 2, 0, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (148, 23, 'size', '尺码', 2, 0, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (149, 23, 'size', '尺码', 2, 0, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (150, 23, 'size', '尺码', 2, 0, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (151, 23, 'size', '尺码', 2, 0, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (152, 23, 'size', '尺码', 2, 0, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (153, 23, 'size', '尺码', 2, 0, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (154, 24, 'color', '颜色', 1, 319, '深蓝色', 'http://img.huayikeji.com/tglr5vq19k3f9kpt25bn3hxvwue8s8o9');
-INSERT INTO `erp_goods_sku_attr` VALUES (155, 24, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (156, 24, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (157, 24, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (158, 24, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (159, 24, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (160, 25, 'color', '颜色', 1, 361, '浅蓝色', 'http://img.huayikeji.com/76yre98jhd5mgvkhgvqcdlktdthof0z0');
-INSERT INTO `erp_goods_sku_attr` VALUES (161, 25, 'color', '颜色', 1, 319, '深蓝色', 'http://img.huayikeji.com/tmx42ow0jykbhjrid8d41cr1lsvaidql');
-INSERT INTO `erp_goods_sku_attr` VALUES (162, 25, 'size', '尺码', 2, 0, '25', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (163, 25, 'size', '尺码', 2, 0, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (164, 25, 'size', '尺码', 2, 0, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (165, 25, 'size', '尺码', 2, 0, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (166, 25, 'size', '尺码', 2, 0, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (167, 25, 'size', '尺码', 2, 0, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (168, 25, 'size', '尺码', 2, 0, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (169, 25, 'size', '尺码', 2, 0, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (170, 26, 'color', '颜色', 1, 389, '黑灰色', 'http://img.huayikeji.com/kcjtgriwhgpz0njn420akyrcfflk6yrd');
-INSERT INTO `erp_goods_sku_attr` VALUES (171, 26, 'color', '颜色', 1, 361, '浅蓝色', 'http://img.huayikeji.com/86rh8lzpijus7pc7zcx4ld052uyzew7p');
-INSERT INTO `erp_goods_sku_attr` VALUES (172, 26, 'color', '颜色', 1, 319, '深蓝色', 'http://img.huayikeji.com/6193racfe6v2gls3c5582rxs6h6xpvqo');
-INSERT INTO `erp_goods_sku_attr` VALUES (173, 26, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (174, 26, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (175, 26, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (176, 26, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (177, 26, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (178, 27, 'color', '颜色', 1, 356, '复古蓝', 'http://img.huayikeji.com/g0gsgjfmuvl7jkl22sdbfpbcvb2ozki1');
-INSERT INTO `erp_goods_sku_attr` VALUES (179, 27, 'color', '颜色', 1, 389, '黑灰色', 'http://img.huayikeji.com/zydifc6i4epw9fnf192l6la94vu18pyw');
-INSERT INTO `erp_goods_sku_attr` VALUES (180, 27, 'color', '颜色', 1, 336, '蓝灰色', 'http://img.huayikeji.com/6mux70whkwvf28pb6k9avl8ql7m9hnyo');
-INSERT INTO `erp_goods_sku_attr` VALUES (181, 27, 'color', '颜色', 1, 308, '黑色', 'http://img.huayikeji.com/8p4iw27ejggt0fr66jpbbwxrif65aey7');
-INSERT INTO `erp_goods_sku_attr` VALUES (182, 27, 'size', '尺码', 2, 401, '25', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (183, 27, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (184, 27, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (185, 27, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (186, 27, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (187, 27, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (188, 27, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (189, 27, 'size', '尺码', 2, 408, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (190, 9, 'color', '颜色', 1, 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01gpoCDV2FOyAxsRAur_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (191, 9, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AfNgvA2FOyAvwXZxv_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (197, 28, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/033/066/21020660330_900849200.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (198, 28, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/657/708/20862807756_900849200.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (199, 28, 'color', '颜色', 1, 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/2020/080/060/20938060080_900849200.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (200, 28, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (201, 28, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (202, 28, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (203, 28, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (204, 28, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (205, 29, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01O6JSPt2FOyGJVlNSt_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (206, 29, 'color', '颜色', 1, 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01nMB3GV2FOyGSIAxrm_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (207, 29, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yp4pfJ2FOyGRQhOVF_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (208, 29, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (209, 29, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (210, 29, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (211, 29, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (212, 29, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (213, 30, 'color', '颜色', 1, 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01O9k7a72FOyF40eXdL_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (214, 30, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (215, 30, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (216, 30, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (217, 30, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (218, 30, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (219, 31, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/2020/995/164/22330461599_900849200.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (220, 31, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/343/344/22330443343_900849200.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (221, 31, 'color', '颜色', 1, 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/2020/195/327/22411723591_900849200.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (222, 31, 'color', '颜色', 1, 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/2020/281/876/22411678182_900849200.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (223, 31, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/024/282/22502282420_900849200.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (224, 31, 'color', '颜色', 1, 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/2020/685/864/22502468586_900849200.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (225, 31, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (226, 31, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (227, 31, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (228, 31, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (229, 31, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (230, 32, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN011EipyD2FOyGlVSb58_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (231, 32, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01zhhpHl2FOyGk0i8Nf_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (232, 32, 'color', '颜色', 1, 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/O1CN01u87ebo2FOyGsDbhyd_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (233, 32, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (234, 32, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (235, 32, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (236, 32, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (237, 32, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (238, 33, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01veMucP2FOyCvGWh20_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (239, 33, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01T4m3Jm2FOyCuMBQ9v_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (240, 33, 'color', '颜色', 1, 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01eWGzKH2FOyCrd3HjP_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (241, 33, 'color', '颜色', 1, 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01zJ8R7I2FOyCr3v2cC_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (242, 33, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (243, 33, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (244, 33, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (245, 33, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (246, 33, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (247, 34, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01DMb5Yv2FOyEph4yYB_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (248, 34, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01HLBVQl2FOyEn4nMnB_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (249, 34, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01YPm5Yc2FOyEkRHf9E_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (250, 34, 'color', '颜色', 1, 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01TLlyFy2FOyEkRLLyI_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (251, 34, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (252, 34, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (253, 34, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (254, 34, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (255, 34, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (256, 35, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/732/346/22406643237_900849200.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (257, 35, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (258, 35, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (259, 35, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (260, 35, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (261, 35, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (262, 36, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01FDRxMp2FOyDOB1iTE_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (263, 36, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Kn6Ove2FOyDUNlzou_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (264, 36, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (265, 36, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (266, 36, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (267, 36, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (268, 36, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (269, 37, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01xwzF522FOyCIOnqKM_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (270, 37, 'color', '颜色', 1, 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01C6Sn4s2FOyCMDu0n5_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (271, 37, 'color', '颜色', 1, 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN013vTM8R2FOyCEFuCQk_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (272, 37, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (273, 37, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (274, 37, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (275, 37, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (276, 37, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (277, 38, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01ARPAL32FOyAcs8t96_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (278, 38, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01y01tnq2FOyAbctZxT_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (279, 38, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (280, 38, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (281, 38, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (282, 38, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (283, 38, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (284, 39, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN018JTrMY2FOyA4kgljs_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (285, 39, 'color', '颜色', 1, 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN012TyoAb2FOyA5iihhy_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (286, 39, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (287, 39, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (288, 39, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (289, 39, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (290, 39, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (291, 39, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (292, 39, 'size', '尺码', 2, 408, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (293, 40, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01lUqTwm2FOy9rP6Jod_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (294, 40, 'color', '颜色', 1, 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01D3ndSV2FOy9hbKsqA_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (295, 40, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01YsByd92FOy9lGqpvL_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (296, 40, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (297, 40, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (298, 40, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (299, 40, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (300, 40, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (301, 41, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01J3Quqe2FOyH5tjtiy_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (302, 41, 'color', '颜色', 1, 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01a2j3nN2FOyHBXnetl_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (303, 41, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (304, 41, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (305, 41, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (306, 41, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (307, 41, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (308, 42, 'color', '颜色', 1, 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/176/214/19868412671_900849200.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (309, 42, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/537/457/19941754735_900849200.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (310, 42, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (311, 42, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (312, 42, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (313, 42, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (314, 42, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (315, 42, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (316, 42, 'size', '尺码', 2, 408, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (317, 43, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/2020/842/093/21808390248_900849200.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (318, 43, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/2020/705/941/21730149507_900849200.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (319, 43, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (320, 43, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (321, 43, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (322, 43, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (323, 43, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (324, 44, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01DIe7Es2FOyCYIZFWt_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (325, 44, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN016QWq2N2FOyCSH3gt9_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (326, 44, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01evRAWu2FOyCUPwcyo_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (327, 44, 'color', '颜色', 1, 356, '复古蓝', 'https://cbu01.alicdn.com/img/ibank/O1CN01ZxdpVe2FOyCUVHjc2_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (328, 44, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (329, 44, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (330, 44, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (331, 44, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (332, 44, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (333, 45, 'color', '颜色', 1, 322, '白色', 'https://cbu01.alicdn.com/img/ibank/O1CN01E4FgMe2FOyCf3EUih_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (334, 45, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01WpxUo32FOyCb3IFRu_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (335, 45, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01LNgHTm2FOyCf3KXQX_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (336, 45, 'color', '颜色', 1, 389, '黑灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01A6gZ4a2FOyChQ6oRF_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (337, 45, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (338, 45, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (339, 45, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (340, 45, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (341, 45, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (342, 46, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Nak9ys2FOyE9IvLef_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (343, 46, 'color', '颜色', 1, 336, '烟灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Oi8GB62FOyEARfNQF_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (344, 46, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yMCDYu2FOyEARqBVY_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (345, 46, 'color', '颜色', 1, 336, '蓝灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01SzZ7qE2FOyE5Ahn5c_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (346, 46, 'color', '颜色', 1, 0, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01GXj19V2FOyDvtRpMI_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (347, 46, 'color', '颜色', 1, 0, '烟灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01nw66Rp2FOyECsleSF_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (348, 46, 'color', '颜色', 1, 0, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tCa6sF2FOyE8JtRoh_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (349, 46, 'color', '颜色', 1, 0, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01XHjrys2FOyE9si0Q8_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (350, 46, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (351, 46, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (352, 46, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (353, 46, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (354, 46, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (355, 46, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (356, 46, 'size', '尺码', 2, 408, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (357, 47, 'color', '颜色', 1, 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01KtZqKM2Arl3fk5KtK_!!2513908257-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (358, 47, 'color', '颜色', 1, 0, '深蓝色加长', 'https://cbu01.alicdn.com/img/ibank/O1CN01fz1zp42Arl3SMD5sS_!!2513908257-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (359, 47, 'size', '尺码', 2, 394, 'XS', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (360, 47, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (361, 47, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (362, 47, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (363, 47, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (364, 47, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (365, 33, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01Kv2ymz2FOyCNsDP1S_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (366, 33, 'color', '颜色', 1, 317, '杏色', 'https://cbu01.alicdn.com/img/ibank/O1CN01O3yq8p2FOyCOMzdUR_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (367, 33, 'color', '颜色', 1, 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01wWwtXm2FOyDIpC0BY_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (368, 33, 'color', '颜色', 1, 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01lqQeRn2FOyDLJRi9c_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (369, 33, 'color', '颜色', 1, 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tQBYWC2FOyD8HYB3p_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (370, 33, 'color', '颜色', 1, 412, '复古蓝加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01tS1yRE2FOyDMvwj7p_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (371, 33, 'color', '颜色', 1, 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN010gs0ON2FOyDNfPddh_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (372, 33, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (373, 33, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (374, 33, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (375, 33, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (376, 33, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (377, 22, 'color', '颜色', 1, 409, '黑色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN01yUmRNW2FOyDTbXvyF_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (378, 22, 'color', '颜色', 1, 410, '黑灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN016nREfS2FOyDXxglpQ_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (379, 22, 'color', '颜色', 1, 411, '蓝灰色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN0121IGEy2FOyDeZm8MH_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (380, 22, 'color', '颜色', 1, 413, '浅蓝色加绒', 'https://cbu01.alicdn.com/img/ibank/O1CN013dvLD62FOyDS4ElK6_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (381, 22, 'size', '尺码', 2, 401, '25', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (382, 22, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (383, 22, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (384, 22, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (385, 22, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (386, 22, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (387, 22, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (388, 22, 'size', '尺码', 2, 408, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (389, 48, 'color', '颜色', 1, 361, '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01D94VIz2FOyCZdAhrE_!!2208857268871-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (390, 48, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (391, 48, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (392, 48, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (393, 48, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (394, 48, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (395, 49, 'color', '颜色', 1, 356, '复古蓝', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4');
-INSERT INTO `erp_goods_sku_attr` VALUES (396, 49, 'color', '颜色', 1, 336, '蓝灰色', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp');
-INSERT INTO `erp_goods_sku_attr` VALUES (397, 49, 'color', '颜色', 1, 308, '黑色', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2');
-INSERT INTO `erp_goods_sku_attr` VALUES (398, 49, 'color', '颜色', 1, 412, '复古蓝加绒', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4');
-INSERT INTO `erp_goods_sku_attr` VALUES (399, 49, 'color', '颜色', 1, 411, '蓝灰色加绒', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp');
-INSERT INTO `erp_goods_sku_attr` VALUES (400, 49, 'color', '颜色', 1, 409, '黑色加绒', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2');
-INSERT INTO `erp_goods_sku_attr` VALUES (401, 49, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (402, 49, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (403, 49, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (404, 49, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (405, 49, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (406, 49, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (407, 49, 'size', '尺码', 2, 408, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (408, 49, 'color', '颜色', 1, 367, '复古蓝九分', 'http://img.huayikeji.com/wom2cb3klac7d95x97wwxyck8n7eb5a4');
-INSERT INTO `erp_goods_sku_attr` VALUES (409, 49, 'color', '颜色', 1, 379, '蓝灰色九分', 'http://img.huayikeji.com/imrkrpuewyt1y7bfgewp99moz6qs8hzp');
-INSERT INTO `erp_goods_sku_attr` VALUES (410, 49, 'color', '颜色', 1, 380, '黑色九分', 'http://img.huayikeji.com/0teyrqyzfhwyvgvxf8gyo1lzdxs20gr2');
-INSERT INTO `erp_goods_sku_attr` VALUES (411, 49, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (412, 49, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (413, 49, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (414, 49, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (415, 49, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (416, 49, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (417, 49, 'size', '尺码', 2, 408, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (418, 53, 'color', '颜色', 1, 308, '黑色', 'http://img.huayikeji.com/2ekpro9obesysm6vf1h0ihhfx1z9bgqz');
-INSERT INTO `erp_goods_sku_attr` VALUES (419, 53, 'color', '颜色', 1, 335, '卡其', 'http://img.huayikeji.com/59ihabwqyajwiik7cf4364zpsta40w80');
-INSERT INTO `erp_goods_sku_attr` VALUES (420, 53, 'color', '颜色', 1, 366, '米白', 'http://img.huayikeji.com/4cptgqnxzy9ftbi8l3x6tb1t1fv4vfz9');
-INSERT INTO `erp_goods_sku_attr` VALUES (421, 53, 'color', '颜色', 1, 368, '卡灰', 'http://img.huayikeji.com/dh7fvio3h8zyqs5fbtzb5oxqovvmrol6');
-INSERT INTO `erp_goods_sku_attr` VALUES (422, 53, 'size', '尺码', 2, 401, '25', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (423, 53, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (424, 53, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (425, 53, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (426, 53, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (427, 53, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (428, 53, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (429, 53, 'size', '尺码', 2, 408, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (430, 53, 'style', '款式', 3, 417, '九分', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (431, 53, 'style', '款式', 3, 418, '八分', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (432, 53, 'style', '款式', 3, 419, '九分加绒', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (433, 54, 'color', '颜色', 1, 351, '蓝色', 'http://img.huayikeji.com/fex2kmy8mmraboudesodz9mig2wcbidi');
-INSERT INTO `erp_goods_sku_attr` VALUES (434, 54, 'color', '颜色', 1, 389, '黑灰色', 'http://img.huayikeji.com/8okq5agwo00vy221pyylgvu47va7pet4');
-INSERT INTO `erp_goods_sku_attr` VALUES (435, 54, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (436, 54, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (437, 54, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (438, 54, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (439, 54, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (440, 54, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (441, 55, 'color', '颜色', 1, 356, '复古蓝', 'http://img.huayikeji.com/egma3seljl77hcbpjpw9ks000kkf3rs5');
-INSERT INTO `erp_goods_sku_attr` VALUES (442, 55, 'color', '颜色', 1, 361, '浅蓝色', 'http://img.huayikeji.com/zgtp829lecxrqml16kqkfuo5ajxoh49h');
-INSERT INTO `erp_goods_sku_attr` VALUES (443, 55, 'size', '尺码', 2, 394, 'XS', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (444, 55, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (445, 55, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (446, 55, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (447, 55, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (448, 55, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (449, 56, 'color', '颜色', 1, 356, '复古蓝', 'http://img.huayikeji.com/0ac55odg8e0d7y714svpcvtoqfxld5dk');
-INSERT INTO `erp_goods_sku_attr` VALUES (450, 56, 'size', '尺码', 2, 394, 'XS', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (451, 56, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (452, 56, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (453, 56, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (454, 56, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (455, 56, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (456, 56, 'style', '款式', 3, 416, '长款', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (457, 56, 'style', '款式', 3, 415, '加长款', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (458, 59, 'color', '颜色', 1, 356, '复古蓝', 'http://img.huayikeji.com/n732o54er4aigs0vl0k2mmu1koqwgu6k');
-INSERT INTO `erp_goods_sku_attr` VALUES (459, 59, 'size', '尺码', 2, 394, 'XS', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (460, 59, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (461, 59, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (462, 59, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (463, 59, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (464, 59, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (465, 59, 'style', '款式', 3, 416, '长款', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (466, 59, 'style', '款式', 3, 415, '加长款', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (467, 60, 'color', '颜色', 1, 361, '浅蓝色', 'http://img.huayikeji.com/lmk2699b6lpcoraaxij10kemlqmkqfgr');
-INSERT INTO `erp_goods_sku_attr` VALUES (468, 60, 'color', '颜色', 1, 319, '深蓝色', 'http://img.huayikeji.com/fzvbk24z186xmk1nmtsobbasv4quxv8q');
-INSERT INTO `erp_goods_sku_attr` VALUES (469, 60, 'color', '颜色', 1, 374, '深蓝色加绒', 'http://img.huayikeji.com/0yzpga8017ikg8on2ejo03dgo2uulzbi');
-INSERT INTO `erp_goods_sku_attr` VALUES (470, 60, 'size', '尺码', 2, 401, '25', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (471, 60, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (472, 60, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (473, 60, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (474, 60, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (475, 60, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (476, 60, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (477, 60, 'size', '尺码', 2, 408, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (478, 61, 'color', '颜色', 1, 351, '蓝色', 'http://img.huayiyungou.com/q3t7loa0mz6lokizz93fp52cltgxhuq2');
-INSERT INTO `erp_goods_sku_attr` VALUES (479, 61, 'color', '颜色', 1, 389, '黑灰色', 'http://img.huayiyungou.com/qx67wj65nlvrs514g02bs7ocptl5b6ec');
-INSERT INTO `erp_goods_sku_attr` VALUES (480, 61, 'size', '尺码', 2, 394, 'XS', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (481, 61, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (482, 61, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (483, 61, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (484, 61, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (485, 61, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (486, 62, 'color', '颜色', 1, 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_黑色.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (487, 62, 'color', '颜色', 1, 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_复古蓝.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (488, 62, 'color', '颜色', 1, 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9938_浅蓝色.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (489, 62, 'size', '尺码', 2, 394, 'XS', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (490, 62, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (491, 62, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (492, 62, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (493, 62, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (494, 62, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (495, 62, 'style', '款式', 3, 417, '九分', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (496, 62, 'style', '款式', 3, 416, '长款', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (497, 63, 'color', '颜色', 1, 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_黑色.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (498, 63, 'color', '颜色', 1, 335, '卡其', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡其.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (499, 63, 'color', '颜色', 1, 368, '卡灰', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_卡灰.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (500, 63, 'color', '颜色', 1, 366, '米白', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL6001_米白.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (501, 63, 'size', '尺码', 2, 401, '25', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (502, 63, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (503, 63, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (504, 63, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (505, 63, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (506, 63, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (507, 63, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (508, 63, 'size', '尺码', 2, 408, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (509, 63, 'style', '款式', 3, 420, '单裤', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (510, 63, 'style', '款式', 3, 421, '加绒', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (511, 64, 'color', '颜色', 1, 308, '黑色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_黑色.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (512, 64, 'color', '颜色', 1, 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_深蓝色.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (513, 64, 'color', '颜色', 1, 361, '浅蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-11/JKL9909_浅蓝色.JPG');
-INSERT INTO `erp_goods_sku_attr` VALUES (514, 64, 'size', '尺码', 2, 401, '25', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (515, 64, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (516, 64, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (517, 64, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (518, 64, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (519, 64, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (520, 64, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (521, 64, 'size', '尺码', 2, 408, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (522, 64, 'style', '款式', 3, 417, '九分', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (523, 64, 'style', '款式', 3, 416, '长款', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (524, 65, 'color', '颜色', 1, 308, '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01lfHUDo1p3HVme2o7Q_!!2214743335304-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (525, 65, 'color', '颜色', 1, 338, '咖啡色', 'https://cbu01.alicdn.com/img/ibank/O1CN01kneLsV1p3HVu8u1xi_!!2214743335304-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (526, 65, 'color', '颜色', 1, 377, '墨绿色', 'https://cbu01.alicdn.com/img/ibank/O1CN01nPrwCh1p3HVouHmtq_!!2214743335304-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (527, 65, 'size', '尺码', 2, 340, '均码', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (528, 66, 'color', '颜色', 1, 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1973_复古蓝.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (529, 66, 'size', '尺码', 2, 394, 'XS', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (530, 66, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (531, 66, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (532, 66, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (533, 66, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (534, 66, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (535, 66, 'style', '款式', 3, 420, '单裤', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (536, 66, 'style', '款式', 3, 421, '加绒', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (537, 67, 'color', '颜色', 1, 319, '深蓝色', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_深蓝色.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (538, 67, 'color', '颜色', 1, 356, '复古蓝', 'http://img.huayiyungou.com/ecom_goods_img_2022-12/JKL1951_复古蓝.png');
-INSERT INTO `erp_goods_sku_attr` VALUES (539, 67, 'size', '尺码', 2, 401, '25', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (540, 67, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (541, 67, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (542, 67, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (543, 67, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (544, 67, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (545, 67, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (546, 67, 'size', '尺码', 2, 408, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (547, 67, 'style', '款式', 3, 416, '长裤', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (548, 67, 'style', '款式', 3, 422, '长裤加绒', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (549, 67, 'style', '款式', 3, 415, '加长裤', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (550, 67, 'style', '款式', 3, 423, '加长裤加绒', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (551, 62, 'color', '颜色', 1, 384, '深蓝长款', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (552, 62, 'color', '颜色', 1, 383, '深蓝九分', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (553, 62, 'size', '尺码', 2, 394, 'XS', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (554, 62, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (555, 62, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (556, 62, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (557, 62, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (558, 62, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (559, 68, 'color', '颜色', 1, 319, '深蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01rCYlbl2Arl3CqVwkG_!!2513908257-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (560, 68, 'color', '颜色', 1, 314, '烟灰色', 'https://cbu01.alicdn.com/img/ibank/O1CN01vLP3RW2Arl35fOv3d_!!2513908257-0-cib.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (561, 68, 'size', '尺码', 2, 341, 'S', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (562, 68, 'size', '尺码', 2, 342, 'M', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (563, 68, 'size', '尺码', 2, 343, 'L', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (564, 68, 'size', '尺码', 2, 344, 'XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (565, 68, 'size', '尺码', 2, 345, '2XL', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (566, 69, 'color', '颜色', 1, 389, '黑灰色', 'https://gd1.alicdn.com/imgextra/i2/49616689/O1CN01NkZm6L1zHc5upnyRW_!!49616689.jpg_400x400.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (567, 69, 'color', '颜色', 1, 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i1/49616689/O1CN01bzPmrs1zHc5ynDOyo_!!49616689.jpg_400x400.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (568, 69, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (569, 69, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (570, 69, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (571, 69, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (572, 69, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (573, 69, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (574, 69, 'size', '尺码', 2, 408, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (575, 70, 'color', '颜色', 1, 361, '浅蓝色', 'https://gd3.alicdn.com/imgextra/i2/49616689/O1CN01j5qyuA1zHc63KaMAY_!!49616689.jpg_400x400.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (576, 70, 'color', '颜色', 1, 308, '黑色', 'https://gd2.alicdn.com/imgextra/i4/49616689/O1CN01GAdjtB1zHc5yvskHx_!!49616689.jpg_400x400.jpg');
-INSERT INTO `erp_goods_sku_attr` VALUES (577, 70, 'size', '尺码', 2, 402, '26', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (578, 70, 'size', '尺码', 2, 403, '27', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (579, 70, 'size', '尺码', 2, 404, '28', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (580, 70, 'size', '尺码', 2, 405, '29', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (581, 70, 'size', '尺码', 2, 406, '30', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (582, 70, 'size', '尺码', 2, 407, '31', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (583, 70, 'size', '尺码', 2, 408, '32', '');
-INSERT INTO `erp_goods_sku_attr` VALUES (584, 71, 'color', '颜色', 114, 413, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (585, 71, 'color', '颜色', 114, 412, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (586, 71, 'size', '尺码', 115, 406, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (587, 71, 'size', '尺码', 115, 405, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (588, 71, 'style', '款式', 116, 413, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (589, 71, 'style', '款式', 116, 412, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (597, 74, 'color', '颜色', 114, 413, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (598, 74, 'color', '颜色', 114, 412, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (599, 74, 'size', '尺码', 115, 408, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (600, 74, 'size', '尺码', 115, 407, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (601, 74, 'style', '款式', 116, 413, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (602, 74, 'style', '款式', 116, 412, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (1778696459749048324, 1778696459749048321, 'color', '颜色', 114, 308, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (1778696459749048325, 1778696459749048321, 'size', '尺码', 115, 342, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (1778696459874877441, 1778696459749048321, 'size', '尺码', 115, 341, NULL, NULL);
-INSERT INTO `erp_goods_sku_attr` VALUES (1778696459874877442, 1778696459749048321, 'style', '款式', 116, 308, NULL, NULL);
+INSERT INTO `erp_goods_sku_attr` VALUES (1781988656135909377, 1781988656060411906, 'color', '颜色', 1781941806087319554, 1673551873, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_order
@@ -2611,31 +652,407 @@ CREATE TABLE `erp_refund`  (
 INSERT INTO `erp_refund` VALUES (1771749215664414722, '149005526432678759', 11, 1, 1, 0, NULL, '2090155476352675987', '2090155476353675987', 5222928542211, 0, 0, 'ZH-SF-04-DS-F1-QM23-NT2(R)', '曲美家居现代轻奢简约床头柜床边高脚储物柜卧室置物储藏柜', '颜色分类:石墨黑-右;安装方式:组装', 'https://img.alicdn.com/bao/uploaded/i1/351855490/O1CN012NaoeQ1qQTGEg68L3_!!351855490.jpg', 1, NULL, NULL, NULL, '', '', '', '', 10010, '2024-03-24 12:01:45', 'REFUND_MESSAGE', NULL, NULL);
 
 -- ----------------------------
+-- Table structure for erp_shop
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_shop`;
+CREATE TABLE `erp_shop`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户id',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '店铺名',
+  `type` int NOT NULL COMMENT '对应第三方平台Id',
+  `url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '店铺url',
+  `sort` int NOT NULL DEFAULT 9 COMMENT '排序',
+  `status` int NULL DEFAULT 0 COMMENT '状态（1正常2已删除）',
+  `modify_on` bigint NOT NULL COMMENT '更新时间',
+  `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
+  `seller_id` bigint NOT NULL DEFAULT 0 COMMENT '第三方平台店铺id，淘宝天猫开放平台使用',
+  `app_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Appkey',
+  `app_sercet` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Appsercet',
+  `access_token` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '第三方平台sessionKey（access_token）',
+  `expires_in` bigint NULL DEFAULT NULL COMMENT '到期',
+  `access_token_begin` bigint NULL DEFAULT NULL COMMENT 'access_token开始时间',
+  `refresh_token` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '刷新token',
+  `refresh_token_timeout` bigint NULL DEFAULT NULL COMMENT '刷新token过期时间',
+  `api_request_url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '请求url',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据中心-店铺' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_shop
+-- ----------------------------
+INSERT INTO `erp_shop` VALUES (6, 100, '视频号小店', 5, NULL, 9, 0, 1713696491, '啊啊啊v', 0, '3333232', '01', '', NULL, NULL, NULL, NULL, 'https://api.weixin.qq.com');
+
+-- ----------------------------
+-- Table structure for erp_shop_goods
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_shop_goods`;
+CREATE TABLE `erp_shop_goods`  (
+  `id` bigint NOT NULL,
+  `shop_id` bigint NULL DEFAULT NULL COMMENT '店铺id',
+  `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户id',
+  `product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台商品id',
+  `out_product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商家编码id',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品标题',
+  `sub_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `head_imgs` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '主图集合',
+  `head_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '第一张主图',
+  `desc_info` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品详情字符串',
+  `attrs` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '属性字符串',
+  `status` int NULL DEFAULT NULL COMMENT '状态',
+  `edit_status` int NULL DEFAULT NULL COMMENT '编辑状态',
+  `min_price` int NULL DEFAULT NULL COMMENT '商品 SKU 最小价格（单位：分）',
+  `spu_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品编码',
+  `product_type` int NULL DEFAULT NULL COMMENT '商品类型。1: 小店普通自营商品；2: 福袋抽奖商品；3: 直播间闪电购商品。注意: 福袋抽奖、直播间闪电购类型的商品为只读数据，不支持编辑、上架操作，不支持用data_type=2的参数获取。',
+  `edit_time` int NULL DEFAULT NULL COMMENT '商品草稿最近一次修改时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_shop_goods
+-- ----------------------------
+INSERT INTO `erp_shop_goods` VALUES (1773592665390514178, 6, 100, NULL, NULL, '2024春季农家燕麦麸皮 高纤高蛋白营养 500g/罐', NULL, '[\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HARN-Ewu9KkyLbQ-i1dzG59Ipxaw0KClDQNn3hhHkA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HNTp4qhlDC5kLroYp101uOiUKRsRT80lqEgjTh9CTg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HNgPr5tM10t4f0CYz_N2Rnm0uIqlA29Cn3jv9Sb6Bw\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HHOtQob6n82y6ijcRwWQCvjaAKNu8ZolouugfAKNTg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HLKaJe2eR_YipU8DX4LRyzyNm60j2T2APKqvvYamoA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HBFvYUZTgdpcakf6aeSqe-cd-rJOHvN_MUD92oO1rA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HP84p2a6MjxCbuEdefZWkUpbZKBA8co8_6B_w5LOjQ\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HD4wfyh4AFwMJkwsV3zgzVtOZnD50fhW3ixMzUaN_w\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HGrC9ZiOuk9MKbnJBowwWNVBZ9uUjg_STZzXNzy8PQ\"]', 'https://mmecimage.cn/p/wx2b826d52663c3ac5/HARN-Ewu9KkyLbQ-i1dzG59Ipxaw0KClDQNn3hhHkA', '{\"imgs\":[\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HIGYaktEgmvz24ajkAAJhH6uDC-osnqovWosa9-gWQ\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HNEZI4nbU-Qg9_XXRyBMl1cFbpND5wyrivAE0W9pvg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HLaoM9JsWEDaLK42wKhlM15ku7ETEh0-eiqCtiOFUA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HDOIzQv4eyOCdJfqieclsx6KFEQcIxEawnNA5aUIkg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HGGR-iLCrzMW6SDIwvjqXrKtslGvRqM0k-89VekSgw\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HDsg1cgCeLjvTQ4RmcTrMuO7_Bykmeq1rRL8kPvADw\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HIEQxLpTnn0YZIPkwZ_jAhxECgkhM95APxAfLyfeyw\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HMRpnoTmc64dZpoJSIDSNidgYL5yX_B6s0zofo2dhA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HERmb7JpfCsBcIk1EKo8pg_wX9FbQny-0MsVBPGBgQ\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HEf7XxCWlxOPXxUtH0GhT4EVbCrDXu-6nzJheY_v2w\"],\"desc\":\"\"}', '[{\"attr_key\":\"品牌\",\"attr_value\":\"麦趣丰\"},{\"attr_key\":\"生产企业名称\",\"attr_value\":\"山东维美食品有限公司\"},{\"attr_key\":\"配料表\",\"attr_value\":\"燕麦\"},{\"attr_key\":\"保质期\",\"attr_value\":\"240 天\"},{\"attr_key\":\"净含量\",\"attr_value\":\"500 g\"}]', 5, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop_goods` VALUES (1773592726853844994, 6, 100, NULL, NULL, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓茶330g*罐', NULL, '[\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HOHUsPL5lXYMi6uiTIqNoTN7aVVLFstOylGkv2Rupg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HCgV2IEsYtkzBdKOSWF5UChZ6lzW8n4o-jvtK7jrGQ\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HCsvjx2CqjmYumW4sW335BuS5FZtwC6ctueDYc9J9A\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HFn92-3enHPQ_DFgNDPDqlg9gUxHt14JavVGhMx_Jg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HMP2oduzl5c8wFyoZDHTMguBi2vMrxRX3kucG1IENQ\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HHbxEwPTrADwThr_5f3BUuthfqOPZdjHR3NDUA7pFA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HPhYUEDpnVO1jiGSHHmagyQOIdPYpau2oyjXZz7eyg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HEavquNbjGtBOK9pSfKiN7_IRQQZIXBuQqp5-NqnOA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HDmtDkNUi_aTtPbCeRPuECHm4d8u5IGw8i6-wRXnMQ\"]', 'https://mmecimage.cn/p/wx2b826d52663c3ac5/HOHUsPL5lXYMi6uiTIqNoTN7aVVLFstOylGkv2Rupg', '{\"imgs\":[\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HCHck7lcuqJ-0jBEa4uLrpE4bpuR3276H5mG6r8YVA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HBCUz-BSyK8uE8kjyVFUN_E3Y1rYVS5sQ4gZpNud3g\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HLDZzs9U0mZ1o90Ao3_fbVx92Be6qmDx4_0hOmLNKg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HN8FBEj5-OB9ikg2_BGssLp0o2FOfQmFCIyLOj-q-Q\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HCzULR3SSfXACWAffBG77GQYx4lDkzqBkm2fcPOuqg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HCjS8dONFVTAukX0-_q5-cozvhQzbYUwp3iBieGvrw\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HDLWNouDSg64CY_SmSVHH92_B9FVNk82Mdh0UujfaQ\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HJZ9uhZ-R90QOp9nD7oIl_Ru61tDzm-SgdtbSvl2kw\"],\"desc\":\"\"}', '[{\"attr_key\":\"品牌\",\"attr_value\":\"泷御堂\"},{\"attr_key\":\"生产企业名称\",\"attr_value\":\"安徽意茗堂生物科技有限公司\"},{\"attr_key\":\"配料表\",\"attr_value\":\"赤小豆、慧米、芡实、茯苓\"},{\"attr_key\":\"保质期\",\"attr_value\":\"12 月\"},{\"attr_key\":\"净含量\",\"attr_value\":\"330 g\"}]', 5, NULL, NULL, NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for erp_shop_goods_sku
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_shop_goods_sku`;
+CREATE TABLE `erp_shop_goods_sku`  (
+  `id` bigint NOT NULL,
+  `shop_goods_id` bigint NULL DEFAULT NULL COMMENT '外键id',
+  `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户id',
+  `product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台商品id',
+  `sku_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'skuID',
+  `out_sku_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商家自定义skuID。如果添加时没录入，回包可能不包含该字段',
+  `thumb_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku小图',
+  `sale_price` int NULL DEFAULT NULL COMMENT '售卖价格，以分为单位',
+  `stock_num` int NULL DEFAULT NULL COMMENT 'sku库存',
+  `sku_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku编码',
+  `status` int NULL DEFAULT NULL COMMENT 'sku状态',
+  `sku_attrs` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku_attrs',
+  `sku_deliver_info` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku_deliver_info',
+  `erp_goods_id` bigint NULL DEFAULT NULL COMMENT 'erp系统商品id',
+  `erp_goods_sku_id` bigint NULL DEFAULT NULL COMMENT 'erp系统商品skuid',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_shop_goods_sku
+-- ----------------------------
+INSERT INTO `erp_shop_goods_sku` VALUES (1773592677457526786, 1773592665390514178, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4斤\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (1773592726975479809, 1773592726853844994, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, '[{\"attr_key\":\"净含量\",\"attr_value\":\"4罐99.9【平均24.9/罐】(97%人选择)1个周期\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (1773592727050977281, 1773592726853844994, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, '[{\"attr_key\":\"净含量\",\"attr_value\":\"3罐89.9【平均29/罐】(50%人选择)\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (1773592727147446274, 1773592726853844994, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, '[{\"attr_key\":\"净含量\",\"attr_value\":\"2罐69.9【平均34.5/罐】(35%人选择)\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (1773592727227138049, 1773592726853844994, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, '[{\"attr_key\":\"净含量\",\"attr_value\":\"1罐体验装【贵在运费】(5%人选择)\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for erp_shop_logistics_company
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_shop_logistics_company`;
+CREATE TABLE `erp_shop_logistics_company`  (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `platform_id` int NULL DEFAULT NULL COMMENT '平台id',
+  `shop_id` int NULL DEFAULT NULL COMMENT '店铺ID',
+  `logistics_id` bigint NULL DEFAULT NULL COMMENT '物流公司id（值来自于平台返回）',
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '物流公司编码（值来自于平台返回）',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '物流公司名称（值来自于平台返回）',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `status` int NULL DEFAULT NULL COMMENT '状态（1启用0禁用）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_shop_logistics_company
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for erp_shop_order
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_shop_order`;
+CREATE TABLE `erp_shop_order`  (
+  `id` bigint NOT NULL,
+  `shop_id` int NULL DEFAULT NULL COMMENT '店铺id',
+  `order_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单号',
+  `openid` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '买家身份标识',
+  `create_time` int NULL DEFAULT NULL COMMENT '秒级时间戳',
+  `update_time` int NULL DEFAULT NULL COMMENT '秒级时间戳',
+  `unionid` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `status` int NULL DEFAULT NULL COMMENT '状态10	待付款；20	待发货；21	部分发货；30	待收货；100	完成；200	全部商品售后之后，订单取消；250	未付款用户主动取消或超时未付款订单自动取消；',
+  `aftersale_detail` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '售后信息json',
+  `pay_info` varchar(5500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '支付信息json',
+  `product_price` int NULL DEFAULT NULL COMMENT '商品总价，单位为分',
+  `order_price` int NULL DEFAULT NULL COMMENT '订单金额，单位为分，order_price=original_order_price-discounted_price-deduction_price-change_down_price',
+  `freight` int NULL DEFAULT NULL COMMENT '运费，单位为分',
+  `discounted_price` int NULL DEFAULT NULL COMMENT '优惠券优惠金额，单位为分',
+  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '收货人姓名',
+  `postal_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '邮编',
+  `province_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '省份',
+  `city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '城市',
+  `county_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '区',
+  `detail_info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '详细地址',
+  `tel_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系方式\r\n',
+  `house_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '门牌号码',
+  `virtual_order_tel_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '虚拟发货订单联系方式(deliver_method=1时返回)',
+  `tel_number_ext_info` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '额外的联系方式信息（虚拟号码相关）',
+  `use_tel_number` int NULL DEFAULT NULL COMMENT '0：不使用虚拟号码，1：使用虚拟号码',
+  `hash_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标识当前店铺下一个唯一的用户收货地址',
+  `delivery_product_info` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '发货物流信息JSON',
+  `ship_done_time` int NULL DEFAULT NULL COMMENT '发货完成时间，秒级时间戳',
+  `ewaybill_order_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '电子面单代发时的订单密文\r\n',
+  `settle_info` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '结算信息json',
+  `confirm_status` int NULL DEFAULT 0 COMMENT '订单确认状态（0未确认1已确认）',
+  `confirm_time` datetime NULL DEFAULT NULL COMMENT '确认时间',
+  `erp_send_status` int NULL DEFAULT NULL COMMENT 'erp发货状态',
+  `erp_send_time` datetime NULL DEFAULT NULL COMMENT 'ERP发货时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_shop_order
+-- ----------------------------
+INSERT INTO `erp_shop_order` VALUES (1773651199826300930, 6, '3718590468852683008', 'oAv1969ctu4B_MrW17zk7JChQrBA', 1710907087, 1711280945, NULL, 100, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20115809263560bdc3bda251ae3eee0000\",\"prepay_time\":1710907089,\"pay_time\":1710907097,\"transaction_id\":\"4332301095202403202057439992\"}', 9990, 9990, 0, NULL, '张**', '156400', '黑龙江省', '佳木斯市', '同江市', '****', '139****1755', '', '', 'null', 0, '60e36c9691eef079a45fb629c78b88ef', '[{\"waybill_id\":\"312317650762748\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710921324,\"deliver_type\":1}]', 1710921324, 'ofeIxD4qpxEIdkUmusYuJAvWi-H4cgngomdmkZ5Dt41LPpun-Yf2ROm0cO8Adz5_jsw4DNRn5D_w', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651201164283905, 6, '3718590165614464000', 'oAv196-Xw4whjGQr4GF2D1lUS0vw', 1710905931, 1711510929, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx201138523358325a5c59a03b72a8900000\",\"prepay_time\":1710905932,\"pay_time\":1710905946,\"transaction_id\":\"4348501112202403200062879930\"}', 9990, 9990, 0, NULL, '风**', '541004', '广西壮族自治区', '桂林市', '七星区', '****', '189****5671', '', '', 'null', 0, 'd1d18fd116ecbfb5a084db703652bbf2', '[{\"waybill_id\":\"312317507518865\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710906129,\"deliver_type\":1}]', 1710906129, 'ofBnDflYHmXX3vPIhJblDq6wq4O4z3OggOGTJljLlnEM4YzvNVPTX7AR3q2zz48dbs46F9oNaN0w', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651202531627010, 6, '3718589880635884800', 'oAv196_dDA-D0ZAJYtZxZ5Tsq-pw', 1710904844, 1711510862, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20112045176075a813e14d5103ac360000\",\"prepay_time\":1710904845,\"pay_time\":1710904852,\"transaction_id\":\"4337401091202403206248549568\"}', 9990, 9990, 0, NULL, '周**', '516400', '广东省', '汕尾市', '海丰县', '****', '139****2585', '', '', 'null', 0, 'da3bf96aca5d34d9e3ec017711621933', '[{\"waybill_id\":\"73610448785703\",\"delivery_id\":\"ZTO\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"中通快递\",\"delivery_time\":1710906061,\"deliver_type\":1}]', 1710906061, 'of0P-Z4yhGNWPrBNEo7_lsU1SmlDdPtKsnOLMhXG4APpvl-4yPjGXI4THGYDUF5Jr6e9tF4Jmc_Q', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651203651506177, 6, '3718589605759552512', 'oAv1963oP6e80PmR0O3WFwVsMjgI', 1710903795, 1711510789, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20110316854964035140248b3568880000\",\"prepay_time\":1710903797,\"pay_time\":1710903805,\"transaction_id\":\"4323001101202403206838631886\"}', 9990, 9990, 0, NULL, '杨**', '523000', '广东省', '东莞市', '南城街道', '****', '131****9856', '', '', 'null', 0, 'd840df43d3db15177add62845ef6f4d9', '[{\"waybill_id\":\"312317506583169\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'ofkbBWSIJgWEGlEETB2I9eyh57RBtnEfsgSR8mezOEF4mS7XdSOVT-IsKy5N5D6qUAMSAR0TKkJA', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651204742025218, 6, '3718589592043128064', 'oAv196_qiMGLFlRYUrVporaKPzLo', 1710903743, 1711510790, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx201102245184580c3862e9bad7827c0000\",\"prepay_time\":1710903744,\"pay_time\":1710903759,\"transaction_id\":\"4302201086202403208840994399\"}', 9990, 9990, 0, NULL, '李', '200135', '上海市', '上海市', '浦东新区', '****', '151****0907', '', '', 'null', 0, '8f7bbb970f4b8135917c7ab8ad604f09', '[{\"waybill_id\":\"312317506512381\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'of4-1Cwj9aGErR9HppkMCnNgRPGDuMXKVe6Z-gm5_ccKqVhIdVeETP5aUPvneZGeUQyn1Jk9SH8g', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651205966761986, 6, '3718589309525299200', 'oAv1969jKGQpCmYc1SSbPMuWLXUc', 1710902665, 1711510789, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20104426595065d78a9492c283f27a0000\",\"prepay_time\":1710902666,\"pay_time\":1710902672,\"transaction_id\":\"4347100965202403202814722381\"}', 9990, 9990, 0, NULL, '王*', '201900', '上海市', '上海市', '宝山区', '****', '139****3668', '', '', 'null', 0, '4570669245c3fe8bd0e0b173d2bf4810', '[{\"waybill_id\":\"312317506523860\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'ofJ8FkFDNTi0o-2Kza85q3-jQ6A_Kl_QJk7XYZja1tgNFz2Vl3cEhVNiDo4-5DouC1K-eunIllMA', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651207095029762, 6, '3718589294961886464', 'oAv196y7xzoB4jtnMbZ_8_m2jeOY', 1710902609, 1711510790, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20104331088708d417c64b1b0184960000\",\"prepay_time\":1710902611,\"pay_time\":1710902620,\"transaction_id\":\"4346701109202403209988609214\"}', 9990, 9990, 0, NULL, '李**', '200050', '上海市', '上海市', '长宁区', '****', '181****9671', '', '', 'null', 0, 'a2615ec5565c3e3d407e45d1ea7f5f2a', '[{\"waybill_id\":\"312317506578945\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'of0ByBqSq6e3Ye3a1bma4KP4uiKBfRZ_n_lhkvLJDpslARp1Vx3oXm9cOLmrQ94ZZCvSkM0qZ8Dg', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651208210714625, 6, '3718589016159424768', 'oAv19634S2V5xCQ1zC9CK3OfyfiQ', 1710901546, 1711510790, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20102547465198d959aca9d05bf4d90000\",\"prepay_time\":1710901547,\"pay_time\":1710901554,\"transaction_id\":\"4342301109202403207545671962\"}', 9990, 9990, 0, NULL, '卢**', '530012', '广西壮族自治区', '南宁市', '兴宁区', '****', '138****5202', '', '13877165202', 'null', 0, '9a9334f61deee413c7579cc7797dfe76', '[{\"waybill_id\":\"312317506455252\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'ofZdjluGp7LFmJA9HxxGsqcgcHySzhWQ1yw76nuvkZcS4NZeQKds94thoZQ0C1oOoJMwkQNAb0xw', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651209330593793, 6, '3718588644526002432', 'oAv196_7aFUZPJalgmLxL_iWw804', 1710900128, 1711510790, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20100209893206a12375aa409b48bb0000\",\"prepay_time\":1710900130,\"pay_time\":1710900140,\"transaction_id\":\"4341200952202403200383974611\"}', 9990, 9990, 0, NULL, '马**', '101100', '北京市', '北京市', '通州区', '****', '183****6247', '', '', 'null', 0, '1b704e24c12cf7062ee5736e7551429a', '[{\"waybill_id\":\"312317506509480\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'ofLFnCZuN2by9AcKov46K5tJm1_mG0bBQbXQ-_cUpATAtdYqQOtzeRBYQ04D_HDZy2hxy0QD5PzA', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651210421112833, 6, '3718588590994097408', 'oAv196zhzMf97Ba2R8xdQ0QZxnKs', 1710899924, 1710900826, NULL, 250, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"prepay_id\":\"up_wx20095845672477c9ce9c4315ec892c0000\",\"prepay_time\":1710899925}', 9990, 9990, 0, NULL, '幸*', '543200', '广西壮族自治区', '梧州市', '岑溪市', '****', '182****6206', '', '', 'null', 0, 'd839bebe74d2c0f69bb659ed50726e11', '[]', 0, 'ofRpFXMXe91gV1dn-cpRjsVM35DtD8SKNaIGhmSGSi-GtHwBkt6aIV87SGxa-3CEfaVc1JKUTevA', '{\"predict_commission_fee\":0}', 0, NULL, NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651211620683777, 6, '3718588208610936064', 'oAv196xSiMAiXvclFVbm3uQtFiMk', 1710898465, 1711510861, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx200934271410802829cd13e6d377c20000\",\"prepay_time\":1710898467,\"pay_time\":1710898475,\"transaction_id\":\"4305500964202403207977225252\"}', 9990, 9990, 0, NULL, '王**', '361001', '福建省', '厦门市', '思明区', '****', '137****5379', '', '', 'null', 0, '5391edd5cb004407c49340082782bdfa', '[{\"waybill_id\":\"73610448785566\",\"delivery_id\":\"ZTO\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"中通快递\",\"delivery_time\":1710906061,\"deliver_type\":1}]', 1710906061, 'of9UExPPPXndZlepNABvZdWT2c8mlrxKRiYI22tfavxYnl_FlimXLP4T7mBcNYEeixdBBISBdGJA', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651212686036993, 6, '3718588207135065344', 'oAv1965NJAgLllnVsL1sqtLu_eYc', 1710898460, 1710899360, NULL, 250, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"prepay_id\":\"up_wx20093421419085b90d7f5497a5e3170000\",\"prepay_time\":1710898461}', 9990, 9990, 0, NULL, '冯**', '563000', '贵州省', '遵义市', '红花岗区', '****', '156****2268', '', '15608522268', 'null', 0, 'b89011e707f7538071a8f39c5364f380', '[]', 0, 'ofwqKwLKOxvcPzpqCQ0Bt00U8Z8fiSQk-G6KM2AO7ml5VFXvDhNsb52AWxYQ_h0WDwhpzPsJG9Og', '{\"predict_commission_fee\":0}', 1, '2024-04-12 14:41:11', NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651213822693377, 6, '3718587822346996736', 'oAv196wFsnkezeypRf0egcDMGiWM', 1710896992, 1710898600, NULL, 200, '{\"aftersale_order_list\":[{\"aftersale_order_id\":\"2000000376158056\",\"status\":13}],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20090953417027afb2603f0b09c7fb0000\",\"prepay_time\":1710896993,\"pay_time\":1710897001,\"transaction_id\":\"4331701107202403200001411174\"}', 9990, 9990, 0, NULL, '赵**', '100010', '北京市', '北京市', '东城区', '****', '134****1877', '', '', 'null', 0, '05bae94246e4ad5e05f1cfb5cfcdabd6', '[]', 0, 'ofIj04A4BImnu3akL1Jq5Web4yULuKS6G3O91u5HVEj62aCmbPEpFgwhM0JWXapPCi-jgV9-49ng', '{\"predict_commission_fee\":0}', 1, '2024-04-12 14:41:11', NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651214942572545, 6, '3718587815659965440', 'oAv196291g5xNrw1spVQpjXhoXg0', 1710896966, 1710897868, NULL, 250, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"prepay_id\":\"up_wx20090927863922d6ba03e28352d80e0000\",\"prepay_time\":1710896968}', 9990, 9990, 0, NULL, '崔*', '445300', '湖北省', '恩施土家族苗族自治州', '建始县', '****', '133****5865', '', '', 'null', 0, '43d9d5270bc81462f94547083e6f1ecd', '[]', 0, 'of_9-SntfOwUc_ivgA-GyQxaNuCyBtJSWOEwvNsWZSdxOnC58AZV7y9mVgCoK8eEJKepOGwg5ciQ', '{\"predict_commission_fee\":0}', 1, '2024-04-12 14:41:11', NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651216016314369, 6, '3718587814527504384', 'oAv1965374koR_XZBopbQIgbwvYg', 1710896962, 1711161629, NULL, 100, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20090923692523ec3d6e1ed350c68a0000\",\"prepay_time\":1710896963,\"pay_time\":1710896972,\"transaction_id\":\"4317200957202403206956316633\"}', 9990, 9990, 0, NULL, '王**', '100020', '北京市', '北京市', '朝阳区', '****', '136****6620', '', '', 'null', 0, 'abed73df538b1b73d8e60a3bd15836c8', '[{\"waybill_id\":\"312317506527084\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'of31XR_nQ-ipiULDnExMHqt2Nm3TWsinqzjDYw60zSAnM361_3JAI6V_i6wFGe0T2GfbyDES4h8A', '{\"predict_commission_fee\":99}', 1, '2024-04-12 14:41:11', NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651217362685954, 6, '3718587810203962368', 'oAv196z-7_wGiRBgD8b1Ob3LTuSQ', 1710896946, 1711510789, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx200909072119543b9b208278195da40000\",\"prepay_time\":1710896947,\"pay_time\":1710896954,\"transaction_id\":\"4313501099202403202886208440\"}', 9990, 9990, 0, NULL, '忻*', '550001', '贵州省', '贵阳市', '云岩区', '****', '139****5732', '', '', 'null', 0, '1e90e5b3739a2e46587e0de50ed28879', '[{\"waybill_id\":\"312317506456736\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'ofbNlHM1Uwy9tTtGAuieftzGiYjpBfQGsnHGNYyTMfcPSQ0oJvdf5-iqL2-4iK_-xoxbWgc8UqOA', '{\"predict_commission_fee\":99}', 1, '2024-04-12 14:41:11', NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651218482565122, 6, '3718587809541260800', 'oAv1960PTbIGg1azMM97-Yb1BILM', 1710896943, 1711692550, NULL, 200, '{\"aftersale_order_list\":[{\"aftersale_order_id\":\"2000000387777830\",\"status\":14}],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx200909048136598e32c836acdd7fce0000\",\"prepay_time\":1710896945,\"pay_time\":1710896952,\"transaction_id\":\"4326500957202403203893580121\"}', 9990, 9990, 0, NULL, '耿*', '100071', '北京市', '北京市', '丰台区', '****', '136****6190', '', '', 'null', 0, '72ef646c988a5284a2790d3aa2477dad', '[{\"waybill_id\":\"312317506638952\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'ofFXYhtxh8BiP2LmchmbuhbYisvOgAgOUryV0F15xG8o0SIp1NITD4vbSATpaoRhYp_trkhgrUaA', '{\"predict_commission_fee\":0}', 1, '2024-04-12 14:41:11', NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651219539529730, 6, '3718587542502772992', 'oAv196_y-DtYDOLcAI27-wOQyI4M', 1710895924, 1711591705, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20085206263250579fa283be7dc8e20000\",\"prepay_time\":1710895926,\"pay_time\":1710896086,\"transaction_id\":\"4311100949202403208635067416\"}', 990, 990, 0, NULL, '吴*', '215000', '江苏省', '苏州市', '姑苏区', '****', '131****1805', '', '', 'null', 0, '5a32b39d6fe49c2cbbeaa498788c154f', '[{\"waybill_id\":\"318890755728720\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000104315300\",\"sku_id\":\"2086367126\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710986905,\"deliver_type\":1}]', 1710986905, 'ofK-HQreW8UkLCXw-zFmtdIMY8QpqFqK9i923uHIa7txGXok4EeLDgFNn96yGLh8eU2LIIjwikPA', '{\"predict_commission_fee\":9}', 1, '2024-04-12 14:41:11', NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651220789432322, 6, '3718587018572858624', 'oAv1962vGm4-XWRG9ma4_S_yCVA4', 1710893926, 1710916555, NULL, 200, '{\"aftersale_order_list\":[{\"aftersale_order_id\":\"2000000376505279\",\"status\":13}],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20081903030176f28c94820f0507750000\",\"prepay_time\":1710893943,\"pay_time\":1710893948,\"transaction_id\":\"4336600964202403204980463253\"}', 109890, 100, 0, NULL, '阿*', '657000', '云南省', '昭通市', '昭阳区', '****', '139****6961', '', '13512120557', 'null', 0, 'd25a0ad0da52d5f279aad62152a4ba53', '[]', 0, 'ofGKBzBVIOKCbWhuAzmzE2XxfAF-E9wkCgc8JxviQzRb4gezkLahY55ckCgjhKu9FMHQRUYMkcIw', '{\"predict_commission_fee\":0}', 1, '2024-04-12 14:41:11', NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651221888339969, 6, '3718586568279724288', 'oAv1966osuFsbYH6YSExD6uKr3WY', 1710892208, 1711510790, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20075009764726ff1a9fc3b58ae4400000\",\"prepay_time\":1710892209,\"pay_time\":1710892227,\"transaction_id\":\"4335800950202403200637254989\"}', 9990, 9990, 0, NULL, '王**', '475000', '河南省', '开封市', '禹王台区', '****', '152****2706', '', '', 'null', 0, '4f1ffa0a6c31d9bebc1c30440544d7b2', '[{\"waybill_id\":\"312317506457252\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'ofmS5hUKMgVF7Htd3qfQ3G_wXgz3x-C2R6n6BUinYFVeKjBZ2guWU1YHcAVbKnzinff0FerdU79Q', '{\"predict_commission_fee\":99}', 1, '2024-04-12 14:41:11', NULL, NULL);
+INSERT INTO `erp_shop_order` VALUES (1773651223045967873, 6, '3718586550340945408', 'oAv1964cOETzaRR_Swm2LXxmBypY', 1710892139, 1711510790, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx2007490139983219e20e83520865070000\",\"prepay_time\":1710892141,\"pay_time\":1710892148,\"transaction_id\":\"4307200968202403207539523408\"}', 9990, 9990, 0, NULL, '张*', '231500', '安徽省', '合肥市', '庐江县', '****', '153****8788', '', '', 'null', 0, '934fd91e344f6a1bf99e1c3105dd6344', '[{\"waybill_id\":\"312317506455345\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'of1oLHaoKiJqqNvZ2oAdPPFO_ABYUwSB-yoigQlISLILJx6x_DXmqhSCux2OTZ_-frSVwyHgfqoQ', '{\"predict_commission_fee\":99}', 1, '2024-04-12 14:41:11', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for erp_shop_order_item
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_shop_order_item`;
+CREATE TABLE `erp_shop_order_item`  (
+  `id` bigint NOT NULL,
+  `wei_order_id` bigint NULL DEFAULT NULL COMMENT '外键id',
+  `product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品spuid',
+  `sku_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品skuid\r\n',
+  `thumb_img` varchar(550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku小图',
+  `sku_cnt` int NULL DEFAULT NULL COMMENT 'sku数量',
+  `sale_price` int NULL DEFAULT NULL COMMENT '售卖单价（单位：分）',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品标题',
+  `on_aftersale_sku_cnt` int NULL DEFAULT NULL COMMENT '正在售后/退款流程中的 sku 数量',
+  `finish_aftersale_sku_cnt` int NULL DEFAULT NULL COMMENT '完成售后/退款的 sku 数量',
+  `sku_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品编码',
+  `market_price` int NULL DEFAULT NULL COMMENT '市场单价（单位：分）',
+  `sku_attrs` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku属性JSON',
+  `real_price` int NULL DEFAULT NULL COMMENT 'sku实付总价，取estimate_price和change_price中较小值',
+  `out_product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品外部spuid',
+  `out_sku_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品外部skuid',
+  `is_discounted` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否有优惠金额，非必填，默认为false',
+  `estimate_price` int NULL DEFAULT NULL COMMENT '优惠后sku总价，非必填，is_discounted为true时有值',
+  `is_change_price` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否修改过价格，非必填，默认为false',
+  `change_price` int NULL DEFAULT NULL COMMENT '改价后sku总价，非必填，is_change_price为true时有值',
+  `out_warehouse_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '区域库存id',
+  `sku_deliver_info` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品发货信息JSON',
+  `extra_service` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品额外服务信息JSON',
+  `use_deduction` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否使用了会员积分抵扣\r\n',
+  `deduction_price` int NULL DEFAULT NULL COMMENT '会员积分抵扣金额，单位为分',
+  `order_product_coupon_info_list` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品优惠券信息，逐步替换 order.order_detail.coupon_info',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_shop_order_item
+-- ----------------------------
+INSERT INTO `erp_shop_order_item` VALUES (1773651199977295874, 1773651199826300930, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651201202032641, 1773651201164283905, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651202577764353, 1773651202531627010, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651203689254913, 1773651203651506177, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651204817522690, 1773651204742025218, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651206088396801, 1773651205966761986, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651207124389889, 1773651207095029762, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651208265240577, 1773651208210714625, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651209368342530, 1773651209330593793, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651210479833090, 1773651210421112833, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651211645849602, 1773651211620683777, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651212711202818, 1773651212686036993, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651213856247809, 1773651213822693377, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 1, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651214967738370, 1773651214942572545, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651216045674498, 1773651216016314369, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651217396240385, 1773651217362685954, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651218511925250, 1773651218482565122, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 1, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651219568889858, 1773651219539529730, '10000104315300', '2086367126', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f292760001000d22cbd8f9727c0d15000000a000004f50', 1, 990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓茶330g*罐', 0, 0, '', 990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"1罐体验装【贵在运费】(5%人选择)\"}]', 990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651220827181058, 1773651220789432322, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 11, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 11, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 100, NULL, NULL, 'null', NULL, 'true', 100, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651221921894401, 1773651221888339969, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+INSERT INTO `erp_shop_order_item` VALUES (1773651223083716609, 1773651223045967873, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
+
+-- ----------------------------
+-- Table structure for erp_shop_platform
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_shop_platform`;
+CREATE TABLE `erp_shop_platform`  (
+  `id` int NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台名',
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台编码',
+  `app_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `app_secret` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `redirect_uri` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台回调uri',
+  `server_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接口访问地址',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_shop_platform
+-- ----------------------------
+INSERT INTO `erp_shop_platform` VALUES (5, '视频号小店', 'WEI', '', NULL, NULL, 'https://api.weixin.qq.com');
+
+-- ----------------------------
+-- Table structure for erp_shop_pull_lasttime
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_shop_pull_lasttime`;
+CREATE TABLE `erp_shop_pull_lasttime`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `shop_id` int NULL DEFAULT NULL COMMENT '店铺id',
+  `pull_type` enum('ORDER','REFUND') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '类型（ORDER:订单，REFUND:退款）',
+  `lasttime` datetime NULL DEFAULT NULL COMMENT '最后更新时间',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '店铺更新最后时间记录' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_shop_pull_lasttime
+-- ----------------------------
+INSERT INTO `erp_shop_pull_lasttime` VALUES (1, 1, 'ORDER', '2024-04-06 12:59:30', '2024-03-23 15:56:13', '2024-04-11 16:42:42');
+INSERT INTO `erp_shop_pull_lasttime` VALUES (2, 1, 'REFUND', '2024-03-28 09:03:50', '2024-03-24 13:03:54', '2024-04-06 15:35:16');
+INSERT INTO `erp_shop_pull_lasttime` VALUES (3, 2, 'ORDER', '2024-04-01 00:33:33', '2024-03-10 13:00:07', '2024-04-01 20:35:54');
+INSERT INTO `erp_shop_pull_lasttime` VALUES (4, 2, 'REFUND', '2024-03-24 13:48:33', '2024-03-24 13:50:24', NULL);
+
+-- ----------------------------
+-- Table structure for erp_shop_pull_logs
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_shop_pull_logs`;
+CREATE TABLE `erp_shop_pull_logs`  (
+  `id` bigint NOT NULL COMMENT '主键Id',
+  `shop_id` int NULL DEFAULT NULL COMMENT '店铺id',
+  `shop_type` int NOT NULL COMMENT '平台id',
+  `pull_type` enum('ORDER','REFUND','GOODS') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '类型（ORDER订单，GOODS商品，REFUND退款）',
+  `pull_way` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '拉取方式（主动拉取、定时任务）',
+  `pull_params` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '拉取参数',
+  `pull_result` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '拉取结果',
+  `pull_time` datetime NULL DEFAULT NULL COMMENT '拉取时间',
+  `duration` bigint NULL DEFAULT NULL COMMENT '耗时（毫秒）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '更新日志表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_shop_pull_logs
+-- ----------------------------
+INSERT INTO `erp_shop_pull_logs` VALUES (1771373938119639041, 2, 2, 'GOODS', '主动拉取', '{WareStatusValue:8,PageNo:1,PageSize:100}', '{successTotal:61}', '2024-03-23 11:10:10', 22115);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771423380642209794, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-10T11:59:58,endTime:2024-03-11T11:59:58}', '{insertSuccess:14,hasExistOrder:4,totalError:0}', '2024-03-23 14:26:59', 927);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771445830457229314, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-22T15:56:09.353561200,endTime:2024-03-23T15:56:09.353561200}', '{insertSuccess:25,hasExistOrder:2,totalError:0}', '2024-03-23 15:56:09', 3181);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771446958322380802, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-23T14:56:09,endTime:2024-03-23T16:00:41.205604700}', '{insertSuccess:0,hasExistOrder:0,totalError:0}', '2024-03-23 16:00:41', 219);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771447441799819265, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-23T15:00:41,endTime:2024-03-23T16:02:36.495455100}', '{insertSuccess:0,hasExistOrder:0,totalError:0}', '2024-03-23 16:02:36', 227);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771447509432971265, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-23T15:02:36,endTime:2024-03-23T16:02:52.700359100}', '{insertSuccess:0,hasExistOrder:0,totalError:0}', '2024-03-23 16:02:53', 122);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771453852395032578, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-11T10:59:58,endTime:2024-03-12T10:59:58}', '{insertSuccess:19,hasExistOrder:5,totalError:0}', '2024-03-23 16:28:04', 1086);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771542266519748610, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-22T22:19:19.564048,endTime:2024-03-23T22:19:19.564048}', '{insertSuccess:0,hasExistOrder:5,totalError:0}', '2024-03-23 22:19:17', 7557);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771542873649504258, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-22T22:21:48.244864800,endTime:2024-03-23T22:21:48.244864800}', '{insert:0,update:5,fail:0}', '2024-03-23 22:21:48', 1183);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771543300528988161, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-23T21:21:48,endTime:2024-03-23T22:22:56.873263500}', '{insert:0,update:0,fail:0}', '2024-03-23 22:22:40', 51238);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771764678028984322, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-12T09:59:58,endTime:2024-03-13T09:59:58}', '{insertSuccess:15,hasExistOrder:5,totalError:0}', '2024-03-24 13:03:11', 925);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771764854827368449, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-23T13:03:49.686601100,endTime:2024-03-24T13:03:49.686601100}', '{insert:8,update:0,fail:0}', '2024-03-24 13:03:44', 9665);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771776559355596801, 2, 2, 'REFUND', '主动拉取', '{ApplyTimeBegin:2024-03-23 13:48:33,ApplyTimeEnd:2024-03-24 13:48:33,PageIndex:1,PageSize:100}', '{total:0,hasExist:2,totalError:0}', '2024-03-24 13:48:29', 115059);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771780749221974017, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-13T08:59:58,endTime:2024-03-14T08:59:58}', '{insertSuccess:11,hasExistOrder:2,totalError:0}', '2024-03-24 14:07:03', 635);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774759644818296834, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-30T15:02:53,endTime:2024-03-31T15:02:53}', '{insert:26,update:4,fail:0}', '2024-04-01 19:23:25', 41837);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774767536929636354, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-30T23:02:53,endTime:2024-03-31T23:02:53}', '{insert:0,update:29,fail:2}', '2024-04-01 19:53:48', 101220);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774769574707183617, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-31T22:02:53,endTime:2024-04-01T20:03:24.419567600}', '{insert:16,update:0,fail:2}', '2024-04-01 20:03:24', 10733);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774775846177284098, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-31T07:59:58,endTime:2024-04-01T07:59:58}', '{insertSuccess:0,hasExistOrder:0,totalError:18}', '2024-04-01 20:28:21', 9622);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774776246171250689, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-04-01T06:59:58,endTime:2024-04-01T20:30:03.390426800}', '{insertSuccess:0,hasExistOrder:0,totalError:29}', '2024-04-01 20:30:03', 2281);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774776521405673473, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-04-01T19:30:03,endTime:2024-04-01T20:30:39.555646}', '{insertSuccess:0,hasExistOrder:0,totalError:1}', '2024-04-01 20:30:40', 31565);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774777121220485121, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-04-01T19:30:40,endTime:2024-04-01T20:33:33.074052300}', '{insertSuccess:1,hasExistOrder:0,totalError:0}', '2024-04-01 20:33:33', 1173);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774777706028097537, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-31T00:33:33,endTime:2024-04-01T00:33:33}', '{insertSuccess:17,hasExistOrder:0,totalError:0}', '2024-04-01 20:35:53', 1037);
+INSERT INTO `erp_shop_pull_logs` VALUES (1775086019864023041, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-01T19:03:24,endTime:2024-04-02T16:59:29.818708500}', '{insert:28,update:3,fail:1}', '2024-04-02 16:59:30', 91604);
+INSERT INTO `erp_shop_pull_logs` VALUES (1776459777702916098, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-02T15:59:30,endTime:2024-04-03T15:59:30}', '{insert:10,update:3,fail:0}', '2024-04-06 11:59:47', 3669);
+INSERT INTO `erp_shop_pull_logs` VALUES (1776506026682490881, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-24T12:03:50,endTime:2024-03-25T12:03:50}', '{insert:4,update:0,fail:0}', '2024-04-06 15:03:36', 942);
+INSERT INTO `erp_shop_pull_logs` VALUES (1776506535749361665, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-25T11:03:50,endTime:2024-03-26T11:03:50}', '{insert:15,update:1,fail:0}', '2024-04-06 15:05:36', 2724);
+INSERT INTO `erp_shop_pull_logs` VALUES (1776508693022527489, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-26T10:03:50,endTime:2024-03-27T10:03:50}', '{insert:3,update:0,fail:0}', '2024-04-06 15:11:46', 146852);
+INSERT INTO `erp_shop_pull_logs` VALUES (1776513990025854977, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-27T09:03:50,endTime:2024-03-28T09:03:50}', '{insert:14,update:0,fail:0}', '2024-04-06 15:35:13', 2860);
+INSERT INTO `erp_shop_pull_logs` VALUES (1778341762576093185, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-03T14:59:30,endTime:2024-04-04T14:59:30}', '{insert:14,update:4,fail:0}', '2024-04-11 16:34:41', 209606);
+INSERT INTO `erp_shop_pull_logs` VALUES (1778342150444355585, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-04T13:59:30,endTime:2024-04-05T13:59:30}', '{insert:12,update:0,fail:0}', '2024-04-11 16:38:30', 73180);
+INSERT INTO `erp_shop_pull_logs` VALUES (1778342898620108802, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-05T12:59:30,endTime:2024-04-06T12:59:30}', '{insert:6,update:0,fail:0}', '2024-04-11 16:39:54', 167361);
+
+-- ----------------------------
+-- Table structure for erp_shop_refund
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_shop_refund`;
+CREATE TABLE `erp_shop_refund`  (
+  `id` bigint NOT NULL,
+  `shop_id` int NULL DEFAULT NULL COMMENT '店铺id',
+  `after_sale_order_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '售后单号',
+  `status` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '售后单当前状态，参考：AfterSaleStatus',
+  `openid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '买家身份标识',
+  `unionid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '买家在开放平台的唯一标识符，若当前视频号小店已绑定到微信开放平台账号下会返回',
+  `product_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品spuid',
+  `sku_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品skuid',
+  `count` int NULL DEFAULT NULL COMMENT '售后数量',
+  `fast_refund` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否极速退款RefundInfo',
+  `refund_reason` int NULL DEFAULT NULL COMMENT '标明售后单退款直接原因, 枚举值参考 RefundReason',
+  `refund_amount` int NULL DEFAULT NULL COMMENT '退款金额（分）',
+  `return_waybill_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '快递单号',
+  `return_delivery_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '物流公司id',
+  `return_delivery_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '物流公司名称',
+  `merchant_upload_info` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '售后相关商品信息JSON',
+  `create_time` int NULL DEFAULT NULL COMMENT '售后单创建时间戳',
+  `update_time` int NULL DEFAULT NULL COMMENT '售后单更新时间戳',
+  `reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '退款原因',
+  `reason_text` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '退款原因解释',
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '售后类型。REFUND:退款；RETURN:退货退款。',
+  `order_id` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单号，该字段可用于获取订单',
+  `details` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT 'detail json',
+  `complaint_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '纠纷id，该字段可用于获取纠纷信息',
+  `refund_resp` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '微信支付退款的响应',
+  `confirm_status` int NULL DEFAULT NULL COMMENT '确认状态9退货已签收8已拦截',
+  `confirm_time` datetime NULL DEFAULT NULL COMMENT '确认时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '视频号小店退款' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_shop_refund
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for erp_supplier
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_supplier`;
 CREATE TABLE `erp_supplier`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL,
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '供应商名称',
   `number` varchar(18) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '供应商编码',
-  `taxRate` double NULL DEFAULT 0 COMMENT '税率',
+  `tax_rate` double NULL DEFAULT 0 COMMENT '税率',
   `amount` double NULL DEFAULT 0 COMMENT '期初应付款',
-  `periodMoney` double NULL DEFAULT 0 COMMENT '期初预付款',
-  `difMoney` double NULL DEFAULT 0 COMMENT '初期往来余额',
-  `beginDate` date NULL DEFAULT NULL COMMENT '余额日期',
+  `period_money` double NULL DEFAULT 0 COMMENT '期初预付款',
+  `dif_money` double NULL DEFAULT 0 COMMENT '初期往来余额',
+  `begin_date` date NULL DEFAULT NULL COMMENT '余额日期',
   `remark` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注',
   `place` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '职位',
-  `linkMan` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系人',
+  `contact_man` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系人',
   `contact` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '联系方式',
   `province` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '省',
   `city` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '市',
   `county` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '区县',
   `address` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '收货地址详情',
   `pinYin` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
-  `disable` tinyint(1) NULL DEFAULT 0 COMMENT '0启用   1禁用',
-  `isDelete` tinyint(1) NULL DEFAULT 0 COMMENT '0正常 1删除',
-  `purchaserName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '分管采购员',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `disable` tinyint(1) NULL DEFAULT 0 COMMENT '1启用   0禁用',
+  `is_delete` tinyint(1) NULL DEFAULT 0 COMMENT '0正常 1删除',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `create_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `update_time` datetime NULL DEFAULT NULL,
+  `update_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `id`(`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
@@ -2643,28 +1060,29 @@ CREATE TABLE `erp_supplier`  (
 -- ----------------------------
 -- Records of erp_supplier
 -- ----------------------------
-INSERT INTO `erp_supplier` VALUES (1, '自营仓库', 'A0001', 0, 0, 0, 0, NULL, '', '', NULL, '15000000000', NULL, NULL, NULL, NULL, '', 0, 0, NULL, '2023-12-29 11:01:02');
-INSERT INTO `erp_supplier` VALUES (13, '可可家一号店', '6972501884875', 0, 0, 0, 0, NULL, '', '', NULL, '15815252000', NULL, NULL, NULL, NULL, '', 1, 1, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (14, '衫人家', '6972501884876', 0, 0, 0, 0, NULL, '', '', NULL, '15815252000', NULL, NULL, NULL, NULL, '', 1, 1, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (15, '依依', 'ZB001', 0, 0, 0, 0, NULL, '', '', NULL, '13000000000', NULL, NULL, NULL, NULL, '', 0, 0, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (16, '念念', 'ZB002', 0, 0, 0, 0, NULL, '', '', NULL, '13000000000', NULL, NULL, NULL, NULL, '', 0, 0, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (17, '华衣服饰', 'ZB003', 0, 0, 0, 0, NULL, '', '', NULL, '13000000000', NULL, NULL, NULL, NULL, '', 0, 0, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (18, '小颖家', 'ZB004', 0, 0, 0, 0, NULL, '', '', NULL, '13000000000', NULL, NULL, NULL, NULL, '', 0, 0, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (19, '森庄农品旗舰店', 'TM-SZNPQJD', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 1, 1, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (20, '小仙', 'XFZ001', 0, 0, 0, 0, NULL, '', '', NULL, '18516258530', '上海', '上海市', '松江区', '上海市松江区中山街道松江万达广场一号楼417', '', 0, 0, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (21, '岳鑫', '', 0, 0, 0, 0, NULL, '', '', NULL, '15081033273', '河北省', '邯郸市', '黄粱梦镇', '河北省 邯郸市 丛台区 黄粱梦镇黄粱梦村', '', 0, 0, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (22, '三夫食品专营店', 'SFSP', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 1, 1, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (23, '安琪酵母旗舰店', 'ANQIJM', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 1, 1, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (24, '慈溪市观海卫滕洋电器厂', '1688', 0, 0, 0, 0, NULL, '', '', NULL, '13000001111', NULL, NULL, NULL, NULL, '', 1, 1, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (25, '小熊驾到旗舰店', 'XXJD', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 1, 1, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (26, '韩牛服饰', 'HN', 0, 0, 0, 0, NULL, '', '', NULL, '13249571426', NULL, NULL, NULL, NULL, '', 0, 0, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (27, '深圳市罗湖区晨蝶衣服装厂', 'CDYFZC', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 1, 1, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (28, '广州衣菲妮服装厂', 'YIFEINI', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 1, 1, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (29, '中山欧熙妮服饰有限公司', 'ZSOXNFS', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 0, 0, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (30, '零零伊', NULL, 0, 0, 0, 0, NULL, '', '抖音', NULL, 'fsd1027', NULL, NULL, NULL, '', '', 0, 0, NULL, '2023-12-29 11:01:03');
-INSERT INTO `erp_supplier` VALUES (31, '中山市金客隆服饰有限公司', 'JKL', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 0, 0, NULL, '2023-12-29 11:01:04');
-INSERT INTO `erp_supplier` VALUES (32, '广州柚柚子服饰商行', 'GZYYZ', 0, 0, 0, 0, NULL, '', '', NULL, '18557527708', NULL, NULL, NULL, NULL, '', 0, 0, NULL, '2023-12-29 11:01:04');
-INSERT INTO `erp_supplier` VALUES (33, '中山裤豪', 'ZSKH', 0, 0, 0, 0, NULL, '档口微信18928102400陈小姐工厂微信18022115438何超贤 ', '', NULL, '18928102400', NULL, NULL, NULL, '中山市沙溪镇水牛城三区二楼35-38卡', '', 0, 0, NULL, '2023-12-29 11:01:04');
+INSERT INTO `erp_supplier` VALUES (1, 0, '自营仓库', 'A0001', 0, 0, 0, 0, NULL, '', '', NULL, '15000000000', NULL, NULL, NULL, NULL, '', 0, 0, '2023-12-29 11:01:02', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (13, 0, '可可家一号店', '6972501884875', 0, 0, 0, 0, NULL, '', '', NULL, '15815252000', NULL, NULL, NULL, NULL, '', 1, 1, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (14, 0, '衫人家', '6972501884876', 0, 0, 0, 0, NULL, '', '', NULL, '15815252000', NULL, NULL, NULL, NULL, '', 1, 1, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (15, 0, '依依', 'ZB001', 0, 0, 0, 0, NULL, '', '', NULL, '13000000000', NULL, NULL, NULL, NULL, '', 0, 0, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (16, 0, '念念', 'ZB002', 0, 0, 0, 0, NULL, '', '', NULL, '13000000000', NULL, NULL, NULL, NULL, '', 0, 0, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (17, 0, '华衣服饰', 'ZB003', 0, 0, 0, 0, NULL, '', '', NULL, '13000000000', NULL, NULL, NULL, NULL, '', 0, 0, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (18, 0, '小颖家', 'ZB004', 0, 0, 0, 0, NULL, '', '', NULL, '13000000000', NULL, NULL, NULL, NULL, '', 0, 0, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (19, 0, '森庄农品旗舰店', 'TM-SZNPQJD', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 1, 1, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (20, 0, '小仙', 'XFZ001', 0, 0, 0, 0, NULL, '', '', NULL, '18516258530', '上海', '上海市', '松江区', '上海市松江区中山街道松江万达广场一号楼417', '', 0, 0, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (21, 0, '岳鑫', '', 0, 0, 0, 0, NULL, '', '', NULL, '15081033273', '河北省', '邯郸市', '黄粱梦镇', '河北省 邯郸市 丛台区 黄粱梦镇黄粱梦村', '', 0, 0, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (22, 0, '三夫食品专营店', 'SFSP', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 1, 1, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (23, 0, '安琪酵母旗舰店', 'ANQIJM', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 1, 1, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (24, 0, '慈溪市观海卫滕洋电器厂', '1688', 0, 0, 0, 0, NULL, '', '', NULL, '13000001111', NULL, NULL, NULL, NULL, '', 1, 1, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (25, 0, '小熊驾到旗舰店', 'XXJD', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 1, 1, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (26, 0, '韩牛服饰', 'HN', 0, 0, 0, 0, NULL, '', '', NULL, '13249571426', NULL, NULL, NULL, NULL, '', 0, 0, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (27, 0, '深圳市罗湖区晨蝶衣服装厂', 'CDYFZC', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 1, 1, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (28, 0, '广州衣菲妮服装厂', 'YIFEINI', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 1, 1, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (29, 0, '中山欧熙妮服饰有限公司', 'ZSOXNFS', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 0, 0, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (30, 0, '零零伊', NULL, 0, 0, 0, 0, NULL, '', '抖音', NULL, 'fsd1027', NULL, NULL, NULL, '', '', 0, 0, '2023-12-29 11:01:03', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (31, 0, '中山市金客隆服饰有限公司', 'JKL', 0, 0, 0, 0, NULL, '', '', NULL, '13600000000', NULL, NULL, NULL, NULL, '', 0, 0, '2023-12-29 11:01:04', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (32, 0, '广州柚柚子服饰商行', 'GZYYZ', 0, 0, 0, 0, NULL, '', '', NULL, '18557527708', NULL, NULL, NULL, NULL, '', 0, 0, '2023-12-29 11:01:04', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (33, 0, '中山裤豪', 'ZSKH', 0, 0, 0, 0, NULL, '档口微信18928102400陈小姐工厂微信18022115438何超贤 ', '', NULL, '18928102400', NULL, NULL, NULL, '中山市沙溪镇水牛城三区二楼35-38卡', '', 0, 0, '2023-12-29 11:01:04', NULL, NULL, NULL);
+INSERT INTO `erp_supplier` VALUES (1781960910751948802, 100, '账单122', 'AD23', 0, 0, 0, 0, NULL, '', '', '启航', '154855545', NULL, NULL, NULL, NULL, '', 1, 0, '2024-04-21 16:19:23', '手动添加', '2024-04-21 16:26:45', '手动更新');
 
 -- ----------------------------
 -- Table structure for erp_supplier_agent_shipping
@@ -3193,26 +1611,6 @@ INSERT INTO `sys_logininfor` VALUES (41, 'admin', '127.0.0.1', '内网IP', 'Chro
 INSERT INTO `sys_logininfor` VALUES (42, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-04-01 15:37:17');
 
 -- ----------------------------
--- Table structure for sys_logistics_company
--- ----------------------------
-DROP TABLE IF EXISTS `sys_logistics_company`;
-CREATE TABLE `sys_logistics_company`  (
-  `id` bigint NOT NULL COMMENT '主键ID',
-  `platform_id` int NULL DEFAULT NULL COMMENT '平台id',
-  `shop_id` int NULL DEFAULT NULL COMMENT '店铺ID',
-  `logistics_id` bigint NULL DEFAULT NULL COMMENT '物流公司id（值来自于平台返回）',
-  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '物流公司编码（值来自于平台返回）',
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '物流公司名称（值来自于平台返回）',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `status` int NULL DEFAULT NULL COMMENT '状态（1启用0禁用）',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of sys_logistics_company
--- ----------------------------
-
--- ----------------------------
 -- Table structure for sys_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_menu`;
@@ -3247,7 +1645,7 @@ INSERT INTO `sys_menu` VALUES (2, '采购管理', 0, 1, 'scm', '', '', 1, 0, 'M'
 INSERT INTO `sys_menu` VALUES (3, '订单管理', 0, 2, 'order', '', '', 1, 0, 'M', '0', '0', '', 'shopping', 'admin', '2023-12-29 16:53:03', 'admin', '2024-04-10 11:02:32', '');
 INSERT INTO `sys_menu` VALUES (4, '发货管理', 0, 3, 'ship', '', '', 1, 0, 'M', '0', '0', '', 'excel', 'admin', '2024-01-01 14:08:04', 'admin', '2024-04-10 11:10:31', '');
 INSERT INTO `sys_menu` VALUES (5, '售后管理', 0, 4, 'after_sale', NULL, NULL, 1, 0, 'M', '0', '0', '', 'clipboard', 'admin', '2024-01-03 14:23:55', 'admin', '2024-04-10 11:17:29', '');
-INSERT INTO `sys_menu` VALUES (6, '库存管理', 0, 5, 'wms', '', '', 1, 0, 'M', '0', '0', '', 'stock1', 'admin', '2023-12-31 12:14:33', 'admin', '2024-04-21 10:56:28', '');
+INSERT INTO `sys_menu` VALUES (6, '库存管理', 0, 5, 'wms', '', '', 1, 0, 'M', '0', '0', '', 'chart', 'admin', '2023-12-31 12:14:33', 'admin', '2024-04-21 15:12:25', '');
 INSERT INTO `sys_menu` VALUES (7, '店铺管理', 0, 6, 'shop', '', '', 1, 0, 'M', '0', '0', '', 'theme', 'admin', '2023-12-29 17:07:23', 'admin', '2024-04-10 10:56:43', '');
 INSERT INTO `sys_menu` VALUES (8, '商品管理', 0, 9, 'goods', '', '', 1, 0, 'M', '0', '0', '', 'theme', 'admin', '2023-12-29 13:29:44', '', '', '');
 INSERT INTO `sys_menu` VALUES (100, '用户管理', 1, 1, 'user', 'system/user/index', '', 1, 0, 'C', '0', '0', 'system:user:list', 'user', 'admin', '2023-12-27 15:00:27', '', '', '用户管理菜单');
@@ -3288,8 +1686,8 @@ INSERT INTO `sys_menu` VALUES (1028, '字典删除', 105, 4, '#', '', '', 1, 0, 
 INSERT INTO `sys_menu` VALUES (1029, '字典导出', 105, 5, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:export', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
 INSERT INTO `sys_menu` VALUES (2005, '供应商管理', 2, 9, 'supplier/list', 'scm/supplier/index', '', 1, 0, 'C', '0', '0', 'scm:supplier', 'qq', 'admin', '2023-12-29 09:14:02', 'admin', '2024-04-21 11:13:49', '');
 INSERT INTO `sys_menu` VALUES (2007, '商品管理', 8, 1, 'goods_list', 'goods/index', '', 1, 0, 'C', '0', '0', 'goods:list', 'theme', 'admin', '2023-12-29 13:31:01', 'admin', '2023-12-29 15:02:40.869685', '');
-INSERT INTO `sys_menu` VALUES (2008, '商品分类', 8, 88, 'goods_category', 'goods/category/index', '', 1, 0, 'C', '0', '0', 'goods:category', 'tree-table', 'admin', '2023-12-29 13:32:41', 'admin', '2023-12-29 15:02:22.220534', '');
-INSERT INTO `sys_menu` VALUES (2009, '品牌管理', 8, 99, 'goods/brand', 'goods/brand/index', '', 1, 0, 'C', '0', '0', 'goods:brand', 'clipboard', 'admin', '2023-12-29 13:34:49', 'admin', '2024-04-21 11:13:15', '');
+INSERT INTO `sys_menu` VALUES (2008, '商品分类', 8, 88, 'category', 'goods/category/index', '', 1, 0, 'C', '0', '0', 'goods:category', 'tree-table', 'admin', '2023-12-29 13:32:41', 'admin', '2024-04-21 14:41:32', '');
+INSERT INTO `sys_menu` VALUES (2009, '品牌管理', 8, 99, 'brand', 'goods/brand/index', '', 1, 0, 'C', '0', '0', 'goods:brand', 'clipboard', 'admin', '2023-12-29 13:34:49', 'admin', '2024-04-21 14:41:04', '');
 INSERT INTO `sys_menu` VALUES (2010, '采购管理', 2, 1, 'purchase/order', 'scm/purchase/order', '', 1, 0, 'C', '0', '0', 'scm:purchase:order', 'button', 'admin', '2023-12-29 16:35:55', 'admin', '2024-04-21 10:53:43', '');
 INSERT INTO `sys_menu` VALUES (2012, '采购物流管理', 2, 2, 'purchase/ship', 'scm/purchase/ship', '', 1, 0, 'C', '0', '0', 'scm:purchase:ship', 'component', 'admin', '2023-12-29 16:45:42', 'admin', '2024-04-21 11:06:08', '');
 INSERT INTO `sys_menu` VALUES (2019, '采购账单管理', 2, 3, 'purchase', 'scm/purchase/cost', '', 1, 0, 'C', '0', '0', '', 'shopping', 'admin', '2023-12-29 17:09:32', 'admin', '2024-04-21 11:06:30', '');
@@ -3322,6 +1720,8 @@ INSERT INTO `sys_menu` VALUES (2078, '快递公司管理', 4, 9, 'logistics_comp
 INSERT INTO `sys_menu` VALUES (2081, '订单导入日志', 3, 9, 'log', NULL, NULL, 1, 0, 'C', '0', '0', NULL, 'component', 'admin', '2024-04-21 11:08:55', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2082, '售后设置', 5, 10, 'set', NULL, NULL, 1, 0, 'C', '0', '0', NULL, '404', 'admin', '2024-04-21 11:11:09', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2083, '库存日志', 6, 99, 'logs', NULL, NULL, 1, 0, 'C', '0', '0', NULL, 'bug', 'admin', '2024-04-21 11:12:07', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2085, '商品分类属性', 8, 90, 'category_attr', 'goods/category/categoryAttribute', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2024-04-21 14:29:04', 'admin', '2024-04-21 14:40:53', '');
+INSERT INTO `sys_menu` VALUES (2086, '分类属性值', 8, 91, 'category_attr_val', 'goods/category/categoryAttributeValue', NULL, 1, 0, 'C', '1', '0', '', 'clipboard', 'admin', '2024-04-21 15:13:03', 'admin', '2024-04-21 15:13:54', '');
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -3529,26 +1929,6 @@ INSERT INTO `sys_oper_log` VALUES (172, '菜单管理', 2, 'com.zhijian.web.cont
 INSERT INTO `sys_oper_log` VALUES (173, '菜单管理', 2, 'com.zhijian.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"\",\"createTime\":\"2023-12-27 15:00:27\",\"icon\":\"monitor\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2,\"menuName\":\"系统监控\",\"menuType\":\"M\",\"orderNum\":100,\"params\":{},\"parentId\":0,\"path\":\"monitor\",\"perms\":\"\",\"query\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-24 21:09:18', 8);
 
 -- ----------------------------
--- Table structure for sys_platform
--- ----------------------------
-DROP TABLE IF EXISTS `sys_platform`;
-CREATE TABLE `sys_platform`  (
-  `id` int NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台名',
-  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台编码',
-  `app_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `app_secret` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `redirect_uri` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台回调uri',
-  `server_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接口访问地址',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of sys_platform
--- ----------------------------
-INSERT INTO `sys_platform` VALUES (5, '视频号小店', 'WEI', '', NULL, NULL, 'https://api.weixin.qq.com');
-
--- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
@@ -3591,110 +1971,6 @@ CREATE TABLE `sys_role_menu`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for sys_shop
--- ----------------------------
-DROP TABLE IF EXISTS `sys_shop`;
-CREATE TABLE `sys_shop`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '店铺名',
-  `type` int NOT NULL COMMENT '对应第三方平台Id',
-  `url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '店铺url',
-  `sort` int NOT NULL DEFAULT 9 COMMENT '排序',
-  `status` int NULL DEFAULT 0 COMMENT '状态（1正常2已删除）',
-  `modify_on` bigint NOT NULL COMMENT '更新时间',
-  `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
-  `seller_id` bigint NOT NULL DEFAULT 0 COMMENT '第三方平台店铺id，淘宝天猫开放平台使用',
-  `app_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Appkey',
-  `app_sercet` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Appsercet',
-  `access_token` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '第三方平台sessionKey（access_token）',
-  `expires_in` bigint NULL DEFAULT NULL COMMENT '到期',
-  `access_token_begin` bigint NULL DEFAULT NULL COMMENT 'access_token开始时间',
-  `refresh_token` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '刷新token',
-  `refresh_token_timeout` bigint NULL DEFAULT NULL COMMENT '刷新token过期时间',
-  `api_request_url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '请求url',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据中心-店铺' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of sys_shop
--- ----------------------------
-INSERT INTO `sys_shop` VALUES (6, '视频号小店', 5, NULL, 9, 0, 0, NULL, 0, '3333232', '01', '', NULL, NULL, NULL, NULL, 'https://api.weixin.qq.com');
-
--- ----------------------------
--- Table structure for sys_shop_pull_lasttime
--- ----------------------------
-DROP TABLE IF EXISTS `sys_shop_pull_lasttime`;
-CREATE TABLE `sys_shop_pull_lasttime`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `shop_id` int NULL DEFAULT NULL COMMENT '店铺id',
-  `pull_type` enum('ORDER','REFUND') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '类型（ORDER:订单，REFUND:退款）',
-  `lasttime` datetime NULL DEFAULT NULL COMMENT '最后更新时间',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '店铺更新最后时间记录' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of sys_shop_pull_lasttime
--- ----------------------------
-INSERT INTO `sys_shop_pull_lasttime` VALUES (1, 1, 'ORDER', '2024-04-06 12:59:30', '2024-03-23 15:56:13', '2024-04-11 16:42:42');
-INSERT INTO `sys_shop_pull_lasttime` VALUES (2, 1, 'REFUND', '2024-03-28 09:03:50', '2024-03-24 13:03:54', '2024-04-06 15:35:16');
-INSERT INTO `sys_shop_pull_lasttime` VALUES (3, 2, 'ORDER', '2024-04-01 00:33:33', '2024-03-10 13:00:07', '2024-04-01 20:35:54');
-INSERT INTO `sys_shop_pull_lasttime` VALUES (4, 2, 'REFUND', '2024-03-24 13:48:33', '2024-03-24 13:50:24', NULL);
-
--- ----------------------------
--- Table structure for sys_shop_pull_logs
--- ----------------------------
-DROP TABLE IF EXISTS `sys_shop_pull_logs`;
-CREATE TABLE `sys_shop_pull_logs`  (
-  `id` bigint NOT NULL COMMENT '主键Id',
-  `shop_id` int NULL DEFAULT NULL COMMENT '店铺id',
-  `shop_type` int NOT NULL COMMENT '平台id',
-  `pull_type` enum('ORDER','REFUND','GOODS') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '类型（ORDER订单，GOODS商品，REFUND退款）',
-  `pull_way` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '拉取方式（主动拉取、定时任务）',
-  `pull_params` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '拉取参数',
-  `pull_result` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '拉取结果',
-  `pull_time` datetime NULL DEFAULT NULL COMMENT '拉取时间',
-  `duration` bigint NULL DEFAULT NULL COMMENT '耗时（毫秒）',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '更新日志表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of sys_shop_pull_logs
--- ----------------------------
-INSERT INTO `sys_shop_pull_logs` VALUES (1771373938119639041, 2, 2, 'GOODS', '主动拉取', '{WareStatusValue:8,PageNo:1,PageSize:100}', '{successTotal:61}', '2024-03-23 11:10:10', 22115);
-INSERT INTO `sys_shop_pull_logs` VALUES (1771423380642209794, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-10T11:59:58,endTime:2024-03-11T11:59:58}', '{insertSuccess:14,hasExistOrder:4,totalError:0}', '2024-03-23 14:26:59', 927);
-INSERT INTO `sys_shop_pull_logs` VALUES (1771445830457229314, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-22T15:56:09.353561200,endTime:2024-03-23T15:56:09.353561200}', '{insertSuccess:25,hasExistOrder:2,totalError:0}', '2024-03-23 15:56:09', 3181);
-INSERT INTO `sys_shop_pull_logs` VALUES (1771446958322380802, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-23T14:56:09,endTime:2024-03-23T16:00:41.205604700}', '{insertSuccess:0,hasExistOrder:0,totalError:0}', '2024-03-23 16:00:41', 219);
-INSERT INTO `sys_shop_pull_logs` VALUES (1771447441799819265, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-23T15:00:41,endTime:2024-03-23T16:02:36.495455100}', '{insertSuccess:0,hasExistOrder:0,totalError:0}', '2024-03-23 16:02:36', 227);
-INSERT INTO `sys_shop_pull_logs` VALUES (1771447509432971265, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-23T15:02:36,endTime:2024-03-23T16:02:52.700359100}', '{insertSuccess:0,hasExistOrder:0,totalError:0}', '2024-03-23 16:02:53', 122);
-INSERT INTO `sys_shop_pull_logs` VALUES (1771453852395032578, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-11T10:59:58,endTime:2024-03-12T10:59:58}', '{insertSuccess:19,hasExistOrder:5,totalError:0}', '2024-03-23 16:28:04', 1086);
-INSERT INTO `sys_shop_pull_logs` VALUES (1771542266519748610, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-22T22:19:19.564048,endTime:2024-03-23T22:19:19.564048}', '{insertSuccess:0,hasExistOrder:5,totalError:0}', '2024-03-23 22:19:17', 7557);
-INSERT INTO `sys_shop_pull_logs` VALUES (1771542873649504258, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-22T22:21:48.244864800,endTime:2024-03-23T22:21:48.244864800}', '{insert:0,update:5,fail:0}', '2024-03-23 22:21:48', 1183);
-INSERT INTO `sys_shop_pull_logs` VALUES (1771543300528988161, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-23T21:21:48,endTime:2024-03-23T22:22:56.873263500}', '{insert:0,update:0,fail:0}', '2024-03-23 22:22:40', 51238);
-INSERT INTO `sys_shop_pull_logs` VALUES (1771764678028984322, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-12T09:59:58,endTime:2024-03-13T09:59:58}', '{insertSuccess:15,hasExistOrder:5,totalError:0}', '2024-03-24 13:03:11', 925);
-INSERT INTO `sys_shop_pull_logs` VALUES (1771764854827368449, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-23T13:03:49.686601100,endTime:2024-03-24T13:03:49.686601100}', '{insert:8,update:0,fail:0}', '2024-03-24 13:03:44', 9665);
-INSERT INTO `sys_shop_pull_logs` VALUES (1771776559355596801, 2, 2, 'REFUND', '主动拉取', '{ApplyTimeBegin:2024-03-23 13:48:33,ApplyTimeEnd:2024-03-24 13:48:33,PageIndex:1,PageSize:100}', '{total:0,hasExist:2,totalError:0}', '2024-03-24 13:48:29', 115059);
-INSERT INTO `sys_shop_pull_logs` VALUES (1771780749221974017, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-13T08:59:58,endTime:2024-03-14T08:59:58}', '{insertSuccess:11,hasExistOrder:2,totalError:0}', '2024-03-24 14:07:03', 635);
-INSERT INTO `sys_shop_pull_logs` VALUES (1774759644818296834, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-30T15:02:53,endTime:2024-03-31T15:02:53}', '{insert:26,update:4,fail:0}', '2024-04-01 19:23:25', 41837);
-INSERT INTO `sys_shop_pull_logs` VALUES (1774767536929636354, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-30T23:02:53,endTime:2024-03-31T23:02:53}', '{insert:0,update:29,fail:2}', '2024-04-01 19:53:48', 101220);
-INSERT INTO `sys_shop_pull_logs` VALUES (1774769574707183617, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-31T22:02:53,endTime:2024-04-01T20:03:24.419567600}', '{insert:16,update:0,fail:2}', '2024-04-01 20:03:24', 10733);
-INSERT INTO `sys_shop_pull_logs` VALUES (1774775846177284098, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-31T07:59:58,endTime:2024-04-01T07:59:58}', '{insertSuccess:0,hasExistOrder:0,totalError:18}', '2024-04-01 20:28:21', 9622);
-INSERT INTO `sys_shop_pull_logs` VALUES (1774776246171250689, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-04-01T06:59:58,endTime:2024-04-01T20:30:03.390426800}', '{insertSuccess:0,hasExistOrder:0,totalError:29}', '2024-04-01 20:30:03', 2281);
-INSERT INTO `sys_shop_pull_logs` VALUES (1774776521405673473, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-04-01T19:30:03,endTime:2024-04-01T20:30:39.555646}', '{insertSuccess:0,hasExistOrder:0,totalError:1}', '2024-04-01 20:30:40', 31565);
-INSERT INTO `sys_shop_pull_logs` VALUES (1774777121220485121, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-04-01T19:30:40,endTime:2024-04-01T20:33:33.074052300}', '{insertSuccess:1,hasExistOrder:0,totalError:0}', '2024-04-01 20:33:33', 1173);
-INSERT INTO `sys_shop_pull_logs` VALUES (1774777706028097537, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-31T00:33:33,endTime:2024-04-01T00:33:33}', '{insertSuccess:17,hasExistOrder:0,totalError:0}', '2024-04-01 20:35:53', 1037);
-INSERT INTO `sys_shop_pull_logs` VALUES (1775086019864023041, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-01T19:03:24,endTime:2024-04-02T16:59:29.818708500}', '{insert:28,update:3,fail:1}', '2024-04-02 16:59:30', 91604);
-INSERT INTO `sys_shop_pull_logs` VALUES (1776459777702916098, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-02T15:59:30,endTime:2024-04-03T15:59:30}', '{insert:10,update:3,fail:0}', '2024-04-06 11:59:47', 3669);
-INSERT INTO `sys_shop_pull_logs` VALUES (1776506026682490881, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-24T12:03:50,endTime:2024-03-25T12:03:50}', '{insert:4,update:0,fail:0}', '2024-04-06 15:03:36', 942);
-INSERT INTO `sys_shop_pull_logs` VALUES (1776506535749361665, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-25T11:03:50,endTime:2024-03-26T11:03:50}', '{insert:15,update:1,fail:0}', '2024-04-06 15:05:36', 2724);
-INSERT INTO `sys_shop_pull_logs` VALUES (1776508693022527489, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-26T10:03:50,endTime:2024-03-27T10:03:50}', '{insert:3,update:0,fail:0}', '2024-04-06 15:11:46', 146852);
-INSERT INTO `sys_shop_pull_logs` VALUES (1776513990025854977, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-27T09:03:50,endTime:2024-03-28T09:03:50}', '{insert:14,update:0,fail:0}', '2024-04-06 15:35:13', 2860);
-INSERT INTO `sys_shop_pull_logs` VALUES (1778341762576093185, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-03T14:59:30,endTime:2024-04-04T14:59:30}', '{insert:14,update:4,fail:0}', '2024-04-11 16:34:41', 209606);
-INSERT INTO `sys_shop_pull_logs` VALUES (1778342150444355585, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-04T13:59:30,endTime:2024-04-05T13:59:30}', '{insert:12,update:0,fail:0}', '2024-04-11 16:38:30', 73180);
-INSERT INTO `sys_shop_pull_logs` VALUES (1778342898620108802, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-05T12:59:30,endTime:2024-04-06T12:59:30}', '{insert:6,update:0,fail:0}', '2024-04-11 16:39:54', 167361);
-
--- ----------------------------
 -- Table structure for sys_user
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
@@ -3725,9 +2001,8 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2024-04-30', '0', '127.0.0.1', '2024-04-21 10:50:45', 'admin', '2023-08-07 19:31:37', '', '2024-04-21 10:50:44', '管理员');
-INSERT INTO `sys_user` VALUES (2, 105, '15818590119', 'qihang', '00', 'qihang@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2024-05-11', '0', '127.0.0.1', '2024-04-21 10:02:06', 'admin', '2023-08-07 19:31:37', 'admin', '2024-04-21 10:31:34', '测试员');
-INSERT INTO `sys_user` VALUES (100, NULL, '15658900660', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$ihW7y3A357sHY0Qgl43JMOgxfe749oRelpp9brl1xN0cZHTky4Uxm', '0', '2024-05-11', '0', '127.0.0.1', '2024-04-21 11:54:45', 'admin', '2024-04-21 10:36:49', '', '2024-04-21 11:54:45', NULL);
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2024-04-30', '0', '127.0.0.1', '2024-04-21 15:12:07', 'admin', '2023-08-07 19:31:37', '', '2024-04-21 15:12:07', '管理员');
+INSERT INTO `sys_user` VALUES (100, NULL, '15818590119', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$ihW7y3A357sHY0Qgl43JMOgxfe749oRelpp9brl1xN0cZHTky4Uxm', '0', '2024-05-11', '0', '127.0.0.1', '2024-04-21 15:14:15', 'admin', '2024-04-21 10:36:49', '', '2024-04-21 15:14:15', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -3744,231 +2019,6 @@ CREATE TABLE `sys_user_role`  (
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES (1, 1);
 INSERT INTO `sys_user_role` VALUES (2, 1);
-
--- ----------------------------
--- Table structure for wei_goods
--- ----------------------------
-DROP TABLE IF EXISTS `wei_goods`;
-CREATE TABLE `wei_goods`  (
-  `id` bigint NOT NULL,
-  `shop_id` int NULL DEFAULT NULL COMMENT '店铺id',
-  `product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台商品id',
-  `out_product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商家编码id',
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品标题',
-  `sub_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `head_imgs` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '主图集合',
-  `head_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '第一张主图',
-  `desc_info` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品详情字符串',
-  `attrs` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '属性字符串',
-  `status` int NULL DEFAULT NULL COMMENT '状态',
-  `edit_status` int NULL DEFAULT NULL COMMENT '编辑状态',
-  `min_price` int NULL DEFAULT NULL COMMENT '商品 SKU 最小价格（单位：分）',
-  `spu_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品编码',
-  `product_type` int NULL DEFAULT NULL COMMENT '商品类型。1: 小店普通自营商品；2: 福袋抽奖商品；3: 直播间闪电购商品。注意: 福袋抽奖、直播间闪电购类型的商品为只读数据，不支持编辑、上架操作，不支持用data_type=2的参数获取。',
-  `edit_time` int NULL DEFAULT NULL COMMENT '商品草稿最近一次修改时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of wei_goods
--- ----------------------------
-INSERT INTO `wei_goods` VALUES (1773592665390514178, 6, NULL, NULL, '2024春季农家燕麦麸皮 高纤高蛋白营养 500g/罐', NULL, '[\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HARN-Ewu9KkyLbQ-i1dzG59Ipxaw0KClDQNn3hhHkA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HNTp4qhlDC5kLroYp101uOiUKRsRT80lqEgjTh9CTg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HNgPr5tM10t4f0CYz_N2Rnm0uIqlA29Cn3jv9Sb6Bw\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HHOtQob6n82y6ijcRwWQCvjaAKNu8ZolouugfAKNTg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HLKaJe2eR_YipU8DX4LRyzyNm60j2T2APKqvvYamoA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HBFvYUZTgdpcakf6aeSqe-cd-rJOHvN_MUD92oO1rA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HP84p2a6MjxCbuEdefZWkUpbZKBA8co8_6B_w5LOjQ\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HD4wfyh4AFwMJkwsV3zgzVtOZnD50fhW3ixMzUaN_w\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HGrC9ZiOuk9MKbnJBowwWNVBZ9uUjg_STZzXNzy8PQ\"]', 'https://mmecimage.cn/p/wx2b826d52663c3ac5/HARN-Ewu9KkyLbQ-i1dzG59Ipxaw0KClDQNn3hhHkA', '{\"imgs\":[\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HIGYaktEgmvz24ajkAAJhH6uDC-osnqovWosa9-gWQ\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HNEZI4nbU-Qg9_XXRyBMl1cFbpND5wyrivAE0W9pvg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HLaoM9JsWEDaLK42wKhlM15ku7ETEh0-eiqCtiOFUA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HDOIzQv4eyOCdJfqieclsx6KFEQcIxEawnNA5aUIkg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HGGR-iLCrzMW6SDIwvjqXrKtslGvRqM0k-89VekSgw\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HDsg1cgCeLjvTQ4RmcTrMuO7_Bykmeq1rRL8kPvADw\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HIEQxLpTnn0YZIPkwZ_jAhxECgkhM95APxAfLyfeyw\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HMRpnoTmc64dZpoJSIDSNidgYL5yX_B6s0zofo2dhA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HERmb7JpfCsBcIk1EKo8pg_wX9FbQny-0MsVBPGBgQ\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HEf7XxCWlxOPXxUtH0GhT4EVbCrDXu-6nzJheY_v2w\"],\"desc\":\"\"}', '[{\"attr_key\":\"品牌\",\"attr_value\":\"麦趣丰\"},{\"attr_key\":\"生产企业名称\",\"attr_value\":\"山东维美食品有限公司\"},{\"attr_key\":\"配料表\",\"attr_value\":\"燕麦\"},{\"attr_key\":\"保质期\",\"attr_value\":\"240 天\"},{\"attr_key\":\"净含量\",\"attr_value\":\"500 g\"}]', 5, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `wei_goods` VALUES (1773592726853844994, 6, NULL, NULL, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓茶330g*罐', NULL, '[\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HOHUsPL5lXYMi6uiTIqNoTN7aVVLFstOylGkv2Rupg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HCgV2IEsYtkzBdKOSWF5UChZ6lzW8n4o-jvtK7jrGQ\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HCsvjx2CqjmYumW4sW335BuS5FZtwC6ctueDYc9J9A\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HFn92-3enHPQ_DFgNDPDqlg9gUxHt14JavVGhMx_Jg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HMP2oduzl5c8wFyoZDHTMguBi2vMrxRX3kucG1IENQ\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HHbxEwPTrADwThr_5f3BUuthfqOPZdjHR3NDUA7pFA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HPhYUEDpnVO1jiGSHHmagyQOIdPYpau2oyjXZz7eyg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HEavquNbjGtBOK9pSfKiN7_IRQQZIXBuQqp5-NqnOA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HDmtDkNUi_aTtPbCeRPuECHm4d8u5IGw8i6-wRXnMQ\"]', 'https://mmecimage.cn/p/wx2b826d52663c3ac5/HOHUsPL5lXYMi6uiTIqNoTN7aVVLFstOylGkv2Rupg', '{\"imgs\":[\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HCHck7lcuqJ-0jBEa4uLrpE4bpuR3276H5mG6r8YVA\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HBCUz-BSyK8uE8kjyVFUN_E3Y1rYVS5sQ4gZpNud3g\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HLDZzs9U0mZ1o90Ao3_fbVx92Be6qmDx4_0hOmLNKg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HN8FBEj5-OB9ikg2_BGssLp0o2FOfQmFCIyLOj-q-Q\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HCzULR3SSfXACWAffBG77GQYx4lDkzqBkm2fcPOuqg\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HCjS8dONFVTAukX0-_q5-cozvhQzbYUwp3iBieGvrw\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HDLWNouDSg64CY_SmSVHH92_B9FVNk82Mdh0UujfaQ\",\"https://mmecimage.cn/p/wx2b826d52663c3ac5/HJZ9uhZ-R90QOp9nD7oIl_Ru61tDzm-SgdtbSvl2kw\"],\"desc\":\"\"}', '[{\"attr_key\":\"品牌\",\"attr_value\":\"泷御堂\"},{\"attr_key\":\"生产企业名称\",\"attr_value\":\"安徽意茗堂生物科技有限公司\"},{\"attr_key\":\"配料表\",\"attr_value\":\"赤小豆、慧米、芡实、茯苓\"},{\"attr_key\":\"保质期\",\"attr_value\":\"12 月\"},{\"attr_key\":\"净含量\",\"attr_value\":\"330 g\"}]', 5, NULL, NULL, NULL, NULL, NULL);
-
--- ----------------------------
--- Table structure for wei_goods_sku
--- ----------------------------
-DROP TABLE IF EXISTS `wei_goods_sku`;
-CREATE TABLE `wei_goods_sku`  (
-  `id` bigint NOT NULL,
-  `wei_goods_id` bigint NULL DEFAULT NULL COMMENT '外键id',
-  `sku_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'skuID',
-  `out_sku_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商家自定义skuID。如果添加时没录入，回包可能不包含该字段',
-  `thumb_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku小图',
-  `sale_price` int NULL DEFAULT NULL COMMENT '售卖价格，以分为单位',
-  `stock_num` int NULL DEFAULT NULL COMMENT 'sku库存',
-  `sku_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku编码',
-  `status` int NULL DEFAULT NULL COMMENT 'sku状态',
-  `sku_attrs` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku_attrs',
-  `sku_deliver_info` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku_deliver_info',
-  `erp_goods_id` bigint NULL DEFAULT NULL COMMENT 'erp系统商品id',
-  `erp_goods_sku_id` bigint NULL DEFAULT NULL COMMENT 'erp系统商品skuid',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of wei_goods_sku
--- ----------------------------
-INSERT INTO `wei_goods_sku` VALUES (1773592677457526786, 1773592665390514178, NULL, NULL, NULL, NULL, NULL, NULL, 5, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4斤\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', NULL, NULL);
-INSERT INTO `wei_goods_sku` VALUES (1773592726975479809, 1773592726853844994, NULL, NULL, NULL, NULL, NULL, NULL, 5, '[{\"attr_key\":\"净含量\",\"attr_value\":\"4罐99.9【平均24.9/罐】(97%人选择)1个周期\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', NULL, NULL);
-INSERT INTO `wei_goods_sku` VALUES (1773592727050977281, 1773592726853844994, NULL, NULL, NULL, NULL, NULL, NULL, 5, '[{\"attr_key\":\"净含量\",\"attr_value\":\"3罐89.9【平均29/罐】(50%人选择)\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', NULL, NULL);
-INSERT INTO `wei_goods_sku` VALUES (1773592727147446274, 1773592726853844994, NULL, NULL, NULL, NULL, NULL, NULL, 5, '[{\"attr_key\":\"净含量\",\"attr_value\":\"2罐69.9【平均34.5/罐】(35%人选择)\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', NULL, NULL);
-INSERT INTO `wei_goods_sku` VALUES (1773592727227138049, 1773592726853844994, NULL, NULL, NULL, NULL, NULL, NULL, 5, '[{\"attr_key\":\"净含量\",\"attr_value\":\"1罐体验装【贵在运费】(5%人选择)\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', NULL, NULL);
-
--- ----------------------------
--- Table structure for wei_order
--- ----------------------------
-DROP TABLE IF EXISTS `wei_order`;
-CREATE TABLE `wei_order`  (
-  `id` bigint NOT NULL,
-  `shop_id` int NULL DEFAULT NULL COMMENT '店铺id',
-  `order_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单号',
-  `openid` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '买家身份标识',
-  `create_time` int NULL DEFAULT NULL COMMENT '秒级时间戳',
-  `update_time` int NULL DEFAULT NULL COMMENT '秒级时间戳',
-  `unionid` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `status` int NULL DEFAULT NULL COMMENT '状态10	待付款；20	待发货；21	部分发货；30	待收货；100	完成；200	全部商品售后之后，订单取消；250	未付款用户主动取消或超时未付款订单自动取消；',
-  `aftersale_detail` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '售后信息json',
-  `pay_info` varchar(5500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '支付信息json',
-  `product_price` int NULL DEFAULT NULL COMMENT '商品总价，单位为分',
-  `order_price` int NULL DEFAULT NULL COMMENT '订单金额，单位为分，order_price=original_order_price-discounted_price-deduction_price-change_down_price',
-  `freight` int NULL DEFAULT NULL COMMENT '运费，单位为分',
-  `discounted_price` int NULL DEFAULT NULL COMMENT '优惠券优惠金额，单位为分',
-  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '收货人姓名',
-  `postal_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '邮编',
-  `province_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '省份',
-  `city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '城市',
-  `county_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '区',
-  `detail_info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '详细地址',
-  `tel_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系方式\r\n',
-  `house_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '门牌号码',
-  `virtual_order_tel_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '虚拟发货订单联系方式(deliver_method=1时返回)',
-  `tel_number_ext_info` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '额外的联系方式信息（虚拟号码相关）',
-  `use_tel_number` int NULL DEFAULT NULL COMMENT '0：不使用虚拟号码，1：使用虚拟号码',
-  `hash_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标识当前店铺下一个唯一的用户收货地址',
-  `delivery_product_info` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '发货物流信息JSON',
-  `ship_done_time` int NULL DEFAULT NULL COMMENT '发货完成时间，秒级时间戳',
-  `ewaybill_order_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '电子面单代发时的订单密文\r\n',
-  `settle_info` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '结算信息json',
-  `confirm_status` int NULL DEFAULT 0 COMMENT '订单确认状态（0未确认1已确认）',
-  `confirm_time` datetime NULL DEFAULT NULL COMMENT '确认时间',
-  `erp_send_status` int NULL DEFAULT NULL COMMENT 'erp发货状态',
-  `erp_send_time` datetime NULL DEFAULT NULL COMMENT 'ERP发货时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of wei_order
--- ----------------------------
-INSERT INTO `wei_order` VALUES (1773651199826300930, 6, '3718590468852683008', 'oAv1969ctu4B_MrW17zk7JChQrBA', 1710907087, 1711280945, NULL, 100, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20115809263560bdc3bda251ae3eee0000\",\"prepay_time\":1710907089,\"pay_time\":1710907097,\"transaction_id\":\"4332301095202403202057439992\"}', 9990, 9990, 0, NULL, '张**', '156400', '黑龙江省', '佳木斯市', '同江市', '****', '139****1755', '', '', 'null', 0, '60e36c9691eef079a45fb629c78b88ef', '[{\"waybill_id\":\"312317650762748\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710921324,\"deliver_type\":1}]', 1710921324, 'ofeIxD4qpxEIdkUmusYuJAvWi-H4cgngomdmkZ5Dt41LPpun-Yf2ROm0cO8Adz5_jsw4DNRn5D_w', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651201164283905, 6, '3718590165614464000', 'oAv196-Xw4whjGQr4GF2D1lUS0vw', 1710905931, 1711510929, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx201138523358325a5c59a03b72a8900000\",\"prepay_time\":1710905932,\"pay_time\":1710905946,\"transaction_id\":\"4348501112202403200062879930\"}', 9990, 9990, 0, NULL, '风**', '541004', '广西壮族自治区', '桂林市', '七星区', '****', '189****5671', '', '', 'null', 0, 'd1d18fd116ecbfb5a084db703652bbf2', '[{\"waybill_id\":\"312317507518865\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710906129,\"deliver_type\":1}]', 1710906129, 'ofBnDflYHmXX3vPIhJblDq6wq4O4z3OggOGTJljLlnEM4YzvNVPTX7AR3q2zz48dbs46F9oNaN0w', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651202531627010, 6, '3718589880635884800', 'oAv196_dDA-D0ZAJYtZxZ5Tsq-pw', 1710904844, 1711510862, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20112045176075a813e14d5103ac360000\",\"prepay_time\":1710904845,\"pay_time\":1710904852,\"transaction_id\":\"4337401091202403206248549568\"}', 9990, 9990, 0, NULL, '周**', '516400', '广东省', '汕尾市', '海丰县', '****', '139****2585', '', '', 'null', 0, 'da3bf96aca5d34d9e3ec017711621933', '[{\"waybill_id\":\"73610448785703\",\"delivery_id\":\"ZTO\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"中通快递\",\"delivery_time\":1710906061,\"deliver_type\":1}]', 1710906061, 'of0P-Z4yhGNWPrBNEo7_lsU1SmlDdPtKsnOLMhXG4APpvl-4yPjGXI4THGYDUF5Jr6e9tF4Jmc_Q', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651203651506177, 6, '3718589605759552512', 'oAv1963oP6e80PmR0O3WFwVsMjgI', 1710903795, 1711510789, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20110316854964035140248b3568880000\",\"prepay_time\":1710903797,\"pay_time\":1710903805,\"transaction_id\":\"4323001101202403206838631886\"}', 9990, 9990, 0, NULL, '杨**', '523000', '广东省', '东莞市', '南城街道', '****', '131****9856', '', '', 'null', 0, 'd840df43d3db15177add62845ef6f4d9', '[{\"waybill_id\":\"312317506583169\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'ofkbBWSIJgWEGlEETB2I9eyh57RBtnEfsgSR8mezOEF4mS7XdSOVT-IsKy5N5D6qUAMSAR0TKkJA', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651204742025218, 6, '3718589592043128064', 'oAv196_qiMGLFlRYUrVporaKPzLo', 1710903743, 1711510790, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx201102245184580c3862e9bad7827c0000\",\"prepay_time\":1710903744,\"pay_time\":1710903759,\"transaction_id\":\"4302201086202403208840994399\"}', 9990, 9990, 0, NULL, '李', '200135', '上海市', '上海市', '浦东新区', '****', '151****0907', '', '', 'null', 0, '8f7bbb970f4b8135917c7ab8ad604f09', '[{\"waybill_id\":\"312317506512381\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'of4-1Cwj9aGErR9HppkMCnNgRPGDuMXKVe6Z-gm5_ccKqVhIdVeETP5aUPvneZGeUQyn1Jk9SH8g', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651205966761986, 6, '3718589309525299200', 'oAv1969jKGQpCmYc1SSbPMuWLXUc', 1710902665, 1711510789, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20104426595065d78a9492c283f27a0000\",\"prepay_time\":1710902666,\"pay_time\":1710902672,\"transaction_id\":\"4347100965202403202814722381\"}', 9990, 9990, 0, NULL, '王*', '201900', '上海市', '上海市', '宝山区', '****', '139****3668', '', '', 'null', 0, '4570669245c3fe8bd0e0b173d2bf4810', '[{\"waybill_id\":\"312317506523860\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'ofJ8FkFDNTi0o-2Kza85q3-jQ6A_Kl_QJk7XYZja1tgNFz2Vl3cEhVNiDo4-5DouC1K-eunIllMA', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651207095029762, 6, '3718589294961886464', 'oAv196y7xzoB4jtnMbZ_8_m2jeOY', 1710902609, 1711510790, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20104331088708d417c64b1b0184960000\",\"prepay_time\":1710902611,\"pay_time\":1710902620,\"transaction_id\":\"4346701109202403209988609214\"}', 9990, 9990, 0, NULL, '李**', '200050', '上海市', '上海市', '长宁区', '****', '181****9671', '', '', 'null', 0, 'a2615ec5565c3e3d407e45d1ea7f5f2a', '[{\"waybill_id\":\"312317506578945\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'of0ByBqSq6e3Ye3a1bma4KP4uiKBfRZ_n_lhkvLJDpslARp1Vx3oXm9cOLmrQ94ZZCvSkM0qZ8Dg', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651208210714625, 6, '3718589016159424768', 'oAv19634S2V5xCQ1zC9CK3OfyfiQ', 1710901546, 1711510790, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20102547465198d959aca9d05bf4d90000\",\"prepay_time\":1710901547,\"pay_time\":1710901554,\"transaction_id\":\"4342301109202403207545671962\"}', 9990, 9990, 0, NULL, '卢**', '530012', '广西壮族自治区', '南宁市', '兴宁区', '****', '138****5202', '', '13877165202', 'null', 0, '9a9334f61deee413c7579cc7797dfe76', '[{\"waybill_id\":\"312317506455252\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'ofZdjluGp7LFmJA9HxxGsqcgcHySzhWQ1yw76nuvkZcS4NZeQKds94thoZQ0C1oOoJMwkQNAb0xw', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651209330593793, 6, '3718588644526002432', 'oAv196_7aFUZPJalgmLxL_iWw804', 1710900128, 1711510790, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20100209893206a12375aa409b48bb0000\",\"prepay_time\":1710900130,\"pay_time\":1710900140,\"transaction_id\":\"4341200952202403200383974611\"}', 9990, 9990, 0, NULL, '马**', '101100', '北京市', '北京市', '通州区', '****', '183****6247', '', '', 'null', 0, '1b704e24c12cf7062ee5736e7551429a', '[{\"waybill_id\":\"312317506509480\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'ofLFnCZuN2by9AcKov46K5tJm1_mG0bBQbXQ-_cUpATAtdYqQOtzeRBYQ04D_HDZy2hxy0QD5PzA', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651210421112833, 6, '3718588590994097408', 'oAv196zhzMf97Ba2R8xdQ0QZxnKs', 1710899924, 1710900826, NULL, 250, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"prepay_id\":\"up_wx20095845672477c9ce9c4315ec892c0000\",\"prepay_time\":1710899925}', 9990, 9990, 0, NULL, '幸*', '543200', '广西壮族自治区', '梧州市', '岑溪市', '****', '182****6206', '', '', 'null', 0, 'd839bebe74d2c0f69bb659ed50726e11', '[]', 0, 'ofRpFXMXe91gV1dn-cpRjsVM35DtD8SKNaIGhmSGSi-GtHwBkt6aIV87SGxa-3CEfaVc1JKUTevA', '{\"predict_commission_fee\":0}', 0, NULL, NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651211620683777, 6, '3718588208610936064', 'oAv196xSiMAiXvclFVbm3uQtFiMk', 1710898465, 1711510861, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx200934271410802829cd13e6d377c20000\",\"prepay_time\":1710898467,\"pay_time\":1710898475,\"transaction_id\":\"4305500964202403207977225252\"}', 9990, 9990, 0, NULL, '王**', '361001', '福建省', '厦门市', '思明区', '****', '137****5379', '', '', 'null', 0, '5391edd5cb004407c49340082782bdfa', '[{\"waybill_id\":\"73610448785566\",\"delivery_id\":\"ZTO\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"中通快递\",\"delivery_time\":1710906061,\"deliver_type\":1}]', 1710906061, 'of9UExPPPXndZlepNABvZdWT2c8mlrxKRiYI22tfavxYnl_FlimXLP4T7mBcNYEeixdBBISBdGJA', '{\"predict_commission_fee\":99}', 0, NULL, NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651212686036993, 6, '3718588207135065344', 'oAv1965NJAgLllnVsL1sqtLu_eYc', 1710898460, 1710899360, NULL, 250, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"prepay_id\":\"up_wx20093421419085b90d7f5497a5e3170000\",\"prepay_time\":1710898461}', 9990, 9990, 0, NULL, '冯**', '563000', '贵州省', '遵义市', '红花岗区', '****', '156****2268', '', '15608522268', 'null', 0, 'b89011e707f7538071a8f39c5364f380', '[]', 0, 'ofwqKwLKOxvcPzpqCQ0Bt00U8Z8fiSQk-G6KM2AO7ml5VFXvDhNsb52AWxYQ_h0WDwhpzPsJG9Og', '{\"predict_commission_fee\":0}', 1, '2024-04-12 14:41:11', NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651213822693377, 6, '3718587822346996736', 'oAv196wFsnkezeypRf0egcDMGiWM', 1710896992, 1710898600, NULL, 200, '{\"aftersale_order_list\":[{\"aftersale_order_id\":\"2000000376158056\",\"status\":13}],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20090953417027afb2603f0b09c7fb0000\",\"prepay_time\":1710896993,\"pay_time\":1710897001,\"transaction_id\":\"4331701107202403200001411174\"}', 9990, 9990, 0, NULL, '赵**', '100010', '北京市', '北京市', '东城区', '****', '134****1877', '', '', 'null', 0, '05bae94246e4ad5e05f1cfb5cfcdabd6', '[]', 0, 'ofIj04A4BImnu3akL1Jq5Web4yULuKS6G3O91u5HVEj62aCmbPEpFgwhM0JWXapPCi-jgV9-49ng', '{\"predict_commission_fee\":0}', 1, '2024-04-12 14:41:11', NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651214942572545, 6, '3718587815659965440', 'oAv196291g5xNrw1spVQpjXhoXg0', 1710896966, 1710897868, NULL, 250, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"prepay_id\":\"up_wx20090927863922d6ba03e28352d80e0000\",\"prepay_time\":1710896968}', 9990, 9990, 0, NULL, '崔*', '445300', '湖北省', '恩施土家族苗族自治州', '建始县', '****', '133****5865', '', '', 'null', 0, '43d9d5270bc81462f94547083e6f1ecd', '[]', 0, 'of_9-SntfOwUc_ivgA-GyQxaNuCyBtJSWOEwvNsWZSdxOnC58AZV7y9mVgCoK8eEJKepOGwg5ciQ', '{\"predict_commission_fee\":0}', 1, '2024-04-12 14:41:11', NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651216016314369, 6, '3718587814527504384', 'oAv1965374koR_XZBopbQIgbwvYg', 1710896962, 1711161629, NULL, 100, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20090923692523ec3d6e1ed350c68a0000\",\"prepay_time\":1710896963,\"pay_time\":1710896972,\"transaction_id\":\"4317200957202403206956316633\"}', 9990, 9990, 0, NULL, '王**', '100020', '北京市', '北京市', '朝阳区', '****', '136****6620', '', '', 'null', 0, 'abed73df538b1b73d8e60a3bd15836c8', '[{\"waybill_id\":\"312317506527084\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'of31XR_nQ-ipiULDnExMHqt2Nm3TWsinqzjDYw60zSAnM361_3JAI6V_i6wFGe0T2GfbyDES4h8A', '{\"predict_commission_fee\":99}', 1, '2024-04-12 14:41:11', NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651217362685954, 6, '3718587810203962368', 'oAv196z-7_wGiRBgD8b1Ob3LTuSQ', 1710896946, 1711510789, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx200909072119543b9b208278195da40000\",\"prepay_time\":1710896947,\"pay_time\":1710896954,\"transaction_id\":\"4313501099202403202886208440\"}', 9990, 9990, 0, NULL, '忻*', '550001', '贵州省', '贵阳市', '云岩区', '****', '139****5732', '', '', 'null', 0, '1e90e5b3739a2e46587e0de50ed28879', '[{\"waybill_id\":\"312317506456736\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'ofbNlHM1Uwy9tTtGAuieftzGiYjpBfQGsnHGNYyTMfcPSQ0oJvdf5-iqL2-4iK_-xoxbWgc8UqOA', '{\"predict_commission_fee\":99}', 1, '2024-04-12 14:41:11', NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651218482565122, 6, '3718587809541260800', 'oAv1960PTbIGg1azMM97-Yb1BILM', 1710896943, 1711692550, NULL, 200, '{\"aftersale_order_list\":[{\"aftersale_order_id\":\"2000000387777830\",\"status\":14}],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx200909048136598e32c836acdd7fce0000\",\"prepay_time\":1710896945,\"pay_time\":1710896952,\"transaction_id\":\"4326500957202403203893580121\"}', 9990, 9990, 0, NULL, '耿*', '100071', '北京市', '北京市', '丰台区', '****', '136****6190', '', '', 'null', 0, '72ef646c988a5284a2790d3aa2477dad', '[{\"waybill_id\":\"312317506638952\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'ofFXYhtxh8BiP2LmchmbuhbYisvOgAgOUryV0F15xG8o0SIp1NITD4vbSATpaoRhYp_trkhgrUaA', '{\"predict_commission_fee\":0}', 1, '2024-04-12 14:41:11', NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651219539529730, 6, '3718587542502772992', 'oAv196_y-DtYDOLcAI27-wOQyI4M', 1710895924, 1711591705, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20085206263250579fa283be7dc8e20000\",\"prepay_time\":1710895926,\"pay_time\":1710896086,\"transaction_id\":\"4311100949202403208635067416\"}', 990, 990, 0, NULL, '吴*', '215000', '江苏省', '苏州市', '姑苏区', '****', '131****1805', '', '', 'null', 0, '5a32b39d6fe49c2cbbeaa498788c154f', '[{\"waybill_id\":\"318890755728720\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000104315300\",\"sku_id\":\"2086367126\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710986905,\"deliver_type\":1}]', 1710986905, 'ofK-HQreW8UkLCXw-zFmtdIMY8QpqFqK9i923uHIa7txGXok4EeLDgFNn96yGLh8eU2LIIjwikPA', '{\"predict_commission_fee\":9}', 1, '2024-04-12 14:41:11', NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651220789432322, 6, '3718587018572858624', 'oAv1962vGm4-XWRG9ma4_S_yCVA4', 1710893926, 1710916555, NULL, 200, '{\"aftersale_order_list\":[{\"aftersale_order_id\":\"2000000376505279\",\"status\":13}],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20081903030176f28c94820f0507750000\",\"prepay_time\":1710893943,\"pay_time\":1710893948,\"transaction_id\":\"4336600964202403204980463253\"}', 109890, 100, 0, NULL, '阿*', '657000', '云南省', '昭通市', '昭阳区', '****', '139****6961', '', '13512120557', 'null', 0, 'd25a0ad0da52d5f279aad62152a4ba53', '[]', 0, 'ofGKBzBVIOKCbWhuAzmzE2XxfAF-E9wkCgc8JxviQzRb4gezkLahY55ckCgjhKu9FMHQRUYMkcIw', '{\"predict_commission_fee\":0}', 1, '2024-04-12 14:41:11', NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651221888339969, 6, '3718586568279724288', 'oAv1966osuFsbYH6YSExD6uKr3WY', 1710892208, 1711510790, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx20075009764726ff1a9fc3b58ae4400000\",\"prepay_time\":1710892209,\"pay_time\":1710892227,\"transaction_id\":\"4335800950202403200637254989\"}', 9990, 9990, 0, NULL, '王**', '475000', '河南省', '开封市', '禹王台区', '****', '152****2706', '', '', 'null', 0, '4f1ffa0a6c31d9bebc1c30440544d7b2', '[{\"waybill_id\":\"312317506457252\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'ofmS5hUKMgVF7Htd3qfQ3G_wXgz3x-C2R6n6BUinYFVeKjBZ2guWU1YHcAVbKnzinff0FerdU79Q', '{\"predict_commission_fee\":99}', 1, '2024-04-12 14:41:11', NULL, NULL);
-INSERT INTO `wei_order` VALUES (1773651223045967873, 6, '3718586550340945408', 'oAv1964cOETzaRR_Swm2LXxmBypY', 1710892139, 1711510790, NULL, 30, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"payment_method\":1,\"prepay_id\":\"up_wx2007490139983219e20e83520865070000\",\"prepay_time\":1710892141,\"pay_time\":1710892148,\"transaction_id\":\"4307200968202403207539523408\"}', 9990, 9990, 0, NULL, '张*', '231500', '安徽省', '合肥市', '庐江县', '****', '153****8788', '', '', 'null', 0, '934fd91e344f6a1bf99e1c3105dd6344', '[{\"waybill_id\":\"312317506455345\",\"delivery_id\":\"YD\",\"product_infos\":[{\"product_id\":\"10000103058379\",\"sku_id\":\"2069165392\",\"product_cnt\":1}],\"delivery_name\":\"韵达速递\",\"delivery_time\":1710905989,\"deliver_type\":1}]', 1710905989, 'of1oLHaoKiJqqNvZ2oAdPPFO_ABYUwSB-yoigQlISLILJx6x_DXmqhSCux2OTZ_-frSVwyHgfqoQ', '{\"predict_commission_fee\":99}', 1, '2024-04-12 14:41:11', NULL, NULL);
-
--- ----------------------------
--- Table structure for wei_order_item
--- ----------------------------
-DROP TABLE IF EXISTS `wei_order_item`;
-CREATE TABLE `wei_order_item`  (
-  `id` bigint NOT NULL,
-  `wei_order_id` bigint NULL DEFAULT NULL COMMENT '外键id',
-  `product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品spuid',
-  `sku_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品skuid\r\n',
-  `thumb_img` varchar(550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku小图',
-  `sku_cnt` int NULL DEFAULT NULL COMMENT 'sku数量',
-  `sale_price` int NULL DEFAULT NULL COMMENT '售卖单价（单位：分）',
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品标题',
-  `on_aftersale_sku_cnt` int NULL DEFAULT NULL COMMENT '正在售后/退款流程中的 sku 数量',
-  `finish_aftersale_sku_cnt` int NULL DEFAULT NULL COMMENT '完成售后/退款的 sku 数量',
-  `sku_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品编码',
-  `market_price` int NULL DEFAULT NULL COMMENT '市场单价（单位：分）',
-  `sku_attrs` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku属性JSON',
-  `real_price` int NULL DEFAULT NULL COMMENT 'sku实付总价，取estimate_price和change_price中较小值',
-  `out_product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品外部spuid',
-  `out_sku_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品外部skuid',
-  `is_discounted` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否有优惠金额，非必填，默认为false',
-  `estimate_price` int NULL DEFAULT NULL COMMENT '优惠后sku总价，非必填，is_discounted为true时有值',
-  `is_change_price` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否修改过价格，非必填，默认为false',
-  `change_price` int NULL DEFAULT NULL COMMENT '改价后sku总价，非必填，is_change_price为true时有值',
-  `out_warehouse_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '区域库存id',
-  `sku_deliver_info` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品发货信息JSON',
-  `extra_service` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品额外服务信息JSON',
-  `use_deduction` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否使用了会员积分抵扣\r\n',
-  `deduction_price` int NULL DEFAULT NULL COMMENT '会员积分抵扣金额，单位为分',
-  `order_product_coupon_info_list` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品优惠券信息，逐步替换 order.order_detail.coupon_info',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of wei_order_item
--- ----------------------------
-INSERT INTO `wei_order_item` VALUES (1773651199977295874, 1773651199826300930, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651201202032641, 1773651201164283905, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651202577764353, 1773651202531627010, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651203689254913, 1773651203651506177, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651204817522690, 1773651204742025218, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651206088396801, 1773651205966761986, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651207124389889, 1773651207095029762, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651208265240577, 1773651208210714625, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651209368342530, 1773651209330593793, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651210479833090, 1773651210421112833, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651211645849602, 1773651211620683777, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651212711202818, 1773651212686036993, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651213856247809, 1773651213822693377, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 1, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651214967738370, 1773651214942572545, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651216045674498, 1773651216016314369, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651217396240385, 1773651217362685954, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651218511925250, 1773651218482565122, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 1, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651219568889858, 1773651219539529730, '10000104315300', '2086367126', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f292760001000d22cbd8f9727c0d15000000a000004f50', 1, 990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓茶330g*罐', 0, 0, '', 990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"1罐体验装【贵在运费】(5%人选择)\"}]', 990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651220827181058, 1773651220789432322, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 11, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 11, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 100, NULL, NULL, 'null', NULL, 'true', 100, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651221921894401, 1773651221888339969, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-INSERT INTO `wei_order_item` VALUES (1773651223083716609, 1773651223045967873, '10000103058379', '2069165392', 'https://store.mp.video.tencent-cloud.com/161/20304/snscosdownload/SH/reserved/65f29bc400032a7c023ca7e6b960b01e000000a000004f50', 1, 9990, '泷御堂 冲饮谷物  赤小豆薏米芡实茯苓330g*罐', 0, 0, '', 9990, '[{\"attr_key\":\"净含量\",\"attr_value\":\"拍3罐送1罐到手4罐\"},{\"attr_key\":\"主播承诺\",\"attr_value\":\"7天升级30天试喝及运费险\"}]', 9990, NULL, NULL, 'null', NULL, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":1}', 'null', NULL, '[]');
-
--- ----------------------------
--- Table structure for wei_refund
--- ----------------------------
-DROP TABLE IF EXISTS `wei_refund`;
-CREATE TABLE `wei_refund`  (
-  `id` bigint NOT NULL,
-  `shop_id` int NULL DEFAULT NULL COMMENT '店铺id',
-  `after_sale_order_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '售后单号',
-  `status` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '售后单当前状态，参考：AfterSaleStatus',
-  `openid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '买家身份标识',
-  `unionid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '买家在开放平台的唯一标识符，若当前视频号小店已绑定到微信开放平台账号下会返回',
-  `product_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品spuid',
-  `sku_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品skuid',
-  `count` int NULL DEFAULT NULL COMMENT '售后数量',
-  `fast_refund` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否极速退款RefundInfo',
-  `refund_reason` int NULL DEFAULT NULL COMMENT '标明售后单退款直接原因, 枚举值参考 RefundReason',
-  `refund_amount` int NULL DEFAULT NULL COMMENT '退款金额（分）',
-  `return_waybill_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '快递单号',
-  `return_delivery_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '物流公司id',
-  `return_delivery_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '物流公司名称',
-  `merchant_upload_info` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '售后相关商品信息JSON',
-  `create_time` int NULL DEFAULT NULL COMMENT '售后单创建时间戳',
-  `update_time` int NULL DEFAULT NULL COMMENT '售后单更新时间戳',
-  `reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '退款原因',
-  `reason_text` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '退款原因解释',
-  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '售后类型。REFUND:退款；RETURN:退货退款。',
-  `order_id` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单号，该字段可用于获取订单',
-  `details` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT 'detail json',
-  `complaint_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '纠纷id，该字段可用于获取纠纷信息',
-  `refund_resp` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '微信支付退款的响应',
-  `confirm_status` int NULL DEFAULT NULL COMMENT '确认状态9退货已签收8已拦截',
-  `confirm_time` datetime NULL DEFAULT NULL COMMENT '确认时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '视频号小店退款' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of wei_refund
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for wms_goods_bad_stock

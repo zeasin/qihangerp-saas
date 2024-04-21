@@ -10,7 +10,6 @@ import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.common.TableDataInfo;
 import cn.qihangerp.api.domain.ErpOrder;
 import cn.qihangerp.api.domain.ErpOrderItem;
-import cn.qihangerp.api.domain.SysShop;
 import cn.qihangerp.api.mapper.ErpOrderItemMapper;
 import cn.qihangerp.api.service.ErpOrderItemService;
 

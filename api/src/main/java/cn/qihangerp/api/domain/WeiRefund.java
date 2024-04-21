@@ -19,7 +19,7 @@ public class WeiRefund implements Serializable {
     /**
      * 店铺id
      */
-    private Integer shopId;
+    private Long shopId;
 
     /**
      * 售后单号

@@ -50,7 +50,7 @@ public class WeiRefundServiceImpl extends ServiceImpl<WeiRefundMapper, WeiRefund
 
     @Transactional
     @Override
-    public ResultVo<Integer> saveRefund(Integer shopId, WeiRefund refund) {
+    public ResultVo<Integer> saveRefund(Long shopId, WeiRefund refund) {
         try {
             List<WeiRefund> refunds = mapper.selectList(new LambdaQueryWrapper<WeiRefund>().eq(WeiRefund::getAfterSaleOrderId, refund.getAfterSaleOrderId()));
             if (refunds != null && refunds.size() > 0) {

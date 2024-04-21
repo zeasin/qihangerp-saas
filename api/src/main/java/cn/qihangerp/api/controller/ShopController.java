@@ -1,5 +1,7 @@
 package cn.qihangerp.api.controller;
 
+import cn.qihangerp.api.domain.Shop;
+import cn.qihangerp.api.service.ShopService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +12,7 @@ import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.common.TableDataInfo;
 import cn.qihangerp.api.domain.SysLogisticsCompany;
 import cn.qihangerp.api.domain.SysPlatform;
-import cn.qihangerp.api.domain.SysShop;
 import cn.qihangerp.api.service.SysLogisticsCompanyService;
-import cn.qihangerp.api.service.SysShopService;
-
 import java.util.List;
 
 /**
@@ -27,23 +26,17 @@ import java.util.List;
 @RequestMapping("/shop")
 public class ShopController extends BaseController {
     private final SysLogisticsCompanyService logisticsCompanyService;
-    private final SysShopService shopService;
+    private final ShopService shopService;
 
     /**
      * 查询店铺列表logistics
      */
     @PreAuthorize("@ss.hasPermi('shop:shop:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SysShop shop)
+    public TableDataInfo list(Shop shop)
     {
-        List<SysShop> list = shopService.selectShopList(shop);
-        return getDataTable(list);
-    }
-
-    @GetMapping("/platformList")
-    public TableDataInfo platformList()
-    {
-        List<SysPlatform> list = shopService.selectShopPlatformList();
+        shop.setTenantId(getUserId());
+        List<Shop> list = shopService.selectShopList(shop);
         return getDataTable(list);
     }
 
@@ -54,13 +47,7 @@ public class ShopController extends BaseController {
     @GetMapping(value = "/shop/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
-        return success(shopService.selectShopById(id));
-    }
-
-    @GetMapping(value = "/platform/{id}")
-    public AjaxResult getPlatform(@PathVariable("id") Long id)
-    {
-        return success(shopService.selectShopPlatformById(id));
+        return success(shopService.getById(id));
     }
 
     /**
@@ -68,11 +55,12 @@ public class ShopController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('shop:shop:add')")
     @PostMapping("/shop")
-    public AjaxResult add(@RequestBody SysShop shop)
+    public AjaxResult add(@RequestBody Shop shop)
     {
+        shop.setTenantId(getUserId());
         shop.setType(5);
         shop.setModifyOn(System.currentTimeMillis()/1000);
-        return toAjax(shopService.insertShop(shop));
+        return toAjax(shopService.save(shop));
     }
 
     /**
@@ -80,40 +68,31 @@ public class ShopController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('shop:shop:edit')")
     @PutMapping("/shop")
-    public AjaxResult edit(@RequestBody SysShop shop)
+    public AjaxResult edit(@RequestBody Shop shop)
     {
-        return toAjax(shopService.updateShopById(shop));
+        shop.setTenantId(null);
+        shop.setModifyOn(System.currentTimeMillis()/1000);
+        return toAjax(shopService.updateById(shop));
     }
 
-    /**
-     * 修改平台
-     * @param
-     * @return
-     */
-    @PutMapping("/platform")
-    public AjaxResult edit(@RequestBody SysPlatform platform)
-    {
-        return toAjax(shopService.updateShopPlatformById(platform));
-    }
 
     /**
      * 删除店铺
      */
     @PreAuthorize("@ss.hasPermi('shop:shop:remove')")
-	@DeleteMapping("/shop/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+	@DeleteMapping("/shop/{id}")
+    public AjaxResult remove(@PathVariable Long id)
     {
-        return toAjax(shopService.deleteShopByIds(ids));
+        return toAjax(shopService.removeById(id));
     }
 
-
-    /**
-     * 查询店铺列表logistics
-     */
-    @GetMapping("/logistics")
-    public TableDataInfo logisticsList(Integer platform, Integer shopId, PageQuery pageQuery)
-    {
-        PageResult<SysLogisticsCompany> result = logisticsCompanyService.queryPageList(platform, shopId, pageQuery);
-        return getDataTable(result);
-    }
+//    /**
+//     * 查询店铺列表logistics
+//     */
+//    @GetMapping("/logistics")
+//    public TableDataInfo logisticsList(Integer platform, Integer shopId, PageQuery pageQuery)
+//    {
+//        PageResult<SysLogisticsCompany> result = logisticsCompanyService.queryPageList(platform, shopId, pageQuery);
+//        return getDataTable(result);
+//    }
 }
