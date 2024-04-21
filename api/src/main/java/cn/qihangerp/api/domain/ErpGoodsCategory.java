@@ -13,7 +13,7 @@ public class ErpGoodsCategory implements Serializable {
     /**
      * 
      */
-    private Integer id;
+    private String id;
 
     /**
      * 分类编码
@@ -33,7 +33,7 @@ public class ErpGoodsCategory implements Serializable {
     /**
      * 上架分类id
      */
-    private Integer parentId;
+    private String parentId;
 
     /**
      * 分类路径
@@ -53,7 +53,11 @@ public class ErpGoodsCategory implements Serializable {
     /**
      * 0正常  1删除
      */
-    private Integer isdelete;
+    private Integer isDelete;
+    /**
+     * 租户id（sys_user_id）
+     */
+    private Long tenantId;
 
     /**
      * 创建人

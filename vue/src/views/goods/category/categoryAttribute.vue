@@ -1,36 +1,5 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="分类id" prop="categoryId">
-        <el-input
-          v-model="queryParams.categoryId"
-          placeholder="请输入分类id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="'属性名'" prop="title">
-        <el-input
-          v-model="queryParams.title"
-          placeholder="请输入'属性名'"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="固定值color颜色size尺码style款式" prop="code">
-        <el-input
-          v-model="queryParams.code"
-          placeholder="请输入固定值color颜色size尺码style款式"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
-
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -42,48 +11,44 @@
           v-hasPermi="['goods:categoryAttribute:add']"
         >新增</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['goods:categoryAttribute:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['goods:categoryAttribute:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['goods:categoryAttribute:export']"
-        >导出</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="success"-->
+<!--          plain-->
+<!--          icon="el-icon-edit"-->
+<!--          size="mini"-->
+<!--          :disabled="single"-->
+<!--          @click="handleUpdate"-->
+<!--          v-hasPermi="['goods:categoryAttribute:edit']"-->
+<!--        >修改</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="danger"-->
+<!--          plain-->
+<!--          icon="el-icon-delete"-->
+<!--          size="mini"-->
+<!--          :disabled="multiple"-->
+<!--          @click="handleDelete"-->
+<!--          v-hasPermi="['goods:categoryAttribute:remove']"-->
+<!--        >删除</el-button>-->
+<!--      </el-col>-->
+
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="categoryAttributeList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键id" align="center" prop="id" />
-      <el-table-column label="分类id" align="center" prop="categoryId" />
-      <el-table-column label="类型：0属性1规格" align="center" prop="type" />
-      <el-table-column label="'属性名'" align="center" prop="title" />
-      <el-table-column label="固定值color颜色size尺码style款式" align="center" prop="code" />
+<!--      <el-table-column type="selection" width="55" align="center" />-->
+<!--      <el-table-column label="主键id" align="center" prop="id" />-->
+<!--      <el-table-column label="分类id" align="center" prop="categoryId" />-->
+      <el-table-column label="类型" align="center" prop="type" >
+        <template slot-scope="scope">
+          <el-tag size="small" v-if="scope.row.type === 0">属性</el-tag>
+          <el-tag size="small" v-if="scope.row.type === 1">规格</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="属性名" align="center" prop="title" />
+      <el-table-column label="编码" align="center" prop="code" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -100,10 +65,17 @@
             @click="handleDelete(scope.row)"
             v-hasPermi="['goods:categoryAttribute:remove']"
           >删除</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleAttributeValue(scope.row)"
+            v-hasPermi="['goods:categoryAttribute:edit']"
+          >属性值</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -115,14 +87,26 @@
     <!-- 添加或修改商品分类属性对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="分类id" prop="categoryId">
-          <el-input v-model="form.categoryId" placeholder="请输入分类id" />
+<!--        <el-form-item label="分类id" prop="categoryId">-->
+<!--          <el-input v-model="form.categoryId" placeholder="请输入分类id" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="类型" prop="type">
+          <el-select v-model="form.type" placeholder="请选择类型">
+            <el-option label="规格" value="1"></el-option>
+            <el-option label="属性" value="0"></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="'属性名'" prop="title">
-          <el-input v-model="form.title" placeholder="请输入'属性名'" />
+        <el-form-item label="属性名" prop="title">
+          <el-input v-model="form.title" placeholder="请输入属性名" />
         </el-form-item>
-        <el-form-item label="固定值color颜色size尺码style款式" prop="code">
-          <el-input v-model="form.code" placeholder="请输入固定值color颜色size尺码style款式" />
+        <el-form-item label="规格代码" prop="code">
+<!--          <el-input v-model="form.code" placeholder="请输入固定值color颜色size尺码style款式" />-->
+          <el-select v-model="form.code" placeholder="请选择规格代码">
+            <el-option label="颜色" value="color"></el-option>
+            <el-option label="尺码" value="size"></el-option>
+            <el-option label="款式" value="style"></el-option>
+            <el-option label="其他" value="other"></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -162,21 +146,15 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        categoryId: null,
-        type: null,
-        title: null,
-        code: null
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        categoryId: [
-          { required: true, message: "分类id不能为空", trigger: "blur" }
-        ],
-        type: [
-          { required: true, message: "类型：0属性1规格不能为空", trigger: "change" }
-        ],
+        categoryId: [{ required: true, message: "分类id不能为空", trigger: "blur" }],
+        type: [{ required: true, message: "类型不能为空", trigger: "change" }],
+        title: [{ required: true, message: "不能为空", trigger: "change" }],
+        code: [{ required: true, message: "不能为空", trigger: "change" }],
       }
     };
   },
@@ -187,7 +165,7 @@ export default {
     /** 查询商品分类属性列表 */
     getList() {
       this.loading = true;
-      listCategoryAttribute(this.queryParams).then(response => {
+      listCategoryAttribute(this.$route.query.categoryId).then(response => {
         this.categoryAttributeList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -229,6 +207,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
+      this.form.categoryId = this.$route.query.categoryId
       this.title = "添加商品分类属性";
     },
     /** 修改按钮操作 */
@@ -237,6 +216,7 @@ export default {
       const id = row.id || this.ids
       getCategoryAttribute(id).then(response => {
         this.form = response.data;
+        this.form.type = response.data.type+''
         this.open = true;
         this.title = "修改商品分类属性";
       });
@@ -271,11 +251,8 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('goods/categoryAttribute/export', {
-        ...this.queryParams
-      }, `categoryAttribute_${new Date().getTime()}.xlsx`)
+    handleAttributeValue(row) {
+      this.$router.push({path:'/goods/category_attr_val',query:{attrId:row.id}})
     }
   }
 };

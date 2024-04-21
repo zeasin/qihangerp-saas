@@ -1,52 +1,5 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="属性id" prop="categoryAttributeId">
-        <el-input
-          v-model="queryParams.categoryAttributeId"
-          placeholder="请输入属性id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="属性值文本" prop="value">
-        <el-input
-          v-model="queryParams.value"
-          placeholder="请输入属性值文本"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="生成SKU的编码" prop="skuCode">
-        <el-input
-          v-model="queryParams.skuCode"
-          placeholder="请输入生成SKU的编码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="排序" prop="orderNum">
-        <el-input
-          v-model="queryParams.orderNum"
-          placeholder="请输入排序"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="是否删除" prop="isDelete">
-        <el-input
-          v-model="queryParams.isDelete"
-          placeholder="请输入是否删除"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
-
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -58,46 +11,15 @@
           v-hasPermi="['goods:categoryAttributeValue:add']"
         >新增</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['goods:categoryAttributeValue:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['goods:categoryAttributeValue:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['goods:categoryAttributeValue:export']"
-        >导出</el-button>
-      </el-col>
+
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="categoryAttributeValueList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键，属性值id" align="center" prop="id" />
-      <el-table-column label="属性id" align="center" prop="categoryAttributeId" />
-      <el-table-column label="属性值文本" align="center" prop="value" />
+<!--      <el-table-column type="selection" width="55" align="center" />-->
+<!--      <el-table-column label="主键，属性值id" align="center" prop="id" />-->
+<!--      <el-table-column label="属性id" align="center" prop="categoryAttributeId" />-->
+      <el-table-column label="属性值" align="center" prop="value" />
       <el-table-column label="生成SKU的编码" align="center" prop="skuCode" />
       <el-table-column label="排序" align="center" prop="orderNum" />
       <el-table-column label="是否删除" align="center" prop="isDelete" />
@@ -131,21 +53,18 @@
 
     <!-- 添加或修改商品分类属性值对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="属性id" prop="categoryAttributeId">
-          <el-input v-model="form.categoryAttributeId" placeholder="请输入属性id" />
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+<!--        <el-form-item label="属性id" prop="categoryAttributeId">-->
+<!--          <el-input v-model="form.categoryAttributeId" placeholder="请输入属性id" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="属性值名称" prop="value">
+          <el-input v-model="form.value" placeholder="请输入属性值名称" />
         </el-form-item>
-        <el-form-item label="属性值文本" prop="value">
-          <el-input v-model="form.value" placeholder="请输入属性值文本" />
-        </el-form-item>
-        <el-form-item label="生成SKU的编码" prop="skuCode">
+        <el-form-item label="SKU编码" prop="skuCode">
           <el-input v-model="form.skuCode" placeholder="请输入生成SKU的编码" />
         </el-form-item>
         <el-form-item label="排序" prop="orderNum">
-          <el-input v-model="form.orderNum" placeholder="请输入排序" />
-        </el-form-item>
-        <el-form-item label="是否删除" prop="isDelete">
-          <el-input v-model="form.isDelete" placeholder="请输入是否删除" />
+          <el-input type="number" v-model="form.orderNum" placeholder="请输入排序" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -195,9 +114,7 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        isDelete: [
-          { required: true, message: "是否删除不能为空", trigger: "blur" }
-        ]
+        value: [{ required: true, message: "不能为空", trigger: "blur" }]
       }
     };
   },
@@ -208,7 +125,7 @@ export default {
     /** 查询商品分类属性值列表 */
     getList() {
       this.loading = true;
-      listCategoryAttributeValue(this.queryParams).then(response => {
+      listCategoryAttributeValue(this.$route.query.attrId).then(response => {
         this.categoryAttributeValueList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -251,7 +168,8 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加商品分类属性值";
+      this.form.categoryAttributeId = this.$route.query.attrId
+      this.title = "添加分类属性值";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {

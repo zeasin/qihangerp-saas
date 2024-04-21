@@ -48,24 +48,24 @@
           v-hasPermi="['goods:brand:remove']"
         >删除</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['goods:brand:export']"
-        >导出</el-button>
-      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="brandList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键ID" align="center" prop="id" />
+<!--      <el-table-column label="主键ID" align="center" prop="id" />-->
       <el-table-column label="品牌名" align="center" prop="name" />
-      <el-table-column label="状态" align="center" prop="status" />
+      <el-table-column label="状态" align="center" prop="status" >
+        <template slot-scope="scope">
+          <el-tag size="small" v-if="scope.row.status === 1">启用</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 0">已禁用</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="创建时间" align="center" prop="createTime" >
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{m}:{s}') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -99,6 +99,12 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="品牌名" prop="name">
           <el-input v-model="form.name" placeholder="请输入品牌名" />
+        </el-form-item>
+        <el-form-item label="状态" prop="status">
+        <el-select v-model="form.status" placeholder="请选择状态">
+          <el-option label="启用" value="1"></el-option>
+          <el-option label="禁用" value="0"></el-option>
+        </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -145,9 +151,8 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        name: [
-          { required: true, message: "品牌名不能为空", trigger: "blur" }
-        ],
+        name: [{ required: true, message: "品牌名不能为空", trigger: "blur" }],
+        status: [{ required: true, message: "不能为空", trigger: "blur" }],
       }
     };
   },
@@ -174,11 +179,7 @@ export default {
       this.form = {
         id: null,
         name: null,
-        status: null,
-        createBy: null,
-        createTime: null,
-        updateBy: null,
-        updateTime: null
+        status: null
       };
       this.resetForm("form");
     },
@@ -202,7 +203,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加商品品牌";
+      this.title = "添加品牌";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -210,8 +211,9 @@ export default {
       const id = row.id || this.ids
       getBrand(id).then(response => {
         this.form = response.data;
+        this.form.status = response.data.status+''
         this.open = true;
-        this.title = "修改商品品牌";
+        this.title = "修改品牌";
       });
     },
     /** 提交按钮 */
@@ -244,12 +246,6 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('goods/brand/export', {
-        ...this.queryParams
-      }, `brand_${new Date().getTime()}.xlsx`)
-    }
   }
 };
 </script>

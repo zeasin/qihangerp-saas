@@ -11,7 +11,7 @@ export function listCategoryAttributeValue(id) {
 // 查询商品分类属性值详细
 export function getCategoryAttributeValue(id) {
   return request({
-    url: '/goods/categoryAttributeValue/' + id,
+    url: '/goods/category/attributeValue/' + id,
     method: 'get'
   })
 }
@@ -19,7 +19,7 @@ export function getCategoryAttributeValue(id) {
 // 新增商品分类属性值
 export function addCategoryAttributeValue(data) {
   return request({
-    url: '/goods/categoryAttributeValue',
+    url: '/goods/category/attributeValue',
     method: 'post',
     data: data
   })
@@ -28,7 +28,7 @@ export function addCategoryAttributeValue(data) {
 // 修改商品分类属性值
 export function updateCategoryAttributeValue(data) {
   return request({
-    url: '/goods/categoryAttributeValue',
+    url: '/goods/category/attributeValue',
     method: 'put',
     data: data
   })
@@ -37,7 +37,7 @@ export function updateCategoryAttributeValue(data) {
 // 删除商品分类属性值
 export function delCategoryAttributeValue(id) {
   return request({
-    url: '/goods/categoryAttributeValue/' + id,
+    url: '/goods/category/attributeValue/' + id,
     method: 'delete'
   })
 }

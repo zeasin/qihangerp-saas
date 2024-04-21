@@ -1,15 +1,13 @@
 package cn.qihangerp.api.controller;
 
+import cn.qihangerp.api.common.*;
+import cn.qihangerp.api.common.utils.StringUtils;
+import cn.qihangerp.api.domain.ErpGoodsCategoryAttribute;
+import cn.qihangerp.api.service.ErpGoodsCategoryAttributeService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import cn.qihangerp.api.common.BaseController;
-import cn.qihangerp.api.common.PageQuery;
-import cn.qihangerp.api.common.PageResult;
-import cn.qihangerp.api.common.TableDataInfo;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import cn.qihangerp.api.domain.ErpGoods;
 import cn.qihangerp.api.domain.ErpGoodsCategory;
 import cn.qihangerp.api.domain.ErpGoodsCategoryAttributeValue;
@@ -17,7 +15,11 @@ import cn.qihangerp.api.service.ErpGoodsCategoryAttributeValueService;
 import cn.qihangerp.api.service.ErpGoodsCategoryService;
 import cn.qihangerp.api.service.ErpGoodsService;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 @AllArgsConstructor
 @RestController
@@ -25,17 +27,117 @@ import java.util.List;
 public class GoodsCategoryController extends BaseController {
     private final ErpGoodsCategoryService categoryService;
     private final ErpGoodsCategoryAttributeValueService attributeValueService;
-
+    private final ErpGoodsCategoryAttributeService attributeService;
 
     @GetMapping("/list")
     public TableDataInfo list()
     {
-        List<ErpGoodsCategory> list = categoryService.list();
+        List<ErpGoodsCategory> list = categoryService.list(new LambdaQueryWrapper<ErpGoodsCategory>().eq(ErpGoodsCategory::getTenantId,getUserId()));
+        return getDataTable(list);
+    }
+    /**
+     * 获取商品分类详细信息
+     */
+    @PreAuthorize("@ss.hasPermi('goods:category:query')")
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Long id)
+    {
+        return success(categoryService.getById(id));
+    }
+
+    /**
+     * 新增商品分类
+     */
+    @PostMapping
+    public AjaxResult add(@RequestBody ErpGoodsCategory erpGoodsCategory)
+    {
+        erpGoodsCategory.setTenantId(getUserId());
+        erpGoodsCategory.setCreateBy("手动添加");
+        erpGoodsCategory.setCreateTime(new Date());
+        return toAjax(categoryService.save(erpGoodsCategory));
+    }
+
+    /**
+     * 修改商品分类
+     */
+    @PutMapping
+    public AjaxResult edit(@RequestBody ErpGoodsCategory erpGoodsCategory)
+    {
+        erpGoodsCategory.setTenantId(null);
+        erpGoodsCategory.setCreateTime(null);
+        erpGoodsCategory.setCreateBy(null);
+        erpGoodsCategory.setUpdateBy("手动更新");
+        erpGoodsCategory.setUpdateTime(new Date());
+        return toAjax(categoryService.updateById(erpGoodsCategory));
+    }
+
+    /**
+     * 删除商品分类
+     */
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids)
+    {
+        return toAjax(categoryService.removeBatchByIds(Arrays.stream(ids).toList()));
+    }
+
+    @GetMapping("/attributeList/{id}")
+    public TableDataInfo attributeList(@PathVariable("id") Long id)
+    {
+        List<ErpGoodsCategoryAttribute> list = attributeService.list(
+                new LambdaQueryWrapper<ErpGoodsCategoryAttribute>()
+                        .eq(ErpGoodsCategoryAttribute::getCategoryId,id));
         return getDataTable(list);
     }
 
+    @PostMapping("/attribute")
+    public AjaxResult addAttributeList(@RequestBody ErpGoodsCategoryAttribute bo)
+    {
+        if(StringUtils.isEmpty(bo.getCategoryId())){
+            return AjaxResult.error("缺少参数categoryId");
+        }
+        if(bo.getType() == 1){
+            // 不能超过三个规格
+            List<ErpGoodsCategoryAttribute> list = attributeService.list(
+                    new LambdaQueryWrapper<ErpGoodsCategoryAttribute>()
+                            .eq(ErpGoodsCategoryAttribute::getCategoryId,bo.getCategoryId())
+                            .eq(ErpGoodsCategoryAttribute::getType,1)
+            );
+            if(list!=null && list.size()==3){
+                return AjaxResult.error("规格最多只能添加3个");
+            }else{
+                ErpGoodsCategoryAttribute codeHas = list.stream().filter(x -> x.getCode().equals(bo.getCode())).findFirst().orElse(null);
+                if(codeHas!=null){
+                    return AjaxResult.error(bo.getCode()+"规格已存在，不能重复添加");
+                }
+            }
+        }
+        return toAjax(attributeService.save(bo));
+    }
+    @GetMapping(value = "/attribute/{id}")
+    public AjaxResult getAttributeInfo(@PathVariable("id") Long id)
+    {
+        return success(attributeService.getById(id));
+    }
+
+    @PutMapping("/attribute")
+    public AjaxResult attributeEdit(@RequestBody ErpGoodsCategoryAttribute bo)
+    {
+        bo.setCategoryId(null);
+        return toAjax(attributeService.updateById(bo));
+    }
+
+    /**
+     * 删除商品分类属性
+     */
+    @DeleteMapping("/attribute/{ids}")
+    public AjaxResult attributeRemove(@PathVariable Long[] ids)
+    {
+        return toAjax(attributeService.removeBatchByIds(Arrays.stream(ids).toList()));
+    }
+
+
     @GetMapping("/attr_value/{id}")
-    public TableDataInfo attrValueList(@PathVariable("id") Integer id)
+    public TableDataInfo attrValueList(@PathVariable("id") String id)
     {
         var list = attributeValueService.list(
                 new LambdaQueryWrapper<ErpGoodsCategoryAttributeValue>()
@@ -44,4 +146,39 @@ public class GoodsCategoryController extends BaseController {
 
         return getDataTable(list);
     }
+    @PostMapping("/attributeValue")
+    public AjaxResult attributeValueAdd(@RequestBody ErpGoodsCategoryAttributeValue bo)
+    {
+        if(StringUtils.isEmpty(bo.getCategoryAttributeId())){
+            return AjaxResult.error("缺少参数CategoryAttributeId");
+        }
+        if(bo.getOrderNum() == null) bo.setOrderNum(0);
+        if(StringUtils.isEmpty(bo.getSkuCode())) bo.setSkuCode("00");
+        bo.setIsDelete(0);
+
+        return toAjax(attributeValueService.save(bo));
+    }
+    @GetMapping(value = "/attributeValue/{id}")
+    public AjaxResult getAttributeValueInfo(@PathVariable("id") Long id)
+    {
+        return success(attributeValueService.getById(id));
+    }
+
+    @PutMapping("/attributeValue")
+    public AjaxResult attributeValueEdit(@RequestBody ErpGoodsCategoryAttributeValue bo)
+    {
+        bo.setCategoryAttributeId(null);
+        return toAjax(attributeValueService.updateById(bo));
+    }
+
+    /**
+     * 删除商品分类属性
+     */
+    @DeleteMapping("/attributeValue/{ids}")
+    public AjaxResult attributeValueRemove(@PathVariable Long[] ids)
+    {
+        return toAjax(attributeValueService.removeBatchByIds(Arrays.stream(ids).toList()));
+    }
+
+
 }

@@ -1,35 +1,35 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="分类编码" prop="number">
-        <el-input
-          v-model="queryParams.number"
-          placeholder="请输入分类编码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="分类名称" prop="name">
-        <el-input
-          v-model="queryParams.name"
-          placeholder="请输入分类名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      
-      <el-form-item label="是否删除" prop="isDelete">
-        
-        <el-select v-model="queryParams.isDelete" placeholder="是否删除" clearable @change="handleQuery">
-         <el-option value="0" label="否"></el-option>
-         <el-option value="1" label="是"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+<!--    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">-->
+<!--      <el-form-item label="分类编码" prop="number">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.number"-->
+<!--          placeholder="请输入分类编码"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="分类名称" prop="name">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.name"-->
+<!--          placeholder="请输入分类名称"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+
+<!--      <el-form-item label="是否删除" prop="isDelete">-->
+
+<!--        <el-select v-model="queryParams.isDelete" placeholder="是否删除" clearable @change="handleQuery">-->
+<!--         <el-option value="0" label="否"></el-option>-->
+<!--         <el-option value="1" label="是"></el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item>-->
+<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
+<!--      </el-form-item>-->
+<!--    </el-form>-->
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -42,55 +42,14 @@
           v-hasPermi="['goods:category:add']"
         >新增</el-button>
       </el-col>
-     <!--  <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['goods:category:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['goods:category:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['goods:category:export']"
-        >导出</el-button>
-      </el-col> -->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="categoryList" row-key="id" :tree-props="{children: 'children'}"  >
-      <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <!-- <el-table-column label="ID" align="center" prop="id" /> -->
       <el-table-column label="分类名称"  prop="name" />
       <el-table-column label="分类编码" align="center" prop="number" />
-      
       <el-table-column label="备注" align="center" prop="remark" />
-    
-      <el-table-column label="排序值" align="center" prop="sort" />
-      <el-table-column label="图片" align="center" prop="image" width="100">
-        <template slot-scope="scope">
-          <image-preview :src="scope.row.image" :width="50" :height="50"/>
-        </template>
-      </el-table-column>
+      <el-table-column label="排序" align="center" prop="sort" />
       <el-table-column label="是否删除" align="center" prop="isDelete" >
         <template slot-scope="scope">
           <el-tag size="small" v-if="scope.row.isDelete === 0">正常</el-tag>
@@ -106,6 +65,13 @@
           @click="handleAdd(scope.row)"
           v-hasPermi="['goods:category:add']"
         >新增</el-button>
+          <el-button
+            v-if="scope.row.parentId === '0'"
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleAttr(scope.row)"
+          >分类属性</el-button>
           <el-button
             size="mini"
             type="text"
@@ -123,7 +89,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <!-- <pagination
       v-show="total>0"
       :total="total"
@@ -158,10 +124,10 @@
         <el-form-item label="排序值" prop="sort">
           <el-input v-model.number="form.sort" placeholder="请输入排序值" />
         </el-form-item>
-        <el-form-item label="图片" prop="image">
-          <image-upload v-model="form.image"/>
-        </el-form-item>
-        
+<!--        <el-form-item label="图片" prop="image">-->
+<!--          <image-upload v-model="form.image"/>-->
+<!--        </el-form-item>-->
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -230,8 +196,10 @@ export default {
           let node = {
             id: list[i].id,
             name: list[i].name,
+            number: list[i].number,
             image:list[i].image,
             sort:list[i].sort,
+            parentId:list[i].parentId,
             remark:list[i].remark,
             isDelete:list[i].isDelete,
             children: this.buildTree(list, list[i].id)
@@ -246,7 +214,7 @@ export default {
     getList() {
       this.loading = true;
       listCategory(this.queryParams).then(response => {
-        this.categoryList = this.buildTree(response.rows,0)
+        this.categoryList = this.buildTree(response.rows,"0")
         console.log("构建后的list",this.categoryList)
         // this.total = response.total;
         this.loading = false;
@@ -286,7 +254,10 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    
+    handleAttr(row){
+      this.$router.push({path:'/goods/category_attr',query:{categoryId:row.id}})
+      // this.$router.push({path:'/shop/goods/tao_goods_list',query:{shopId:row.id}})
+    },
     /** 新增按钮操作 */
     handleAdd(row) {
       this.reset();

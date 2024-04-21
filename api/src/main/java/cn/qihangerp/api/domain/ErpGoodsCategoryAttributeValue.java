@@ -12,12 +12,12 @@ public class ErpGoodsCategoryAttributeValue implements Serializable {
     /**
      * 主键，属性值id
      */
-    private Integer id;
+    private String id;
 
     /**
      * 属性id
      */
-    private Integer categoryAttributeId;
+    private String categoryAttributeId;
 
     /**
      * 属性值文本
@@ -32,12 +32,12 @@ public class ErpGoodsCategoryAttributeValue implements Serializable {
     /**
      * 
      */
-    private Integer ordernum;
+    private Integer orderNum;
 
     /**
      * 
      */
-    private Integer isdelete;
+    private Integer isDelete;
 
     private static final long serialVersionUID = 1L;
 }

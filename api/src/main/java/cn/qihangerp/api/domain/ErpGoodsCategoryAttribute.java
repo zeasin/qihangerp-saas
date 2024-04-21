@@ -12,12 +12,12 @@ public class ErpGoodsCategoryAttribute implements Serializable {
     /**
      * 主键id
      */
-    private Integer id;
+    private String id;
 
     /**
      * 
      */
-    private Integer categoryId;
+    private String categoryId;
 
     /**
      * 类型：0属性1规格
