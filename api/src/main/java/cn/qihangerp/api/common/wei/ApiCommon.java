@@ -12,14 +12,12 @@ import cn.qihangerp.api.common.wei.service.ShopInfoApiService;
 import cn.qihangerp.api.common.wei.service.TokenApiService;
 import cn.qihangerp.api.common.wei.vo.ShopApiResultVo;
 import cn.qihangerp.api.common.wei.vo.Token;
-import cn.qihangerp.api.service.SysPlatformService;
 
 
 @AllArgsConstructor
 @Component
 public class ApiCommon {
     private final ShopService shopService;
-    private final SysPlatformService platformService;
     /**
      * 更新前的检查
      *
@@ -41,17 +39,18 @@ public class ApiCommon {
         if(!StringUtils.hasText(shop.getAppSercet())) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到AppSercet");
         }
-        var platform =platformService.getById(EnumShopType.WEI.getIndex());
-        if(!StringUtils.hasText(platform.getServerUrl())) {
-            return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到ServerUrl");
-        }
+//        var platform =platformService.getById(EnumShopType.WEI.getIndex());
+//        if(!StringUtils.hasText(platform.getServerUrl())) {
+//            return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到ServerUrl");
+//        }
 
         ShopApiParams params = new ShopApiParams();
         params.setAppKey(shop.getAppKey());
         params.setAppSecret(shop.getAppSercet());
         params.setAccessToken(shop.getAccessToken());
         params.setApiRequestUrl(shop.getApiRequestUrl());
-        params.setServerUrl(platform.getServerUrl());
+//        params.setServerUrl(platform.getServerUrl());
+        params.setServerUrl("https://api.weixin.qq.com");
         params.setSellerId(shop.getSellerId().toString());
         if (!StringUtils.hasText(shop.getAccessToken())) {
 //            String s = "/token?grant_type=client_credential&appid="+params.getAppKey()+"&secret="+params.getAppSecret();

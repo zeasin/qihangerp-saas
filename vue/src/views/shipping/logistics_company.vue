@@ -30,7 +30,7 @@
 
     <el-table v-loading="loading" :data="dataList" >
 <!--      <el-table-column type="selection" width="55" align="center" />-->
-      <el-table-column label="id" align="center" prop="logisticsId" />
+<!--      <el-table-column label="id" align="center" prop="logisticsId" />-->
       <el-table-column label="快递公司" align="center" prop="name" />
        <el-table-column label="编码" align="center" prop="code" />
        <el-table-column label="备注" align="center" prop="remark" />
@@ -46,8 +46,8 @@
             size="mini"
             v-if="scope.row.status === 0 || !scope.row.status"
             type="text"
-            icon="el-icon-edit"
-            @click="handleUpdateStatus(scope.row)"
+            icon="el-icon-edit"handleUpdateStatus
+            @click="(scope.row)"
           >开启</el-button>
           <el-button
             size="mini"

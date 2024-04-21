@@ -4,7 +4,6 @@ import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.domain.ErpAfterSale;
 import com.baomidou.mybatisplus.extension.service.IService;
-import cn.qihangerp.api.domain.SysLogisticsCompany;
 
 /**
 * @author qilip

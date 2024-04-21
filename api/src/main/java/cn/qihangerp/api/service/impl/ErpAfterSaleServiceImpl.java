@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.domain.ErpAfterSale;
-import cn.qihangerp.api.domain.SysLogisticsCompany;
 import cn.qihangerp.api.service.ErpAfterSaleService;
 import cn.qihangerp.api.mapper.ErpAfterSaleMapper;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,6 @@
 package cn.qihangerp.api.service;
 
 import cn.qihangerp.api.domain.Shop;
-import cn.qihangerp.api.domain.SysPlatform;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;

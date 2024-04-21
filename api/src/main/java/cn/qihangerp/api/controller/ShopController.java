@@ -5,14 +5,10 @@ import cn.qihangerp.api.service.ShopService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.AjaxResult;
 import cn.qihangerp.api.common.BaseController;
-import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.common.TableDataInfo;
-import cn.qihangerp.api.domain.SysLogisticsCompany;
-import cn.qihangerp.api.domain.SysPlatform;
-import cn.qihangerp.api.service.SysLogisticsCompanyService;
+import cn.qihangerp.api.service.LogisticsCompanyService;
 import java.util.List;
 
 /**
@@ -25,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/shop")
 public class ShopController extends BaseController {
-    private final SysLogisticsCompanyService logisticsCompanyService;
+    private final LogisticsCompanyService logisticsCompanyService;
     private final ShopService shopService;
 
     /**

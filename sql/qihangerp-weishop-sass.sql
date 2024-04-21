@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 21/04/2024 19:55:16
+ Date: 21/04/2024 20:17:00
 */
 
 SET NAMES utf8mb4;
@@ -468,6 +468,28 @@ CREATE TABLE `erp_goods_sku_attr`  (
 INSERT INTO `erp_goods_sku_attr` VALUES (1781988656135909377, 1781988656060411906, 'color', '颜色', 1781941806087319554, 1673551873, NULL, NULL);
 
 -- ----------------------------
+-- Table structure for erp_logistics_company
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_logistics_company`;
+CREATE TABLE `erp_logistics_company`  (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `platform_id` bigint NULL DEFAULT NULL COMMENT '平台id',
+  `shop_id` bigint NULL DEFAULT NULL COMMENT '店铺ID',
+  `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户id',
+  `logistics_id` bigint NULL DEFAULT NULL COMMENT '物流公司id（值来自于平台返回）',
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '物流公司编码（值来自于平台返回）',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '物流公司名称（值来自于平台返回）',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `status` int NULL DEFAULT NULL COMMENT '状态（1启用0禁用）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_logistics_company
+-- ----------------------------
+INSERT INTO `erp_logistics_company` VALUES (1782018513779572737, NULL, NULL, 100, NULL, 'SF', '顺丰', NULL, 1);
+
+-- ----------------------------
 -- Table structure for erp_order
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_order`;
@@ -744,26 +766,6 @@ INSERT INTO `erp_shop_goods_sku` VALUES (1773592726975479809, 177359272685384499
 INSERT INTO `erp_shop_goods_sku` VALUES (1773592727050977281, 1773592726853844994, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, '[{\"attr_key\":\"净含量\",\"attr_value\":\"3罐89.9【平均29/罐】(50%人选择)\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', NULL, NULL);
 INSERT INTO `erp_shop_goods_sku` VALUES (1773592727147446274, 1773592726853844994, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, '[{\"attr_key\":\"净含量\",\"attr_value\":\"2罐69.9【平均34.5/罐】(35%人选择)\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', NULL, NULL);
 INSERT INTO `erp_shop_goods_sku` VALUES (1773592727227138049, 1773592726853844994, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, '[{\"attr_key\":\"净含量\",\"attr_value\":\"1罐体验装【贵在运费】(5%人选择)\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', NULL, NULL);
-
--- ----------------------------
--- Table structure for erp_shop_logistics_company
--- ----------------------------
-DROP TABLE IF EXISTS `erp_shop_logistics_company`;
-CREATE TABLE `erp_shop_logistics_company`  (
-  `id` bigint NOT NULL COMMENT '主键ID',
-  `platform_id` int NULL DEFAULT NULL COMMENT '平台id',
-  `shop_id` int NULL DEFAULT NULL COMMENT '店铺ID',
-  `logistics_id` bigint NULL DEFAULT NULL COMMENT '物流公司id（值来自于平台返回）',
-  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '物流公司编码（值来自于平台返回）',
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '物流公司名称（值来自于平台返回）',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `status` int NULL DEFAULT NULL COMMENT '状态（1启用0禁用）',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of erp_shop_logistics_company
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for erp_shop_order
