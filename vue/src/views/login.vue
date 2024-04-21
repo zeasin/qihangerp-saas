@@ -18,7 +18,7 @@
               v-model="loginForm.username"
               type="text"
               auto-complete="off"
-              placeholder="账号"
+              placeholder="账号/手机号"
             >
               <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
             </el-input>
@@ -169,8 +169,8 @@ export default {
       n:1,
       codeUrl: "",
       loginForm: {
-        username: "admin",
-        password: "admin123",
+        username: "",
+        password: "",
         rememberMe: false,
         code: "",
         uuid: ""
