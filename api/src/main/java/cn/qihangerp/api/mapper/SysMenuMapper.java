@@ -57,6 +57,7 @@ public interface SysMenuMapper
      * @return 菜单列表
      */
     public List<SysMenu> selectMenuTreeAll();
+    public List<SysMenu> selectMenuTreeAdmin();
 
     /**
      * 根据用户ID查询菜单
