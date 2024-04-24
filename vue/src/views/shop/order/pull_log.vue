@@ -62,13 +62,12 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-
-
   </div>
 </template>
 
 <script>
-import {listShop, listShopPullLogs} from "@/api/shop/shop";
+import {listShop} from "@/api/shop/shop";
+import {listShopPullLogs} from "@/api/shop/pull_log";
 
 export default {
   name: "Order",

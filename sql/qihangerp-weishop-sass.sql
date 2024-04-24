@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 24/04/2024 21:38:58
+ Date: 24/04/2024 22:08:03
 */
 
 SET NAMES utf8mb4;
@@ -1072,8 +1072,9 @@ INSERT INTO `erp_shop_platform` VALUES (5, '视频号小店', 'WEI', '', NULL, N
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_shop_pull_lasttime`;
 CREATE TABLE `erp_shop_pull_lasttime`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `shop_id` int NULL DEFAULT NULL COMMENT '店铺id',
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `shop_id` bigint NULL DEFAULT NULL COMMENT '店铺id',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   `pull_type` enum('ORDER','REFUND') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '类型（ORDER:订单，REFUND:退款）',
   `lasttime` datetime NULL DEFAULT NULL COMMENT '最后更新时间',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
@@ -1084,10 +1085,10 @@ CREATE TABLE `erp_shop_pull_lasttime`  (
 -- ----------------------------
 -- Records of erp_shop_pull_lasttime
 -- ----------------------------
-INSERT INTO `erp_shop_pull_lasttime` VALUES (1, 1, 'ORDER', '2024-04-06 12:59:30', '2024-03-23 15:56:13', '2024-04-11 16:42:42');
-INSERT INTO `erp_shop_pull_lasttime` VALUES (2, 1, 'REFUND', '2024-03-28 09:03:50', '2024-03-24 13:03:54', '2024-04-06 15:35:16');
-INSERT INTO `erp_shop_pull_lasttime` VALUES (3, 2, 'ORDER', '2024-04-01 00:33:33', '2024-03-10 13:00:07', '2024-04-01 20:35:54');
-INSERT INTO `erp_shop_pull_lasttime` VALUES (4, 2, 'REFUND', '2024-03-24 13:48:33', '2024-03-24 13:50:24', NULL);
+INSERT INTO `erp_shop_pull_lasttime` VALUES (1, 1, 100, 'ORDER', '2024-04-06 12:59:30', '2024-03-23 15:56:13', '2024-04-11 16:42:42');
+INSERT INTO `erp_shop_pull_lasttime` VALUES (2, 1, 100, 'REFUND', '2024-03-28 09:03:50', '2024-03-24 13:03:54', '2024-04-06 15:35:16');
+INSERT INTO `erp_shop_pull_lasttime` VALUES (3, 2, 100, 'ORDER', '2024-04-01 00:33:33', '2024-03-10 13:00:07', '2024-04-01 20:35:54');
+INSERT INTO `erp_shop_pull_lasttime` VALUES (4, 2, 100, 'REFUND', '2024-03-24 13:48:33', '2024-03-24 13:50:24', NULL);
 
 -- ----------------------------
 -- Table structure for erp_shop_pull_logs
@@ -1095,7 +1096,8 @@ INSERT INTO `erp_shop_pull_lasttime` VALUES (4, 2, 'REFUND', '2024-03-24 13:48:3
 DROP TABLE IF EXISTS `erp_shop_pull_logs`;
 CREATE TABLE `erp_shop_pull_logs`  (
   `id` bigint NOT NULL COMMENT '主键Id',
-  `shop_id` int NULL DEFAULT NULL COMMENT '店铺id',
+  `shop_id` bigint NOT NULL COMMENT '店铺id',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   `shop_type` int NOT NULL COMMENT '平台id',
   `pull_type` enum('ORDER','REFUND','GOODS') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '类型（ORDER订单，GOODS商品，REFUND退款）',
   `pull_way` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '拉取方式（主动拉取、定时任务）',
@@ -1109,37 +1111,37 @@ CREATE TABLE `erp_shop_pull_logs`  (
 -- ----------------------------
 -- Records of erp_shop_pull_logs
 -- ----------------------------
-INSERT INTO `erp_shop_pull_logs` VALUES (1771373938119639041, 2, 2, 'GOODS', '主动拉取', '{WareStatusValue:8,PageNo:1,PageSize:100}', '{successTotal:61}', '2024-03-23 11:10:10', 22115);
-INSERT INTO `erp_shop_pull_logs` VALUES (1771423380642209794, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-10T11:59:58,endTime:2024-03-11T11:59:58}', '{insertSuccess:14,hasExistOrder:4,totalError:0}', '2024-03-23 14:26:59', 927);
-INSERT INTO `erp_shop_pull_logs` VALUES (1771445830457229314, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-22T15:56:09.353561200,endTime:2024-03-23T15:56:09.353561200}', '{insertSuccess:25,hasExistOrder:2,totalError:0}', '2024-03-23 15:56:09', 3181);
-INSERT INTO `erp_shop_pull_logs` VALUES (1771446958322380802, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-23T14:56:09,endTime:2024-03-23T16:00:41.205604700}', '{insertSuccess:0,hasExistOrder:0,totalError:0}', '2024-03-23 16:00:41', 219);
-INSERT INTO `erp_shop_pull_logs` VALUES (1771447441799819265, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-23T15:00:41,endTime:2024-03-23T16:02:36.495455100}', '{insertSuccess:0,hasExistOrder:0,totalError:0}', '2024-03-23 16:02:36', 227);
-INSERT INTO `erp_shop_pull_logs` VALUES (1771447509432971265, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-23T15:02:36,endTime:2024-03-23T16:02:52.700359100}', '{insertSuccess:0,hasExistOrder:0,totalError:0}', '2024-03-23 16:02:53', 122);
-INSERT INTO `erp_shop_pull_logs` VALUES (1771453852395032578, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-11T10:59:58,endTime:2024-03-12T10:59:58}', '{insertSuccess:19,hasExistOrder:5,totalError:0}', '2024-03-23 16:28:04', 1086);
-INSERT INTO `erp_shop_pull_logs` VALUES (1771542266519748610, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-22T22:19:19.564048,endTime:2024-03-23T22:19:19.564048}', '{insertSuccess:0,hasExistOrder:5,totalError:0}', '2024-03-23 22:19:17', 7557);
-INSERT INTO `erp_shop_pull_logs` VALUES (1771542873649504258, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-22T22:21:48.244864800,endTime:2024-03-23T22:21:48.244864800}', '{insert:0,update:5,fail:0}', '2024-03-23 22:21:48', 1183);
-INSERT INTO `erp_shop_pull_logs` VALUES (1771543300528988161, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-23T21:21:48,endTime:2024-03-23T22:22:56.873263500}', '{insert:0,update:0,fail:0}', '2024-03-23 22:22:40', 51238);
-INSERT INTO `erp_shop_pull_logs` VALUES (1771764678028984322, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-12T09:59:58,endTime:2024-03-13T09:59:58}', '{insertSuccess:15,hasExistOrder:5,totalError:0}', '2024-03-24 13:03:11', 925);
-INSERT INTO `erp_shop_pull_logs` VALUES (1771764854827368449, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-23T13:03:49.686601100,endTime:2024-03-24T13:03:49.686601100}', '{insert:8,update:0,fail:0}', '2024-03-24 13:03:44', 9665);
-INSERT INTO `erp_shop_pull_logs` VALUES (1771776559355596801, 2, 2, 'REFUND', '主动拉取', '{ApplyTimeBegin:2024-03-23 13:48:33,ApplyTimeEnd:2024-03-24 13:48:33,PageIndex:1,PageSize:100}', '{total:0,hasExist:2,totalError:0}', '2024-03-24 13:48:29', 115059);
-INSERT INTO `erp_shop_pull_logs` VALUES (1771780749221974017, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-13T08:59:58,endTime:2024-03-14T08:59:58}', '{insertSuccess:11,hasExistOrder:2,totalError:0}', '2024-03-24 14:07:03', 635);
-INSERT INTO `erp_shop_pull_logs` VALUES (1774759644818296834, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-30T15:02:53,endTime:2024-03-31T15:02:53}', '{insert:26,update:4,fail:0}', '2024-04-01 19:23:25', 41837);
-INSERT INTO `erp_shop_pull_logs` VALUES (1774767536929636354, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-30T23:02:53,endTime:2024-03-31T23:02:53}', '{insert:0,update:29,fail:2}', '2024-04-01 19:53:48', 101220);
-INSERT INTO `erp_shop_pull_logs` VALUES (1774769574707183617, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-03-31T22:02:53,endTime:2024-04-01T20:03:24.419567600}', '{insert:16,update:0,fail:2}', '2024-04-01 20:03:24', 10733);
-INSERT INTO `erp_shop_pull_logs` VALUES (1774775846177284098, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-31T07:59:58,endTime:2024-04-01T07:59:58}', '{insertSuccess:0,hasExistOrder:0,totalError:18}', '2024-04-01 20:28:21', 9622);
-INSERT INTO `erp_shop_pull_logs` VALUES (1774776246171250689, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-04-01T06:59:58,endTime:2024-04-01T20:30:03.390426800}', '{insertSuccess:0,hasExistOrder:0,totalError:29}', '2024-04-01 20:30:03', 2281);
-INSERT INTO `erp_shop_pull_logs` VALUES (1774776521405673473, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-04-01T19:30:03,endTime:2024-04-01T20:30:39.555646}', '{insertSuccess:0,hasExistOrder:0,totalError:1}', '2024-04-01 20:30:40', 31565);
-INSERT INTO `erp_shop_pull_logs` VALUES (1774777121220485121, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-04-01T19:30:40,endTime:2024-04-01T20:33:33.074052300}', '{insertSuccess:1,hasExistOrder:0,totalError:0}', '2024-04-01 20:33:33', 1173);
-INSERT INTO `erp_shop_pull_logs` VALUES (1774777706028097537, 2, 2, 'ORDER', '主动拉取', '{startTime:2024-03-31T00:33:33,endTime:2024-04-01T00:33:33}', '{insertSuccess:17,hasExistOrder:0,totalError:0}', '2024-04-01 20:35:53', 1037);
-INSERT INTO `erp_shop_pull_logs` VALUES (1775086019864023041, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-01T19:03:24,endTime:2024-04-02T16:59:29.818708500}', '{insert:28,update:3,fail:1}', '2024-04-02 16:59:30', 91604);
-INSERT INTO `erp_shop_pull_logs` VALUES (1776459777702916098, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-02T15:59:30,endTime:2024-04-03T15:59:30}', '{insert:10,update:3,fail:0}', '2024-04-06 11:59:47', 3669);
-INSERT INTO `erp_shop_pull_logs` VALUES (1776506026682490881, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-24T12:03:50,endTime:2024-03-25T12:03:50}', '{insert:4,update:0,fail:0}', '2024-04-06 15:03:36', 942);
-INSERT INTO `erp_shop_pull_logs` VALUES (1776506535749361665, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-25T11:03:50,endTime:2024-03-26T11:03:50}', '{insert:15,update:1,fail:0}', '2024-04-06 15:05:36', 2724);
-INSERT INTO `erp_shop_pull_logs` VALUES (1776508693022527489, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-26T10:03:50,endTime:2024-03-27T10:03:50}', '{insert:3,update:0,fail:0}', '2024-04-06 15:11:46', 146852);
-INSERT INTO `erp_shop_pull_logs` VALUES (1776513990025854977, 1, 1, 'REFUND', '主动拉取', '{startTime:2024-03-27T09:03:50,endTime:2024-03-28T09:03:50}', '{insert:14,update:0,fail:0}', '2024-04-06 15:35:13', 2860);
-INSERT INTO `erp_shop_pull_logs` VALUES (1778341762576093185, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-03T14:59:30,endTime:2024-04-04T14:59:30}', '{insert:14,update:4,fail:0}', '2024-04-11 16:34:41', 209606);
-INSERT INTO `erp_shop_pull_logs` VALUES (1778342150444355585, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-04T13:59:30,endTime:2024-04-05T13:59:30}', '{insert:12,update:0,fail:0}', '2024-04-11 16:38:30', 73180);
-INSERT INTO `erp_shop_pull_logs` VALUES (1778342898620108802, 1, 1, 'ORDER', '主动拉取', '{startTime:2024-04-05T12:59:30,endTime:2024-04-06T12:59:30}', '{insert:6,update:0,fail:0}', '2024-04-11 16:39:54', 167361);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771373938119639041, 2, 0, 2, 'GOODS', '主动拉取', '{WareStatusValue:8,PageNo:1,PageSize:100}', '{successTotal:61}', '2024-03-23 11:10:10', 22115);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771423380642209794, 2, 0, 2, 'ORDER', '主动拉取', '{startTime:2024-03-10T11:59:58,endTime:2024-03-11T11:59:58}', '{insertSuccess:14,hasExistOrder:4,totalError:0}', '2024-03-23 14:26:59', 927);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771445830457229314, 1, 0, 1, 'ORDER', '主动拉取', '{startTime:2024-03-22T15:56:09.353561200,endTime:2024-03-23T15:56:09.353561200}', '{insertSuccess:25,hasExistOrder:2,totalError:0}', '2024-03-23 15:56:09', 3181);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771446958322380802, 1, 0, 1, 'ORDER', '主动拉取', '{startTime:2024-03-23T14:56:09,endTime:2024-03-23T16:00:41.205604700}', '{insertSuccess:0,hasExistOrder:0,totalError:0}', '2024-03-23 16:00:41', 219);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771447441799819265, 1, 0, 1, 'ORDER', '主动拉取', '{startTime:2024-03-23T15:00:41,endTime:2024-03-23T16:02:36.495455100}', '{insertSuccess:0,hasExistOrder:0,totalError:0}', '2024-03-23 16:02:36', 227);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771447509432971265, 1, 0, 1, 'ORDER', '主动拉取', '{startTime:2024-03-23T15:02:36,endTime:2024-03-23T16:02:52.700359100}', '{insertSuccess:0,hasExistOrder:0,totalError:0}', '2024-03-23 16:02:53', 122);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771453852395032578, 2, 0, 2, 'ORDER', '主动拉取', '{startTime:2024-03-11T10:59:58,endTime:2024-03-12T10:59:58}', '{insertSuccess:19,hasExistOrder:5,totalError:0}', '2024-03-23 16:28:04', 1086);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771542266519748610, 1, 0, 1, 'REFUND', '主动拉取', '{startTime:2024-03-22T22:19:19.564048,endTime:2024-03-23T22:19:19.564048}', '{insertSuccess:0,hasExistOrder:5,totalError:0}', '2024-03-23 22:19:17', 7557);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771542873649504258, 1, 0, 1, 'REFUND', '主动拉取', '{startTime:2024-03-22T22:21:48.244864800,endTime:2024-03-23T22:21:48.244864800}', '{insert:0,update:5,fail:0}', '2024-03-23 22:21:48', 1183);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771543300528988161, 1, 0, 1, 'REFUND', '主动拉取', '{startTime:2024-03-23T21:21:48,endTime:2024-03-23T22:22:56.873263500}', '{insert:0,update:0,fail:0}', '2024-03-23 22:22:40', 51238);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771764678028984322, 2, 0, 2, 'ORDER', '主动拉取', '{startTime:2024-03-12T09:59:58,endTime:2024-03-13T09:59:58}', '{insertSuccess:15,hasExistOrder:5,totalError:0}', '2024-03-24 13:03:11', 925);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771764854827368449, 1, 0, 1, 'REFUND', '主动拉取', '{startTime:2024-03-23T13:03:49.686601100,endTime:2024-03-24T13:03:49.686601100}', '{insert:8,update:0,fail:0}', '2024-03-24 13:03:44', 9665);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771776559355596801, 2, 0, 2, 'REFUND', '主动拉取', '{ApplyTimeBegin:2024-03-23 13:48:33,ApplyTimeEnd:2024-03-24 13:48:33,PageIndex:1,PageSize:100}', '{total:0,hasExist:2,totalError:0}', '2024-03-24 13:48:29', 115059);
+INSERT INTO `erp_shop_pull_logs` VALUES (1771780749221974017, 2, 0, 2, 'ORDER', '主动拉取', '{startTime:2024-03-13T08:59:58,endTime:2024-03-14T08:59:58}', '{insertSuccess:11,hasExistOrder:2,totalError:0}', '2024-03-24 14:07:03', 635);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774759644818296834, 1, 0, 1, 'ORDER', '主动拉取', '{startTime:2024-03-30T15:02:53,endTime:2024-03-31T15:02:53}', '{insert:26,update:4,fail:0}', '2024-04-01 19:23:25', 41837);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774767536929636354, 1, 0, 1, 'ORDER', '主动拉取', '{startTime:2024-03-30T23:02:53,endTime:2024-03-31T23:02:53}', '{insert:0,update:29,fail:2}', '2024-04-01 19:53:48', 101220);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774769574707183617, 1, 0, 1, 'ORDER', '主动拉取', '{startTime:2024-03-31T22:02:53,endTime:2024-04-01T20:03:24.419567600}', '{insert:16,update:0,fail:2}', '2024-04-01 20:03:24', 10733);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774775846177284098, 2, 0, 2, 'ORDER', '主动拉取', '{startTime:2024-03-31T07:59:58,endTime:2024-04-01T07:59:58}', '{insertSuccess:0,hasExistOrder:0,totalError:18}', '2024-04-01 20:28:21', 9622);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774776246171250689, 2, 0, 2, 'ORDER', '主动拉取', '{startTime:2024-04-01T06:59:58,endTime:2024-04-01T20:30:03.390426800}', '{insertSuccess:0,hasExistOrder:0,totalError:29}', '2024-04-01 20:30:03', 2281);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774776521405673473, 2, 0, 2, 'ORDER', '主动拉取', '{startTime:2024-04-01T19:30:03,endTime:2024-04-01T20:30:39.555646}', '{insertSuccess:0,hasExistOrder:0,totalError:1}', '2024-04-01 20:30:40', 31565);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774777121220485121, 2, 0, 2, 'ORDER', '主动拉取', '{startTime:2024-04-01T19:30:40,endTime:2024-04-01T20:33:33.074052300}', '{insertSuccess:1,hasExistOrder:0,totalError:0}', '2024-04-01 20:33:33', 1173);
+INSERT INTO `erp_shop_pull_logs` VALUES (1774777706028097537, 2, 0, 2, 'ORDER', '主动拉取', '{startTime:2024-03-31T00:33:33,endTime:2024-04-01T00:33:33}', '{insertSuccess:17,hasExistOrder:0,totalError:0}', '2024-04-01 20:35:53', 1037);
+INSERT INTO `erp_shop_pull_logs` VALUES (1775086019864023041, 1, 0, 1, 'ORDER', '主动拉取', '{startTime:2024-04-01T19:03:24,endTime:2024-04-02T16:59:29.818708500}', '{insert:28,update:3,fail:1}', '2024-04-02 16:59:30', 91604);
+INSERT INTO `erp_shop_pull_logs` VALUES (1776459777702916098, 1, 0, 1, 'ORDER', '主动拉取', '{startTime:2024-04-02T15:59:30,endTime:2024-04-03T15:59:30}', '{insert:10,update:3,fail:0}', '2024-04-06 11:59:47', 3669);
+INSERT INTO `erp_shop_pull_logs` VALUES (1776506026682490881, 1, 0, 1, 'REFUND', '主动拉取', '{startTime:2024-03-24T12:03:50,endTime:2024-03-25T12:03:50}', '{insert:4,update:0,fail:0}', '2024-04-06 15:03:36', 942);
+INSERT INTO `erp_shop_pull_logs` VALUES (1776506535749361665, 1, 0, 1, 'REFUND', '主动拉取', '{startTime:2024-03-25T11:03:50,endTime:2024-03-26T11:03:50}', '{insert:15,update:1,fail:0}', '2024-04-06 15:05:36', 2724);
+INSERT INTO `erp_shop_pull_logs` VALUES (1776508693022527489, 1, 0, 1, 'REFUND', '主动拉取', '{startTime:2024-03-26T10:03:50,endTime:2024-03-27T10:03:50}', '{insert:3,update:0,fail:0}', '2024-04-06 15:11:46', 146852);
+INSERT INTO `erp_shop_pull_logs` VALUES (1776513990025854977, 1, 0, 1, 'REFUND', '主动拉取', '{startTime:2024-03-27T09:03:50,endTime:2024-03-28T09:03:50}', '{insert:14,update:0,fail:0}', '2024-04-06 15:35:13', 2860);
+INSERT INTO `erp_shop_pull_logs` VALUES (1778341762576093185, 1, 0, 1, 'ORDER', '主动拉取', '{startTime:2024-04-03T14:59:30,endTime:2024-04-04T14:59:30}', '{insert:14,update:4,fail:0}', '2024-04-11 16:34:41', 209606);
+INSERT INTO `erp_shop_pull_logs` VALUES (1778342150444355585, 1, 0, 1, 'ORDER', '主动拉取', '{startTime:2024-04-04T13:59:30,endTime:2024-04-05T13:59:30}', '{insert:12,update:0,fail:0}', '2024-04-11 16:38:30', 73180);
+INSERT INTO `erp_shop_pull_logs` VALUES (1778342898620108802, 1, 0, 1, 'ORDER', '主动拉取', '{startTime:2024-04-05T12:59:30,endTime:2024-04-06T12:59:30}', '{insert:6,update:0,fail:0}', '2024-04-11 16:39:54', 167361);
 
 -- ----------------------------
 -- Table structure for erp_shop_refund
@@ -1703,7 +1705,7 @@ INSERT INTO `sys_menu` VALUES (2067, '商品SKU管理', 8, 3, 'sku_list', 'goods
 INSERT INTO `sys_menu` VALUES (2068, '店铺商品管理', 7, 1, 'shop_goods/list', 'shop/goods', NULL, 1, 0, 'C', '0', '0', '', 'example', 'admin', '2024-01-28 11:23:36', 'admin', '2024-04-10 10:58:48', '');
 INSERT INTO `sys_menu` VALUES (2072, '店铺管理', 7, 2, 'list', 'shop/index', NULL, 1, 0, 'C', '0', '0', '', 'clipboard', 'admin', '2024-01-28 11:29:21', 'admin', '2024-04-10 11:00:21', '');
 INSERT INTO `sys_menu` VALUES (2078, '快递公司管理', 4, 9, 'logistics_company', 'shipping/logistics_company', NULL, 1, 0, 'C', '0', '0', '', 'email', 'admin', '2024-04-10 11:13:02', 'admin', '2024-04-21 11:10:03', '');
-INSERT INTO `sys_menu` VALUES (2081, '订单导入日志', 3, 9, 'log', NULL, NULL, 1, 0, 'C', '0', '0', NULL, 'component', 'admin', '2024-04-21 11:08:55', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2081, '订单导入日志', 3, 9, 'pull_log', 'shop/order/pull_log', NULL, 1, 0, 'C', '0', '0', '', 'component', 'admin', '2024-04-21 11:08:55', 'admin', '2024-04-24 21:42:09', '');
 INSERT INTO `sys_menu` VALUES (2082, '售后设置', 5, 10, 'set', NULL, NULL, 1, 0, 'C', '0', '0', NULL, '404', 'admin', '2024-04-21 11:11:09', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2083, '库存日志', 6, 99, 'logs', NULL, NULL, 1, 0, 'C', '0', '0', NULL, 'bug', 'admin', '2024-04-21 11:12:07', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2085, '商品分类属性', 8, 90, 'category_attr', 'goods/category/categoryAttribute', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2024-04-21 14:29:04', 'admin', '2024-04-21 14:40:53', '');
@@ -1987,8 +1989,8 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2024-04-30', '0', '127.0.0.1', '2024-04-24 20:28:34', 'admin', '2023-08-07 19:31:37', '', '2024-04-24 20:28:33', '管理员');
-INSERT INTO `sys_user` VALUES (100, NULL, '15818590119', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$ihW7y3A357sHY0Qgl43JMOgxfe749oRelpp9brl1xN0cZHTky4Uxm', '0', '2024-05-11', '0', '127.0.0.1', '2024-04-24 21:03:55', 'admin', '2024-04-21 10:36:49', '', '2024-04-24 21:03:55', NULL);
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2024-04-30', '0', '127.0.0.1', '2024-04-24 21:41:33', 'admin', '2023-08-07 19:31:37', '', '2024-04-24 21:41:32', '管理员');
+INSERT INTO `sys_user` VALUES (100, NULL, '15818590119', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$ihW7y3A357sHY0Qgl43JMOgxfe749oRelpp9brl1xN0cZHTky4Uxm', '0', '2024-05-11', '0', '127.0.0.1', '2024-04-24 21:42:41', 'admin', '2024-04-21 10:36:49', '', '2024-04-24 21:42:40', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_role

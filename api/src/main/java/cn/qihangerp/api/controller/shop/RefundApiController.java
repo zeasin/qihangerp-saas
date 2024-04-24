@@ -1,5 +1,8 @@
 package cn.qihangerp.api.controller.shop;
 
+import cn.qihangerp.api.common.BaseController;
+import cn.qihangerp.api.service.ErpShopPullLasttimeService;
+import cn.qihangerp.api.service.ErpShopPullLogsService;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,28 +17,23 @@ import cn.qihangerp.api.common.wei.ApiCommon;
 import cn.qihangerp.api.common.wei.PullRequest;
 import cn.qihangerp.api.common.wei.RemoteUtil;
 import cn.qihangerp.api.common.wei.bo.*;
-import cn.qihangerp.api.common.wei.service.OrderApiService;
 import cn.qihangerp.api.common.wei.service.RefundApiService;
 import cn.qihangerp.api.common.wei.vo.*;
 import cn.qihangerp.api.domain.*;
-import cn.qihangerp.api.service.SysShopPullLasttimeService;
-import cn.qihangerp.api.service.SysShopPullLogsService;
 import cn.qihangerp.api.service.WeiRefundService;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @RequestMapping("/shop/refund")
 @RestController
 @AllArgsConstructor
-public class RefundApiController {
+public class RefundApiController extends BaseController {
     private final ApiCommon apiCommon;
     private final WeiRefundService refundService;
-    private final SysShopPullLogsService pullLogsService;
-    private final SysShopPullLasttimeService pullLasttimeService;
+    private final ErpShopPullLogsService pullLogsService;
+    private final ErpShopPullLasttimeService pullLasttimeService;
 
     @RequestMapping(value = "/pull_list", method = RequestMethod.POST)
     public AjaxResult pullList(@RequestBody PullRequest params) throws Exception {
@@ -58,7 +56,7 @@ public class RefundApiController {
         // 获取最后更新时间
         LocalDateTime startTime = null;
         LocalDateTime  endTime = null;
-        SysShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(params.getShopId(), "REFUND");
+        ErpShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(getUserId(),params.getShopId(), "REFUND");
         if(lasttime == null){
             endTime = LocalDateTime.now();
             startTime = endTime.minusDays(1);
@@ -136,7 +134,8 @@ public class RefundApiController {
         // 更新时间
         if(lasttime == null){
             // 新增
-            SysShopPullLasttime insertLasttime = new SysShopPullLasttime();
+            ErpShopPullLasttime insertLasttime = new ErpShopPullLasttime();
+            insertLasttime.setTenantId(getUserId());
             insertLasttime.setShopId(params.getShopId());
             insertLasttime.setCreateTime(new Date());
             insertLasttime.setLasttime(endTime);
@@ -145,15 +144,16 @@ public class RefundApiController {
 
         }else {
             // 修改
-            SysShopPullLasttime updateLasttime = new SysShopPullLasttime();
+            ErpShopPullLasttime updateLasttime = new ErpShopPullLasttime();
             updateLasttime.setId(lasttime.getId());
             updateLasttime.setUpdateTime(new Date());
             updateLasttime.setLasttime(endTime);
             pullLasttimeService.updateById(updateLasttime);
         }
 
-        SysShopPullLogs logs = new SysShopPullLogs();
+        ErpShopPullLogs logs = new ErpShopPullLogs();
         logs.setShopType(EnumShopType.WEI.getIndex());
+        logs.setTenantId(getUserId());
         logs.setShopId(params.getShopId());
         logs.setPullType("REFUND");
         logs.setPullWay("主动拉取");

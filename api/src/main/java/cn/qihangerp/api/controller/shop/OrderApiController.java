@@ -1,6 +1,10 @@
 package cn.qihangerp.api.controller.shop;
 
 import cn.qihangerp.api.common.BaseController;
+import cn.qihangerp.api.domain.ErpShopPullLasttime;
+import cn.qihangerp.api.domain.ErpShopPullLogs;
+import cn.qihangerp.api.service.ErpShopPullLasttimeService;
+import cn.qihangerp.api.service.ErpShopPullLogsService;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,12 +26,8 @@ import cn.qihangerp.api.common.wei.service.OrderApiService;
 import cn.qihangerp.api.common.wei.vo.OrderDetailVo;
 import cn.qihangerp.api.common.wei.vo.OrderListVo;
 import cn.qihangerp.api.common.wei.vo.OrderVoDeliverInfoAddress;
-import cn.qihangerp.api.domain.SysShopPullLasttime;
-import cn.qihangerp.api.domain.SysShopPullLogs;
 import cn.qihangerp.api.domain.ShopOrder;
 import cn.qihangerp.api.domain.ShopOrderItem;
-import cn.qihangerp.api.service.SysShopPullLasttimeService;
-import cn.qihangerp.api.service.SysShopPullLogsService;
 import cn.qihangerp.api.service.ShopOrderService;
 
 import java.time.LocalDateTime;
@@ -43,8 +43,8 @@ public class OrderApiController extends BaseController {
     private final ApiCommon apiCommon;
 
     private final ShopOrderService weiOrderService;
-    private final SysShopPullLogsService pullLogsService;
-    private final SysShopPullLasttimeService pullLasttimeService;
+    private final ErpShopPullLogsService pullLogsService;
+    private final ErpShopPullLasttimeService pullLasttimeService;
     /**
      * 拉取订单
      * @param params
@@ -72,7 +72,7 @@ public class OrderApiController extends BaseController {
         // 获取最后更新时间
         LocalDateTime startTime = null;
         LocalDateTime  endTime = null;
-        SysShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(params.getShopId(), "ORDER");
+        ErpShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(getUserId(),params.getShopId(), "ORDER");
         if(lasttime == null){
             endTime = LocalDateTime.now();
             startTime = endTime.minusDays(1);
@@ -191,7 +191,8 @@ public class OrderApiController extends BaseController {
         // 更新时间
         if(lasttime == null){
             // 新增
-            SysShopPullLasttime insertLasttime = new SysShopPullLasttime();
+            ErpShopPullLasttime insertLasttime = new ErpShopPullLasttime();
+            insertLasttime.setTenantId(getUserId());
             insertLasttime.setShopId(params.getShopId());
             insertLasttime.setCreateTime(new Date());
             insertLasttime.setLasttime(endTime);
@@ -200,14 +201,15 @@ public class OrderApiController extends BaseController {
 
         }else {
             // 修改
-            SysShopPullLasttime updateLasttime = new SysShopPullLasttime();
+            ErpShopPullLasttime updateLasttime = new ErpShopPullLasttime();
             updateLasttime.setId(lasttime.getId());
             updateLasttime.setUpdateTime(new Date());
             updateLasttime.setLasttime(endTime);
             pullLasttimeService.updateById(updateLasttime);
         }
 
-        SysShopPullLogs logs = new SysShopPullLogs();
+        ErpShopPullLogs logs = new ErpShopPullLogs();
+        logs.setTenantId(getUserId());
         logs.setShopType(EnumShopType.WEI.getIndex());
         logs.setShopId(params.getShopId());
         logs.setPullType("ORDER");

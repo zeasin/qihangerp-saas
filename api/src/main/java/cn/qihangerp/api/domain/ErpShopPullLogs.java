@@ -6,10 +6,10 @@ import lombok.Data;
 
 /**
  * 更新日志表
- * @TableName sys_shop_pull_logs
+ * @TableName erp_shop_pull_logs
  */
 @Data
-public class SysShopPullLogs implements Serializable {
+public class ErpShopPullLogs implements Serializable {
     /**
      * 主键Id
      */
@@ -21,6 +21,11 @@ public class SysShopPullLogs implements Serializable {
     private Long shopId;
 
     /**
+     * 租户id
+     */
+    private Long tenantId;
+
+    /**
      * 平台id
      */
     private Integer shopType;
@@ -28,7 +33,7 @@ public class SysShopPullLogs implements Serializable {
     /**
      * 类型（ORDER订单，GOODS商品，REFUND退款）
      */
-    private Object pullType;
+    private String pullType;
 
     /**
      * 拉取方式（主动拉取、定时任务）

@@ -7,14 +7,14 @@ import lombok.Data;
 
 /**
  * 店铺更新最后时间记录
- * @TableName sys_shop_pull_lasttime
+ * @TableName erp_shop_pull_lasttime
  */
 @Data
-public class SysShopPullLasttime implements Serializable {
+public class ErpShopPullLasttime implements Serializable {
     /**
      * 
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 店铺id
@@ -22,9 +22,14 @@ public class SysShopPullLasttime implements Serializable {
     private Long shopId;
 
     /**
+     * 租户id
+     */
+    private Long tenantId;
+
+    /**
      * 类型（ORDER:订单，REFUND:退款）
      */
-    private Object pullType;
+    private String pullType;
 
     /**
      * 最后更新时间
