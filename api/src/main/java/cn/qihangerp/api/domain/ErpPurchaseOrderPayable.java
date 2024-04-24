@@ -20,6 +20,7 @@ public class ErpPurchaseOrderPayable implements Serializable {
      * 供应商id
      */
     private String supplierId;
+    private Long tenantId;
 
     /**
      * 供应商名称

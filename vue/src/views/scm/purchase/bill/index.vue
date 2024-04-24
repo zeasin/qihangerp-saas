@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="供应商id" prop="supplierId">
+      <el-form-item label="供应商" prop="supplierId">
 <!--        <el-input-->
 <!--          v-model="queryParams.supplierId"-->
 <!--          placeholder="请输入供应商id"-->
@@ -22,14 +22,14 @@
           </el-select>
       </el-form-item>
 
-      <el-form-item label="应付日期" prop="date">
-        <el-date-picker clearable
-          v-model="queryParams.date"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择应付日期">
-        </el-date-picker>
-      </el-form-item>
+<!--      <el-form-item label="应付日期" prop="date">-->
+<!--        <el-date-picker clearable-->
+<!--          v-model="queryParams.date"-->
+<!--          type="date"-->
+<!--          value-format="yyyy-MM-dd"-->
+<!--          placeholder="请选择应付日期">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
 <!--      <el-form-item label="发票号码" prop="invoiceNo">-->
 <!--        <el-input-->
 <!--          v-model="queryParams.invoiceNo"-->

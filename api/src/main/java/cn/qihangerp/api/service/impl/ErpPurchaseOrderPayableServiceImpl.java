@@ -27,9 +27,9 @@ public class ErpPurchaseOrderPayableServiceImpl extends ServiceImpl<ErpPurchaseO
     @Override
     public PageResult<ErpPurchaseOrderPayable> queryPageList(ErpPurchaseOrderPayable bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ErpPurchaseOrderPayable> queryWrapper = new LambdaQueryWrapper<ErpPurchaseOrderPayable>()
-//                .eq(ErpPurchaseOrder::getTenantId,bo.getTenantId())
-//                .eq(bo.getSupplierId()!=null,ErpPurchaseOrder::getSupplierId,bo.getSupplierId())
-//                .eq(org.springframework.util.StringUtils.hasText(bo.getOrderNo()),ErpPurchaseOrder::getOrderNo,bo.getOrderNo())
+                .eq(ErpPurchaseOrderPayable::getTenantId,bo.getTenantId())
+                .eq(bo.getSupplierId()!=null,ErpPurchaseOrderPayable::getSupplierId,bo.getSupplierId())
+                .eq(org.springframework.util.StringUtils.hasText(bo.getPurchaseOrderNo()),ErpPurchaseOrderPayable::getPurchaseOrderNo,bo.getPurchaseOrderNo())
 //                .eq(org.springframework.util.StringUtils.hasText(bo.getReceiverName()),ErpOrder::getReceiverName,bo.getReceiverName())
 //                .like(org.springframework.util.StringUtils.hasText(bo.getReceiverMobile()),ErpOrder::getReceiverMobile,bo.getReceiverMobile())
                 ;

@@ -28,6 +28,7 @@ public class PurchaseOrderPayableController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(ErpPurchaseOrderPayable bo, PageQuery pageQuery)
     {
+        bo.setTenantId(getUserId());
         PageResult<ErpPurchaseOrderPayable> pageResult = payableService.queryPageList(bo, pageQuery);
         return getDataTable(pageResult);
     }

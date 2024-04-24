@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 24/04/2024 20:49:31
+ Date: 24/04/2024 21:05:23
 */
 
 SET NAMES utf8mb4;
@@ -667,41 +667,6 @@ INSERT INTO `erp_purchase_order` VALUES (467, 0, 33, 'PUR20240128113656', '2024-
 INSERT INTO `erp_purchase_order` VALUES (1782030968597573634, 100, 1781960910751948802, 'PUR20240421205746', '2024-04-21', 1713704266, 1050.00, 20.00, NULL, 2, '启航', 1713705287, '2024-04-21 21:19:07', '2024-04-21 21:19:59', '2024-04-21 08:00:00', NULL, '15818590119', '2024-04-21 20:57:46', '15818590119', '2024-04-21 21:40:14');
 
 -- ----------------------------
--- Table structure for erp_purchase_order_cost
--- ----------------------------
-DROP TABLE IF EXISTS `erp_purchase_order_cost`;
-CREATE TABLE `erp_purchase_order_cost`  (
-  `id` bigint NOT NULL COMMENT '采购单ID（主键）',
-  `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户id',
-  `supplier_id` bigint NULL DEFAULT NULL COMMENT '供应商id',
-  `order_id` bigint NULL DEFAULT NULL COMMENT '采购单id',
-  `order_amount` decimal(10, 2) NULL DEFAULT NULL COMMENT '采购单金额',
-  `order_date` date NULL DEFAULT NULL COMMENT '采购订单日期',
-  `order_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '采购订单编号',
-  `order_spec_unit` int NULL DEFAULT NULL COMMENT '采购订单商品规格数',
-  `order_goods_unit` int NULL DEFAULT NULL COMMENT '采购订单商品数',
-  `order_spec_unit_total` int NULL DEFAULT NULL COMMENT '采购订单总件数',
-  `actual_amount` decimal(10, 2) NULL DEFAULT NULL COMMENT '实际金额',
-  `freight` decimal(6, 2) NULL DEFAULT NULL COMMENT '运费',
-  `confirm_user` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '确认人',
-  `confirm_time` datetime NULL DEFAULT NULL COMMENT '确认时间',
-  `create_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `pay_amount` decimal(10, 2) NULL DEFAULT NULL COMMENT '已支付金额',
-  `pay_time` datetime NULL DEFAULT NULL COMMENT '支付时间',
-  `pay_count` int NULL DEFAULT NULL COMMENT '支付次数',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '说明',
-  `status` int NULL DEFAULT NULL COMMENT '状态（0未支付1已支付）',
-  `update_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '采购订单费用确认表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of erp_purchase_order_cost
--- ----------------------------
-INSERT INTO `erp_purchase_order_cost` VALUES (466, NULL, NULL, NULL, 190.00, '2024-01-16', 'PUR20240116144408', 1, 1, 10, 190.00, 0.00, '启航', '2024-01-16 14:44:30', 'admin', 0.00, NULL, 0, NULL, 0, NULL, NULL);
-
--- ----------------------------
 -- Table structure for erp_purchase_order_item
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_purchase_order_item`;
@@ -754,6 +719,7 @@ INSERT INTO `erp_purchase_order_item` VALUES (1782030968731791362, 100, 17819609
 DROP TABLE IF EXISTS `erp_purchase_order_payable`;
 CREATE TABLE `erp_purchase_order_payable`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   `supplier_id` bigint NOT NULL COMMENT '供应商id',
   `supplier_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '供应商名称',
   `amount` decimal(10, 2) NOT NULL COMMENT '应付金额',
@@ -773,7 +739,7 @@ CREATE TABLE `erp_purchase_order_payable`  (
 -- ----------------------------
 -- Records of erp_purchase_order_payable
 -- ----------------------------
-INSERT INTO `erp_purchase_order_payable` VALUES (1, 33, '中山裤豪', 52.00, '2024-01-28', NULL, 'PUR20240128113656', '{采购商品总数量:2,不同款式:1,不同SKU:1,商品总价:42.00,运费:10}', NULL, 1, '2024-01-28 12:07:32', 'admin', NULL, NULL);
+INSERT INTO `erp_purchase_order_payable` VALUES (1, 0, 33, '中山裤豪', 52.00, '2024-01-28', NULL, 'PUR20240128113656', '{采购商品总数量:2,不同款式:1,不同SKU:1,商品总价:42.00,运费:10}', NULL, 1, '2024-01-28 12:07:32', 'admin', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_purchase_order_ship
@@ -2016,7 +1982,7 @@ CREATE TABLE `sys_user`  (
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2024-04-30', '0', '127.0.0.1', '2024-04-24 20:28:34', 'admin', '2023-08-07 19:31:37', '', '2024-04-24 20:28:33', '管理员');
-INSERT INTO `sys_user` VALUES (100, NULL, '15818590119', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$ihW7y3A357sHY0Qgl43JMOgxfe749oRelpp9brl1xN0cZHTky4Uxm', '0', '2024-05-11', '0', '127.0.0.1', '2024-04-24 20:27:43', 'admin', '2024-04-21 10:36:49', '', '2024-04-24 20:27:43', NULL);
+INSERT INTO `sys_user` VALUES (100, NULL, '15818590119', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$ihW7y3A357sHY0Qgl43JMOgxfe749oRelpp9brl1xN0cZHTky4Uxm', '0', '2024-05-11', '0', '127.0.0.1', '2024-04-24 21:03:55', 'admin', '2024-04-21 10:36:49', '', '2024-04-24 21:03:55', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_role
