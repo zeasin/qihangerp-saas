@@ -6,14 +6,11 @@ import cn.qihangerp.api.common.utils.DateUtils;
 import cn.qihangerp.api.domain.*;
 import cn.qihangerp.api.domain.bo.PurchaseOrderAddBo;
 import cn.qihangerp.api.domain.bo.PurchaseOrderOptionBo;
-import cn.qihangerp.api.mapper.ErpPurchaseOrderItemMapper;
-import cn.qihangerp.api.mapper.ErpPurchaseOrderShipMapper;
-import cn.qihangerp.api.mapper.ErpSupplierMapper;
+import cn.qihangerp.api.mapper.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.qihangerp.api.service.ErpPurchaseOrderService;
-import cn.qihangerp.api.mapper.ErpPurchaseOrderMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +33,7 @@ public class ErpPurchaseOrderServiceImpl extends ServiceImpl<ErpPurchaseOrderMap
     private final ErpPurchaseOrderMapper mapper;
     private final ErpPurchaseOrderItemMapper itemMapper;
     private final ErpPurchaseOrderShipMapper shipMapper;
+    private final ErpPurchaseOrderPayableMapper payableMapper;
     private final ErpSupplierMapper supplierMapper;
 
     @Override
@@ -199,19 +197,19 @@ public class ErpPurchaseOrderServiceImpl extends ServiceImpl<ErpPurchaseOrderMap
 //            costMapper.updateScmPurchaseOrderCost(cost);
 
             //TODO:待完善
-//            ErpSupplier scmSupplier = supplierMapper.selectById(order.getSupplierId());
-//            // 生成应付信息fms_payable_purchase
-//            FmsPayablePurchase fmsPP = new FmsPayablePurchase();
-//            fmsPP.setSupplierId(order.getContactId());
-//            fmsPP.setSupplierName(scmSupplier!=null ? scmSupplier.getName():"数据库未找到供应商信息");
-//            fmsPP.setAmount(order.getOrderAmount().add(bo.getShipCost()));
-//            fmsPP.setDate(new Date());
-//            fmsPP.setPurchaseOrderNo(order.getOrderNo());
-//            fmsPP.setPurchaseDesc("{采购商品总数量:"+total+",不同款式:"+goodsGroup.size()+",不同SKU:"+items.size()+",商品总价:"+order.getOrderAmount()+",运费:"+bo.getShipCost()+"}");
-//            fmsPP.setStatus(0L);
-//            fmsPP.setCreateTime(new Date());
-//            fmsPP.setCreateBy(bo.getUpdateBy());
-//            fmsPayablePurchaseMapper.insertFmsPayablePurchase(fmsPP);
+            ErpSupplier scmSupplier = supplierMapper.selectById(order.getSupplierId());
+            // 生成应付信息fms_payable_purchase
+            ErpPurchaseOrderPayable fmsPP = new ErpPurchaseOrderPayable();
+            fmsPP.setSupplierId(order.getSupplierId());
+            fmsPP.setSupplierName(scmSupplier!=null ? scmSupplier.getName():"数据库未找到供应商信息");
+            fmsPP.setAmount(order.getOrderAmount().add(bo.getShipCost()));
+            fmsPP.setDate(new Date());
+            fmsPP.setPurchaseOrderNo(order.getOrderNo());
+            fmsPP.setPurchaseDesc("{采购商品总数量:"+total+",不同款式:"+goodsGroup.size()+",不同SKU:"+items.size()+",商品总价:"+order.getOrderAmount()+",运费:"+bo.getShipCost()+"}");
+            fmsPP.setStatus(0);
+            fmsPP.setCreateTime(new Date());
+            fmsPP.setCreateBy(bo.getUpdateBy());
+            payableMapper.insert(fmsPP);
 
             // 更新主表
             ErpPurchaseOrder scmPurchaseOrder = new ErpPurchaseOrder();

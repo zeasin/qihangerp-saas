@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 21/04/2024 22:23:48
+ Date: 24/04/2024 20:49:31
 */
 
 SET NAMES utf8mb4;
@@ -657,7 +657,7 @@ CREATE TABLE `erp_purchase_order`  (
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 468 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '采购订单' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1782030968597573635 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '采购订单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_purchase_order
@@ -739,7 +739,7 @@ CREATE TABLE `erp_purchase_order_item`  (
   INDEX `transType`(`trans_type`) USING BTREE,
   INDEX `iid`(`order_id`) USING BTREE,
   INDEX `id`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1964 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '采购订单明细' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1782030968731791363 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '采购订单明细' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_purchase_order_item
@@ -747,6 +747,33 @@ CREATE TABLE `erp_purchase_order_item`  (
 INSERT INTO `erp_purchase_order_item` VALUES (1962, NULL, NULL, 466, 'PUR20240116144408', 'Purchase', 190, '2024-01-16', '', 9, 'HN8026', 'HN8026牛仔短裤', 32, '2720210080260105', '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AfNgvA2FOyAvwXZxv_!!2208857268871-0-cib.jpg', '2XL', '', 19.00, 0.00, 0.00, 10, 0, NULL, 0, 0);
 INSERT INTO `erp_purchase_order_item` VALUES (1963, NULL, NULL, 467, 'PUR20240128113656', 'Purchase', 42, '2024-01-28', '', 29, 'HNP182', 'HNP182弹力紧身贴标牛仔短裤女ins', 438, 'HNP1825004', '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yp4pfJ2FOyGRQhOVF_!!2208857268871-0-cib.jpg', 'XL', '', 21.00, 0.00, 0.00, 2, 0, NULL, 0, 0);
 INSERT INTO `erp_purchase_order_item` VALUES (1782030968731791362, 100, 1781960910751948802, 1782030968597573634, 'PUR20240421205746', 'Purchase', 1050, '2024-04-21', '', 1781988656060412000, 'NZK000232', '男士流行夏季牛仔裤黑色', 1781988656068800500, 'NZK00023200', '红色', NULL, '', '', 105.00, 0.00, 0.00, 10, 0, NULL, 0, 0);
+
+-- ----------------------------
+-- Table structure for erp_purchase_order_payable
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_purchase_order_payable`;
+CREATE TABLE `erp_purchase_order_payable`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `supplier_id` bigint NOT NULL COMMENT '供应商id',
+  `supplier_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '供应商名称',
+  `amount` decimal(10, 2) NOT NULL COMMENT '应付金额',
+  `date` date NOT NULL COMMENT '应付日期',
+  `invoice_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发票号码',
+  `purchase_order_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '采购单号',
+  `purchase_desc` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '采购说明',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `status` int NOT NULL COMMENT '状态（0已生成1已结算)',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '订单创建时间',
+  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '采购单应付款' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_purchase_order_payable
+-- ----------------------------
+INSERT INTO `erp_purchase_order_payable` VALUES (1, 33, '中山裤豪', 52.00, '2024-01-28', NULL, 'PUR20240128113656', '{采购商品总数量:2,不同款式:1,不同SKU:1,商品总价:42.00,运费:10}', NULL, 1, '2024-01-28 12:07:32', 'admin', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_purchase_order_ship
@@ -852,7 +879,7 @@ CREATE TABLE `erp_shop`  (
   `refresh_token_timeout` bigint NULL DEFAULT NULL COMMENT '刷新token过期时间',
   `api_request_url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '请求url',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据中心-店铺' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1781998402943377410 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据中心-店铺' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_shop
@@ -1313,33 +1340,6 @@ CREATE TABLE `fms_payable_agent_ship`  (
 INSERT INTO `fms_payable_agent_ship` VALUES (2, '1635222253871665598', 6, 26, '韩牛服饰', '2024-01-28', '菜鸟速递', 'CN52500021', 17.00, 2.00, 15.00, NULL, 0, '2024-01-28 21:06:44', 'admin', NULL, NULL);
 
 -- ----------------------------
--- Table structure for fms_payable_purchase
--- ----------------------------
-DROP TABLE IF EXISTS `fms_payable_purchase`;
-CREATE TABLE `fms_payable_purchase`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `supplier_id` int NOT NULL COMMENT '供应商id',
-  `supplier_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '供应商名称',
-  `amount` decimal(10, 2) NOT NULL COMMENT '应付金额',
-  `date` date NOT NULL COMMENT '应付日期',
-  `invoice_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发票号码',
-  `purchase_order_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '采购单号',
-  `purchase_desc` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '采购说明',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `status` int NOT NULL COMMENT '状态（0已生成1已结算)',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '订单创建时间',
-  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '财务管理-应付款-采购货款' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of fms_payable_purchase
--- ----------------------------
-INSERT INTO `fms_payable_purchase` VALUES (1, 33, '中山裤豪', 52.00, '2024-01-28', NULL, 'PUR20240128113656', '{采购商品总数量:2,不同款式:1,不同SKU:1,商品总价:42.00,运费:10}', NULL, 0, '2024-01-28 12:07:32', 'admin', NULL, NULL);
-
--- ----------------------------
 -- Table structure for fms_payable_ship_fee
 -- ----------------------------
 DROP TABLE IF EXISTS `fms_payable_ship_fee`;
@@ -1704,7 +1704,7 @@ INSERT INTO `sys_menu` VALUES (2008, '商品分类', 8, 88, 'category', 'goods/c
 INSERT INTO `sys_menu` VALUES (2009, '品牌管理', 8, 99, 'brand', 'goods/brand/index', '', 1, 0, 'C', '0', '0', 'goods:brand', 'clipboard', 'admin', '2023-12-29 13:34:49', 'admin', '2024-04-21 14:41:04', '');
 INSERT INTO `sys_menu` VALUES (2010, '采购管理', 2, 1, 'purchase/order', 'scm/purchase/order', '', 1, 0, 'C', '0', '0', 'scm:purchase:order', 'button', 'admin', '2023-12-29 16:35:55', 'admin', '2024-04-21 10:53:43', '');
 INSERT INTO `sys_menu` VALUES (2012, '采购物流管理', 2, 2, 'purchase/ship', 'scm/purchase/ship', '', 1, 0, 'C', '0', '0', 'scm:purchase:ship', 'component', 'admin', '2023-12-29 16:45:42', 'admin', '2024-04-21 11:06:08', '');
-INSERT INTO `sys_menu` VALUES (2019, '采购账单管理', 2, 3, 'purchase', 'scm/purchase/cost', '', 1, 0, 'C', '0', '0', '', 'shopping', 'admin', '2023-12-29 17:09:32', 'admin', '2024-04-21 11:06:30', '');
+INSERT INTO `sys_menu` VALUES (2019, '采购账单管理', 2, 3, 'purchase_bill', 'scm/purchase/bill', '', 1, 0, 'C', '0', '0', '', 'money', 'admin', '2023-12-29 17:09:32', 'admin', '2024-04-24 20:32:27', '');
 INSERT INTO `sys_menu` VALUES (2021, '创建采购单', 2, 101, 'purchase/order/create', 'scm/purchase/order/create', '', 1, 0, 'C', '1', '0', '', 'edit', 'admin', '2023-12-29 21:23:45', 'admin', '2024-04-21 11:44:03', '');
 INSERT INTO `sys_menu` VALUES (2025, '采购订单详情', 2, 102, 'purchase/order/detail', 'scm/purchase/order/detail', '', 1, 0, 'C', '1', '0', '', 'button', 'admin', '2023-12-30 17:08:01', 'admin', '2024-04-21 11:04:50', '');
 INSERT INTO `sys_menu` VALUES (2027, '入库管理', 6, 0, 'stock_in_entry/list', 'wms/stockInEntry', '', 1, 0, 'C', '0', '0', 'wms:stock_in_entry:list', 'stockin', 'admin', '2023-12-31 12:27:37', 'admin', '2024-01-14 15:12:48', '');
@@ -1724,7 +1724,7 @@ INSERT INTO `sys_menu` VALUES (2054, '售后处理', 5, 1, 'refund_list', 'refun
 INSERT INTO `sys_menu` VALUES (2059, '备货清单', 4, 1, 'stocking', 'shipping/stocking/', '', 1, 0, 'C', '0', '0', '', 'component', 'admin', '2024-01-09 11:51:52', 'admin', '2024-04-10 11:10:25', '');
 INSERT INTO `sys_menu` VALUES (2060, '拣货出库', 4, 2, 'stockout', 'wms/orderShipping/stockOut', NULL, 1, 0, 'C', '0', '0', '', 'bug', 'admin', '2024-01-09 13:39:00', 'admin', '2024-04-21 10:55:21', '');
 INSERT INTO `sys_menu` VALUES (2061, '仓位管理', 6, 9, 'stock_location', 'wms/location', NULL, 1, 0, 'C', '0', '0', '', 'education', 'admin', '2024-01-09 13:54:30', 'admin', '2024-04-21 11:11:41', '');
-INSERT INTO `sys_menu` VALUES (2062, '代发账单管理', 2, 4, 'agentShip', 'fms/payable/agentShip', NULL, 1, 0, 'C', '0', '0', '', 'theme', 'admin', '2024-01-12 18:35:02', 'admin', '2024-04-21 11:06:38', '');
+INSERT INTO `sys_menu` VALUES (2062, '代发账单管理', 4, 4, 'agent_ship_bill', 'shipping/agent/shipBill', NULL, 1, 0, 'C', '0', '0', '', 'money', 'admin', '2024-01-12 18:35:02', 'admin', '2024-04-24 20:48:33', '');
 INSERT INTO `sys_menu` VALUES (2063, '物流费用', 4, 100, 'shipFee', 'fms/payable/shipFee', NULL, 1, 0, 'C', '0', '0', '', 'guide', 'admin', '2024-01-12 18:35:31', 'admin', '2024-04-21 11:10:14', '');
 INSERT INTO `sys_menu` VALUES (2066, '添加商品', 8, 2, 'create', 'goods/create', NULL, 1, 0, 'C', '1', '0', '', 'component', 'admin', '2024-01-14 19:42:11', 'admin', '2024-04-10 11:33:33', '');
 INSERT INTO `sys_menu` VALUES (2067, '商品SKU管理', 8, 3, 'sku_list', 'goods/spec', NULL, 1, 0, 'C', '0', '0', '', 'theme', 'admin', '2024-01-16 14:17:39', 'admin', '2024-04-10 11:34:08', '');
@@ -2015,8 +2015,8 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2024-04-30', '0', '127.0.0.1', '2024-04-21 15:12:07', 'admin', '2023-08-07 19:31:37', '', '2024-04-21 15:12:07', '管理员');
-INSERT INTO `sys_user` VALUES (100, NULL, '15818590119', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$ihW7y3A357sHY0Qgl43JMOgxfe749oRelpp9brl1xN0cZHTky4Uxm', '0', '2024-05-11', '0', '127.0.0.1', '2024-04-21 22:19:28', 'admin', '2024-04-21 10:36:49', '', '2024-04-21 22:19:28', NULL);
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2024-04-30', '0', '127.0.0.1', '2024-04-24 20:28:34', 'admin', '2023-08-07 19:31:37', '', '2024-04-24 20:28:33', '管理员');
+INSERT INTO `sys_user` VALUES (100, NULL, '15818590119', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$ihW7y3A357sHY0Qgl43JMOgxfe749oRelpp9brl1xN0cZHTky4Uxm', '0', '2024-05-11', '0', '127.0.0.1', '2024-04-24 20:27:43', 'admin', '2024-04-21 10:36:49', '', '2024-04-24 20:27:43', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -2158,7 +2158,7 @@ CREATE TABLE `wms_stock_in_entry`  (
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '入库单' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1782052120938168322 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '入库单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_stock_in_entry
@@ -2198,7 +2198,7 @@ CREATE TABLE `wms_stock_in_entry_item`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `specIndex`(`spec_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '入库单明细' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1782052151443341315 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '入库单明细' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_stock_in_entry_item
