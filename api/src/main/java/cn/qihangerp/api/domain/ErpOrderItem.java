@@ -14,6 +14,8 @@ public class ErpOrderItem implements Serializable {
      * id，自增
      */
     private Long id;
+    private String shopId;
+    private Long tenantId;
 
     /**
      * 订单ID（o_order外键）

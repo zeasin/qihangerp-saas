@@ -1,6 +1,6 @@
 package cn.qihangerp.api.mapper;
 
-import cn.qihangerp.api.domain.WeiOrderItem;
+import cn.qihangerp.api.domain.ShopOrderItem;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2024-04-03 21:36:32
 * @Entity cn.qihangerp.api.domain.WeiOrderItem
 */
-public interface WeiOrderItemMapper extends BaseMapper<WeiOrderItem> {
+public interface ShopOrderItemMapper extends BaseMapper<ShopOrderItem> {
 
 }
 

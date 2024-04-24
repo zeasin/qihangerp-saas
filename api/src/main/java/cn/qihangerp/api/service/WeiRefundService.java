@@ -3,7 +3,6 @@ package cn.qihangerp.api.service;
 import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.common.ResultVo;
-import cn.qihangerp.api.domain.WeiOrder;
 import cn.qihangerp.api.domain.WeiRefund;
 import com.baomidou.mybatisplus.extension.service.IService;
 

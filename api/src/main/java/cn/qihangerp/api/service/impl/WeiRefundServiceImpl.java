@@ -13,8 +13,6 @@ import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.enums.EnumShopType;
 import cn.qihangerp.api.domain.ErpAfterSale;
-import cn.qihangerp.api.domain.WeiOrder;
-import cn.qihangerp.api.domain.WeiOrderItem;
 import cn.qihangerp.api.domain.WeiRefund;
 import cn.qihangerp.api.mapper.ErpAfterSaleMapper;
 import cn.qihangerp.api.service.WeiRefundService;

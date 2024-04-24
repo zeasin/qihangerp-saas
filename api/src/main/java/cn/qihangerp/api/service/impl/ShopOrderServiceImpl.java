@@ -12,16 +12,15 @@ import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.enums.EnumShopType;
-import cn.qihangerp.api.common.utils.DateUtils;
 import cn.qihangerp.api.domain.ErpOrder;
 import cn.qihangerp.api.domain.ErpOrderItem;
-import cn.qihangerp.api.domain.WeiOrder;
-import cn.qihangerp.api.domain.WeiOrderItem;
+import cn.qihangerp.api.domain.ShopOrder;
+import cn.qihangerp.api.domain.ShopOrderItem;
 import cn.qihangerp.api.mapper.ErpOrderItemMapper;
 import cn.qihangerp.api.mapper.ErpOrderMapper;
-import cn.qihangerp.api.mapper.WeiOrderItemMapper;
-import cn.qihangerp.api.service.WeiOrderService;
-import cn.qihangerp.api.mapper.WeiOrderMapper;
+import cn.qihangerp.api.mapper.ShopOrderItemMapper;
+import cn.qihangerp.api.service.ShopOrderService;
+import cn.qihangerp.api.mapper.ShopOrderMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -34,24 +33,25 @@ import java.util.List;
 */
 @AllArgsConstructor
 @Service
-public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
-    implements WeiOrderService{
-    private final WeiOrderMapper mapper;
-    private final WeiOrderItemMapper itemMapper;
+public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder>
+    implements ShopOrderService {
+    private final ShopOrderMapper mapper;
+    private final ShopOrderItemMapper itemMapper;
     private final ErpOrderMapper erpOrderMapper;
     private final ErpOrderItemMapper erpOrderItemMapper;
 
     @Override
-    public PageResult<WeiOrder> queryPageList(WeiOrder bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<WeiOrder> queryWrapper = new LambdaQueryWrapper<WeiOrder>()
-                .eq(bo.getShopId()!=null,WeiOrder::getShopId,bo.getShopId())
-                .eq(StringUtils.hasText(bo.getOrderId()),WeiOrder::getOrderId,bo.getOrderId())
+    public PageResult<ShopOrder> queryPageList(ShopOrder bo, PageQuery pageQuery) {
+        LambdaQueryWrapper<ShopOrder> queryWrapper = new LambdaQueryWrapper<ShopOrder>()
+                .eq(ShopOrder::getTenantId,bo.getTenantId())
+                .eq(bo.getShopId()!=null, ShopOrder::getShopId,bo.getShopId())
+                .eq(StringUtils.hasText(bo.getOrderId()), ShopOrder::getOrderId,bo.getOrderId())
                 ;
 
-        Page<WeiOrder> taoGoodsPage = mapper.selectPage(pageQuery.build(), queryWrapper);
+        Page<ShopOrder> taoGoodsPage = mapper.selectPage(pageQuery.build(), queryWrapper);
         if(taoGoodsPage.getRecords()!=null){
             for (var order:taoGoodsPage.getRecords()) {
-                order.setItems(itemMapper.selectList(new LambdaQueryWrapper<WeiOrderItem>().eq(WeiOrderItem::getWeiOrderId,order.getId())));
+                order.setItems(itemMapper.selectList(new LambdaQueryWrapper<ShopOrderItem>().eq(ShopOrderItem::getShopOrderId,order.getId())));
             }
         }
         return PageResult.build(taoGoodsPage);
@@ -59,12 +59,12 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
 
     @Transactional
     @Override
-    public ResultVo<Integer> saveOrder(Long shopId, WeiOrder order) {
+    public ResultVo<Integer> saveOrder(Long shopId, ShopOrder order) {
         try {
-            List<WeiOrder> orders = mapper.selectList(new LambdaQueryWrapper<WeiOrder>().eq(WeiOrder::getOrderId, order.getOrderId()));
+            List<ShopOrder> orders = mapper.selectList(new LambdaQueryWrapper<ShopOrder>().eq(ShopOrder::getOrderId, order.getOrderId()));
             if (orders != null && orders.size() > 0) {
                 // 存在，修改
-                WeiOrder update = new WeiOrder();
+                ShopOrder update = new ShopOrder();
                 update.setId(orders.get(0).getId());
                 update.setStatus(order.getStatus());
                 update.setUpdateTime(order.getUpdateTime());
@@ -75,23 +75,25 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
                 mapper.updateById(update);
                 // 更新item
                 for (var item : order.getItems()) {
-                    List<WeiOrderItem> taoOrderItems = itemMapper.selectList(new LambdaQueryWrapper<WeiOrderItem>().eq(WeiOrderItem::getSkuId, item.getSkuId()));
+                    List<ShopOrderItem> taoOrderItems = itemMapper.selectList(new LambdaQueryWrapper<ShopOrderItem>().eq(ShopOrderItem::getSkuId, item.getSkuId()));
                     if (taoOrderItems != null && taoOrderItems.size() > 0) {
                         // 不处理
                     } else {
                         // 新增
-                        item.setWeiOrderId(update.getId());
+                        item.setShopId(shopId.toString());
+                        item.setShopOrderId(update.getId());
                         itemMapper.insert(item);
                     }
                 }
                 return ResultVo.error(ResultVoEnum.DataExist, "订单已经存在，更新成功");
             } else {
                 // 不存在，新增
-                order.setShopId(shopId);
+                order.setShopId(shopId.toString());
                 mapper.insert(order);
                 // 添加item
                 for (var item : order.getItems()) {
-                    item.setWeiOrderId(order.getId());
+                    item.setShopId(shopId.toString());
+                    item.setShopOrderId(order.getId());
                     itemMapper.insert(item);
                 }
                 return ResultVo.success();
@@ -110,7 +112,7 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
             for(var id : ids){
                 if(StringUtils.hasText(id)) {
                     // 查询订单
-                    WeiOrder weiOrder = mapper.selectById(id);
+                    ShopOrder weiOrder = mapper.selectById(id);
                     if(weiOrder!=null){
                         // 查询是否确认过
                         if(weiOrder.getConfirmStatus() == null || weiOrder.getConfirmStatus() == 0){
@@ -119,6 +121,7 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
                             if(erpOrders==null||erpOrders.size()==0){
                                 // 没有数据，开始插入订单数据
                                 ErpOrder insert = new ErpOrder();
+                                insert.setTenantId(weiOrder.getTenantId());
                                 insert.setOrderNum(weiOrder.getOrderId());
                                 insert.setShopType(EnumShopType.WEI.getIndex());
                                 insert.setShopId(weiOrder.getShopId());
@@ -139,9 +142,11 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
                                 erpOrderMapper.insert(insert);
 
                                 // 插入order_item
-                                List<WeiOrderItem> weiOrderItems = itemMapper.selectList(new LambdaQueryWrapper<WeiOrderItem>().eq(WeiOrderItem::getWeiOrderId, weiOrder.getId()));
+                                List<ShopOrderItem> weiOrderItems = itemMapper.selectList(new LambdaQueryWrapper<ShopOrderItem>().eq(ShopOrderItem::getShopOrderId, weiOrder.getId()));
                                 for(var item :weiOrderItems) {
                                     ErpOrderItem itemInsert = new ErpOrderItem();
+                                    itemInsert.setTenantId(weiOrder.getTenantId());
+                                    itemInsert.setShopId(weiOrder.getShopId());
                                     itemInsert.setOrderId(insert.getId());
                                     itemInsert.setOrderNum(weiOrder.getOrderId());
                                     itemInsert.setSubOrderNum(item.getId()+"");
@@ -166,7 +171,7 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
                                     erpOrderItemMapper.insert(itemInsert);
                                 }
                                 // 更新wei_order确认状态
-                                WeiOrder update = new WeiOrder();
+                                ShopOrder update = new ShopOrder();
                                 update.setId(weiOrder.getId());
                                 update.setConfirmStatus(1);
                                 update.setConfirmTime(new Date());

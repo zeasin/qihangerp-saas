@@ -1,5 +1,6 @@
 package cn.qihangerp.api.controller.shop;
 
+import cn.qihangerp.api.common.BaseController;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,11 +24,11 @@ import cn.qihangerp.api.common.wei.vo.OrderListVo;
 import cn.qihangerp.api.common.wei.vo.OrderVoDeliverInfoAddress;
 import cn.qihangerp.api.domain.SysShopPullLasttime;
 import cn.qihangerp.api.domain.SysShopPullLogs;
-import cn.qihangerp.api.domain.WeiOrder;
-import cn.qihangerp.api.domain.WeiOrderItem;
+import cn.qihangerp.api.domain.ShopOrder;
+import cn.qihangerp.api.domain.ShopOrderItem;
 import cn.qihangerp.api.service.SysShopPullLasttimeService;
 import cn.qihangerp.api.service.SysShopPullLogsService;
-import cn.qihangerp.api.service.WeiOrderService;
+import cn.qihangerp.api.service.ShopOrderService;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -38,10 +39,10 @@ import java.util.List;
 @RequestMapping("/shop/order")
 @RestController
 @AllArgsConstructor
-public class OrderApiController {
+public class OrderApiController extends BaseController {
     private final ApiCommon apiCommon;
 
-    private final WeiOrderService weiOrderService;
+    private final ShopOrderService weiOrderService;
     private final SysShopPullLogsService pullLogsService;
     private final SysShopPullLasttimeService pullLasttimeService;
     /**
@@ -105,9 +106,10 @@ public class OrderApiController {
                     bo.setOrder_id(orderId.toString());
                     OrderDetailVo orderDetail = remoting.getOrderDetail(accessToken, bo);
                     if(orderDetail.getErrcode() == 0){
-                        WeiOrder order = new WeiOrder();
+                        ShopOrder order = new ShopOrder();
+                        order.setTenantId(getUserId());
                         order.setOrderId(orderDetail.getOrder().getOrder_id());
-                        order.setShopId(params.getShopId());
+                        order.setShopId(params.getShopId().toString());
                         order.setOpenid(orderDetail.getOrder().getOpenid());
                         order.setCreateTime(orderDetail.getOrder().getCreate_time());
                         order.setUpdateTime(orderDetail.getOrder().getUpdate_time());
@@ -141,9 +143,10 @@ public class OrderApiController {
 
                         order.setSettleInfo(JSONObject.toJSONString(orderDetail.getOrder().getOrder_detail().getSettle_info()));
 
-                        List<WeiOrderItem> itemList = new ArrayList<>();
+                        List<ShopOrderItem> itemList = new ArrayList<>();
                         for (var item:orderDetail.getOrder().getOrder_detail().getProduct_infos()) {
-                            WeiOrderItem oi = new WeiOrderItem();
+                            ShopOrderItem oi = new ShopOrderItem();
+                            oi.setTenantId(getUserId());
                             oi.setProductId(item.getProduct_id());
                             oi.setSkuId(item.getSku_id());
                             oi.setThumbImg(item.getThumb_img());
@@ -250,9 +253,10 @@ public class OrderApiController {
         bo.setOrder_id(params.getOrderId());
         OrderDetailVo orderDetail = remoting.getOrderDetail(accessToken, bo);
         if (orderDetail.getErrcode() == 0) {
-            WeiOrder order = new WeiOrder();
+            ShopOrder order = new ShopOrder();
+            order.setTenantId(getUserId());
             order.setOrderId(orderDetail.getOrder().getOrder_id());
-            order.setShopId(params.getShopId());
+            order.setShopId(params.getShopId().toString());
             order.setOpenid(orderDetail.getOrder().getOpenid());
             order.setCreateTime(orderDetail.getOrder().getCreate_time());
             order.setUpdateTime(orderDetail.getOrder().getUpdate_time());
@@ -286,9 +290,10 @@ public class OrderApiController {
 
             order.setSettleInfo(JSONObject.toJSONString(orderDetail.getOrder().getOrder_detail().getSettle_info()));
 
-            List<WeiOrderItem> itemList = new ArrayList<>();
+            List<ShopOrderItem> itemList = new ArrayList<>();
             for (var item : orderDetail.getOrder().getOrder_detail().getProduct_infos()) {
-                WeiOrderItem oi = new WeiOrderItem();
+                ShopOrderItem oi = new ShopOrderItem();
+                oi.setTenantId(getUserId());
                 oi.setProductId(item.getProduct_id());
                 oi.setSkuId(item.getSku_id());
                 oi.setThumbImg(item.getThumb_img());

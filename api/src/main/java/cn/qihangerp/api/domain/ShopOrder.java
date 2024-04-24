@@ -5,14 +5,16 @@ import java.util.Date;
 import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
  * 
  * @TableName wei_order
  */
+@TableName("erp_shop_order")
 @Data
-public class WeiOrder implements Serializable {
+public class ShopOrder implements Serializable {
     /**
      * 
      */
@@ -21,7 +23,8 @@ public class WeiOrder implements Serializable {
     /**
      * 店铺id
      */
-    private Long shopId;
+    private String shopId;
+    private Long tenantId;
 
     /**
      * 订单号
@@ -171,7 +174,7 @@ public class WeiOrder implements Serializable {
     private Date erpSendTime;
 
     @TableField(exist = false)
-    private List<WeiOrderItem> items;
+    private List<ShopOrderItem> items;
 
     private static final long serialVersionUID = 1L;
 }

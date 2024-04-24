@@ -200,6 +200,7 @@ public class ErpPurchaseOrderServiceImpl extends ServiceImpl<ErpPurchaseOrderMap
             ErpSupplier scmSupplier = supplierMapper.selectById(order.getSupplierId());
             // 生成应付信息fms_payable_purchase
             ErpPurchaseOrderPayable fmsPP = new ErpPurchaseOrderPayable();
+            fmsPP.setTenantId(order.getTenantId());
             fmsPP.setSupplierId(order.getSupplierId());
             fmsPP.setSupplierName(scmSupplier!=null ? scmSupplier.getName():"数据库未找到供应商信息");
             fmsPP.setAmount(order.getOrderAmount().add(bo.getShipCost()));

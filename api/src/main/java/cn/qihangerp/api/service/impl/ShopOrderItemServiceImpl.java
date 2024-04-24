@@ -1,9 +1,9 @@
 package cn.qihangerp.api.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.qihangerp.api.domain.WeiOrderItem;
-import cn.qihangerp.api.service.WeiOrderItemService;
-import cn.qihangerp.api.mapper.WeiOrderItemMapper;
+import cn.qihangerp.api.domain.ShopOrderItem;
+import cn.qihangerp.api.service.ShopOrderItemService;
+import cn.qihangerp.api.mapper.ShopOrderItemMapper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 * @createDate 2024-04-03 21:36:32
 */
 @Service
-public class WeiOrderItemServiceImpl extends ServiceImpl<WeiOrderItemMapper, WeiOrderItem>
-    implements WeiOrderItemService{
+public class ShopOrderItemServiceImpl extends ServiceImpl<ShopOrderItemMapper, ShopOrderItem>
+    implements ShopOrderItemService {
 
 }
 

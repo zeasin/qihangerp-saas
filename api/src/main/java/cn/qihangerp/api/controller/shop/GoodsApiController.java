@@ -1,5 +1,6 @@
 package cn.qihangerp.api.controller.shop;
 
+import cn.qihangerp.api.common.BaseController;
 import cn.qihangerp.api.domain.ShopGoods;
 import cn.qihangerp.api.domain.ShopGoodsSku;
 import cn.qihangerp.api.service.ShopGoodsService;
@@ -30,7 +31,7 @@ import java.util.List;
 @RequestMapping("/goods")
 @RestController
 @AllArgsConstructor
-public class GoodsApiController {
+public class GoodsApiController extends BaseController {
     private final ApiCommon apiCommon;
     private final ShopGoodsService shopGoodsService;
 
@@ -66,6 +67,7 @@ public class GoodsApiController {
                         // 保存到数据库
                         ShopGoods goods = new ShopGoods();
                         BeanUtils.copyProperties(goodsDetail.getProduct(),goods);
+                        goods.setTenantId(getUserId());
                         goods.setProductId(goods.getProductId());
                         goods.setHeadImg(goodsDetail.getProduct().getHead_imgs().getString(0));
                         goods.setHeadImgs(JSONObject.toJSONString(goodsDetail.getProduct().getHead_imgs()));
@@ -75,6 +77,7 @@ public class GoodsApiController {
                         for (var sku:goodsDetail.getProduct().getSkus()) {
                             ShopGoodsSku goodsSku = new ShopGoodsSku();
                             BeanUtils.copyProperties(sku,goodsSku);
+                            goodsSku.setTenantId(getUserId());
                             goodsSku.setSkuAttrs(JSONObject.toJSONString(sku.getSku_attrs()));
                             goodsSku.setSkuDeliverInfo(JSONObject.toJSONString(sku.getSku_deliver_info()));
                             skuList.add(goodsSku);

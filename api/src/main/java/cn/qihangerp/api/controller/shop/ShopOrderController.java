@@ -4,17 +4,18 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import cn.qihangerp.api.common.*;
 import cn.qihangerp.api.common.bo.ShopOrderConfirmBo;
-import cn.qihangerp.api.domain.WeiOrder;
-import cn.qihangerp.api.service.WeiOrderService;
+import cn.qihangerp.api.domain.ShopOrder;
+import cn.qihangerp.api.service.ShopOrderService;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/shop/order")
 public class ShopOrderController extends BaseController {
-    private final WeiOrderService orderService;
+    private final ShopOrderService orderService;
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public TableDataInfo goodsList(WeiOrder bo, PageQuery pageQuery) {
-        PageResult<WeiOrder> result = orderService.queryPageList(bo, pageQuery);
+    public TableDataInfo goodsList(ShopOrder bo, PageQuery pageQuery) {
+        bo.setTenantId(getUserId());
+        PageResult<ShopOrder> result = orderService.queryPageList(bo, pageQuery);
 
         return getDataTable(result);
     }

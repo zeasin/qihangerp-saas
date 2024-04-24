@@ -1,14 +1,17 @@
 package cn.qihangerp.api.domain;
 
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
  * 
  * @TableName wei_order_item
  */
+@TableName("erp_shop_order_item")
 @Data
-public class WeiOrderItem implements Serializable {
+public class ShopOrderItem implements Serializable {
     /**
      * 
      */
@@ -17,7 +20,9 @@ public class WeiOrderItem implements Serializable {
     /**
      * 外键id
      */
-    private String weiOrderId;
+    private String shopOrderId;
+    private Long tenantId;
+    private String shopId;
 
     /**
      * 商品spuid

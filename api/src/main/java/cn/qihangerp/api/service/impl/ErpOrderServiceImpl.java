@@ -33,6 +33,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
     @Override
     public PageResult<ErpOrder> queryPageList(ErpOrder bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ErpOrder> queryWrapper = new LambdaQueryWrapper<ErpOrder>()
+                .eq(ErpOrder::getTenantId,bo.getTenantId())
                 .eq(bo.getShopId()!=null,ErpOrder::getShopId,bo.getShopId())
                 .eq(org.springframework.util.StringUtils.hasText(bo.getOrderNum()),ErpOrder::getOrderNum,bo.getOrderNum())
                 .eq(org.springframework.util.StringUtils.hasText(bo.getShippingNumber()),ErpOrder::getShippingNumber,bo.getShippingNumber())

@@ -31,8 +31,7 @@ public class OrderController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(ErpOrder order, PageQuery pageQuery)
     {
-//        PageQuery pageQuery = new PageQuery();
-//        List<OOrder> list = orderService.getList(order);
+        order.setTenantId(getUserId());
         var pageList = orderService.queryPageList(order,pageQuery);
         return getDataTable(pageList);
     }
