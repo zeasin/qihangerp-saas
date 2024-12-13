@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>cn.qihangerp</groupId>
-  <artifactId>weishop-saas</artifactId>
+  <artifactId>qihangerp-saas</artifactId>
   <version>1.0</version>
   <packaging>pom</packaging>
 
-  <name>weishop-saas</name>
+  <name>qihangerp-saas</name>
   <url>http://maven.apache.org</url>
   <modules>
     <module>api</module>

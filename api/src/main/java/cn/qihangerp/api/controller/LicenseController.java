@@ -2,6 +2,9 @@ package cn.qihangerp.api.controller;
 
 import cn.qihangerp.api.common.AjaxResult;
 import cn.qihangerp.api.domain.ErpGoods;
+import cn.qihangerp.api.domain.SysLicense;
+import cn.qihangerp.api.service.SysLicenseService;
+import com.alibaba.fastjson2.JSONObject;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +23,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/license")
 public class LicenseController {
+    private final SysLicenseService sysLicenseService;
+
     @RequestMapping("/getLicense")
     public AjaxResult getLicense(HttpServletRequest request)
     {
@@ -52,6 +57,15 @@ public class LicenseController {
             }
             String requestBody = stringBuilder.toString();
             log.info("=====收到License请求====Body: " + requestBody);
+            try {
+                JSONObject jsonObject = JSONObject.parseObject(requestBody);
+                String uuid = jsonObject.getString("uuid");
+                sysLicenseService.save(uuid, jsonObject.getLong("time"));
+
+            } catch (Exception e) {
+                log.info("====解析请求数据出错====={}",e.getMessage());
+            }
+
         }
         return AjaxResult.success(1);
     }
