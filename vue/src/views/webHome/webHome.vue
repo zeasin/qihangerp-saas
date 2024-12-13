@@ -5,8 +5,8 @@
       <div id="header" class="header" :class="isTop?'theme':''">
         <div class="header-box">
           <!-- logo -->
-          <a title="启航微信视频号小店电商系统" :href="httpsUrl">
-          <img class="header-logo" referrerpolicy="no-referrer" alt="启航微信视频号小店电商系统" src="./images/logo.png" />
+          <a title="启航电商ERP系统" :href="httpsUrl">
+          <img class="header-logo" referrerpolicy="no-referrer" alt="启航电商ERP系统" src="./images/logo.png" />
           </a>
           <!-- 导航栏 -->
           <nav class="navbar">
@@ -23,15 +23,15 @@
       <!--end header-->
       <!--star 右下脚-企业微信客服-->
       <div class="scroll-service-button">
-        <img src="https://www.yiguaerp.com/Assets/img/service.png">
+        <img src="./images/service.png">
         <div class="p-r">
           <div class="service p-a">
-            <p class="service-title">企业微信客服</p>
-            <p class="service-time">每日在线 08:00-24:00</p>
+            <p class="service-title">联系作者</p>
+            <p class="service-time">每日在线 09:00-21:00</p>
             <img class="service-qrcode" src="./images/kf_qrcode.jpg">
             <p class="service-label">
               <i class="el-icon-full-screen" style="margin-right: 6px;"></i>
-              扫码咨询客服
+              扫码联系作者
             </p>
           </div>
         </div>
@@ -43,8 +43,8 @@
         <section class="section1">
           <div class="section1-content">
             <div class="section1-content-box">
-              <h1>提升视频号小店经营效率</h1>
-              <h1>就用启航视频号电商系统</h1>
+              <h1>多平台多店铺订单处理</h1>
+              <h1>就用启航电商ERP系统</h1>
               <div class="flex-item-center" style="margin-top: 24px;">
                 <div class="flex-item-center" :class="index !== 0?'ml20':''" v-for="(item,index) in oneList">
                   <img class="section1-icon" :src="item.icon">
@@ -56,13 +56,13 @@
                 <a href="javascript:void(0)"
                   class="to-website section1-concat-btn concat-btn-click">
                   <span class="flex-item-center">
-                    免费试用
+                    99元体验
                     <div class="concat-arrow-right">
                       <i class="el-icon-right"></i>
                     </div>
                   </span>
                 </a>
-                <img class="free-img" src="https://www.yiguaerp.com/Assets/img/home/free.png">
+<!--                <img class="free-img" src="./images/free.png">-->
               </div>
             </div>
           </div>
@@ -76,7 +76,7 @@
                 <img :src="item.bigIcon" class="tab-img-1">
                 <span style="position: relative;">
                   {{item.title}}
-                  <img v-if="item.isHot" src="https://www.yiguaerp.com/Assets/img/home/new.png?v=202311171611" class="hot-img">
+                  <img v-if="item.isHot" src="./images/new.png?v=202311171611" class="hot-img">
                 </span>
               </div>
               <p class="tab-label">{{item.desc}}</p>
@@ -160,24 +160,24 @@
 <!--          <div class="section7-main p-r">-->
 <!--            <div class="p-a" style="width: 100%;height: 100px;top: 0;left: 0px;">-->
 <!--              <div class="line_odd">-->
-<!--                <img class="logo_img" src="https://www.yiguaerp.com/Assets/img/home/section7-1.png">-->
-<!--                <img class="logo_img" src="https://www.yiguaerp.com/Assets/img/home/section7-1.png">-->
+<!--                <img class="logo_img" src="./images/section7-1.png">-->
+<!--                <img class="logo_img" src="./images/section7-1.png">-->
 <!--              </div>-->
 <!--            </div>-->
 <!--            <div class="p-a" style="width: 100%;height: 100px;top: 130px;left: 0px;">-->
 <!--              <div class="line_odd-2" style="width:3962px;overflow: hidden;">-->
 <!--                <div style="width: 100%;overflow-x: hidden;"><img class="logo_img p-r"-->
-<!--                    style="width: 2229px;left: -248px;height: auto;" src="https://www.yiguaerp.com/Assets/img/home/section7-2.png">-->
+<!--                    style="width: 2229px;left: -248px;height: auto;" src="./images/section7-2.png">-->
 <!--                </div>-->
 <!--                <div style="width: 100%;overflow-x: hidden;"><img class="logo_img p-r"-->
-<!--                    style="width: 2229px;left: -248px;height: auto;" src="https://www.yiguaerp.com/Assets/img/home/section7-2.png">-->
+<!--                    style="width: 2229px;left: -248px;height: auto;" src="./images/section7-2.png">-->
 <!--                </div>-->
 <!--              </div>-->
 <!--            </div>-->
 <!--            <div class="p-a" style="width: 100%;height: 100px;top: 260px;left: 0px;">-->
 <!--              <div class="line_odd">-->
-<!--                <img class="logo_img" src="https://www.yiguaerp.com/Assets/img/home/section7-3.png">-->
-<!--                <img class="logo_img" src="https://www.yiguaerp.com/Assets/img/home/section7-3.png">-->
+<!--                <img class="logo_img" src="./images/section7-3.png">-->
+<!--                <img class="logo_img" src="./images/section7-3.png">-->
 <!--              </div>-->
 <!--            </div>-->
 <!--          </div>-->
@@ -192,11 +192,11 @@
           <p class="footer-title-1">关于我们</p>
           <p class="footer-desc">深圳启航技术是一家电商行业老兵、拥有十余年电商系统及运营经验、启航技术拥有众多开源电商系统，包括电商ERP、OMS订单处理等电商软件。<br />启航技术致力于为电商领域提供优秀、易用、先进的电商系统，以技术提升电商创业者们的业务处理效率。</p>
 <!--          <p class="footer-place">-->
-<!--            <img src="https://www.yiguaerp.com/Assets/img/place.png" />-->
+<!--            <img src="./images/place.png" />-->
 <!--            <span>深圳市宝安区107商务带</span>-->
 <!--          </p>-->
-          <p class="beian">Copyright © 2016-2024 启航视频号电商系统 | 深圳市启航技术工作室 | <a target="_blank" class="text-link"
-              href="https://beian.miit.gov.cn/">粤ICP备19018186号</a></p>
+          <p class="beian">Copyright © 2016-2024 启航电商ERP系统 | 深圳市启航技术工作室 | <a target="_blank" class="text-link"
+              href="https://beian.miit.gov.cn/">粤ICP备24018186号</a></p>
           <div class="p-a footer-service">
             <img class="service-qrcode" src="./images/gzh_qrcode.jpg">
             <p>扫码关注公众号</p>
@@ -215,9 +215,9 @@ export default {
   components: {},
   metaInfo() {
     return {
-      title: '微信视频号小店电商系统',
+      title: '高效极简现代化电商ERP系统',
       meta: [
-        { name: 'description', content: '视频号小店电商系统是专为微信视频号电商创业者提供的一套电商系统，旨在提升视频号小店经营效率，帮助视频号电商创业者成功。' },
+        { name: 'description', content: '启航电商ERP系统源于开源项目，saas是为了帮助中小商家快速高效处理繁杂的电商订单业务。旨在提升店铺经营效率，帮助电商创业者成功。' },
         { name: 'keywords', content: '电商ERP, 电商系统, 电商OMS订单处理系统, 视频号小店, 视频号小店电商系统' }
       ]
     };
@@ -236,27 +236,25 @@ export default {
       },
 
       navList:[
-        {title:'电商ERP开源',url:'https://gitee.com/qiliping/qihang-erp'},
-        {title:'电商OMS开源',url:'https://gitee.com/qiliping/qihangerp-oms'},
-        {title:'视频号电商系统开源',url:'https://gitee.com/qiliping/qihangerp-weishop'},
-        {title:'拼多多电商系统开源',url:'https://gitee.com/qiliping/qihangerp-pdd'},
-        {title:'抖店电商系统开源',url:'https://gitee.com/qiliping/qihangerp-dou'},
+        {title:'开源电商ERP系统',url:'https://gitee.com/qiliping/qihang-erp'},
+        {title:'开源电商OMS系统',url:'https://gitee.com/qiliping/qihangerp-oms'},
+        {title:'开源供应链SCM系统',url:'https://gitee.com/qiliping/qihangerp-scm'},
       ],
       oneList:[
-        {title:'订单发货',icon:'https://www.yiguaerp.com/Assets/img/home/deliverGoods.png'},
-        {title:'商品管理',icon:'https://www.yiguaerp.com/Assets/img/home/cost.png'},
-        {title:'售后处理',icon:'https://www.yiguaerp.com/Assets/img/home/purchase.png'},
-        {title:'采购管理',icon:'https://www.yiguaerp.com/Assets/img/home/statement.png'},
+        {title:'订单发货',icon:require('./images/deliverGoods.png')},
+        {title:'商品管理',icon:require('./images/cost.png')},
+        {title:'售后处理',icon:require('./images/purchase.png')},
+        {title:'采购管理',icon:require('./images//statement.png')},
       ],
       twoList:[
-        {isHot:false,title:'多店统一管理', desc:'支持多店铺，方便视频号电商创业', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon1-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon1.png'},
-        {isHot:false,title:'高效订单发货', desc:'包裹信息记录，物流全程跟踪', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon2-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon2.png'},
-        {isHot:false,title:'商品管理', desc:'多店铺商品统一管理', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon3-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon3.png'},
-        {isHot:false,title:'库存记录精准', desc:'库存精准扣增，成本一目了然', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon4-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon4.png'},
-        {isHot:true,title:'高效售后处理', desc:'售后处理，掌控来龙去脉', bigIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon5-1.png', samllIcon:'https://www.yiguaerp.com/Assets/img/home/tabIcon5.png'},
+        {isHot:false,title:'多店统一管理', desc:'支持多店铺，方便视频号电商创业', bigIcon:require('./images/tabIcon1-1.png'), samllIcon:require('./images/tabIcon1.png')},
+        {isHot:false,title:'高效订单发货', desc:'包裹信息记录，物流全程跟踪', bigIcon:require('./images/tabIcon2-1.png'), samllIcon:require('./images/tabIcon2.png')},
+        {isHot:false,title:'商品管理', desc:'多店铺商品统一管理', bigIcon:require('./images/tabIcon3-1.png'), samllIcon:require('./images/tabIcon3.png')},
+        {isHot:false,title:'库存记录精准', desc:'库存精准扣增，成本一目了然', bigIcon:require('./images/tabIcon4-1.png'), samllIcon:require('./images/tabIcon4.png')},
+        {isHot:true,title:'高效售后处理', desc:'售后处理，掌控来龙去脉', bigIcon:require('./images/tabIcon5-1.png'), samllIcon:require('./images/tabIcon5.png')},
       ],
       solutionList:{
-        title:'功能齐全、降本增效，视频号小店全场景解决方案',
+        title:'功能齐全、降本增效，电商业务全场景解决方案',
         contentList:[
           {
             ref:'boxSection201',
