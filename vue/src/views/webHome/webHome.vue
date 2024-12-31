@@ -56,7 +56,7 @@
                 <a href="javascript:void(0)"
                   class="to-website section1-concat-btn concat-btn-click">
                   <span class="flex-item-center">
-                    99元体验
+                    99元体验3个月
                     <div class="concat-arrow-right">
                       <i class="el-icon-right"></i>
                     </div>
