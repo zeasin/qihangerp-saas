@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: qihangerp-weishop
   messages:
     # 国际化资源文件路径
     basename: i18n/messages
