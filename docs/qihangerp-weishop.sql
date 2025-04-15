@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 80200
  Source Host           : localhost:3306
- Source Schema         : qihangerp-sass
+ Source Schema         : qihangerp-weishop
 
  Target Server Type    : MySQL
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 15/04/2025 22:15:03
+ Date: 15/04/2025 23:02:23
 */
 
 SET NAMES utf8mb4;
@@ -375,7 +375,7 @@ CREATE TABLE `erp_goods_inventory`  (
   `updateBy` varchar(25) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `specIdIndex`(`specId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods_inventory
@@ -402,7 +402,7 @@ CREATE TABLE `erp_goods_inventory_detail`  (
   `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `createBy` varchar(25) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存明细表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存明细表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods_inventory_detail
@@ -460,7 +460,7 @@ CREATE TABLE `erp_goods_sku_attr`  (
   `v` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   `img` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1781988656135909377 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1781988656135909378 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods_sku_attr
@@ -707,7 +707,7 @@ CREATE TABLE `erp_purchase_order_item`  (
   INDEX `transType`(`trans_type`) USING BTREE,
   INDEX `iid`(`order_id`) USING BTREE,
   INDEX `id`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1782030968731791362 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '采购订单明细' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1782030968731791363 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '采购订单明细' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_purchase_order_item
@@ -853,7 +853,7 @@ CREATE TABLE `erp_shop`  (
 -- ----------------------------
 -- Records of erp_shop
 -- ----------------------------
-INSERT INTO `erp_shop` VALUES (6, 100, '视频号小店', 5, NULL, 9, 0, 1713696491, '啊啊啊v', 0, '3333232', '01', '', NULL, NULL, NULL, NULL, 'https://api.weixin.qq.com');
+INSERT INTO `erp_shop` VALUES (6, 100, '视频号小店', 5, NULL, 9, 0, 1744728376, '啊啊啊v', 0, '3333232', '01', '', NULL, NULL, NULL, NULL, 'https://api.weixin.qq.com');
 
 -- ----------------------------
 -- Table structure for erp_shop_goods
@@ -1306,7 +1306,7 @@ CREATE TABLE `fms_payable_agent_ship`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '财务管理-应付款-代发账单' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '财务管理-应付款-代发账单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of fms_payable_agent_ship
@@ -1547,7 +1547,7 @@ CREATE TABLE `sys_license`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_license
@@ -1570,7 +1570,7 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status`) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -1758,7 +1758,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_sys_oper_log_bt`(`business_type`) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status`) USING BTREE,
   INDEX `idx_sys_oper_log_ot`(`oper_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 173 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 174 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -2010,8 +2010,8 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2025-04-01', '0', '127.0.0.1', '2025-04-15 22:03:34', 'admin', '2023-08-07 19:31:37', '', '2025-04-15 22:03:33', '管理员');
-INSERT INTO `sys_user` VALUES (100, NULL, '15818590119', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-04-15 21:56:11', 'admin', '2024-04-21 10:36:49', 'admin', '2025-04-15 21:56:10', NULL);
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2025-04-01', '0', '127.0.0.1', '2025-04-15 23:00:53', 'admin', '2023-08-07 19:31:37', '', '2025-04-15 23:00:53', '管理员');
+INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-04-15 23:01:11', 'admin', '2024-04-21 10:36:49', 'admin', '2025-04-15 23:01:11', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -2121,7 +2121,7 @@ CREATE TABLE `wms_order_shipping`  (
   `update_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '仓库订单发货表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '仓库订单发货表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_order_shipping
@@ -2153,7 +2153,7 @@ CREATE TABLE `wms_stock_in_entry`  (
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1782052120938168321 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '入库单' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1782052120938168322 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '入库单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_stock_in_entry
@@ -2193,7 +2193,7 @@ CREATE TABLE `wms_stock_in_entry_item`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `specIndex`(`spec_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1782052151443341314 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '入库单明细' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1782052151443341315 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '入库单明细' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_stock_in_entry_item
@@ -2274,7 +2274,7 @@ CREATE TABLE `wms_stock_out_entry`  (
   `specUnit` int NOT NULL COMMENT '商品规格数',
   `specUnitTotal` int NOT NULL COMMENT '总件数',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_stock_out_entry
@@ -2302,7 +2302,7 @@ CREATE TABLE `wms_stock_out_entry_item`  (
   `status` int NOT NULL DEFAULT 0 COMMENT '状态：0待出库1部分出库2全部出库',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `specIndex`(`specId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单明细' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单明细' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_stock_out_entry_item
@@ -2327,7 +2327,7 @@ CREATE TABLE `wms_stock_out_entry_item_detail`  (
   `stockOutTime` datetime NULL DEFAULT NULL COMMENT '出库时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goods_stock_info_item_id_index`(`goodsInventoryDetailId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库明细详情' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库明细详情' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_stock_out_entry_item_detail
