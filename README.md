@@ -142,7 +142,7 @@
 + 前端打包:进入`vue`文件夹下运行`npm run build:prod`
 
 ### 5.2 启动后端
-+ 创建数据库`qihang-erp-weishop`并导入sql脚本(`db\qihang-erp-weishop.sql`)
++ 创建数据库`qihangerp-weishop`并导入sql脚本(`db\qihangerp-weishop.sql`)
 
 + 启动jar：`java -jar api-3.0.2.jar`
 

@@ -4,9 +4,8 @@ spring:
     basename: i18n/messages
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/qihangerp-sass?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://127.0.0.1:3306/qihangerp-weishop?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
-#    password: Andy@123!
     password: Andy_123
 
   data:
@@ -44,7 +43,7 @@ mybatis-plus:
 #  mapper-locations: classpath*:mappers/user/*.xml
 
 server:
-  port: 8088
+  port: 8099
 
 # 用户配置
 user:

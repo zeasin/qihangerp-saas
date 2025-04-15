@@ -47,7 +47,7 @@
       <el-table-column label="店铺名" align="center" prop="name" />
       <el-table-column label="平台" align="center" prop="type" >
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.type===5">微店视频号小店</el-tag>
+          <el-tag v-if="scope.row.type===5">微店小店</el-tag>
         </template>
       </el-table-column>
        <el-table-column label="appKey" align="center" prop="appKey" />
