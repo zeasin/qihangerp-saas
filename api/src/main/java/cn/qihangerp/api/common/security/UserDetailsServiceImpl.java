@@ -61,10 +61,12 @@ public class UserDetailsServiceImpl implements UserDetailsService
             log.info("登录用户：{} 已过期.", username);
             throw new ServiceException(MessageUtils.message("user.expiration"));
         }else{
-            Date expirationDate = DateUtils.dateTime("yyyy-MM-dd",user.getExpirationDate());
-            if(expirationDate.before(new Date())){
-                log.info("登录用户：{} 已过期.", username);
-                throw new ServiceException(MessageUtils.message("user.expiration"));
+            if(user.getUserId()!=1) {
+                Date expirationDate = DateUtils.dateTime("yyyy-MM-dd", user.getExpirationDate());
+                if (expirationDate.before(new Date())) {
+                    log.info("登录用户：{} 已过期.", username);
+                    throw new ServiceException(MessageUtils.message("user.expiration"));
+                }
             }
         }
 
