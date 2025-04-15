@@ -29,9 +29,10 @@ public class ShopController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('shop:shop:list')")
     @GetMapping("/list")
-    public TableDataInfo list(Shop shop)
-    {
-        shop.setTenantId(getUserId());
+    public TableDataInfo list(Shop shop) {
+        if (getUserId() != 1) {
+            shop.setTenantId(getUserId());
+        }
         List<Shop> list = shopService.selectShopList(shop);
         return getDataTable(list);
     }
@@ -66,9 +67,14 @@ public class ShopController extends BaseController {
     @PutMapping("/shop")
     public AjaxResult edit(@RequestBody Shop shop)
     {
-        shop.setTenantId(null);
-        shop.setModifyOn(System.currentTimeMillis()/1000);
-        return toAjax(shopService.updateById(shop));
+        Shop shopInfo = shopService.getById(shop.getId());
+        if(shopInfo.getTenantId()!=getUserId()){
+            return AjaxResult.error("不允许修改别人的店铺");
+        }else {
+            shop.setTenantId(null);
+            shop.setModifyOn(System.currentTimeMillis() / 1000);
+            return toAjax(shopService.updateById(shop));
+        }
     }
 
 
@@ -79,7 +85,12 @@ public class ShopController extends BaseController {
 	@DeleteMapping("/shop/{id}")
     public AjaxResult remove(@PathVariable Long id)
     {
-        return toAjax(shopService.removeById(id));
+        Shop shopInfo = shopService.getById(id);
+        if(shopInfo.getTenantId()!=getUserId()){
+            return AjaxResult.error("不允许删除别人的店铺");
+        }else {
+            return toAjax(shopService.removeById(id));
+        }
     }
 
 //    /**

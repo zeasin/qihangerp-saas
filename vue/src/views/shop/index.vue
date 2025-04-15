@@ -54,7 +54,8 @@
        <el-table-column label="appSercet" align="center" prop="appSercet" />
        <el-table-column label="accessToken" align="center" prop="accessToken" />
       <el-table-column label="描述" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="租户" v-if="userId===1" align="center" prop="tenantId" />
+      <el-table-column label="操作" v-if="userId>1" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-row>
           <el-button
@@ -128,6 +129,7 @@
 
 <script>
 import { listShop,listPlatform, getShop, delShop, addShop, updateShop } from "@/api/shop/shop";
+import {getUserProfile} from "@/api/system/user";
 
 export default {
   name: "Shop",
@@ -145,6 +147,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
+      userId: 0,
       // 店铺表格数据
       shopList: [],
       typeList: [],
@@ -173,6 +176,9 @@ export default {
     };
   },
   created() {
+    getUserProfile().then(resp=>{
+      this.userId = resp.data.userId;
+    })
     this.getList();
   },
   methods: {

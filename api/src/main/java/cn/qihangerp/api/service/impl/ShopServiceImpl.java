@@ -25,7 +25,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
     public List<Shop> selectShopList(Shop shop) {
         LambdaQueryWrapper<Shop> qw = new LambdaQueryWrapper<Shop>()
                 .eq(Shop::getType,5)
-                .eq(Shop::getTenantId,shop.getTenantId())
+                .eq(shop.getTenantId()!=null,Shop::getTenantId,shop.getTenantId())
                 ;
         return mapper.selectList(qw);
     }
