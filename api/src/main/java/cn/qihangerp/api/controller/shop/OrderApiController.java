@@ -5,6 +5,10 @@ import cn.qihangerp.api.domain.ErpShopPullLasttime;
 import cn.qihangerp.api.domain.ErpShopPullLogs;
 import cn.qihangerp.api.service.ErpShopPullLasttimeService;
 import cn.qihangerp.api.service.ErpShopPullLogsService;
+import cn.qihangerp.open.common.ApiResultVo;
+import cn.qihangerp.open.wei.WeiOrderApiHelper;
+import cn.qihangerp.open.wei.model.Order;
+import cn.qihangerp.open.wei.model.OrderDetailDeliverInfoAddress;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,20 +20,9 @@ import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.enums.EnumShopType;
 import cn.qihangerp.api.common.enums.HttpStatus;
 import cn.qihangerp.api.common.utils.StringUtils;
-import cn.qihangerp.api.common.wei.ApiCommon;
-import cn.qihangerp.api.common.wei.PullRequest;
-import cn.qihangerp.api.common.wei.RemoteUtil;
-import cn.qihangerp.api.common.wei.bo.CreateTimeRangeBo;
-import cn.qihangerp.api.common.wei.bo.OrderDetailBo;
-import cn.qihangerp.api.common.wei.bo.OrderListBo;
-import cn.qihangerp.api.common.wei.service.OrderApiService;
-import cn.qihangerp.api.common.wei.vo.OrderDetailVo;
-import cn.qihangerp.api.common.wei.vo.OrderListVo;
-import cn.qihangerp.api.common.wei.vo.OrderVoDeliverInfoAddress;
 import cn.qihangerp.api.domain.ShopOrder;
 import cn.qihangerp.api.domain.ShopOrderItem;
 import cn.qihangerp.api.service.ShopOrderService;
-
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -62,7 +55,7 @@ public class OrderApiController extends BaseController {
 
         var checkResult = apiCommon.checkBefore(params.getShopId());
         if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
-            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(),checkResult.getData());
+            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
         }
         String accessToken = checkResult.getData().getAccessToken();
         String serverUrl = checkResult.getData().getServerUrl();
@@ -71,155 +64,144 @@ public class OrderApiController extends BaseController {
 
         // 获取最后更新时间
         LocalDateTime startTime = null;
-        LocalDateTime  endTime = null;
-        ErpShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(getUserId(),params.getShopId(), "ORDER");
-        if(lasttime == null){
+        LocalDateTime endTime = null;
+        ErpShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(getUserId(), params.getShopId(), "ORDER");
+        if (lasttime == null) {
             endTime = LocalDateTime.now();
             startTime = endTime.minusDays(1);
-        }else{
+        } else {
             startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
             endTime = startTime.plusDays(1);//取24小时
-            if(endTime.isAfter(LocalDateTime.now())){
+            if (endTime.isAfter(LocalDateTime.now())) {
                 endTime = LocalDateTime.now();
             }
         }
 
+        ApiResultVo<Order> orderApiResultVo = WeiOrderApiHelper.pullOrderList(startTime, endTime, accessToken, null, null);
 
-        OrderApiService remoting = RemoteUtil.Remoting(serverUrl, OrderApiService.class);
-        OrderListBo apiBo = new OrderListBo();
-        apiBo.setPage_size(100);
-        CreateTimeRangeBo tbo= new CreateTimeRangeBo();
-        tbo.setStart_time(startTime.toInstant(ZoneOffset.ofHours(8)).toEpochMilli());
-        tbo.setEnd_time(endTime.toInstant(ZoneOffset.ofHours(8)).toEpochMilli());
-        apiBo.setCreate_time_range(tbo);
-
-        OrderListVo orderList = remoting.getOrderList(accessToken, apiBo);
         int insertSuccess = 0;//新增成功的订单
         int totalError = 0;
         int hasExistOrder = 0;//已存在的订单数
+        if (orderApiResultVo.getCode() == 0) {
+            if (orderApiResultVo.getList() != null) {
+                // 拉取到了数据 拉取详情
+                for (var orderInfo : orderApiResultVo.getList()) {
 
-        if(orderList.getErrcode() == 0) {
-            // 拉取到了数据 拉取详情
-            if(orderList.getOrder_id_list()!=null&&orderList.getOrder_id_list().length>0) {
-                for (var orderId : orderList.getOrder_id_list()) {
-                    OrderDetailBo bo = new OrderDetailBo();
-                    bo.setOrder_id(orderId.toString());
-                    OrderDetailVo orderDetail = remoting.getOrderDetail(accessToken, bo);
-                    if(orderDetail.getErrcode() == 0){
-                        ShopOrder order = new ShopOrder();
-                        order.setTenantId(getUserId());
-                        order.setOrderId(orderDetail.getOrder().getOrder_id());
-                        order.setShopId(params.getShopId().toString());
-                        order.setOpenid(orderDetail.getOrder().getOpenid());
-                        order.setCreateTime(orderDetail.getOrder().getCreate_time());
-                        order.setUpdateTime(orderDetail.getOrder().getUpdate_time());
-                        order.setUnionid(orderDetail.getOrder().getUnionid());
-                        order.setStatus(orderDetail.getOrder().getStatus());
-                        order.setAftersaleDetail(JSONObject.toJSONString(orderDetail.getOrder().getAftersale_detail()));
-                        order.setPayInfo(JSONObject.toJSONString(orderDetail.getOrder().getOrder_detail().getPay_info()));
-                        order.setProductPrice(orderDetail.getOrder().getOrder_detail().getPrice_info().getInteger("product_price"));
-                        order.setOrderPrice(orderDetail.getOrder().getOrder_detail().getPrice_info().getInteger("order_price"));
-                        order.setFreight(orderDetail.getOrder().getOrder_detail().getPrice_info().getInteger("freight"));
-                        order.setDiscountedPrice(orderDetail.getOrder().getOrder_detail().getPrice_info().getInteger("discounted_price"));
+                    ShopOrder order = new ShopOrder();
+                    order.setTenantId(getUserId());
+                    order.setOrderId(orderInfo.getOrder_id());
+                    order.setShopId(params.getShopId());
+                    order.setOpenid(orderInfo.getOpenid());
+                    order.setCreateTime(orderInfo.getCreate_time());
+                    order.setUpdateTime(orderInfo.getUpdate_time());
+                    order.setUnionid(orderInfo.getUnionid());
+                    order.setStatus(orderInfo.getStatus());
+                    order.setAftersaleDetail(JSONObject.toJSONString(orderInfo.getAftersale_detail()));
+                    order.setPayInfo(JSONObject.toJSONString(orderInfo.getOrder_detail().getPay_info()));
+                    order.setProductPrice(orderInfo.getOrder_detail().getPrice_info().getInteger("product_price"));
+                    order.setOrderPrice(orderInfo.getOrder_detail().getPrice_info().getInteger("order_price"));
+                    order.setFreight(orderInfo.getOrder_detail().getPrice_info().getInteger("freight"));
+                    order.setDiscountedPrice(orderInfo.getOrder_detail().getPrice_info().getInteger("discounted_price"));
 
-                        OrderVoDeliverInfoAddress addressInfo = orderDetail.getOrder().getOrder_detail().getDelivery_info().getAddress_info();
-                        order.setUserName(addressInfo.getUser_name());
-                        order.setPostalCode(addressInfo.getPostal_code());
-                        order.setProvinceName(addressInfo.getProvince_name());
-                        order.setCityName(addressInfo.getCity_name());
-                        order.setCountyName(addressInfo.getCounty_name());
-                        order.setDetailInfo(addressInfo.getDetail_info());
-                        order.setTelNumber(addressInfo.getTel_number());
-                        order.setHouseNumber(addressInfo.getHouse_number());
-                        order.setVirtualOrderTelNumber(addressInfo.getVirtual_order_tel_number());
-                        order.setTelNumberExtInfo(JSONObject.toJSONString(addressInfo.getTel_number_ext_info()));
-                        order.setUseTelNumber(addressInfo.getUse_tel_number());
-                        order.setHashCode(addressInfo.getHash_code());
+                    var addressInfo = orderInfo.getOrder_detail().getDelivery_info().getAddress_info();
+                    order.setUserName(addressInfo.getUser_name());
+                    order.setPostalCode(addressInfo.getPostal_code());
+                    order.setProvinceName(addressInfo.getProvince_name());
+                    order.setCityName(addressInfo.getCity_name());
+                    order.setCountyName(addressInfo.getCounty_name());
+                    order.setDetailInfo(addressInfo.getDetail_info());
+                    order.setTelNumber(addressInfo.getTel_number());
+                    order.setHouseNumber(addressInfo.getHouse_number());
+                    order.setVirtualOrderTelNumber(addressInfo.getVirtual_order_tel_number());
+                    order.setTelNumberExtInfo(JSONObject.toJSONString(addressInfo.getTel_number_ext_info()));
+                    order.setUseTelNumber(addressInfo.getUse_tel_number());
+                    order.setHashCode(addressInfo.getHash_code());
 
-                        order.setDeliveryProductInfo(JSONObject.toJSONString(orderDetail.getOrder().getOrder_detail().getDelivery_info().getDelivery_product_info()));
+                    order.setDeliveryProductInfo(JSONObject.toJSONString(orderInfo.getOrder_detail().getDelivery_info().getDelivery_product_info()));
 
-                        order.setShipDoneTime(orderDetail.getOrder().getOrder_detail().getDelivery_info().getShip_done_time());
-                        order.setEwaybillOrderCode(orderDetail.getOrder().getOrder_detail().getDelivery_info().getEwaybill_order_code());
+                    order.setShipDoneTime(orderInfo.getOrder_detail().getDelivery_info().getShip_done_time());
+                    order.setEwaybillOrderCode(orderInfo.getOrder_detail().getDelivery_info().getEwaybill_order_code());
 
-                        order.setSettleInfo(JSONObject.toJSONString(orderDetail.getOrder().getOrder_detail().getSettle_info()));
+                    order.setSettleInfo(JSONObject.toJSONString(orderInfo.getOrder_detail().getSettle_info()));
 
-                        List<ShopOrderItem> itemList = new ArrayList<>();
-                        for (var item:orderDetail.getOrder().getOrder_detail().getProduct_infos()) {
-                            ShopOrderItem oi = new ShopOrderItem();
-                            oi.setTenantId(getUserId());
-                            oi.setProductId(item.getProduct_id());
-                            oi.setSkuId(item.getSku_id());
-                            oi.setThumbImg(item.getThumb_img());
-                            oi.setSkuCnt(item.getSku_cnt());
-                            oi.setSalePrice(item.getSale_price());
-                            oi.setTitle(item.getTitle());
-                            oi.setOnAftersaleSkuCnt(item.getOn_aftersale_sku_cnt());
-                            oi.setFinishAftersaleSkuCnt(item.getFinish_aftersale_sku_cnt());
-                            oi.setSkuCode(item.getSku_code());
-                            oi.setMarketPrice(item.getMarket_price());
-                            oi.setRealPrice(item.getReal_price());
-                            oi.setOutProductId(item.getOut_product_id());
-                            oi.setOutSkuId(item.getOut_sku_id());
-                            oi.setIsDiscounted(item.getIs_discounted() + "");
-                            oi.setEstimatePrice(item.getEstimate_price());
-                            oi.setIsChangePrice(item.getIs_change_price() + "");
-                            oi.setChangePrice(item.getChange_price());
-                            oi.setOutWarehouseId(item.getOut_warehouse_id());
-                            oi.setUseDeduction(item.getUse_deduction() + "");
+                    List<ShopOrderItem> itemList = new ArrayList<>();
+                    for (var item : orderInfo.getOrder_detail().getProduct_infos()) {
+                        ShopOrderItem oi = new ShopOrderItem();
+                        oi.setTenantId(order.getTenantId());
+                        oi.setShopOrderId(order.getOrderId());
+                        oi.setShopId(params.getShopId());
+                        oi.setProductId(item.getProduct_id());
+                        oi.setSkuId(item.getSku_id());
+                        oi.setThumbImg(item.getThumb_img());
+                        oi.setSkuCnt(item.getSku_cnt());
+                        oi.setSalePrice(item.getSale_price());
+                        oi.setTitle(item.getTitle());
+                        oi.setOnAftersaleSkuCnt(item.getOn_aftersale_sku_cnt());
+                        oi.setFinishAftersaleSkuCnt(item.getFinish_aftersale_sku_cnt());
+                        oi.setSkuCode(item.getSku_code());
+                        oi.setMarketPrice(item.getMarket_price());
+                        oi.setRealPrice(item.getReal_price());
+                        oi.setOutProductId(item.getOut_product_id());
+                        oi.setOutSkuId(item.getOut_sku_id());
+                        oi.setIsDiscounted(item.getIs_discounted() + "");
+                        oi.setEstimatePrice(item.getEstimate_price());
+                        oi.setIsChangePrice(item.getIs_change_price() + "");
+                        oi.setChangePrice(item.getChange_price());
+                        oi.setOutWarehouseId(item.getOut_warehouse_id());
+                        oi.setUseDeduction(item.getUse_deduction() + "");
 
-                            oi.setSkuAttrs(JSONObject.toJSONString(item.getSku_attrs()));
-                            oi.setSkuDeliverInfo(JSONObject.toJSONString(item.getSku_deliver_info()));
-                            oi.setExtraService(JSONObject.toJSONString(item.getExtra_service()));
-                            oi.setOrderProductCouponInfoList(JSONObject.toJSONString(item.getOrder_product_coupon_info_list()));
-                            itemList.add(oi);
-                        }
-                        order.setItems(itemList);
-                        var result = weiOrderService.saveOrder(params.getShopId(),order);
-                        if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
-                            //已经存在
-                            hasExistOrder++;
-                        } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
-                            insertSuccess++;
-                        } else {
-                            totalError++;
-                        }
+                        oi.setSkuAttrs(JSONObject.toJSONString(item.getSku_attrs()));
+                        oi.setSkuDeliverInfo(JSONObject.toJSONString(item.getSku_deliver_info()));
+                        oi.setExtraService(JSONObject.toJSONString(item.getExtra_service()));
+                        oi.setOrderProductCouponInfoList(JSONObject.toJSONString(item.getOrder_product_coupon_info_list()));
+                        itemList.add(oi);
+                    }
+                    order.setItems(itemList);
+                    var result = weiOrderService.saveOrder(params.getShopId(), order);
+                    if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
+                        //已经存在
+                        hasExistOrder++;
+                    } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
+                        insertSuccess++;
+                    } else {
+                        totalError++;
                     }
                 }
             }
 
+
+            // 更新时间
+            if (lasttime == null) {
+                // 新增
+                ErpShopPullLasttime insertLasttime = new ErpShopPullLasttime();
+                insertLasttime.setTenantId(getUserId());
+                insertLasttime.setShopId(params.getShopId());
+                insertLasttime.setCreateTime(new Date());
+                insertLasttime.setLasttime(endTime);
+                insertLasttime.setPullType("ORDER");
+                pullLasttimeService.save(insertLasttime);
+
+            } else {
+                // 修改
+                ErpShopPullLasttime updateLasttime = new ErpShopPullLasttime();
+                updateLasttime.setId(lasttime.getId());
+                updateLasttime.setUpdateTime(new Date());
+                updateLasttime.setLasttime(endTime);
+                pullLasttimeService.updateById(updateLasttime);
+            }
+
+            ErpShopPullLogs logs = new ErpShopPullLogs();
+            logs.setTenantId(getUserId());
+            logs.setShopType(EnumShopType.WEI.getIndex());
+            logs.setShopId(params.getShopId());
+            logs.setPullType("ORDER");
+            logs.setPullWay("主动拉取");
+            logs.setPullParams("{startTime:" + startTime + ",endTime:" + endTime + "}");
+            logs.setPullResult("{insert:" + insertSuccess + ",update:" + hasExistOrder + ",fail:" + totalError + "}");
+            logs.setPullTime(currDateTime);
+            logs.setDuration(System.currentTimeMillis() - beginTime);
+            pullLogsService.save(logs);
         }
-        // 更新时间
-        if(lasttime == null){
-            // 新增
-            ErpShopPullLasttime insertLasttime = new ErpShopPullLasttime();
-            insertLasttime.setTenantId(getUserId());
-            insertLasttime.setShopId(params.getShopId());
-            insertLasttime.setCreateTime(new Date());
-            insertLasttime.setLasttime(endTime);
-            insertLasttime.setPullType("ORDER");
-            pullLasttimeService.save(insertLasttime);
-
-        }else {
-            // 修改
-            ErpShopPullLasttime updateLasttime = new ErpShopPullLasttime();
-            updateLasttime.setId(lasttime.getId());
-            updateLasttime.setUpdateTime(new Date());
-            updateLasttime.setLasttime(endTime);
-            pullLasttimeService.updateById(updateLasttime);
-        }
-
-        ErpShopPullLogs logs = new ErpShopPullLogs();
-        logs.setTenantId(getUserId());
-        logs.setShopType(EnumShopType.WEI.getIndex());
-        logs.setShopId(params.getShopId());
-        logs.setPullType("ORDER");
-        logs.setPullWay("主动拉取");
-        logs.setPullParams("{startTime:"+startTime+",endTime:"+endTime+"}");
-        logs.setPullResult("{insert:"+insertSuccess+",update:"+hasExistOrder+",fail:"+totalError+"}");
-        logs.setPullTime(currDateTime);
-        logs.setDuration(System.currentTimeMillis() - beginTime);
-        pullLogsService.save(logs);
-
         return AjaxResult.success();
     }
 
@@ -234,7 +216,7 @@ public class OrderApiController extends BaseController {
         if (params.getShopId() == null || params.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
-        if (StringUtils.isEmpty(params.getOrderId())) {
+        if (params.getOrderId()==null || params.getOrderId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有订单编号");
         }
 
@@ -250,80 +232,80 @@ public class OrderApiController extends BaseController {
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
 
-        OrderApiService remoting = RemoteUtil.Remoting(serverUrl, OrderApiService.class);
-        OrderDetailBo bo = new OrderDetailBo();
-        bo.setOrder_id(params.getOrderId());
-        OrderDetailVo orderDetail = remoting.getOrderDetail(accessToken, bo);
-        if (orderDetail.getErrcode() == 0) {
-            ShopOrder order = new ShopOrder();
-            order.setTenantId(getUserId());
-            order.setOrderId(orderDetail.getOrder().getOrder_id());
-            order.setShopId(params.getShopId().toString());
-            order.setOpenid(orderDetail.getOrder().getOpenid());
-            order.setCreateTime(orderDetail.getOrder().getCreate_time());
-            order.setUpdateTime(orderDetail.getOrder().getUpdate_time());
-            order.setUnionid(orderDetail.getOrder().getUnionid());
-            order.setStatus(orderDetail.getOrder().getStatus());
-            order.setAftersaleDetail(JSONObject.toJSONString(orderDetail.getOrder().getAftersale_detail()));
-            order.setPayInfo(JSONObject.toJSONString(orderDetail.getOrder().getOrder_detail().getPay_info()));
-            order.setProductPrice(orderDetail.getOrder().getOrder_detail().getPrice_info().getInteger("product_price"));
-            order.setOrderPrice(orderDetail.getOrder().getOrder_detail().getPrice_info().getInteger("order_price"));
-            order.setFreight(orderDetail.getOrder().getOrder_detail().getPrice_info().getInteger("freight"));
-            order.setDiscountedPrice(orderDetail.getOrder().getOrder_detail().getPrice_info().getInteger("discounted_price"));
+        ApiResultVo<Order> apiResultVo = WeiOrderApiHelper.pullOrderDetail(params.getOrderId(), accessToken);
+        if(apiResultVo.getCode() == 0) {
+            if (apiResultVo.getData() != null) {
 
-            OrderVoDeliverInfoAddress addressInfo = orderDetail.getOrder().getOrder_detail().getDelivery_info().getAddress_info();
-            order.setUserName(addressInfo.getUser_name());
-            order.setPostalCode(addressInfo.getPostal_code());
-            order.setProvinceName(addressInfo.getProvince_name());
-            order.setCityName(addressInfo.getCity_name());
-            order.setCountyName(addressInfo.getCounty_name());
-            order.setDetailInfo(addressInfo.getDetail_info());
-            order.setTelNumber(addressInfo.getTel_number());
-            order.setHouseNumber(addressInfo.getHouse_number());
-            order.setVirtualOrderTelNumber(addressInfo.getVirtual_order_tel_number());
-            order.setTelNumberExtInfo(JSONObject.toJSONString(addressInfo.getTel_number_ext_info()));
-            order.setUseTelNumber(addressInfo.getUse_tel_number());
-            order.setHashCode(addressInfo.getHash_code());
+                ShopOrder order = new ShopOrder();
+                order.setOrderId(apiResultVo.getData().getOrder_id());
+//                order.setShopId(params.getShopId());
+                order.setOpenid(apiResultVo.getData().getOpenid());
+                order.setCreateTime(apiResultVo.getData().getCreate_time());
+                order.setUpdateTime(apiResultVo.getData().getUpdate_time());
+                order.setUnionid(apiResultVo.getData().getUnionid());
+                order.setStatus(apiResultVo.getData().getStatus());
+                order.setAftersaleDetail(JSONObject.toJSONString(apiResultVo.getData().getAftersale_detail()));
+                order.setPayInfo(JSONObject.toJSONString(apiResultVo.getData().getOrder_detail().getPay_info()));
+                order.setProductPrice(apiResultVo.getData().getOrder_detail().getPrice_info().getInteger("product_price"));
+                order.setOrderPrice(apiResultVo.getData().getOrder_detail().getPrice_info().getInteger("order_price"));
+                order.setFreight(apiResultVo.getData().getOrder_detail().getPrice_info().getInteger("freight"));
+                order.setDiscountedPrice(apiResultVo.getData().getOrder_detail().getPrice_info().getInteger("discounted_price"));
 
-            order.setDeliveryProductInfo(JSONObject.toJSONString(orderDetail.getOrder().getOrder_detail().getDelivery_info().getDelivery_product_info()));
+                OrderDetailDeliverInfoAddress addressInfo = apiResultVo.getData().getOrder_detail().getDelivery_info().getAddress_info();
+                order.setUserName(addressInfo.getUser_name());
+                order.setPostalCode(addressInfo.getPostal_code());
+                order.setProvinceName(addressInfo.getProvince_name());
+                order.setCityName(addressInfo.getCity_name());
+                order.setCountyName(addressInfo.getCounty_name());
+                order.setDetailInfo(addressInfo.getDetail_info());
+                order.setTelNumber(addressInfo.getTel_number());
+                order.setHouseNumber(addressInfo.getHouse_number());
+                order.setVirtualOrderTelNumber(addressInfo.getVirtual_order_tel_number());
+                order.setTelNumberExtInfo(JSONObject.toJSONString(addressInfo.getTel_number_ext_info()));
+                order.setUseTelNumber(addressInfo.getUse_tel_number());
+                order.setHashCode(addressInfo.getHash_code());
 
-            order.setShipDoneTime(orderDetail.getOrder().getOrder_detail().getDelivery_info().getShip_done_time());
-            order.setEwaybillOrderCode(orderDetail.getOrder().getOrder_detail().getDelivery_info().getEwaybill_order_code());
+                order.setDeliveryProductInfo(JSONObject.toJSONString(apiResultVo.getData().getOrder_detail().getDelivery_info().getDelivery_product_info()));
 
-            order.setSettleInfo(JSONObject.toJSONString(orderDetail.getOrder().getOrder_detail().getSettle_info()));
+                order.setShipDoneTime(apiResultVo.getData().getOrder_detail().getDelivery_info().getShip_done_time());
+                order.setEwaybillOrderCode(apiResultVo.getData().getOrder_detail().getDelivery_info().getEwaybill_order_code());
 
-            List<ShopOrderItem> itemList = new ArrayList<>();
-            for (var item : orderDetail.getOrder().getOrder_detail().getProduct_infos()) {
-                ShopOrderItem oi = new ShopOrderItem();
-                oi.setTenantId(getUserId());
-                oi.setProductId(item.getProduct_id());
-                oi.setSkuId(item.getSku_id());
-                oi.setThumbImg(item.getThumb_img());
-                oi.setSkuCnt(item.getSku_cnt());
-                oi.setSalePrice(item.getSale_price());
-                oi.setTitle(item.getTitle());
-                oi.setOnAftersaleSkuCnt(item.getOn_aftersale_sku_cnt());
-                oi.setFinishAftersaleSkuCnt(item.getFinish_aftersale_sku_cnt());
-                oi.setSkuCode(item.getSku_code());
-                oi.setMarketPrice(item.getMarket_price());
-                oi.setRealPrice(item.getReal_price());
-                oi.setOutProductId(item.getOut_product_id());
-                oi.setOutSkuId(item.getOut_sku_id());
-                oi.setIsDiscounted(item.getIs_discounted() + "");
-                oi.setEstimatePrice(item.getEstimate_price());
-                oi.setIsChangePrice(item.getIs_change_price() + "");
-                oi.setChangePrice(item.getChange_price());
-                oi.setOutWarehouseId(item.getOut_warehouse_id());
-                oi.setUseDeduction(item.getUse_deduction() + "");
+                order.setSettleInfo(JSONObject.toJSONString(apiResultVo.getData().getOrder_detail().getSettle_info()));
 
-                oi.setSkuAttrs(JSONObject.toJSONString(item.getSku_attrs()));
-                oi.setSkuDeliverInfo(JSONObject.toJSONString(item.getSku_deliver_info()));
-                oi.setExtraService(JSONObject.toJSONString(item.getExtra_service()));
-                oi.setOrderProductCouponInfoList(JSONObject.toJSONString(item.getOrder_product_coupon_info_list()));
-                itemList.add(oi);
+                List<ShopOrderItem> itemList = new ArrayList<>();
+                for (var item : apiResultVo.getData().getOrder_detail().getProduct_infos()) {
+                    ShopOrderItem oi = new ShopOrderItem();
+                    oi.setShopOrderId(order.getOrderId());
+                    oi.setShopId(params.getShopId());
+                    oi.setProductId(item.getProduct_id());
+                    oi.setSkuId(item.getSku_id());
+                    oi.setThumbImg(item.getThumb_img());
+                    oi.setSkuCnt(item.getSku_cnt());
+                    oi.setSalePrice(item.getSale_price());
+                    oi.setTitle(item.getTitle());
+                    oi.setOnAftersaleSkuCnt(item.getOn_aftersale_sku_cnt());
+                    oi.setFinishAftersaleSkuCnt(item.getFinish_aftersale_sku_cnt());
+                    oi.setSkuCode(item.getSku_code());
+                    oi.setMarketPrice(item.getMarket_price());
+                    oi.setRealPrice(item.getReal_price());
+                    oi.setOutProductId(item.getOut_product_id());
+                    oi.setOutSkuId(item.getOut_sku_id());
+                    oi.setIsDiscounted(item.getIs_discounted() + "");
+                    oi.setEstimatePrice(item.getEstimate_price());
+                    oi.setIsChangePrice(item.getIs_change_price() + "");
+                    oi.setChangePrice(item.getChange_price());
+                    oi.setOutWarehouseId(item.getOut_warehouse_id());
+                    oi.setUseDeduction(item.getUse_deduction() + "");
+
+                    oi.setSkuAttrs(JSONObject.toJSONString(item.getSku_attrs()));
+                    oi.setSkuDeliverInfo(JSONObject.toJSONString(item.getSku_deliver_info()));
+                    oi.setExtraService(JSONObject.toJSONString(item.getExtra_service()));
+                    oi.setOrderProductCouponInfoList(JSONObject.toJSONString(item.getOrder_product_coupon_info_list()));
+                    itemList.add(oi);
+                }
+                order.setItems(itemList);
+                weiOrderService.saveOrder(params.getShopId(), order);
             }
-            order.setItems(itemList);
-            weiOrderService.saveOrder(params.getShopId(), order);
         }
 
         return AjaxResult.success();

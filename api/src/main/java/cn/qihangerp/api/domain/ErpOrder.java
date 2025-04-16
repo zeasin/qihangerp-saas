@@ -33,7 +33,7 @@ public class ErpOrder implements Serializable {
     /**
      * 店铺ID
      */
-    private String shopId;
+    private Long shopId;
     private Long tenantId;
 
     /**

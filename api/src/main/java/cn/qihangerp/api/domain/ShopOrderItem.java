@@ -22,7 +22,7 @@ public class ShopOrderItem implements Serializable {
      */
     private String shopOrderId;
     private Long tenantId;
-    private String shopId;
+    private Long shopId;
 
     /**
      * 商品spuid

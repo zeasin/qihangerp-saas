@@ -80,7 +80,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                         // 不处理
                     } else {
                         // 新增
-                        item.setShopId(shopId.toString());
+                        item.setShopId(shopId);
                         item.setShopOrderId(update.getId());
                         itemMapper.insert(item);
                     }
@@ -88,11 +88,11 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                 return ResultVo.error(ResultVoEnum.DataExist, "订单已经存在，更新成功");
             } else {
                 // 不存在，新增
-                order.setShopId(shopId.toString());
+                order.setShopId(shopId);
                 mapper.insert(order);
                 // 添加item
                 for (var item : order.getItems()) {
-                    item.setShopId(shopId.toString());
+                    item.setShopId(shopId);
                     item.setShopOrderId(order.getId());
                     itemMapper.insert(item);
                 }

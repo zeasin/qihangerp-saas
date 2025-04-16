@@ -97,7 +97,7 @@ public class ShopGoods implements Serializable {
     /**
      * 商品草稿最近一次修改时间
      */
-    private Integer editTime;
+    private String editTime;
 
     @TableField(exist = false)
     private List<ShopGoodsSku> skus;

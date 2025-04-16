@@ -3,6 +3,9 @@ package cn.qihangerp.api.controller.shop;
 import cn.qihangerp.api.common.BaseController;
 import cn.qihangerp.api.service.ErpShopPullLasttimeService;
 import cn.qihangerp.api.service.ErpShopPullLogsService;
+import cn.qihangerp.open.common.ApiResultVo;
+import cn.qihangerp.open.wei.WeiRefundApiHelper;
+import cn.qihangerp.open.wei.model.AfterSaleOrder;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,15 +16,8 @@ import cn.qihangerp.api.common.AjaxResult;
 import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.enums.EnumShopType;
 import cn.qihangerp.api.common.enums.HttpStatus;
-import cn.qihangerp.api.common.wei.ApiCommon;
-import cn.qihangerp.api.common.wei.PullRequest;
-import cn.qihangerp.api.common.wei.RemoteUtil;
-import cn.qihangerp.api.common.wei.bo.*;
-import cn.qihangerp.api.common.wei.service.RefundApiService;
-import cn.qihangerp.api.common.wei.vo.*;
 import cn.qihangerp.api.domain.*;
 import cn.qihangerp.api.service.WeiRefundService;
-
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
@@ -68,66 +64,59 @@ public class RefundApiController extends BaseController {
             }
         }
 
-
-        RefundApiService remoting = RemoteUtil.Remoting(serverUrl, RefundApiService.class);
-        RefundListBo apiBo = new RefundListBo();
-        Long begin = startTime.toInstant(ZoneOffset.ofHours(8)).toEpochMilli() / 1000;
-        Long end = endTime.toInstant(ZoneOffset.ofHours(8)).toEpochMilli() / 1000;
-        apiBo.setBegin_create_time(begin.intValue());
-        apiBo.setEnd_create_time(end.intValue());
+        ApiResultVo<AfterSaleOrder> apiResultVo = WeiRefundApiHelper.pullRefundList(startTime, endTime, accessToken);
 
 
-        RefundListVo refundList = remoting.getRefundList(accessToken, apiBo);
         int insertSuccess = 0;//新增成功的订单
         int totalError = 0;
         int hasExistOrder = 0;//已存在的订单数
 
-        if(refundList.getErrcode() == 0) {
+        if(apiResultVo.getCode() == 0) {
             // 拉取到了数据 拉取详情
-            if(refundList.getAfter_sale_order_id_list()!=null&&refundList.getAfter_sale_order_id_list().length>0) {
-                for (var refundId : refundList.getAfter_sale_order_id_list()) {
-                    RefundDetailBo bo = new RefundDetailBo();
-                    bo.setAfter_sale_order_id(refundId.toString());
-                    RefundDetailVo refundDetail = remoting.getRefundDetail(accessToken, bo);
-                    String s="";
-                    if(refundDetail.getErrcode() == 0){
-                        WeiRefund refund = new WeiRefund();
-                        refund.setOrderId(refundDetail.getAfter_sale_order().getOrder_id());
-                        refund.setAfterSaleOrderId(refundDetail.getAfter_sale_order().getAfter_sale_order_id());
-                        refund.setShopId(params.getShopId());
-                        refund.setStatus(refundDetail.getAfter_sale_order().getStatus());
-                        refund.setOpenid(refundDetail.getAfter_sale_order().getOpenid());
-                        refund.setUnionid(refundDetail.getAfter_sale_order().getUnionid());
-                        refund.setProductId(refundDetail.getAfter_sale_order().getProduct_info().getString("product_id"));
-                        refund.setSkuId(refundDetail.getAfter_sale_order().getProduct_info().getString("sku_id"));
-                        refund.setCount(refundDetail.getAfter_sale_order().getProduct_info().getInteger("count"));
-                        refund.setFastRefund(refundDetail.getAfter_sale_order().getProduct_info().getString("fast_refund"));
-                        refund.setRefundAmount(refundDetail.getAfter_sale_order().getRefund_info().getInteger("amount"));
-                        refund.setRefundReason(refundDetail.getAfter_sale_order().getRefund_info().getInteger("refund_reason"));
-                        refund.setReturnWaybillId(refundDetail.getAfter_sale_order().getReturn_info().getString("waybill_id"));
-                        refund.setReturnDeliveryName(refundDetail.getAfter_sale_order().getReturn_info().getString("delivery_name"));
-                        refund.setReturnDeliveryId(refundDetail.getAfter_sale_order().getReturn_info().getString("delivery_id"));
-                        refund.setMerchantUploadInfo(JSONObject.toJSONString(refundDetail.getAfter_sale_order().getMerchant_upload_info()));
-                        refund.setCreateTime(refundDetail.getAfter_sale_order().getCreate_time());
-                        refund.setUpdateTime(refundDetail.getAfter_sale_order().getUpdate_time());
-                        refund.setReason(refundDetail.getAfter_sale_order().getReason());
-                        refund.setReasonText(refundDetail.getAfter_sale_order().getReason_text());
-                        refund.setType(refundDetail.getAfter_sale_order().getType());
-                        refund.setComplaintId(refundDetail.getAfter_sale_order().getComplaint_id());
-                        refund.setRefundResp(JSONObject.toJSONString(refundDetail.getAfter_sale_order().getRefund_resp()));
-                        refund.setDetails(JSONObject.toJSONString(refundDetail.getAfter_sale_order().getDetails()));
+            if(apiResultVo.getList()!=null) {
+                for (var refundInfo : apiResultVo.getList()) {
 
-                        var result = refundService.saveRefund(params.getShopId(),refund);
-                        if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
-                            //已经存在
-                            hasExistOrder++;
-                        } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
-                            insertSuccess++;
-                        } else {
-                            totalError++;
-                        }
+                    WeiRefund refund = new WeiRefund();
+//                    refund.setten
+                    refund.setOrderId(refundInfo.getOrder_id());
+                    refund.setAfterSaleOrderId(refundInfo.getAfter_sale_order_id());
+                    refund.setShopId(params.getShopId());
+                    refund.setStatus(refundInfo.getStatus());
+                    refund.setOpenid(refundInfo.getOpenid());
+                    refund.setUnionid(refundInfo.getUnionid());
+                    refund.setProductId(refundInfo.getProduct_info().getString("product_id"));
+                    refund.setSkuId(refundInfo.getProduct_info().getString("sku_id"));
+                    refund.setCount(refundInfo.getProduct_info().getInteger("count"));
+                    refund.setFastRefund(refundInfo.getProduct_info().getString("fast_refund"));
+                    refund.setRefundAmount(refundInfo.getRefund_info().getInteger("amount"));
+                    refund.setRefundReason(refundInfo.getRefund_info().getInteger("refund_reason"));
+                    refund.setReturnWaybillId(refundInfo.getReturn_info().getString("waybill_id"));
+                    refund.setReturnDeliveryName(refundInfo.getReturn_info().getString("delivery_name"));
+                    refund.setReturnDeliveryId(refundInfo.getReturn_info().getString("delivery_id"));
+                    refund.setMerchantUploadInfo(JSONObject.toJSONString(refundInfo.getMerchant_upload_info()));
+                    refund.setCreateTime(refundInfo.getCreate_time());
+                    refund.setUpdateTime(refundInfo.getUpdate_time());
+                    refund.setReason(refundInfo.getReason());
+                    refund.setReasonText(refundInfo.getReason_text());
+                    refund.setType(refundInfo.getType());
+                    refund.setComplaintId(refundInfo.getComplaint_id());
+                    refund.setRefundResp(JSONObject.toJSONString(refundInfo.getRefund_resp()));
+                    refund.setDetails(JSONObject.toJSONString(refundInfo.getDetails()));
+
+                    var result = refundService.saveRefund(params.getShopId(), refund);
+                    if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
+                        //已经存在
+//                        kafkaTemplate.send(MqType.REFUND_MQ, JSONObject.toJSONString(MqMessage.build(EnumShopType.DOU, MqType.REFUND_MESSAGE,refund.getAfterSaleOrderId())));
+                        hasExistOrder++;
+                    } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
+//                        kafkaTemplate.send(MqType.REFUND_MQ, JSONObject.toJSONString(MqMessage.build(EnumShopType.DOU, MqType.REFUND_MESSAGE,refund.getAfterSaleOrderId())));
+                        insertSuccess++;
+                    } else {
+                        totalError++;
                     }
+
                 }
+
             }
 
         }

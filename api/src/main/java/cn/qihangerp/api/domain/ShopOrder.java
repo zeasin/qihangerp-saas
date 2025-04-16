@@ -23,7 +23,7 @@ public class ShopOrder implements Serializable {
     /**
      * 店铺id
      */
-    private String shopId;
+    private Long shopId;
     private Long tenantId;
 
     /**

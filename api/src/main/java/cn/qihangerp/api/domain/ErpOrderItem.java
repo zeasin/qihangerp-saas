@@ -14,7 +14,7 @@ public class ErpOrderItem implements Serializable {
      * id，自增
      */
     private Long id;
-    private String shopId;
+    private Long shopId;
     private Long tenantId;
 
     /**
