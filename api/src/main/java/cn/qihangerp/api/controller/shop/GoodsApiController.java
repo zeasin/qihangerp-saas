@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@RequestMapping("/goods")
+@RequestMapping("/shop/goods")
 @RestController
 @AllArgsConstructor
 public class GoodsApiController extends BaseController {
@@ -74,7 +74,8 @@ public class GoodsApiController extends BaseController {
                 List<ShopGoodsSku> skuList = new ArrayList<>();
                 for (var sku:product.getSkus()) {
                     ShopGoodsSku goodsSku = new ShopGoodsSku();
-
+                    goodsSku.setTenantId(goods.getTenantId());
+                    goodsSku.setShopId(goods.getShopId());
                     goodsSku.setSkuId(sku.getSku_id());
                     goodsSku.setProductId(product.getProduct_id());
                     goodsSku.setOutSkuId(sku.getOut_sku_id());

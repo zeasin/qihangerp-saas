@@ -44,8 +44,9 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          type="danger"
+          type="primary"
           plain
+          :loading="pullLoading"
           icon="el-icon-download"
           size="mini"
           @click="handlePull"
@@ -57,48 +58,97 @@
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="商品标题" align="center" prop="title" />
-      <el-table-column label="商品ID" align="center" prop="productId" />
-      <el-table-column label="图片" align="center" prop="headImg" width="100">
-        <template slot-scope="scope">
-          <image-preview :src="scope.row.headImg" :width="50" :height="50"/>
-        </template>
-      </el-table-column>
-<!--      <el-table-column label="店铺" align="center" prop="shopId" >-->
+      <el-table-column label="商品标题" align="left" prop="title" />
+      <el-table-column label="平台商品ID" align="left" prop="productId" />
+<!--      <el-table-column label="主图" align="center" prop="headImg" width="100">-->
 <!--        <template slot-scope="scope">-->
-<!--          {{scope.row.shopId}}-->
-<!--          <el-tag size="small">{{shopList.find(x=>x.id === scope.row.shopId)?shopList.find(x=>x.id === scope.row.shopId).name:''}}</el-tag>-->
+<!--          <image-preview :src="scope.row.headImg" :width="50" :height="50"/>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-       <el-table-column label="属性" align="center" prop="attrs" >
-         <template slot-scope="scope">
-<!--           {{scope.row.attrs}}-->
-           <el-row v-for="item in JSON.parse(scope.row.attrs)" :key="item.attr_key" :gutter="20">
-             <div style="float: left;display: flex;align-items: center;" >
-               <div style="margin-left:10px">
-                 {{item.attr_key}}：{{item.attr_value}}&nbsp;
-               </div>
-             </div>
-           </el-row>
-         </template>
-       </el-table-column>
+      <el-table-column label="店铺" align="center" prop="shopId" >
+        <template slot-scope="scope">
+          <el-tag size="small">{{shopList.find(x=>x.id == scope.row.shopId)?shopList.find(x=>x.id == scope.row.shopId).name:''}}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="Sku明细" align="center" width="800px" >
+        <template slot="header">
+          <table>
+            <th>
+              <td width="50px">图片</td>
+              <td width="100px" align="left">平台SkuId</td>
+              <td width="100" align="left">规格</td>
+              <td width="100" align="left">Sku编码</td>
+              <td width="100" align="left">库存</td>
+              <td width="100" align="left">状态</td>
+              <td width="120" align="left">操作</td>
+            </th>
+          </table>
+        </template>
+        <template slot-scope="scope" >
+          <el-table :data="scope.row.skus" :show-header="false" :cell-style="{border:0 + 'px' }"  :row-style="{border:0 + 'px' }" >
+            <el-table-column label="图片" width="50px">
+              <template slot-scope="scope">
+                <!--                <el-image  style="width: 40px; height: 40px;" :src="scope.row.goodsImg" :preview-src-list="[scope.row.goodsImg]"></el-image>-->
+                <image-preview :src="scope.row.thumbImg" :width="40" :height="40"/>
+              </template>
+            </el-table-column>
+            <el-table-column label="SkuId" align="left" width="100px" prop="skuId" ></el-table-column>
+
+            <el-table-column label="规格" align="left" prop="goodsSpec" width="100">
+              <template slot-scope="scope">
+                {{ getSkuValues(scope.row.skuAttrs)}}
+              </template>
+            </el-table-column>
+            <el-table-column label="Sku编码" align="left" prop="skuCode" width="100"/>
+            <el-table-column label="库存" align="left" prop="stockNum" width="100"/>
+            <el-table-column label="状态" align="center" prop="status" width="100">
+              <template slot-scope="scope">
+                <el-tag size="small" type="danger">{{scope.row.status}}</el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="120">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="text"
+                  icon="el-icon-edit"
+                  @click="handleLink(scope.row)"
+                >关联ERP</el-button>
+
+              </template>
+            </el-table-column>
+          </el-table>
+        </template>
+      </el-table-column>
+<!--       <el-table-column label="属性" align="center" prop="attrs" >-->
+<!--         <template slot-scope="scope">-->
+<!--&lt;!&ndash;           {{scope.row.attrs}}&ndash;&gt;-->
+<!--           <el-row v-for="item in JSON.parse(scope.row.attrs)" :key="item.attr_key" :gutter="20">-->
+<!--             <div style="float: left;display: flex;align-items: center;" >-->
+<!--               <div style="margin-left:10px">-->
+<!--                 {{item.attr_key}}：{{item.attr_value}}&nbsp;-->
+<!--               </div>-->
+<!--             </div>-->
+<!--           </el-row>-->
+<!--         </template>-->
+<!--       </el-table-column>-->
       <el-table-column label="状态" align="center" prop="status" >
         <template slot-scope="scope">
           <el-tag size="small" v-if="scope.row.status === 5">销售中</el-tag>
           <el-tag size="small" v-if="scope.row.status === 2">已下架</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleLink(scope.row)"
-          >关联ERP</el-button>
+<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-edit"-->
+<!--            @click="handleLink(scope.row)"-->
+<!--          >关联ERP</el-button>-->
 
-        </template>
-      </el-table-column>
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
 
     <pagination
@@ -128,7 +178,7 @@
 
 <script>
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { listGoods, getGoods, delGoods, addGoods, updateGoods } from "@/api/shop/goods";
+import { listGoods, getGoods, delGoods, addGoods, updateGoods,pullGoodsList } from "@/api/shop/goods";
 import {listShop} from "@/api/shop/shop";
 
 export default {
@@ -141,6 +191,7 @@ export default {
       ids: [],
       // 非单个禁用
       single: true,
+      pullLoading: false,
       // 非多个禁用
       multiple: true,
       // 显示搜索条件
@@ -179,11 +230,23 @@ export default {
   created() {
     listShop().then(response => {
       this.shopList = response.rows;
+      this.getList();
     });
-    this.getList();
+
     // this.loading = false;
   },
   methods: {
+    getSkuValues(spec){
+      try {
+        // 解析 JSON，返回一个数组
+        const parsedSpec = JSON.parse(spec) || [];
+
+        // 使用 map 提取所有 value，使用 join() 用逗号连接
+        return parsedSpec.map(item => item.attr_value || item.value).join(', ') || '';
+      } catch (error) {
+        return spec; // 如果 JSON 解析出错，返回空字符串
+      }
+    },
     /** 查询商品管理列表 */
     getList() {
       this.loading = true;
@@ -238,6 +301,36 @@ export default {
         }
       });
     },
+    handlePull() {
+      if(this.queryParams.shopId){
+        this.pullLoading = true
+        pullGoodsList({shopId:this.queryParams.shopId}).then(response => {
+          console.log('拉取视频号小店商品接口返回=====',response)
+          if(response.code === 1401) {
+            MessageBox.confirm('Token已过期，需要重新授权', '系统提示', { confirmButtonText: '重新授权', cancelButtonText: '取消', type: 'warning' }).then(() => {
+              isRelogin.show = false;
+              // store.dispatch('LogOut').then(() => {
+              location.href = response.data.tokenRequestUrl+'?shopId='+this.queryParams.shopId
+              // })
+            }).catch(() => {
+              isRelogin.show = false;
+            });
+
+            // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
+          }else{
+            this.$modal.msgSuccess(JSON.stringify(response));
+            this.getList()
+          }
+
+
+          this.pullLoading = false
+        })
+      }else{
+        this.$modal.msgSuccess("请先选择店铺");
+      }
+
+      // this.$modal.msgSuccess("请先配置API");
+    }
   }
 };
 </script>

@@ -42,3 +42,11 @@ export function delGoods(id) {
     method: 'delete'
   })
 }
+// 接口拉取订单
+export function pullGoodsList(data) {
+  return request({
+    url: '/shop/goods/pull_list',
+    method: 'post',
+    data: data
+  })
+}

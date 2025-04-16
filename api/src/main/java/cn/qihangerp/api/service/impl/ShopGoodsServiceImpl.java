@@ -34,10 +34,14 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
     public PageResult<ShopGoods> queryPageList(ShopGoods bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ShopGoods> queryWrapper = new LambdaQueryWrapper<ShopGoods>()
                 .eq(bo.getShopId()!=null,ShopGoods::getShopId,bo.getShopId())
-                .eq(ShopGoods::getTenantId,bo.getTenantId())
-                ;
+                .eq(ShopGoods::getTenantId,bo.getTenantId());
 
         Page<ShopGoods> pages = mapper.selectPage(pageQuery.build(), queryWrapper);
+        if(pages.getTotal()>0){
+            for(ShopGoods goods : pages.getRecords()){
+                goods.setSkus(skuMapper.selectList(new LambdaQueryWrapper<ShopGoodsSku>().eq(ShopGoodsSku::getShopGoodsId,goods.getId())));
+            }
+        }
 
         return PageResult.build(pages);
     }
