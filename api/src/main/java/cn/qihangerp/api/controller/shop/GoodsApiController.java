@@ -21,9 +21,7 @@ import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.enums.HttpStatus;
 
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RequestMapping("/shop/goods")
 @RestController
@@ -49,11 +47,15 @@ public class GoodsApiController extends BaseController {
         String serverUrl = checkResult.getData().getServerUrl();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
-
+        int total=0;
+        int insert=0;
+        int update=0;
+        int fail=0;
         ApiResultVo<Product> productApiResultVo = goodsApiService.pullGoodsList(accessToken);
         if(productApiResultVo.getCode() == 0){
             // 成功
             for (var product:productApiResultVo.getList()){
+                total++;
                 ShopGoods goods = new ShopGoods();
                 goods.setTenantId(getUserId());
                 goods.setShopId(params.getShopId());
@@ -92,9 +94,20 @@ public class GoodsApiController extends BaseController {
                     skuList.add(goodsSku);
                 }
                 goods.setSkus(skuList);
-                shopGoodsService.saveAndUpdateGoods(params.getShopId(),goods);
+                int result = shopGoodsService.saveAndUpdateGoods(params.getShopId(), goods);
+                if(result == 0){
+                    insert++;
+                } else if (result==800) {
+                    update++;
+                }
             }
-        }
-        return AjaxResult.success();
+        }else return AjaxResult.error(productApiResultVo.getMsg());
+        Map<String, Object> data = new HashMap<>();
+        data.put("insert", insert);
+        data.put("update", update);
+        data.put("fail", fail);
+        data.put("total", total);
+        return AjaxResult.success(data);
+
     }
 }
