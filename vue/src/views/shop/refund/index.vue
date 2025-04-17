@@ -57,7 +57,7 @@
       <el-col :span="1.5">
         <el-button
           :loading="pullLoading"
-          type="danger"
+          type="success"
           plain
           icon="el-icon-download"
           size="mini"

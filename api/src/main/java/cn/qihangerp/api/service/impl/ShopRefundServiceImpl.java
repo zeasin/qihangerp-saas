@@ -13,10 +13,10 @@ import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.enums.EnumShopType;
 import cn.qihangerp.api.domain.ErpAfterSale;
-import cn.qihangerp.api.domain.WeiRefund;
+import cn.qihangerp.api.domain.ShopRefund;
 import cn.qihangerp.api.mapper.ErpAfterSaleMapper;
-import cn.qihangerp.api.service.WeiRefundService;
-import cn.qihangerp.api.mapper.WeiRefundMapper;
+import cn.qihangerp.api.service.ShopRefundService;
+import cn.qihangerp.api.mapper.ShopRefundMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -29,31 +29,31 @@ import java.util.List;
 */
 @AllArgsConstructor
 @Service
-public class WeiRefundServiceImpl extends ServiceImpl<WeiRefundMapper, WeiRefund>
-    implements WeiRefundService{
-    private final WeiRefundMapper mapper;
+public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRefund>
+    implements ShopRefundService {
+    private final ShopRefundMapper mapper;
     private final ErpAfterSaleMapper afterSaleMapper;
 
     @Override
-    public PageResult<WeiRefund> queryPageList(WeiRefund bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<WeiRefund> queryWrapper = new LambdaQueryWrapper<WeiRefund>()
-                .eq(bo.getShopId()!=null,WeiRefund::getShopId,bo.getShopId())
-                .eq(StringUtils.hasText(bo.getOrderId()),WeiRefund::getOrderId,bo.getOrderId())
+    public PageResult<ShopRefund> queryPageList(ShopRefund bo, PageQuery pageQuery) {
+        LambdaQueryWrapper<ShopRefund> queryWrapper = new LambdaQueryWrapper<ShopRefund>()
+                .eq(bo.getShopId()!=null, ShopRefund::getShopId,bo.getShopId())
+                .eq(StringUtils.hasText(bo.getOrderId()), ShopRefund::getOrderId,bo.getOrderId())
                 ;
 
-        Page<WeiRefund> taoGoodsPage = mapper.selectPage(pageQuery.build(), queryWrapper);
+        Page<ShopRefund> taoGoodsPage = mapper.selectPage(pageQuery.build(), queryWrapper);
 
         return PageResult.build(taoGoodsPage);
     }
 
     @Transactional
     @Override
-    public ResultVo<Integer> saveRefund(Long shopId, WeiRefund refund) {
+    public ResultVo<Integer> saveRefund(Long shopId, ShopRefund refund) {
         try {
-            List<WeiRefund> refunds = mapper.selectList(new LambdaQueryWrapper<WeiRefund>().eq(WeiRefund::getAfterSaleOrderId, refund.getAfterSaleOrderId()));
+            List<ShopRefund> refunds = mapper.selectList(new LambdaQueryWrapper<ShopRefund>().eq(ShopRefund::getAfterSaleOrderId, refund.getAfterSaleOrderId()));
             if (refunds != null && refunds.size() > 0) {
                 // 存在，修改
-                WeiRefund update = new WeiRefund();
+                ShopRefund update = new ShopRefund();
                 update.setId(refunds.get(0).getId());
                 update.setOrderId(refund.getOrderId());
                 update.setStatus(refund.getStatus());
@@ -80,7 +80,7 @@ public class WeiRefundServiceImpl extends ServiceImpl<WeiRefundMapper, WeiRefund
     @Transactional
     @Override
     public ResultVo<Integer> returnedConfirm(Long id) {
-        WeiRefund refund = mapper.selectById(id);
+        ShopRefund refund = mapper.selectById(id);
         if(refund!=null && refund.getConfirmStatus()==null) {
             ErpAfterSale afterSale = new ErpAfterSale();
             afterSale.setType(10);
@@ -99,7 +99,7 @@ public class WeiRefundServiceImpl extends ServiceImpl<WeiRefundMapper, WeiRefund
             afterSale.setCreateTime(new Date());
             afterSaleMapper.insert(afterSale);
             // 插入售后处理表
-            WeiRefund complete = new WeiRefund();
+            ShopRefund complete = new ShopRefund();
             complete.setId(id.toString());
             complete.setConfirmStatus(9);
             complete.setConfirmTime(new Date());
@@ -110,7 +110,7 @@ public class WeiRefundServiceImpl extends ServiceImpl<WeiRefundMapper, WeiRefund
 
     @Override
     public ResultVo<Integer> orderIntercept(Long id) {
-        WeiRefund refund = mapper.selectById(id);
+        ShopRefund refund = mapper.selectById(id);
         if(refund!=null && refund.getConfirmStatus()==null) {
             ErpAfterSale afterSale = new ErpAfterSale();
             afterSale.setType(99);
@@ -129,7 +129,7 @@ public class WeiRefundServiceImpl extends ServiceImpl<WeiRefundMapper, WeiRefund
             afterSale.setCreateTime(new Date());
             afterSaleMapper.insert(afterSale);
             // 插入售后处理表
-            WeiRefund complete = new WeiRefund();
+            ShopRefund complete = new ShopRefund();
             complete.setId(id.toString());
             complete.setConfirmStatus(8);
             complete.setConfirmTime(new Date());

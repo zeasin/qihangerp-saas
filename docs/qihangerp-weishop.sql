@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 17/04/2025 12:25:53
+ Date: 17/04/2025 13:38:03
 */
 
 SET NAMES utf8mb4;
@@ -853,7 +853,7 @@ CREATE TABLE `erp_shop`  (
 -- ----------------------------
 -- Records of erp_shop
 -- ----------------------------
-INSERT INTO `erp_shop` VALUES (6, 100, '视频号小店', 5, NULL, 9, 0, 1744808114, '啊啊啊v', 0, '', '', '', NULL, NULL, NULL, NULL, 'https://api.weixin.qq.com');
+INSERT INTO `erp_shop` VALUES (6, 100, '测试小店', 5, NULL, 9, 0, 1744808114, '啊啊啊v', 0, '', '', '', NULL, NULL, NULL, NULL, 'https://api.weixin.qq.com');
 
 -- ----------------------------
 -- Table structure for erp_shop_goods
@@ -1117,6 +1117,7 @@ INSERT INTO `erp_shop_pull_lasttime` VALUES (2, 1, 100, 'REFUND', '2024-03-28 09
 INSERT INTO `erp_shop_pull_lasttime` VALUES (3, 2, 100, 'ORDER', '2024-04-01 00:33:33', '2024-03-10 13:00:07', '2024-04-01 20:35:54');
 INSERT INTO `erp_shop_pull_lasttime` VALUES (4, 2, 100, 'REFUND', '2024-03-24 13:48:33', '2024-03-24 13:50:24', NULL);
 INSERT INTO `erp_shop_pull_lasttime` VALUES (1912512446954844164, 6, 100, 'ORDER', '2025-04-16 22:33:14', '2025-04-16 22:24:35', '2025-04-16 22:33:14');
+INSERT INTO `erp_shop_pull_lasttime` VALUES (1912742071463100417, 6, 100, 'REFUND', '2025-04-17 13:37:01', '2025-04-17 13:37:02', NULL);
 
 -- ----------------------------
 -- Table structure for erp_shop_pull_logs
@@ -1172,6 +1173,7 @@ INSERT INTO `erp_shop_pull_logs` VALUES (1778342150444355585, 1, 0, 1, 'ORDER', 
 INSERT INTO `erp_shop_pull_logs` VALUES (1778342898620108802, 1, 0, 1, 'ORDER', '主动拉取', '{startTime:2024-04-05T12:59:30,endTime:2024-04-06T12:59:30}', '{insert:6,update:0,fail:0}', '2024-04-11 16:39:54', 167361);
 INSERT INTO `erp_shop_pull_logs` VALUES (1912512447017758721, 6, 100, 5, 'ORDER', '主动拉取', '{startTime:2025-04-15T22:24:33.409087700,endTime:2025-04-16T22:24:33.409087700}', '{insert:2,update:0,fail:0}', '2025-04-16 22:24:32', 2445);
 INSERT INTO `erp_shop_pull_logs` VALUES (1912514625283305473, 6, 100, 5, 'ORDER', '主动拉取', '{startTime:2025-04-16T21:24:33,endTime:2025-04-16T22:33:13.821110100}', '{insert:0,update:0,fail:0}', '2025-04-16 22:33:14', 626);
+INSERT INTO `erp_shop_pull_logs` VALUES (1912742071492460546, 6, 100, 5, 'REFUND', '主动拉取', '{startTime:2025-04-16T13:37:01.154087500,endTime:2025-04-17T13:37:01.154087500}', '{insert:0,update:0,fail:0}', '2025-04-17 13:37:00', 1089);
 
 -- ----------------------------
 -- Table structure for erp_shop_refund
@@ -2041,7 +2043,7 @@ CREATE TABLE `sys_user`  (
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2025-04-01', '0', '127.0.0.1', '2025-04-17 12:10:11', 'admin', '2023-08-07 19:31:37', '', '2025-04-17 12:10:10', '管理员');
-INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-04-17 10:55:06', 'admin', '2024-04-21 10:36:49', 'admin', '2025-04-17 10:55:06', NULL);
+INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-04-17 13:24:01', 'admin', '2024-04-21 10:36:49', 'admin', '2025-04-17 13:24:00', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_role

@@ -73,7 +73,7 @@
       <el-table-column label="订单号" align="center" prop="orderId" />
       <el-table-column label="店铺" align="center" prop="shopId" >
         <template slot-scope="scope">
-          <span>{{ shopList.find(x=>x.id === scope.row.shopId)?shopList.find(x=>x.id === scope.row.shopId).name :'' }}</span>
+          <span>{{ shopList.find(x=>x.id == scope.row.shopId)?shopList.find(x=>x.id == scope.row.shopId).name :'' }}</span>
         </template>
       </el-table-column>
       <el-table-column label="商品" width="350">
@@ -84,18 +84,24 @@
               <el-image  style="width: 70px; height: 70px;" :src="item.thumbImg"></el-image>
               <div style="margin-left:10px">
               <p>{{item.title}}</p>
-              <p>{{item.skuAttrs}}&nbsp;</p>
-                <p>
-                <el-tag size="small">数量： {{item.skuCnt}}</el-tag>
-                </p>
+              <p>
+                <span>规格： </span>
+                <el-tag size="small">{{ getSkuValues(item.skuAttrs)}}</el-tag>
+                &nbsp;
+                <span>数量： </span>
+                <el-tag size="small" type="danger">{{item.skuCnt}}</el-tag>
+              </p>
+
               </div>
             </div>
             </el-row>
           </template>
       </el-table-column>
-      <el-table-column label="订单金额" align="center" prop="orderPrice" >
+      <el-table-column label="订单金额" align="center" prop="orderPrice" :formatter="amountFormatter">
         <template slot-scope="scope">
-          <span>{{ scope.row.orderPrice/100 }}</span>
+          <span>
+          {{ amountFormatter(null,null,scope.row.orderPrice/100,0) }}
+          </span>
         </template>
       </el-table-column>
       <el-table-column label="订单创建时间" align="center" prop="createTime" width="180">
@@ -192,10 +198,25 @@ export default {
   created() {
     listShop({type:5}).then(response => {
         this.shopList = response.rows;
+      this.getList();
       });
-    this.getList();
+
   },
   methods: {
+    amountFormatter(row, column, cellValue, index) {
+      return '￥' + cellValue.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    },
+    getSkuValues(spec){
+      try {
+        // 解析 JSON，返回一个数组
+        const parsedSpec = JSON.parse(spec) || [];
+
+        // 使用 map 提取所有 value，使用 join() 用逗号连接
+        return parsedSpec.map(item => item.attr_value || item.value).join(', ') || '';
+      } catch (error) {
+        return spec; // 如果 JSON 解析出错，返回空字符串
+      }
+    },
     /** 查询淘宝订单列表 */
     getList() {
       this.loading = true;

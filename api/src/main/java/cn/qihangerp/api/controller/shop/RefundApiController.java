@@ -17,9 +17,8 @@ import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.enums.EnumShopType;
 import cn.qihangerp.api.common.enums.HttpStatus;
 import cn.qihangerp.api.domain.*;
-import cn.qihangerp.api.service.WeiRefundService;
+import cn.qihangerp.api.service.ShopRefundService;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Date;
 
 @RequestMapping("/shop/refund")
@@ -27,7 +26,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class RefundApiController extends BaseController {
     private final ApiCommon apiCommon;
-    private final WeiRefundService refundService;
+    private final ShopRefundService refundService;
     private final ErpShopPullLogsService pullLogsService;
     private final ErpShopPullLasttimeService pullLasttimeService;
 
@@ -76,7 +75,7 @@ public class RefundApiController extends BaseController {
             if(apiResultVo.getList()!=null) {
                 for (var refundInfo : apiResultVo.getList()) {
 
-                    WeiRefund refund = new WeiRefund();
+                    ShopRefund refund = new ShopRefund();
 //                    refund.setten
                     refund.setOrderId(refundInfo.getOrder_id());
                     refund.setAfterSaleOrderId(refundInfo.getAfter_sale_order_id());

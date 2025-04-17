@@ -3,14 +3,16 @@ package cn.qihangerp.api.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
  * 视频号小店退款
  * @TableName wei_refund
  */
+@TableName("erp_shop_refund")
 @Data
-public class WeiRefund implements Serializable {
+public class ShopRefund implements Serializable {
     /**
      * 
      */

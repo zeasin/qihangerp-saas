@@ -1,6 +1,6 @@
 package cn.qihangerp.api.mapper;
 
-import cn.qihangerp.api.domain.WeiRefund;
+import cn.qihangerp.api.domain.ShopRefund;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2024-04-04 23:11:44
 * @Entity cn.qihangerp.api.domain.WeiRefund
 */
-public interface WeiRefundMapper extends BaseMapper<WeiRefund> {
+public interface ShopRefundMapper extends BaseMapper<ShopRefund> {
 
 }
 
