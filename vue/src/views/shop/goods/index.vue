@@ -44,7 +44,7 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          type="primary"
+          type="success"
           plain
           :loading="pullLoading"
           icon="el-icon-download"
@@ -52,20 +52,30 @@
           @click="handlePull"
         >API拉取商品数据</el-button>
       </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-refresh"
+          size="mini"
+          :disabled="multiple"
+          @click="handlePushOms"
+        >批量推送到商品库</el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
-      <!-- <el-table-column type="selection" width="55" align="center" /> -->
+       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
       <el-table-column label="商品标题" align="left" prop="title" />
-      <el-table-column label="平台商品ID" align="left" prop="productId" />
+      <el-table-column label="平台商品ID" align="left" prop="productId" width="150px" />
 <!--      <el-table-column label="主图" align="center" prop="headImg" width="100">-->
 <!--        <template slot-scope="scope">-->
 <!--          <image-preview :src="scope.row.headImg" :width="50" :height="50"/>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="店铺" align="center" prop="shopId" >
+      <el-table-column label="店铺" align="center" prop="shopId" width="150px">
         <template slot-scope="scope">
           <el-tag size="small">{{shopList.find(x=>x.id == scope.row.shopId)?shopList.find(x=>x.id == scope.row.shopId).name:''}}</el-tag>
         </template>
@@ -76,6 +86,7 @@
             <th>
               <td width="50px">图片</td>
               <td width="100px" align="left">平台SkuId</td>
+              <td width="100px" align="left">商品库SkuId</td>
               <td width="100" align="left">规格</td>
               <td width="100" align="left">Sku编码</td>
               <td width="100" align="left">库存</td>
@@ -93,6 +104,7 @@
               </template>
             </el-table-column>
             <el-table-column label="SkuId" align="left" width="100px" prop="skuId" ></el-table-column>
+            <el-table-column label="SkuId" align="left" width="100px" prop="erpGoodsSkuId" ></el-table-column>
 
             <el-table-column label="规格" align="left" prop="goodsSpec" width="100">
               <template slot-scope="scope">
@@ -102,9 +114,16 @@
             <el-table-column label="Sku编码" align="left" prop="skuCode" width="100"/>
             <el-table-column label="库存" align="left" prop="stockNum" width="100"/>
             <el-table-column label="状态" align="center" prop="status" width="100">
-              <template slot-scope="scope">
-                <el-tag size="small" type="danger">{{scope.row.status}}</el-tag>
-              </template>
+                <template slot-scope="scope">
+                  <el-tag size="small" v-if="scope.row.status === 5">销售中</el-tag>
+                  <el-tag size="small" v-if="scope.row.status === 6">回收站</el-tag>
+                  <el-tag size="small" v-if="scope.row.status === 9">彻底删除</el-tag>
+                  <el-tag size="small" v-if="scope.row.status === 11">自主下架</el-tag>
+                  <el-tag size="small" v-if="scope.row.status === 13">违规下架</el-tag>
+                  <el-tag size="small" v-if="scope.row.status === 14">保证金不足下架</el-tag>
+                  <el-tag size="small" v-if="scope.row.status === 15">品牌过期下架</el-tag>
+                  <el-tag size="small" v-if="scope.row.status === 20">商品被封禁</el-tag>
+                </template>
             </el-table-column>
             <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="120">
               <template slot-scope="scope">
@@ -135,7 +154,13 @@
       <el-table-column label="状态" align="center" prop="status" >
         <template slot-scope="scope">
           <el-tag size="small" v-if="scope.row.status === 5">销售中</el-tag>
-          <el-tag size="small" v-if="scope.row.status === 2">已下架</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 6">回收站</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 9">彻底删除</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 11">自主下架</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 13">违规下架</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 14">保证金不足下架</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 15">品牌过期下架</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 20">商品被封禁</el-tag>
         </template>
       </el-table-column>
 <!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
@@ -236,6 +261,12 @@ export default {
     // this.loading = false;
   },
   methods: {
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.id)
+      this.single = selection.length!==1
+      this.multiple = !selection.length
+    },
     getSkuValues(spec){
       try {
         // 解析 JSON，返回一个数组
@@ -330,7 +361,24 @@ export default {
       }
 
       // this.$modal.msgSuccess("请先配置API");
-    }
+    },
+    //推送店铺商品到OMS
+    handlePushOms(){
+      this.$confirm('确认同步所有商品到商品库吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.loading = true
+        syncIdoSellGoodsBatch().then(response => {
+          this.$message.success('商品同步成功')
+          this.getList()
+        }).finally(() => {
+          this.loading = false
+        })
+      })
+
+    },
   }
 };
 </script>
