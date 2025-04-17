@@ -69,6 +69,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/favicon.ico").permitAll()
                         // 允许直接访问授权登录接口
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/signOn").permitAll()
                         .requestMatchers("/license/getLicense").permitAll()
                         .requestMatchers(HttpMethod.GET,"/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/h2-console/**").permitAll()

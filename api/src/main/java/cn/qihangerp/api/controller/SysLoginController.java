@@ -1,5 +1,8 @@
 package cn.qihangerp.api.controller;
 
+import cn.qihangerp.api.request.SingOnReq;
+import cn.qihangerp.api.service.ISysUserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +18,8 @@ import cn.qihangerp.api.service.ISysMenuService;
 import cn.qihangerp.api.service.SysLoginService;
 import cn.qihangerp.api.service.SysPermissionService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 
@@ -23,17 +28,18 @@ import java.util.Set;
  * 
  * @author qihang
  */
+@AllArgsConstructor
 @RestController
 public class SysLoginController
 {
-    @Autowired
-    private SysLoginService loginService;
+    private final SysLoginService loginService;
 
-    @Autowired
-    private ISysMenuService menuService;
+    private final ISysMenuService menuService;
 
-    @Autowired
-    private SysPermissionService permissionService;
+    private final SysPermissionService permissionService;
+
+    private final ISysUserService userService;
+
 
     /**
      * 登录方法
@@ -48,6 +54,33 @@ public class SysLoginController
             // 生成令牌
             String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
                     loginBody.getUuid());
+            ajax.put(Constants.TOKEN, token);
+            return ajax;
+        } catch (Exception e) {
+            return AjaxResult.error(1500, e.getMessage());
+        }
+    }
+
+    @PostMapping("/signOn")
+    public AjaxResult singOn(@RequestBody SingOnReq loginBody) {
+        SysUser sysUser = new SysUser();
+        sysUser.setUserName(loginBody.getPhone());
+        if (!userService.checkUserNameUnique(sysUser))
+        {
+            return AjaxResult.error("注册失败，账号已存在");
+        }
+        sysUser.setNickName("试用会员"+loginBody.getPhone().substring(7));
+        sysUser.setCreateBy("主动注册");
+        sysUser.setPassword(SecurityUtils.encryptPassword(loginBody.getPasswords()));
+        //试用期一个月
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String expirationDate = LocalDate.now().plusMonths(1L).format(formatter);
+        sysUser.setExpirationDate(expirationDate);
+        userService.insertUser(sysUser);
+        try {
+            AjaxResult ajax = AjaxResult.success();
+            // 生成令牌
+            String token = loginService.login(loginBody.getPhone(), loginBody.getPasswords(), "", null);
             ajax.put(Constants.TOKEN, token);
             return ajax;
         } catch (Exception e) {

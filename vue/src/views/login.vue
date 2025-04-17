@@ -109,7 +109,7 @@
               v-model="registerForm.phone"
               type="text"
               auto-complete="off"
-              placeholder="请输入您的账号"
+              placeholder="请输入您的手机号"
             >
               <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
             </el-input>
@@ -139,6 +139,7 @@
               :loading="loading"
               size="medium"
               type="primary"
+                       @click="signOn"
               style="width:100%;"
             >
               <span v-if="!loading">注 册</span>
@@ -153,7 +154,7 @@
     </div>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2023-2024 qihangerp.tech All Rights Reserved.</span>
+      <span>Copyright © 2023-2024 qihangerp.cn All Rights Reserved.</span>
     </div>
   </div>
 </template>
@@ -161,7 +162,7 @@
 <script>
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from '@/utils/jsencrypt'
-import { getCodeImg } from "@/api/login";
+import { getCodeImg,signOn } from "@/api/login";
 export default {
   name: "Login",
   data() {
@@ -215,9 +216,16 @@ export default {
       registerRules: {
         phone: [
           { required: true, message: '请输入您的账号', trigger: 'blur' },
+          { pattern: /^1[3-9]\d{9}$/, message: '请输入有效的手机号', trigger: 'blur' }
         ],
-        passwords: [{ required: true, message: '请输入您的密码', trigger: 'blur' }],
-        passwordok: [{ required: true, message: '请再此确认您的密码', trigger: 'blur' }],
+        passwords: [
+          { required: true, message: '请输入您的密码', trigger: 'blur' },
+          { min: 6, trigger: 'blur', message: '密码长度不能小于 6 位' }
+        ],
+        passwordok: [
+          { required: true, message: '请再此确认您的密码', trigger: 'blur' },
+          { min: 6, trigger: 'blur', message: '密码长度不能小于 6 位' }
+        ],
       },
     };
   },
@@ -280,6 +288,17 @@ export default {
     }
   },
   methods: {
+    validatePhone() {
+      // 中国大陆手机号码的正则表达式（11位数字，以1开头，第二位数字不固定）
+      const phonePattern = /^1\d{10}$/;
+      if (!phonePattern.test(this.phone)) {
+        this.phoneError = true;
+        this.phoneErrorMessage = '手机号码格式不正确';
+      } else {
+        this.phoneError = false;
+        this.phoneErrorMessage = '';
+      }
+    },
     getCookie() {
       const username = Cookies.get("username");
       const password = Cookies.get("password");
@@ -323,8 +342,37 @@ export default {
       //   }
       // });
     },
-
-    //
+    //注册
+    signOn(){
+      this.$refs.registerForm.validate(valid => {
+        if (valid) {
+          if(this.registerForm.passwordok!=this.registerForm.passwords){
+            this.$modal.msgError("两次密码不一致")
+            return;
+          }
+          this.loading = true;
+          signOn(this.registerForm).then(resp=>{
+            this.loading = false
+            this.$modal.msgSuccess("注册成功！正在登录！")
+           this.loginForm={
+              username: this.registerForm.phone,
+                password: this.registerForm.passwords,
+                rememberMe: false,
+                code: "",
+                uuid: ""
+            },
+            this.$store.dispatch("Login", this.loginForm).then(() => {
+              this.$router.push({ path: this.redirect || "/" }).catch(()=>{});
+            }).catch(() => {
+              this.loading = false;
+              if (this.captchaEnabled) {
+                this.getCode();
+              }
+            });
+          })
+        }
+      })
+    },
     pull() {
       if(this.form.phone){
         this.form.checkMove = true;

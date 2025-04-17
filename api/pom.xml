@@ -9,6 +9,7 @@
     </parent>
     <groupId>cn.qihangerp</groupId>
     <artifactId>api</artifactId>
+    <version>1.0.417</version>
     <packaging>jar</packaging>
 
     <name>api</name>
@@ -150,6 +151,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
             </plugin>
         </plugins>
     </build>

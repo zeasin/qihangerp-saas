@@ -48,3 +48,11 @@ export function getCodeImg() {
   })
 }
 
+
+export function signOn(data) {
+  return request({
+    url: '/signOn',
+    method: 'post',
+    data:data
+  })
+}
