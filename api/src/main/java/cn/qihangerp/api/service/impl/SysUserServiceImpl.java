@@ -1,6 +1,11 @@
 package cn.qihangerp.api.service.impl;
 
 
+import cn.qihangerp.api.common.PageQuery;
+import cn.qihangerp.api.common.PageResult;
+import cn.qihangerp.api.domain.ErpOrderItem;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +33,18 @@ public class SysUserServiceImpl implements ISysUserService
 
     @Autowired
     private SysUserMapper userMapper;
+
+//    @Override
+//    public PageResult<SysUser> queryPageList(SysUser user, PageQuery pageQuery) {
+//        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<SysUser>()
+//                .like(org.springframework.util.StringUtils.hasText(user.getPhonenumber()),SysUser::getPhonenumber,user.getPhonenumber())
+//                .like(org.springframework.util.StringUtils.hasText(user.getUserName()),SysUser::getUserName,user.getUserName())
+//                .eq(user.getStatus()!=null,SysUser::getStatus,user.getStatus())
+//                ;
+//        Page<SysUser> pages = userMapper.selectPage(pageQuery.build(), queryWrapper);
+//
+//        return PageResult.build(pages);
+//    }
 
     /**
      * 根据条件分页查询用户列表

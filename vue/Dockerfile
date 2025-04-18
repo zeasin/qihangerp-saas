@@ -11,7 +11,7 @@ COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY ./dist /usr/share/nginx/html
 
 # 暴露容器的端口（80 是 Nginx 默认的 HTTP 端口）
-EXPOSE 8066
+EXPOSE 80
 
 # 启动 Nginx 服务
 CMD ["nginx", "-g", "daemon off;"]

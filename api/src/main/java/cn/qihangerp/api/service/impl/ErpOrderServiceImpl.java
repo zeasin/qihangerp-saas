@@ -1,5 +1,6 @@
 package cn.qihangerp.api.service.impl;
 
+import cn.qihangerp.api.domain.vo.SalesDailyVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -18,6 +19,7 @@ import cn.qihangerp.api.mapper.ErpOrderMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
 * @author TW
@@ -73,6 +75,15 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
             }
         }
         return ResultVo.success();
+    }
+
+    @Override
+    public List<SalesDailyVo> salesDaily(Long tenantId) {
+        return mapper.salesDaily(tenantId);
+    }
+    @Override
+    public SalesDailyVo getTodaySalesDaily(Long tenantId) {
+        return mapper.getTodaySalesDaily(tenantId);
     }
 }
 

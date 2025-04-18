@@ -1,7 +1,10 @@
 package cn.qihangerp.api.mapper;
 
 import cn.qihangerp.api.domain.ErpOrder;
+import cn.qihangerp.api.domain.vo.SalesDailyVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
 * @author TW
@@ -10,7 +13,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity cn.qihangerp.api.domain.ErpOrder
 */
 public interface ErpOrderMapper extends BaseMapper<ErpOrder> {
-
+    List<SalesDailyVo> salesDaily(Long tenantId);
+    SalesDailyVo getTodaySalesDaily(Long tenantId);
 }
 
 

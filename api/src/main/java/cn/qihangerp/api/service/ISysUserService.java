@@ -2,6 +2,9 @@ package cn.qihangerp.api.service;
 
 
 
+import cn.qihangerp.api.common.PageQuery;
+import cn.qihangerp.api.common.PageResult;
+import cn.qihangerp.api.domain.ErpOrderItem;
 import cn.qihangerp.api.domain.SysUser;
 
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.List;
  */
 public interface ISysUserService
 {
+//    PageResult<SysUser> queryPageList(SysUser user, PageQuery pageQuery);
     /**
      * 根据条件分页查询用户列表
      *

@@ -2,6 +2,7 @@ package cn.qihangerp.api.controller;
 
 import cn.qihangerp.api.common.AjaxResult;
 import cn.qihangerp.api.common.BaseController;
+import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.TableDataInfo;
 import cn.qihangerp.api.common.security.SecurityUtils;
 import cn.qihangerp.api.domain.SysRole;
