@@ -59,7 +59,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
 
     @Transactional
     @Override
-    public ResultVo<Integer> saveOrder(Long shopId, ShopOrder order) {
+    public ResultVo<Long> saveOrder(Long shopId, ShopOrder order) {
         try {
             List<ShopOrder> orders = mapper.selectList(new LambdaQueryWrapper<ShopOrder>().eq(ShopOrder::getOrderId, order.getOrderId()));
             if (orders != null && orders.size() > 0) {
@@ -85,7 +85,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                         itemMapper.insert(item);
                     }
                 }
-                return ResultVo.error(ResultVoEnum.DataExist, "订单已经存在，更新成功");
+                return ResultVo.error(ResultVoEnum.DataExist.getIndex(), "订单已经存在，更新成功",Long.parseLong(update.getId()));
             } else {
                 // 不存在，新增
                 order.setShopId(shopId);
@@ -96,7 +96,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                     item.setShopOrderId(order.getId());
                     itemMapper.insert(item);
                 }
-                return ResultVo.success();
+                return ResultVo.success(Long.parseLong(order.getId()));
             }
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

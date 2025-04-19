@@ -298,6 +298,7 @@ export default {
       },
       // 表单参数
       form: {},
+      supplierList: [],
       categoryList: [],
       categoryTree: [],
       // 表单校验
@@ -452,6 +453,9 @@ export default {
       this.download('goods/goods/export', {
         ...this.queryParams
       }, `goods_${new Date().getTime()}.xlsx`)
+    },
+    submitForm(){
+
     },
     handleImport(){
       this.importOpen = true

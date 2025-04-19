@@ -13,6 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface ShopOrderService extends IService<ShopOrder> {
     PageResult<ShopOrder> queryPageList(ShopOrder bo, PageQuery pageQuery);
-    ResultVo<Integer> saveOrder(Long shopId, ShopOrder order);
+    ResultVo<Long> saveOrder(Long shopId, ShopOrder order);
     ResultVo<Integer> orderConfirm(String[] ids);
 }

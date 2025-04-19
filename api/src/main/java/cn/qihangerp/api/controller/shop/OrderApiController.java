@@ -1,6 +1,7 @@
 package cn.qihangerp.api.controller.shop;
 
 import cn.qihangerp.api.common.BaseController;
+import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.domain.ErpShopPullLasttime;
 import cn.qihangerp.api.domain.ErpShopPullLogs;
 import cn.qihangerp.api.service.ErpShopPullLasttimeService;
@@ -11,6 +12,7 @@ import cn.qihangerp.open.wei.model.Order;
 import cn.qihangerp.open.wei.model.OrderDetailDeliverInfoAddress;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,12 +30,13 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+@Slf4j
 @RequestMapping("/shop/order")
 @RestController
 @AllArgsConstructor
 public class OrderApiController extends BaseController {
     private final ApiCommon apiCommon;
-
+    private final ShopOrderService orderService;
     private final ShopOrderService weiOrderService;
     private final ErpShopPullLogsService pullLogsService;
     private final ErpShopPullLasttimeService pullLasttimeService;
@@ -161,8 +164,14 @@ public class OrderApiController extends BaseController {
                     if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
                         //已经存在
                         hasExistOrder++;
+                        String[] ids = new String[] {result.getData().toString()};
+                        ResultVo<Integer> resultVo = orderService.orderConfirm(ids);
+                        log.info("======店铺订单同步更新OMS订单库====={}",JSONObject.toJSONString(resultVo));
                     } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
                         insertSuccess++;
+                        String[] ids = new String[] {result.getData().toString()};
+                        ResultVo<Integer> resultVo = orderService.orderConfirm(ids);
+                        log.info("======店铺订单新增到OMS订单库====={}",JSONObject.toJSONString(resultVo));
                     } else {
                         totalError++;
                     }
