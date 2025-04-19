@@ -27,7 +27,7 @@ import java.util.Map;
 @RequestMapping("/wxmp")
 @RestController
 public class WxMessageController {
-
+    private final WxLoginHelper qrLoginHelper;
     private final SysConfigService sysConfigService;
 
     @RequestMapping("/message")
@@ -76,10 +76,19 @@ public class WxMessageController {
                 String createTime = document.getElementsByTagName("CreateTime").item(0).getTextContent();
                 String msgType = document.getElementsByTagName("MsgType").item(0).getTextContent();
                 if(msgType.equals("text")) {
+
                     String msg = "启航电商ERP系统有开源版本和商业版本之分，如果您有需求可以直接说说您的需求，并留下您的联系方式！";
                     String content = document.getElementsByTagName("Content").item(0).getTextContent();
                     String msgId = document.getElementsByTagName("MsgId").item(0).getTextContent();
-                    log.info("=========接受到用户发消息========{}", content);
+                    log.info("=========接受到用户发消息========{}===={}", content,content.substring(0,2));
+
+                    // 先判断是否登陆
+                    if(content.length()==8&&content.substring(0,2).equals("DL")){
+                        log.info("======用户登陆============");
+                        qrLoginHelper.login(content);
+                        log.info("===========登陆成功==========");
+                        return "";
+                    }
                     ResultVo<SysConfig> resultVo = sysConfigService.getSysConfigValue("mp.msg", content);
 
                     if (resultVo.getCode() == 0) {
