@@ -3,13 +3,13 @@
     <div class="layout">
       <div class="bgLeft"></div>
       <div class="bgRight"></div>
-      <h3 class="title">启航电商ERP系统</h3>
+      <h3 class="title">启航电商ERP系统-微信小店版</h3>
       <div class="login-form">
-        <div class="zhuce"  v-if="n !==3">登录</div>
-<!--        <div class="tabs" v-if="n !==3">-->
-<!--          <div class="item" :class="n==1?'on':''" @click="n=1">密码登录</div>-->
-<!--          <div class="item" :class="n==2?'on':''" @click="n=2">验证码登录</div>-->
-<!--        </div>-->
+        <div class="zhuce"  v-if="n !==3"></div>
+        <div class="tabs" v-if="n !==3">
+          <div class="item" :class="n==1?'on':''" @click="n=1">密码登录</div>
+          <div class="item" :class="n==2?'on':''" @click="n=2">扫码关注</div>
+        </div>
         <div class="zhuce" v-else>注册</div>
         <!--star 密码登录-->
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" v-if="n==1">
@@ -66,40 +66,43 @@
         <!--star 验证码登录-->
         <el-form :model="form" ref="form" :rules="codeRules" v-if="n==2">
           <el-form-item prop="phone">
-            <el-input type="tel" :maxlength="11" v-model.trim="form.phone" placeholder="请输入手机号">
-              <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
-            </el-input>
+            <el-image src="http://img.qihangerp.cn/qihangerpcn_wxmp.jpg"></el-image>
           </el-form-item>
-          <el-form-item prop="checkMove">
-            <div class="movebox">
-              <div class="movego"></div>
-              <div class="txt" id="txt">按住滑块,拖动到最右边</div>
-              <div class="move moveBefore" v-move="pull"></div> <!-- v-move 为自定义指令 -->
-            </div>
-          </el-form-item>
-          <el-form-item prop="smsCode" v-show="isCode">
-            <el-input placeholder="请输入验证码" style="width: 63%" v-model.trim="form.smsCode" autocomplete="off">
-              <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
-            </el-input>
-            <div class="login-code">
-              <el-button @click="sendCode('form')" :disabled="!show">
-              <span v-show="show">获取验证码</span>
-              <span v-show="!show">已发送 {{count}}s</span>
-            </el-button>
-            </div>
-          </el-form-item>
-          <el-form-item style="width:100%;">
-            <el-button class="btns"
-              :loading="loading"
-              size="medium"
-              type="primary"
-              style="width:100%;"
-              @click="codeLogin('form')"
-            >
-              <span v-if="!loading">登 录</span>
-              <span v-else>登 录 中...</span>
-            </el-button>
-          </el-form-item>
+<!--          <el-form-item prop="phone">-->
+<!--            <el-input type="tel" :maxlength="11" v-model.trim="form.phone" placeholder="请输入手机号">-->
+<!--              <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />-->
+<!--            </el-input>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item prop="checkMove">-->
+<!--            <div class="movebox">-->
+<!--              <div class="movego"></div>-->
+<!--              <div class="txt" id="txt">按住滑块,拖动到最右边</div>-->
+<!--              <div class="move moveBefore" v-move="pull"></div> &lt;!&ndash; v-move 为自定义指令 &ndash;&gt;-->
+<!--            </div>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item prop="smsCode" v-show="isCode">-->
+<!--            <el-input placeholder="请输入验证码" style="width: 63%" v-model.trim="form.smsCode" autocomplete="off">-->
+<!--              <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />-->
+<!--            </el-input>-->
+<!--            <div class="login-code">-->
+<!--              <el-button @click="sendCode('form')" :disabled="!show">-->
+<!--              <span v-show="show">获取验证码</span>-->
+<!--              <span v-show="!show">已发送 {{count}}s</span>-->
+<!--            </el-button>-->
+<!--            </div>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item style="width:100%;">-->
+<!--            <el-button class="btns"-->
+<!--              :loading="loading"-->
+<!--              size="medium"-->
+<!--              type="primary"-->
+<!--              style="width:100%;"-->
+<!--              @click="codeLogin('form')"-->
+<!--            >-->
+<!--              <span v-if="!loading">登 录</span>-->
+<!--              <span v-else>登 录 中...</span>-->
+<!--            </el-button>-->
+<!--          </el-form-item>-->
         </el-form>
         <!--end 验证码登录-->
         <!--star 注册-->

@@ -25,31 +25,23 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="收件人" prop="receiverName">
-        <el-input
-          v-model="queryParams.receiverName"
-          placeholder="请输入收件人"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="下单时间" prop="orderTime">
+        <el-date-picker clearable
+                        v-model="orderTime" value-format="yyyy-MM-dd"
+                        type="daterange"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+        </el-date-picker>
       </el-form-item>
-      <el-form-item label="手机号" prop="receiverMobile">
-        <el-input
-          v-model="queryParams.receiverMobile"
-          placeholder="请输入手机号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="订单状态" prop="orderStatus">
+        <el-select v-model="queryParams.orderStatus" placeholder="请选择状态" clearable @change="handleQuery">
+          <el-option label="待发货" value="1" ></el-option>
+          <el-option label="已发货" value="2"></el-option>
+          <el-option label="已完成" value="3"> </el-option>
+          <el-option label="已取消" value="11"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="快递单号" prop="shippingNumber">
-        <el-input
-          v-model="queryParams.shippingNumber"
-          placeholder="请输入快递单号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -65,7 +57,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleShip"
-        >批量确认订单发货</el-button>
+        >批量分配发货</el-button>
       </el-col>
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
@@ -83,25 +75,31 @@
     <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"  :selectable="isRowSelectable" />
 <!--      <el-table-column label="订单ID" align="center" prop="id" />-->
-      <el-table-column label="订单编号" align="center" prop="orderNum" />
-      <el-table-column label="店铺" align="center" prop="shopId" >
+      <el-table-column label="订单号" align="left" prop="orderNum" width="200px">
         <template slot-scope="scope">
-          <span>{{ shopList.find(x=>x.id === scope.row.shopId)?shopList.find(x=>x.id === scope.row.shopId).name :'' }}</span>
-        </template>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-view"
+            @click="handleDetail(scope.row)"
+          >{{scope.row.orderNum}} </el-button>
+          <i class="el-icon-copy-document tag-copy" :data-clipboard-text="scope.row.orderNum" @click="copyActiveCode($event,scope.row.orderNum)" ></i>
+          <br/>
+          <el-tag type="info">{{ shopList.find(x=>x.id == scope.row.shopId) ? shopList.find(x=>x.id == scope.row.shopId).name : '' }}</el-tag>
+        </template>>
       </el-table-column>
-
       <el-table-column label="商品" width="400">
           <template slot-scope="scope">
             <el-row v-for="item in scope.row.itemList" :key="item.id" :gutter="20">
             <div style="float: left;display: flex;align-items: center;" >
-              <el-image  style="width: 70px; height: 70px;" :src="item.goodsImg"></el-image>
+              <el-image  style="width: 50px; height: 50px;" :src="item.goodsImg"></el-image>
               <div style="margin-left:10px">
               <p>{{item.goodsTitle}}</p>
               <p>
-                <div>
+                <div v-if="JSON.parse(item.goodsSpec)">
                 {{JSON.parse(item.goodsSpec)[0].attr_key}}&nbsp;： {{JSON.parse(item.goodsSpec)[0].attr_value}}&nbsp;
                 </div>
-                <div>
+                <div v-else-if="JSON.parse(item.goodsSpec).length>1">
                 {{JSON.parse(item.goodsSpec)[1].attr_key}}&nbsp;： {{JSON.parse(item.goodsSpec)[1].attr_value}}&nbsp;
                 </div>
                 <div>
@@ -113,12 +111,14 @@
             </el-row>
           </template>
       </el-table-column>
+      <el-table-column label="订单金额" align="center" prop="amount" :formatter="amountFormatter"/>
       <el-table-column label="订单备注" align="center" prop="remark" >
         <template slot-scope="scope">
           {{scope.row.buyerMemo}}<br />
           {{scope.row.sellerMemo}}
         </template>
       </el-table-column>
+
       <el-table-column label="状态" align="center" prop="orderStatus" >
         <template slot-scope="scope">
           <el-tag v-if="scope.row.orderStatus === 0" style="margin-bottom: 6px;">待选择发货方式</el-tag>
@@ -134,19 +134,19 @@
            <el-tag v-if="scope.row.refundStatus === 4">退款成功</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="订单金额" align="center" prop="amount" />
+
       <el-table-column label="收件信息" prop="receiverName" >
         <template slot-scope="scope">
           {{scope.row.receiverName}}&nbsp;  {{scope.row.receiverMobile}} <br />
           {{scope.row.province}} {{scope.row.city}} {{scope.row.town}}
         </template>
       </el-table-column>
-      <el-table-column label="发货信息" align="center" prop="shippingNumber" >
-        <template slot-scope="scope">
-          {{scope.row.shippingNumber}}&nbsp; {{scope.row.shippingCompany}}<br />
-          {{scope.row.shippingTime}}
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="发货信息" align="center" prop="shippingNumber" >-->
+<!--        <template slot-scope="scope">-->
+<!--          {{scope.row.shippingNumber}}&nbsp; {{scope.row.shippingCompany}}<br />-->
+<!--          {{scope.row.shippingTime}}-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -296,6 +296,8 @@
 <script>
 import {listOrder, getOrder, delOrder, addOrder, updateOrder, shipOrder} from "@/api/order/order";
 import { listShop } from "@/api/shop/shop";
+import Clipboard from "clipboard";
+
 export default {
   name: "Order",
   data() {
@@ -310,6 +312,7 @@ export default {
       single: true,
       // 非多个禁用
       multiple: true,
+      orderTime: null,
       // 显示搜索条件
       showSearch: true,
       shipConfirmOpen: false,
@@ -351,6 +354,25 @@ export default {
     this.getList();
   },
   methods: {
+    amountFormatter(row, column, cellValue, index) {
+      return '￥' + cellValue.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    },
+    copyActiveCode(event,queryParams) {
+      console.log(queryParams)
+      const clipboard = new Clipboard(".tag-copy")
+      clipboard.on('success', e => {
+        this.$message({ type: 'success', message: '复制成功' })
+        // 释放内存
+        clipboard.destroy()
+      })
+      clipboard.on('error', e => {
+        // 不支持复制
+        this.$message({ type: 'waning', message: '该浏览器不支持自动复制' })
+        // 释放内存
+        clipboard.destroy()
+      })
+    },
+
     /** 查询店铺订单列表 */
     getList() {
       this.loading = true;

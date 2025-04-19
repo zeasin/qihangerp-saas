@@ -70,18 +70,31 @@
 
     <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange" >
       <el-table-column type="selection" width="55" align="center" :selectable="isRowSelectable" />
-      <el-table-column label="订单号" align="center" prop="orderId" />
-      <el-table-column label="店铺" align="center" prop="shopId" >
+      <el-table-column label="订单号" align="left" prop="orderId" width="200px">
         <template slot-scope="scope">
-          <span>{{ shopList.find(x=>x.id == scope.row.shopId)?shopList.find(x=>x.id == scope.row.shopId).name :'' }}</span>
-        </template>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-view"
+            @click="handleDetail(scope.row)"
+          >{{scope.row.orderId}} </el-button>
+          <i class="el-icon-copy-document tag-copy" :data-clipboard-text="scope.row.orderId" @click="copyActiveCode($event,scope.row.orderId)" ></i>
+          <br/>
+          <el-tag type="info">{{ shopList.find(x=>x.id == scope.row.shopId) ? shopList.find(x=>x.id == scope.row.shopId).name : '' }}</el-tag>
+        </template>>
       </el-table-column>
+<!--      <el-table-column label="订单号" align="center" prop="orderId" />-->
+<!--      <el-table-column label="店铺" align="center" prop="shopId" >-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ shopList.find(x=>x.id == scope.row.shopId)?shopList.find(x=>x.id == scope.row.shopId).name :'' }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="商品" width="350">
           <template slot-scope="scope">
             <el-row v-for="item in scope.row.items" :key="item.id" :gutter="20">
 
             <div style="float: left;display: flex;align-items: center;" >
-              <el-image  style="width: 70px; height: 70px;" :src="item.thumbImg"></el-image>
+              <el-image  style="width: 50px; height: 50px;" :src="item.thumbImg"></el-image>
               <div style="margin-left:10px">
               <p>{{item.title}}</p>
               <p>
@@ -160,6 +173,7 @@ import { searchSku } from "@/api/goods/goods";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "../../../utils/request";
 import {listShopOrder, pullOrder, orderConfirm, pullOrderDetail} from "@/api/shop/shop_order";
+import Clipboard from "clipboard";
 
 export default {
   name: "OrderTao",
@@ -203,6 +217,21 @@ export default {
 
   },
   methods: {
+    copyActiveCode(event,queryParams) {
+      console.log(queryParams)
+      const clipboard = new Clipboard(".tag-copy")
+      clipboard.on('success', e => {
+        this.$message({ type: 'success', message: '复制成功' })
+        // 释放内存
+        clipboard.destroy()
+      })
+      clipboard.on('error', e => {
+        // 不支持复制
+        this.$message({ type: 'waning', message: '该浏览器不支持自动复制' })
+        // 释放内存
+        clipboard.destroy()
+      })
+    },
     amountFormatter(row, column, cellValue, index) {
       return '￥' + cellValue.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     },
