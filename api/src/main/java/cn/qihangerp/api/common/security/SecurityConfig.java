@@ -71,6 +71,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/signOn").permitAll()
                         .requestMatchers("/license/getLicense").permitAll()
+                        .requestMatchers("/wxmp/message").permitAll()
                         .requestMatchers(HttpMethod.GET,"/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/h2-console/**").permitAll()
                         // 允许 SpringMVC 的默认错误地址匿名访问

@@ -75,7 +75,13 @@ public class ResultVo<T> {
         result.setMsg("SUCCESS");
         return result;
     }
-
+    public static <T> ResultVo<T> error()
+    {
+        ResultVo<T> result = new ResultVo<>();
+        result.setCode(ResultVoEnum.Fail.getIndex());
+        result.setMsg(ResultVoEnum.Fail.getName());
+        return result;
+    }
     public static <T> ResultVo<T> error(ResultVoEnum resultVoEnum )
     {
         ResultVo<T> result = new ResultVo<>();
