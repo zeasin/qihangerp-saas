@@ -206,9 +206,14 @@ public class GoodsCategoryController extends BaseController {
             Map<String, List<ErpGoodsCategoryAttributeValue>> resultMap = new HashMap<>();
             List<ErpGoodsCategoryAttribute> attributes = attributeService.list(new LambdaQueryWrapper<ErpGoodsCategoryAttribute>().eq(ErpGoodsCategoryAttribute::getCategoryId, id).eq(ErpGoodsCategoryAttribute::getType, 1));
             List<String> collect = attributes.stream().map(x -> x.getId()).collect(Collectors.toList());
-            List<ErpGoodsCategoryAttributeValue> values = attributeValueService.list(
-                    new LambdaQueryWrapper<ErpGoodsCategoryAttributeValue>().in(ErpGoodsCategoryAttributeValue::getCategoryAttributeId, collect).eq(ErpGoodsCategoryAttributeValue::getIsDelete, 0)
-            );
+            List<ErpGoodsCategoryAttributeValue> values = new ArrayList<>();
+            if(!collect.isEmpty()) {
+                values = attributeValueService.list(
+                        new LambdaQueryWrapper<ErpGoodsCategoryAttributeValue>()
+                                .in(ErpGoodsCategoryAttributeValue::getCategoryAttributeId, collect)
+                                .eq(ErpGoodsCategoryAttributeValue::getIsDelete, 0)
+                );
+            }
             Map<String, List<ErpGoodsCategoryAttributeValue>> collect1 = values.stream().collect(Collectors.groupingBy(x -> x.getCategoryAttributeId()));
             collect1.forEach((key,value)->{
                 ErpGoodsCategoryAttribute erpGoodsCategoryAttribute = attributes.stream().filter(x -> x.getId().equals(key)).findFirst().orElse(null);
