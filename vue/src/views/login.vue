@@ -8,7 +8,7 @@
         <div class="zhuce"  v-if="n !==3"></div>
         <div class="tabs" v-if="n !==3">
           <div class="item" :class="n==1?'on':''" @click="n=1">密码登录</div>
-          <div class="item" :class="n==2?'on':''" @click="n=2">扫码关注</div>
+          <div class="item" :class="n==2?'on':''" @click="n=2">扫码登陆</div>
         </div>
         <div class="zhuce" v-else>注册</div>
         <!--star 密码登录-->
@@ -70,7 +70,7 @@
             <div class="explain center-content">
               <span >扫码关注微信公众号。</span><br/>
               <span ><bold>输入验证码</bold> <span class="link-color">{{code}}</span></span>
-              <div><span id="state">有效期五分钟 👉</span>
+              <div><span id="state">登录成功 </span>
 <!--                <a class="bold-span underline cursor-pointer link-color" @click="refreshCode">手动刷新</a>-->
               </div>
             </div>
@@ -322,10 +322,12 @@ export default {
          if (text.startsWith('login#')) {
            // 登录格式为 login#cookie
            console.log("登录成功,保存cookie", text)
-           let token = text.substring(6);
+           let token = text.substring(6).replace('Token=','').replace(';path=/;','');
+
            eventSource.close();
-           // vm.$store.commit('SET_TOKEN', token);
            setToken(token)
+           vm.$store.commit('SET_TOKEN', token);
+
            location.reload();
            // refreshPage();
          } else if (text.startsWith("init#")) {
