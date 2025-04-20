@@ -50,6 +50,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter
         if(url.equals("/login")||url.equals("/signOn")
                 ||url.contains("/license/getLicense")
                 ||url.contains("/wxmp/message")
+                ||url.contains("/api/subscribe")
                 ||url.equals("/favicon.ico")
                 ||url.contains("/h2-console")
         ){

@@ -172,7 +172,9 @@
 <script>
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from '@/utils/jsencrypt'
-import { getCodeImg,signOn } from "@/api/login";
+import { getCodemg,signOn } from "@/api/login";
+import { v4 as uuidv4 } from 'uuid';
+import { setToken } from '@/utils/auth'
 export default {
   name: "Login",
   data() {
@@ -202,7 +204,8 @@ export default {
       // 注册开关
       register: false,
       redirect: undefined,
-
+      deviceId:null,
+      intHook:null,
       show: true,
       isCode: false,
       count: 60,
@@ -251,6 +254,7 @@ export default {
   created() {
     this.getCode();
     this.getCookie();
+    this.connectSSE();
   },
   directives: {
     move(el, binding, vnode) {
@@ -299,6 +303,66 @@ export default {
     }
   },
   methods: {
+    // 获取设备ID
+    getDeviceId() {
+      let deviceId = localStorage.getItem('deviceId');
+      if (!deviceId) {
+        deviceId = uuidv4(); // 生成UUID作为设备ID
+        localStorage.setItem('deviceId', deviceId);
+      }
+      return deviceId;
+    },
+     connectSSE() {
+       let vm = this;
+       vm.deviceId = this.getDeviceId();
+       const eventSource = new EventSource('/prod-api/api/subscribe?deviceId='+vm.deviceId);
+       eventSource.onmessage = function (event) {
+         let text = event.data.replaceAll("\"", "").trim();
+         console.log("receive: " + text);
+         if (text.startsWith('login#')) {
+           // 登录格式为 login#cookie
+           console.log("登录成功,保存cookie", text)
+           let token = text.substring(6);
+           eventSource.close();
+           // vm.$store.commit('SET_TOKEN', token);
+           setToken(token)
+           location.reload();
+           // refreshPage();
+         } else if (text.startsWith("init#")) {
+           vm.code = text.substring(5).trim();
+           // code.value = newCode
+           console.log("初始化验证码: ", vm.code);
+         }
+       }
+       eventSource.addEventListener('INIT', function (event) {
+         console.log(event.data);
+       });
+
+       eventSource.addEventListener('MESSAGE', function (event) {
+         console.log('收到消息: ' + event.data);
+       });
+
+       eventSource.addEventListener('BROADCAST', function (event) {
+         console.log('收到广播: ' + event.data);
+       });
+
+       eventSource.onopen = function (evt) {
+         console.log("开始订阅, 设备id=", vm.deviceId, evt);
+         // clearTimeout(vm.intHook);
+       }
+
+       eventSource.onerror = function (event) {
+         console.log("连接错误，重新开始", event);
+         // vm.intHook = setTimeout(() => { vm.connectSSE() }, 5000);
+       };
+
+       // eventSource.onerror = function () {
+       //   eventSource.close();
+       //   console.log('连接失败========')
+       //   // 可以在这里实现重连逻辑
+       //   setTimeout(vm.connectSSE, 5000);
+       // };
+     },
     validatePhone() {
       // 中国大陆手机号码的正则表达式（11位数字，以1开头，第二位数字不固定）
       const phonePattern = /^1\d{10}$/;
