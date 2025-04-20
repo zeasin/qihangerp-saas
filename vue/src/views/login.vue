@@ -65,9 +65,16 @@
         <!--end 密码登录-->
         <!--star 验证码登录-->
         <el-form :model="form" ref="form" :rules="codeRules" v-if="n==2">
-          <el-form-item prop="phone">
-            <el-image src="http://img.qihangerp.cn/qihangerpcn_wxmp.jpg"></el-image>
-          </el-form-item>
+          <el-image  width="50px" height="10rem" src="http://img.qihangerp.cn/qihangerpcn_wxmp.jpg"></el-image>
+          <el-cell>
+            <div class="explain center-content">
+              <span >扫码关注微信公众号。</span><br/>
+              <span ><bold>输入验证码</bold> <span class="link-color">{{code}}</span></span>
+              <div><span id="state">有效期五分钟 👉</span>
+<!--                <a class="bold-span underline cursor-pointer link-color" @click="refreshCode">手动刷新</a>-->
+              </div>
+            </div>
+          </el-cell>
 <!--          <el-form-item prop="phone">-->
 <!--            <el-input type="tel" :maxlength="11" v-model.trim="form.phone" placeholder="请输入手机号">-->
 <!--              <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />-->
@@ -172,6 +179,7 @@ export default {
     return {
       n:1,
       codeUrl: "",
+      code: "",
       loginForm: {
         username: "",
         password: "",
