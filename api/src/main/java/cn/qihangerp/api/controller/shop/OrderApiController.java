@@ -80,7 +80,7 @@ public class OrderApiController extends BaseController {
             }
         }
 
-        ApiResultVo<Order> orderApiResultVo = WeiOrderApiHelper.pullOrderList(startTime, endTime, accessToken, null, null);
+        ApiResultVo<Order> orderApiResultVo = WeiOrderApiHelper.pullOrderList(startTime, endTime, accessToken);
 
         int insertSuccess = 0;//新增成功的订单
         int totalError = 0;

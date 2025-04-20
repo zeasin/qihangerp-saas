@@ -7,7 +7,7 @@ import cn.qihangerp.api.domain.Shop;
 import cn.qihangerp.api.service.ShopService;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.wei.WeiTokenApiHelper;
-import cn.qihangerp.open.wei.response.WeiTokenResponse;
+import cn.qihangerp.open.wei.WeiTokenResponse;
 import cn.qihangerp.open.wei.vo.ShopApiParams;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
