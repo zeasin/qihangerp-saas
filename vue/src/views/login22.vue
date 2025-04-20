@@ -7,8 +7,8 @@
       <div class="login-form">
         <div class="zhuce"  v-if="n !==3"></div>
         <div class="tabs" v-if="n !==3">
-          <div class="item" :class="n==1?'on':''" @click="onPassLogin()">密码登录</div>
-          <div class="item" :class="n==2?'on':''" @click="onScanLogin()">扫码登陆</div>
+          <div class="item" :class="n==1?'on':''" @click="n=1">密码登录</div>
+          <div class="item" :class="n==2?'on':''" @click="n=2">扫码登陆</div>
         </div>
         <div class="zhuce" v-else>注册</div>
         <!--star 密码登录-->
@@ -68,12 +68,10 @@
           <el-image  width="50px" height="10rem" src="http://img.qihangerp.cn/qihangerpcn_wxmp.jpg"></el-image>
           <el-cell>
             <div class="explain center-content">
-              <span >1、扫码关注微信公众号。</span><br/>
-              <span ><bold>2、输入验证码：</bold> <span class="link-color">{{code}}</span>
-               (<span id="state">有效期五分钟 👉</span> <a class="bold-span underline cursor-pointer link-color" @click="refreshCode">手动刷新</a>)
-              </span>
-              <div><span id="state">3、登录成功，自动跳转。 </span>
-
+              <span >扫码关注微信公众号。</span><br/>
+              <span ><bold>输入验证码</bold> <span class="link-color">{{code}}</span></span>
+              <div><span id="state">登录成功 </span>
+<!--                <a class="bold-span underline cursor-pointer link-color" @click="refreshCode">手动刷新</a>-->
               </div>
             </div>
           </el-cell>
@@ -174,7 +172,7 @@
 <script>
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from '@/utils/jsencrypt'
-import { getCodemg,signOn,lgFetch,lgRefresh } from "@/api/login";
+import { getCodemg,signOn } from "@/api/login";
 import { v4 as uuidv4 } from 'uuid';
 import { setToken } from '@/utils/auth'
 export default {
@@ -243,11 +241,6 @@ export default {
           { min: 6, trigger: 'blur', message: '密码长度不能小于 6 位' }
         ],
       },
-
-      sseSource:null,
-      fetchCodeCnt:0,
-      connectionCntNum:0,//连接最大次数
-      connectionStatus:false//连接状态
     };
   },
   watch: {
@@ -261,7 +254,7 @@ export default {
   created() {
     this.getCode();
     this.getCookie();
-    this.getDeviceId();
+    this.connectSSE();
   },
   directives: {
     move(el, binding, vnode) {
@@ -308,164 +301,70 @@ export default {
         document.onmousemove = null;
       };
     }
-  }, computed: {
-    methodCalled() {
-      this.onAfreshConnection(); // 直接调用方法
-    }
   },
   methods: {
     // 获取设备ID
     getDeviceId() {
       let deviceId = localStorage.getItem('deviceId');
       if (!deviceId) {
-        deviceId = uuidv4() ?? '00000000000'; // 生成UUID作为设备ID
+        deviceId = uuidv4(); // 生成UUID作为设备ID
         localStorage.setItem('deviceId', deviceId);
       }
-      this.deviceId = deviceId
+      return deviceId;
     },
-    // 点击扫描登陆确定连接
-    onScanLogin(){
-      this.n = 2;
-      this.fetchCodeCnt = 0;
-      this.onAfreshConnection();
-      clearInterval(this.intHook);
-    },
-    // 点击密码登陆
-    onPassLogin(){
-      this.n = 1;
-      this.connectionCntNum = 5;
-      this.sseSource.close();//清除连接
-      clearInterval(this.intHook);
-    },
-    onAfreshConnection(){
-      this.buildConnect();
-    },
-    // 连接事件
-    buildConnect() {
+     connectSSE() {
        let vm = this;
-       if (vm.sseSource != null) {
-          try {
-            vm.sseSource.close();
-          } catch (e) {
-            console.log("关闭上次的连接", e);
-          }
-          try {
-            clearInterval(vm.intHook);
-          } catch (e) { /* empty */ }
-       }
-
+       vm.deviceId = this.getDeviceId();
        const eventSource = new EventSource('/prod-api/api/subscribe?deviceId='+vm.deviceId);
-       vm.sseSource = eventSource;
-
-       eventSource.onopen = function (evt) {
-         console.log("开始订阅, 设备id=", vm.deviceId, evt);
-         vm.refreshCode()
-         vm.connectionStatus = true;
-         vm.intHook = null
-         clearInterval(vm.intHook);
-       }
        eventSource.onmessage = function (event) {
-         let newCode;
          let text = event.data.replaceAll("\"", "").trim();
          console.log("receive: " + text);
          if (text.startsWith('login#')) {
            // 登录格式为 login#cookie
            console.log("登录成功,保存cookie", text)
            let token = text.substring(6).replace('Token=','').replace(';path=/;','');
+
            eventSource.close();
            setToken(token)
            vm.$store.commit('SET_TOKEN', token);
-           setTimeout(() => {
-              location.reload();
-           }, 500);
+
+           location.reload();
+           // refreshPage();
          } else if (text.startsWith("init#")) {
            vm.code = text.substring(5).trim();
-           newCode = vm.code;
+           // code.value = newCode
            console.log("初始化验证码: ", vm.code);
          }
-         if (newCode != null) { // 如果获取到code
-            try {
-              clearInterval(vm.intHook); // 清除获取code定时器
-            } catch (e) { /* empty */ }
-         }
        }
-       if(vm.connectionCntNum < 5){//错误情况后，设置连接最大次数
-          eventSource.onerror = function (event) {
-              console.log("连接错误，重新开始", event);
-              vm.connectionStatus = false;//连接失败，设置失败状态
-              ++vm.connectionCntNum;
-              console.log(vm.connectionCntNum)
-              setTimeout(() => {
-                vm.buildConnect()
-              }, 3000);
-          };
-       }else{
-        eventSource.close();//关闭连接
-        clearInterval(vm.intHook); // 清除获取code定时器
-       }
-       vm.fetchCodeCnt = 0;//重置请求限制为0
-       if(vm.connectionStatus){//如果连接成功，才轮询查询验证码
-          vm.intHook = setInterval(() => vm.fetchCode(), 3000);// 每三秒开始刷新code
+       eventSource.addEventListener('INIT', function (event) {
+         console.log(event.data);
+       });
+
+       eventSource.addEventListener('MESSAGE', function (event) {
+         console.log('收到消息: ' + event.data);
+       });
+
+       eventSource.addEventListener('BROADCAST', function (event) {
+         console.log('收到广播: ' + event.data);
+       });
+
+       eventSource.onopen = function (evt) {
+         console.log("开始订阅, 设备id=", vm.deviceId, evt);
+         // clearTimeout(vm.intHook);
        }
 
-    },
-    //获取后端给的code
-    fetchCode() {
-      let vm = this;
-      if (vm.deviceId) {
-        if (++vm.fetchCodeCnt > 5) {
-          // 为了避免不停的向后端发起请求，做一个最大的重试计数限制
-          try {
-            clearInterval(vm.intHook);
-          } catch (e) { /* empty */ }
-          return;
-        }
-        lgFetch({deviceId:vm.deviceId}).then(response=>{
-            if(response.data){
-              if (response.data !== 'fail') {
-                // @ts-ignore
-                vm.code = response.data
-                try {
-                  clearInterval(vm.intHook);
-                } catch (e) { /* empty */ }
-              }
-            }
-        }).catch((error) => {
-          console.error(error)
-        })
-      } else {
-        console.log("deviceId未获取，稍后再试!");
-      }
-    },
-    //手动刷新
-    refreshCode() {
-      let vm = this;
-      lgRefresh({deviceId:vm.deviceId}).then(response=>{
-        console.log("验证码刷新完成: ", response)
-          // @ts-ignore
-          const validationCode = response.data['code']
-          // @ts-ignore
-          const reconnect = response.data['reconnect']
+       eventSource.onerror = function (event) {
+         console.log("连接错误，重新开始", event);
+         // vm.intHook = setTimeout(() => { vm.connectSSE() }, 5000);
+       };
 
-
-          if (reconnect) {
-            // 重新建立连接
-            vm.buildConnect()
-            // vm.state = '已刷新'
-          } else if(validationCode) {
-            if (vm.code !== validationCode) {
-              console.log("主动刷新验证码!")
-              vm.code = validationCode
-              // vm.state = '已刷新'
-            } else {
-              console.log("验证码已刷新了!")
-            }
-          }
-      }).catch((error) => {
-          console.error(error)
-      })
-    },
-
+       // eventSource.onerror = function () {
+       //   eventSource.close();
+       //   console.log('连接失败========')
+       //   // 可以在这里实现重连逻辑
+       //   setTimeout(vm.connectSSE, 5000);
+       // };
+     },
     validatePhone() {
       // 中国大陆手机号码的正则表达式（11位数字，以1开头，第二位数字不固定）
       const phonePattern = /^1\d{10}$/;

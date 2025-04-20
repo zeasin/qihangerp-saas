@@ -56,3 +56,17 @@ export function signOn(data) {
     data:data
   })
 }
+export function lgFetch(data) {
+  return request({
+    url: '/api/subscribe/fetch',
+    method: 'get',
+    params: data
+  })
+}
+export function lgRefresh(data) {
+  return request({
+    url: '/api/subscribe/refresh',
+    method: 'get',
+    params: data
+  })
+}

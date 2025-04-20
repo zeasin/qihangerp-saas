@@ -1,6 +1,7 @@
 package cn.qihangerp.api.controller.mp;
 
 
+import cn.qihangerp.api.common.cache.RedisCache;
 import cn.qihangerp.api.common.exception.NoVlaInGuavaException;
 import cn.qihangerp.api.common.utils.NumberUtils;
 import cn.qihangerp.api.service.SysLoginService;
@@ -37,7 +38,8 @@ public class WxLoginHelper {
      * key = 设备 value = 验证码
      */
     private LoadingCache<String, String> deviceCodeCache;
-
+    @Autowired
+    private RedisCache redisCache;
     public WxLoginHelper() {
 //        this.sessionService = loginService;
         verifyCodeCache = CacheBuilder.newBuilder().maximumSize(300).expireAfterWrite(5, TimeUnit.MINUTES).build(new CacheLoader<String, SseEmitter>() {
@@ -72,6 +74,7 @@ public class WxLoginHelper {
     public SseEmitter subscribe(String deviceId) throws IOException {
 //        String deviceId = ReqInfoContext.getReqInfo().getDeviceId();
         String realCode = deviceCodeCache.getUnchecked(deviceId) ;
+        redisCache.setCacheObject(deviceId,realCode);
         // fixme 设置15min的超时时间, 超时时间一旦设置不能修改；因此导致刷新验证码并不会增加连接的有效期
         SseEmitter sseEmitter = new SseEmitter(SSE_EXPIRE_TIME);
         SseEmitter oldSse = verifyCodeCache.getIfPresent(realCode);
