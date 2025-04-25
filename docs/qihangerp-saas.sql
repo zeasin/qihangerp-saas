@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : 121.229.189.144演示环境
  Source Server Type    : MySQL
- Source Server Version : 80200
- Source Host           : localhost:3306
- Source Schema         : qihangerp-saas
+ Source Server Version : 80040
+ Source Host           : 121.229.189.144:3306
+ Source Schema         : qihangerp-weishop
 
  Target Server Type    : MySQL
- Target Server Version : 80200
+ Target Server Version : 80040
  File Encoding         : 65001
 
- Date: 25/04/2025 19:27:48
+ Date: 25/04/2025 21:54:06
 */
 
 SET NAMES utf8mb4;
@@ -107,7 +107,7 @@ CREATE TABLE `erp_goods`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `number`(`number`) USING BTREE,
   INDEX `id`(`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品库存管理' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品库存管理' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods
@@ -120,7 +120,7 @@ INSERT INTO `erp_goods` VALUES (3, 100, '合成号深圳特产松沙饼 广东�
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_goods_brand`;
 CREATE TABLE `erp_goods_brand`  (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '品牌名',
   `status` int NOT NULL COMMENT '状态',
   `tenant_id` bigint NOT NULL COMMENT '租户id（sys_user_id）',
@@ -141,7 +141,7 @@ INSERT INTO `erp_goods_brand` VALUES (1, '梦小妮', 1, 100, 'admin', '2023-12-
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_goods_category`;
 CREATE TABLE `erp_goods_category`  (
-  `id` bigint NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `number` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '分类编码',
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '分类名称',
   `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
@@ -199,13 +199,16 @@ INSERT INTO `erp_goods_category` VALUES (1781916938344173569, 'A0222D', '男装'
 INSERT INTO `erp_goods_category` VALUES (1781917406537551873, 'A220252', '上衣1', NULL, 1781916938344173569, 1781916938344173569, '', 4, NULL, 0, 100, '手动添加', '2024-04-21 13:26:31', '手动更新', '2024-04-21 16:39:10');
 INSERT INTO `erp_goods_category` VALUES (1781968290021662722, 'KUZI', '裤子', NULL, 1781916938344173569, 1781916938344173569, '', 0, NULL, 0, 100, '手动添加', '2024-04-21 16:48:42', NULL, NULL);
 INSERT INTO `erp_goods_category` VALUES (1781968397051912193, 'nzk', '牛仔裤', NULL, 1781916938344173569, 1781968290021662722, '', 0, NULL, 0, 100, '手动添加', '2024-04-21 16:49:08', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (1913447212085514242, '1', '11111', NULL, 0, 0, '', 0, NULL, 0, 104, '手动添加', '2025-04-19 12:19:00', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (1913451642587549698, 'NONGCP', '农产品', NULL, 0, 0, '', 0, NULL, 0, 1, '手动添加', '2025-04-19 12:36:36', NULL, NULL);
+INSERT INTO `erp_goods_category` VALUES (1913451713488064513, 'YJJ', '盐焗鸡', NULL, 1913451642587549698, 1913451642587549698, '', 0, NULL, 0, 1, '手动添加', '2025-04-19 12:36:53', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_goods_category_attribute
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_goods_category_attribute`;
 CREATE TABLE `erp_goods_category_attribute`  (
-  `id` bigint NOT NULL COMMENT '主键id',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `category_id` bigint NOT NULL,
   `type` int NOT NULL DEFAULT 0 COMMENT '类型：0属性1规格',
   `title` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '\'属性名\'',
@@ -221,13 +224,14 @@ INSERT INTO `erp_goods_category_attribute` VALUES (115, 1, 1, '尺码', 'size');
 INSERT INTO `erp_goods_category_attribute` VALUES (116, 1, 1, '款式', 'style');
 INSERT INTO `erp_goods_category_attribute` VALUES (1781941806087319554, 1781916938344173569, 1, '颜色', 'color');
 INSERT INTO `erp_goods_category_attribute` VALUES (1781941897267294210, 1781916938344173569, 1, '尺码', 'size');
+INSERT INTO `erp_goods_category_attribute` VALUES (1913447358508666881, 1913447212085514242, 1, '123', 'color');
 
 -- ----------------------------
 -- Table structure for erp_goods_category_attribute_value
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_goods_category_attribute_value`;
 CREATE TABLE `erp_goods_category_attribute_value`  (
-  `id` bigint NOT NULL COMMENT '主键，属性值id',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键，属性值id',
   `category_attribute_id` bigint NULL DEFAULT NULL COMMENT '属性id',
   `value` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '属性值文本',
   `sku_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '生成SKU的编码',
@@ -356,6 +360,8 @@ INSERT INTO `erp_goods_category_attribute_value` VALUES (421, 116, '加绒', 'R'
 INSERT INTO `erp_goods_category_attribute_value` VALUES (422, 116, '长裤加绒', 'CR', 65, 0);
 INSERT INTO `erp_goods_category_attribute_value` VALUES (423, 116, '加长裤加绒', 'JCR', 67, 0);
 INSERT INTO `erp_goods_category_attribute_value` VALUES (1673551873, 1781941806087319554, '红色', '00', 0, 0);
+INSERT INTO `erp_goods_category_attribute_value` VALUES (1913447643612286978, 1913447358508666881, '红色', 'XX', 0, 0);
+INSERT INTO `erp_goods_category_attribute_value` VALUES (1913447664629944322, 1913447358508666881, '白色', 'XX', 0, 0);
 
 -- ----------------------------
 -- Table structure for erp_goods_inventory
@@ -376,7 +382,7 @@ CREATE TABLE `erp_goods_inventory`  (
   `updateBy` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `specIdIndex`(`specId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods_inventory
@@ -403,7 +409,7 @@ CREATE TABLE `erp_goods_inventory_detail`  (
   `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `createBy` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存明细表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存明细表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods_inventory_detail
@@ -445,7 +451,7 @@ CREATE TABLE `erp_goods_sku`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `id`(`id`) USING BTREE,
   INDEX `number`(`spec_num`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1781988656068800514 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品规格' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1915704008673095686 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品规格' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods_sku
@@ -467,7 +473,7 @@ CREATE TABLE `erp_goods_sku_attr`  (
   `v` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `img` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1781988656135909377 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1781988656135909378 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods_sku_attr
@@ -479,7 +485,7 @@ INSERT INTO `erp_goods_sku_attr` VALUES (1781988656135909377, 178198865606041190
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_logistics_company`;
 CREATE TABLE `erp_logistics_company`  (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `platform_id` bigint NULL DEFAULT NULL COMMENT '平台id',
   `shop_id` bigint NULL DEFAULT NULL COMMENT '店铺ID',
   `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户id',
@@ -495,6 +501,7 @@ CREATE TABLE `erp_logistics_company`  (
 -- Records of erp_logistics_company
 -- ----------------------------
 INSERT INTO `erp_logistics_company` VALUES (1782018513779572737, NULL, NULL, 100, NULL, 'SF', '顺丰', NULL, 1);
+INSERT INTO `erp_logistics_company` VALUES (1912877880313499649, NULL, NULL, 105, NULL, '0001', '申通', NULL, 1);
 
 -- ----------------------------
 -- Table structure for erp_order
@@ -539,21 +546,21 @@ CREATE TABLE `erp_order`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `order_sn_index`(`order_num`) USING BTREE,
   INDEX `shopid_index`(`shop_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1912761597856628738 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1778674707316772867 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_order
 -- ----------------------------
-INSERT INTO `erp_order` VALUES (1778674706280779778, 100, '3718586550340945408', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '张*', '153****8788', '****', '安徽省', '合肥市', '庐江县', '1970-01-18 15:19:15', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
-INSERT INTO `erp_order` VALUES (1778674706557603842, 100, '3718586568279724288', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '王**', '152****2706', '****', '河南省', '开封市', '禹王台区', '1970-01-18 15:20:24', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
-INSERT INTO `erp_order` VALUES (1778674706641489922, 100, '3718587018572858624', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 1098.9, 1, '阿*', '139****6961', '****', '云南省', '昭通市', '昭阳区', '1970-01-18 15:49:02', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
-INSERT INTO `erp_order` VALUES (1778674706716987394, 100, '3718587542502772992', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 9.9, 9.9, '吴*', '131****1805', '****', '江苏省', '苏州市', '姑苏区', '1970-01-18 16:22:20', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
-INSERT INTO `erp_order` VALUES (1778674706788290561, 100, '3718587809541260800', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '耿*', '136****6190', '****', '北京市', '北京市', '丰台区', '1970-01-18 16:39:19', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
-INSERT INTO `erp_order` VALUES (1778674706922508289, 100, '3718587810203962368', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '忻*', '139****5732', '****', '贵州省', '贵阳市', '云岩区', '1970-01-18 16:39:22', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
-INSERT INTO `erp_order` VALUES (1778674707065114625, 100, '3718587814527504384', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '王**', '136****6620', '****', '北京市', '北京市', '朝阳区', '1970-01-18 16:39:38', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
-INSERT INTO `erp_order` VALUES (1778674707132223490, 100, '3718587815659965440', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '崔*', '133****5865', '****', '湖北省', '恩施土家族苗族自治州', '建始县', '1970-01-18 16:39:42', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
-INSERT INTO `erp_order` VALUES (1778674707245469697, 100, '3718587822346996736', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '赵**', '134****1877', '****', '北京市', '北京市', '东城区', '1970-01-18 16:40:08', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
-INSERT INTO `erp_order` VALUES (1778674707316772866, 100, '3718588207135065344', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '冯**', '156****2268', '****', '贵州省', '遵义市', '红花岗区', '1970-01-18 17:04:36', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
+INSERT INTO `erp_order` VALUES (1778674706280779778, 100, '3718586550340945408', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '张*', '153****8788', '****', '安徽省', '合肥市', '庐江县', '2024-04-12 14:41:11', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
+INSERT INTO `erp_order` VALUES (1778674706557603842, 100, '3718586568279724288', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '王**', '152****2706', '****', '河南省', '开封市', '禹王台区', '2024-04-12 14:41:11', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
+INSERT INTO `erp_order` VALUES (1778674706641489922, 100, '3718587018572858624', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 1098.9, 1, '阿*', '139****6961', '****', '云南省', '昭通市', '昭阳区', '2024-04-12 14:41:11', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
+INSERT INTO `erp_order` VALUES (1778674706716987394, 100, '3718587542502772992', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 9.9, 9.9, '吴*', '131****1805', '****', '江苏省', '苏州市', '姑苏区', '2024-04-12 14:41:11', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
+INSERT INTO `erp_order` VALUES (1778674706788290561, 100, '3718587809541260800', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '耿*', '136****6190', '****', '北京市', '北京市', '丰台区', '2024-04-12 14:41:11', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
+INSERT INTO `erp_order` VALUES (1778674706922508289, 100, '3718587810203962368', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '忻*', '139****5732', '****', '贵州省', '贵阳市', '云岩区', '2024-04-12 14:41:11', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
+INSERT INTO `erp_order` VALUES (1778674707065114625, 100, '3718587814527504384', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '王**', '136****6620', '****', '北京市', '北京市', '朝阳区', '2024-04-12 14:41:11', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
+INSERT INTO `erp_order` VALUES (1778674707132223490, 100, '3718587815659965440', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '崔*', '133****5865', '****', '湖北省', '恩施土家族苗族自治州', '建始县', '2024-04-12 14:41:11', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
+INSERT INTO `erp_order` VALUES (1778674707245469697, 100, '3718587822346996736', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '赵**', '134****1877', '****', '北京市', '北京市', '东城区', '2024-04-12 14:41:11', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
+INSERT INTO `erp_order` VALUES (1778674707316772866, 100, '3718588207135065344', 5, 6, NULL, NULL, NULL, NULL, 1, 0, 99.9, 99.9, '冯**', '156****2268', '****', '贵州省', '遵义市', '红花岗区', '2024-04-12 14:41:11', -1, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2024-04-12 14:41:11', '手动确认', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_order_item
@@ -588,7 +595,7 @@ CREATE TABLE `erp_order_item`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goodId_index`(`erp_goods_id`) USING BTREE,
   INDEX `order_id`(`order_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1912761597923737602 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单明细表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1778674707337744386 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单明细表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_order_item
@@ -609,7 +616,7 @@ INSERT INTO `erp_order_item` VALUES (1778674707337744385, 100, 6, 17786747073167
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_order_shipping`;
 CREATE TABLE `erp_order_shipping`  (
-  `id` bigint NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `shop_id` int NULL DEFAULT NULL COMMENT '店铺id',
   `order_id` bigint NULL DEFAULT NULL COMMENT 'o_order表id',
   `order_num` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单编号',
@@ -756,7 +763,7 @@ INSERT INTO `erp_purchase_order_payable` VALUES (1, 0, 33, '中山裤豪', 52.00
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_purchase_order_ship`;
 CREATE TABLE `erp_purchase_order_ship`  (
-  `id` bigint NOT NULL COMMENT '采购单ID（主键）',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '采购单ID（主键）',
   `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户id',
   `supplier_id` bigint NULL DEFAULT NULL COMMENT '供应商id',
   `order_id` bigint NULL DEFAULT NULL COMMENT '订单id',
@@ -855,12 +862,16 @@ CREATE TABLE `erp_shop`  (
   `refresh_token_timeout` bigint NULL DEFAULT NULL COMMENT '刷新token过期时间',
   `api_request_url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '请求url',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1781998402943377410 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据中心-店铺' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1914960464203862019 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据中心-店铺' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_shop
 -- ----------------------------
 INSERT INTO `erp_shop` VALUES (6, 100, '测试小店', 5, NULL, 9, 0, 1744808114, '啊啊啊v', 0, '', '', '', NULL, NULL, NULL, NULL, 'https://api.weixin.qq.com');
+INSERT INTO `erp_shop` VALUES (1912878646789001217, 105, '微信小店', 5, NULL, 9, 0, 1744900783, NULL, 0, '77777777', '445245', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop` VALUES (1913433733316317186, 110, 'store01', 5, NULL, 9, 0, 1745033126, 'test', 0, 'store01id', 'sc555', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop` VALUES (1913433835414065154, 110, '22', 5, NULL, 9, 0, 1745033150, '222', 0, '22', '222', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop` VALUES (1914960464203862018, 115, 'a', 5, NULL, 9, 0, 1745397127, 'a', 0, 'a', 'a', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_shop_goods
@@ -886,7 +897,7 @@ CREATE TABLE `erp_shop_goods`  (
   `edit_time` int NULL DEFAULT NULL COMMENT '商品草稿最近一次修改时间',
   `erp_goods_id` bigint NOT NULL DEFAULT 0 COMMENT '商品库商品id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1912492826466312197 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_shop_goods
@@ -926,7 +937,7 @@ CREATE TABLE `erp_shop_goods_sku`  (
   `erp_goods_id` bigint NOT NULL DEFAULT 0 COMMENT 'erp系统商品id',
   `erp_goods_sku_id` bigint NOT NULL DEFAULT 0 COMMENT 'erp系统商品skuid',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1912513769162936322 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_shop_goods_sku
@@ -1087,7 +1098,7 @@ INSERT INTO `erp_shop_order_item` VALUES (1912512446954844163, 100, 6, 191251244
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_shop_platform`;
 CREATE TABLE `erp_shop_platform`  (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台名',
   `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台编码',
   `app_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
@@ -1132,7 +1143,7 @@ INSERT INTO `erp_shop_pull_lasttime` VALUES (1912742071463100417, 6, 100, 'REFUN
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_shop_pull_logs`;
 CREATE TABLE `erp_shop_pull_logs`  (
-  `id` bigint NOT NULL COMMENT '主键Id',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键Id',
   `shop_id` bigint NOT NULL COMMENT '店铺id',
   `tenant_id` bigint NOT NULL COMMENT '租户id',
   `shop_type` int NOT NULL COMMENT '平台id',
@@ -1188,7 +1199,8 @@ INSERT INTO `erp_shop_pull_logs` VALUES (1912742071492460546, 6, 100, 5, 'REFUND
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_shop_refund`;
 CREATE TABLE `erp_shop_refund`  (
-  `id` bigint NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   `shop_id` int NULL DEFAULT NULL COMMENT '店铺id',
   `after_sale_order_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '售后单号',
   `status` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '售后单当前状态，参考：AfterSaleStatus',
@@ -1227,7 +1239,7 @@ CREATE TABLE `erp_shop_refund`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_supplier`;
 CREATE TABLE `erp_supplier`  (
-  `id` bigint NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `tenant_id` bigint NOT NULL COMMENT '租户id',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '供应商名称',
   `number` varchar(18) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '供应商编码',
@@ -1315,13 +1327,14 @@ CREATE TABLE `erp_supplier_agent_shipping`  (
   `create_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
   `update_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '供应商代发货表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_supplier_agent_shipping
 -- ----------------------------
-INSERT INTO `erp_supplier_agent_shipping` VALUES (1, 6, 4, 26, 17, 14, '1635222253871665598', '2022-08-05 18:48:51', 9, 40, '8026牛仔短裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01PHFmsX2FOyB14fPie_!!2208857268871-0-cib.jpg', '272021008026', '浅蓝色,L', '2720210080260303', 16, 1, 29.92, NULL, '菜鸟速递', 'CN52500021', 2, '2024-01-28 00:00:00', 1, '2024-01-28 19:55:37', 'admin', 'admin', '2024-01-28 21:06:44');
+INSERT INTO `erp_supplier_agent_shipping` VALUES (1, 6, 4, 26, 17, 14, '1635222253871665598', '2022-08-05 18:48:51', 9, 40, '8026牛仔短裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01PHFmsX2FOyB14fPie_!!2208857268871-0-cib.jpg', '272021008026', '浅蓝色,L', '2720210080260303', 16, 1, 29.92, NULL, '菜鸟速递', 'CN52500021', 2, '2024-01-28 00:00:00', 1, '2024-01-28 19:55:37', 'admin', 'admin', '2024-01-28 21:06:44', 0);
 
 -- ----------------------------
 -- Table structure for fms_payable_agent_ship
@@ -1345,13 +1358,14 @@ CREATE TABLE `fms_payable_agent_ship`  (
   `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '财务管理-应付款-代发账单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of fms_payable_agent_ship
 -- ----------------------------
-INSERT INTO `fms_payable_agent_ship` VALUES (2, '1635222253871665598', 6, 26, '韩牛服饰', '2024-01-28', '菜鸟速递', 'CN52500021', 17.00, 2.00, 15.00, NULL, 0, '2024-01-28 21:06:44', 'admin', NULL, NULL);
+INSERT INTO `fms_payable_agent_ship` VALUES (2, '1635222253871665598', 6, 26, '韩牛服饰', '2024-01-28', '菜鸟速递', 'CN52500021', 17.00, 2.00, 15.00, NULL, 0, '2024-01-28 21:06:44', 'admin', NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for fms_payable_ship_fee
@@ -1381,13 +1395,14 @@ CREATE TABLE `fms_payable_ship_fee`  (
   `province` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '省',
   `city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '市',
   `town` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '区',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '财务管理-应付款-物流费用' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of fms_payable_ship_fee
 -- ----------------------------
-INSERT INTO `fms_payable_ship_fee` VALUES (1, '33', '中山裤豪', '', 'PUR20240128113656', NULL, 52.00, '2024-01-28', NULL, 0, '2024-01-28 12:07:32', 'admin', NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `fms_payable_ship_fee` VALUES (1, '33', '中山裤豪', '', 'PUR20240128113656', NULL, 52.00, '2024-01-28', NULL, 0, '2024-01-28 12:07:32', 'admin', NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for scm_purchase_contract
@@ -1443,6 +1458,7 @@ CREATE TABLE `scm_purchase_contract`  (
   `qualifiedStatus` int NULL DEFAULT 0 COMMENT '0为合格数量为0,1为合格数量不为0',
   `stockInName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '入库人',
   `stockInTime` bigint NULL DEFAULT 0 COMMENT '入库时间',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '采购单' ROW_FORMAT = DYNAMIC;
 
@@ -1477,7 +1493,7 @@ INSERT INTO `sys_config` VALUES (3, '教程', 'mp.msg', '官方文档地址qihan
 INSERT INTO `sys_config` VALUES (4, '交流加群', 'mp.msg', '交流QQ群：60235114（交流群是为了聚集开发者交流，加群请star项目，否则不通过，谢谢-开发者不可能没有gitee账号吧）', 'Y', 'admin', '2023-08-07 19:31:38', '', NULL, '是否开启验证码功能（true开启，false关闭）');
 INSERT INTO `sys_config` VALUES (5, '购买', 'mp.msg', '感谢信任，购买商业版请联系老齐，手机号：15818590119', 'Y', 'admin', '2023-08-07 19:31:38', '', NULL, '是否开启验证码功能（true开启，false关闭）');
 INSERT INTO `sys_config` VALUES (6, '部署', 'mp.msg', '感谢信任，付费部署，收费2000，有需要请联系老齐，手机号：15818590119', 'Y', 'admin', '2023-08-07 19:31:38', '', NULL, '是否开启验证码功能（true开启，false关闭）');
-INSERT INTO `sys_config` VALUES (7, '获取演示账号', 'mp.msg', '演示环境是基于saas模式的，用户之间数据相互隔离，目前仅支持微信小店平台。访问http://erp.qihangerp.cn:8066自行注册即可，目前还处于完善优化阶段，后期可能会直接做成按用户收费的saas系统。', 'Y', 'admin', '2023-08-07 19:31:38', '', NULL, '是否开启验证码功能（true开启，false关闭）');
+INSERT INTO `sys_config` VALUES (7, '获取演示账号', 'mp.msg', '演示环境是基于saas模式的，用户之间数据相互隔离，目前仅支持微信小店平台。访问http://erp.qihangerp.cn自行注册即可，目前还处于完善优化阶段，后期可能会直接做成按用户收费的saas系统。', 'Y', 'admin', '2023-08-07 19:31:38', '', NULL, '是否开启验证码功能（true开启，false关闭）');
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -1712,25 +1728,24 @@ CREATE TABLE `sys_menu`  (
   `update_time` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2088 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2089 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES (1, '系统管理', 0, 99, 'system', '', '', 1, 0, 'M', '0', '0', '', 'system', 'admin', '2023-12-27 15:00:27', 'admin', '2024-04-20 22:21:25', '系统管理目录');
-INSERT INTO `sys_menu` VALUES (2, '采购管理', 0, 7, 'scm', '', '', 1, 0, 'M', '0', '0', '', 'server', 'admin', '2023-12-27 15:00:27', 'admin', '2025-04-15 22:10:38', '至简官网地址');
+INSERT INTO `sys_menu` VALUES (2, '采购管理', 0, 7, 'scm', '', '', 1, 0, 'M', '1', '0', '', 'server', 'admin', '2023-12-27 15:00:27', 'admin', '2025-04-25 08:25:33', '至简官网地址');
 INSERT INTO `sys_menu` VALUES (3, '订单管理', 0, 2, 'order', '', '', 1, 0, 'M', '0', '0', '', 'shopping', 'admin', '2023-12-29 16:53:03', 'admin', '2024-04-10 11:02:32', '');
 INSERT INTO `sys_menu` VALUES (4, '发货管理', 0, 3, 'ship', '', '', 1, 0, 'M', '0', '0', '', 'excel', 'admin', '2024-01-01 14:08:04', 'admin', '2024-04-10 11:10:31', '');
 INSERT INTO `sys_menu` VALUES (5, '售后处理', 0, 4, 'after_sale', NULL, NULL, 1, 0, 'M', '0', '0', '', 'clipboard', 'admin', '2024-01-03 14:23:55', 'admin', '2025-04-17 12:18:27', '');
 INSERT INTO `sys_menu` VALUES (6, '库存管理', 0, 5, 'wms', '', '', 1, 0, 'M', '0', '0', '', 'chart', 'admin', '2023-12-31 12:14:33', 'admin', '2024-04-21 15:12:25', '');
 INSERT INTO `sys_menu` VALUES (7, '店铺管理', 0, 6, 'shop', '', '', 1, 0, 'M', '0', '0', '', 'theme', 'admin', '2023-12-29 17:07:23', 'admin', '2024-04-10 10:56:43', '');
 INSERT INTO `sys_menu` VALUES (8, '商品管理', 0, 0, 'goods', '', '', 1, 0, 'M', '0', '0', '', 'theme', 'admin', '2023-12-29 13:29:44', 'admin', '2025-04-15 22:06:08', '');
-INSERT INTO `sys_menu` VALUES (9, '费用管理', 0, 10, 'fms', '', '', 1, 0, 'M', '0', '0', '', 'money', 'admin', '2023-12-29 13:29:44', 'admin', '2025-04-17 12:22:17', '');
+INSERT INTO `sys_menu` VALUES (9, '费用管理', 0, 10, 'fms', '', '', 1, 0, 'M', '1', '0', '', 'money', 'admin', '2023-12-29 13:29:44', 'admin', '2025-04-19 10:19:58', '');
 INSERT INTO `sys_menu` VALUES (100, '用户管理', 1, 1, 'user', 'system/user/index', '', 1, 0, 'C', '0', '0', 'system:user:list', 'user', 'admin', '2023-12-27 15:00:27', '', '', '用户管理菜单');
 INSERT INTO `sys_menu` VALUES (101, '角色管理', 1, 2, 'role', 'system/role/index', '', 1, 0, 'C', '0', '0', 'system:role:list', 'peoples', 'admin', '2023-12-27 15:00:27', '', '', '角色管理菜单');
 INSERT INTO `sys_menu` VALUES (102, '菜单管理', 1, 3, 'menu', 'system/menu/index', '', 1, 0, 'C', '0', '0', 'system:menu:list', 'tree-table', 'admin', '2023-12-27 15:00:27', '', '', '菜单管理菜单');
 INSERT INTO `sys_menu` VALUES (103, '部门管理', 1, 4, 'dept', 'system/dept/index', '', 1, 0, 'C', '0', '0', 'system:dept:list', 'tree', 'admin', '2023-12-27 15:00:27', '', '', '部门管理菜单');
-INSERT INTO `sys_menu` VALUES (104, '岗位管理', 1, 5, 'post', 'system/post/index', '', 1, 0, 'C', '0', '0', 'system:post:list', 'post', 'admin', '2023-12-27 15:00:27', '', '', '岗位管理菜单');
 INSERT INTO `sys_menu` VALUES (105, '字典管理', 1, 6, 'dict', 'system/dict/index', '', 1, 0, 'C', '0', '0', 'system:dict:list', 'dict', 'admin', '2023-12-27 15:00:27', '', '', '字典管理菜单');
 INSERT INTO `sys_menu` VALUES (1000, '用户查询', 100, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:user:query', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
 INSERT INTO `sys_menu` VALUES (1001, '用户新增', 100, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:user:add', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
@@ -1752,17 +1767,12 @@ INSERT INTO `sys_menu` VALUES (1016, '部门查询', 103, 1, '', '', '', 1, 0, '
 INSERT INTO `sys_menu` VALUES (1017, '部门新增', 103, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:add', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
 INSERT INTO `sys_menu` VALUES (1018, '部门修改', 103, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:edit', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
 INSERT INTO `sys_menu` VALUES (1019, '部门删除', 103, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:remove', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
-INSERT INTO `sys_menu` VALUES (1020, '岗位查询', 104, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:post:query', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
-INSERT INTO `sys_menu` VALUES (1021, '岗位新增', 104, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:post:add', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
-INSERT INTO `sys_menu` VALUES (1022, '岗位修改', 104, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:post:edit', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
-INSERT INTO `sys_menu` VALUES (1023, '岗位删除', 104, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:post:remove', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
-INSERT INTO `sys_menu` VALUES (1024, '岗位导出', 104, 5, '', '', '', 1, 0, 'F', '0', '0', 'system:post:export', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
 INSERT INTO `sys_menu` VALUES (1025, '字典查询', 105, 1, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:query', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
 INSERT INTO `sys_menu` VALUES (1026, '字典新增', 105, 2, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:add', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
 INSERT INTO `sys_menu` VALUES (1027, '字典修改', 105, 3, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:edit', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
 INSERT INTO `sys_menu` VALUES (1028, '字典删除', 105, 4, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:remove', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
 INSERT INTO `sys_menu` VALUES (1029, '字典导出', 105, 5, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:export', '#', 'admin', '2023-12-27 15:00:27', '', '', '');
-INSERT INTO `sys_menu` VALUES (2005, '供应商管理', 2, 9, 'supplier/list', 'scm/supplier/index', '', 1, 0, 'C', '0', '0', 'scm:supplier', 'qq', 'admin', '2023-12-29 09:14:02', 'admin', '2024-04-21 11:13:49', '');
+INSERT INTO `sys_menu` VALUES (2005, '供应商管理', 8, 99, 'supplier/list', 'scm/supplier/index', '', 1, 0, 'C', '0', '0', 'scm:supplier', 'qq', 'admin', '2023-12-29 09:14:02', 'admin', '2025-04-19 10:39:19', '');
 INSERT INTO `sys_menu` VALUES (2007, '商品库', 8, 2, 'goods_list', 'goods/index', '', 1, 0, 'C', '0', '0', 'goods:list', 'theme', 'admin', '2023-12-29 13:31:01', 'admin', '2025-04-17 12:16:02', '');
 INSERT INTO `sys_menu` VALUES (2008, '商品分类', 8, 88, 'category', 'goods/category/index', '', 1, 0, 'C', '0', '0', 'goods:category', 'tree-table', 'admin', '2023-12-29 13:32:41', 'admin', '2024-04-21 14:41:32', '');
 INSERT INTO `sys_menu` VALUES (2009, '商品品牌', 8, 99, 'brand', 'goods/brand/index', '', 1, 0, 'C', '0', '0', 'goods:brand', 'clipboard', 'admin', '2023-12-29 13:34:49', 'admin', '2025-04-15 22:08:24', '');
@@ -1774,9 +1784,9 @@ INSERT INTO `sys_menu` VALUES (2025, '采购订单详情', 2, 102, 'purchase/ord
 INSERT INTO `sys_menu` VALUES (2027, '入库管理', 6, 0, 'stock_in_entry/list', 'wms/stockInEntry', '', 1, 0, 'C', '0', '0', 'wms:stock_in_entry:list', 'stockin', 'admin', '2023-12-31 12:27:37', 'admin', '2024-01-14 15:12:48', '');
 INSERT INTO `sys_menu` VALUES (2028, '生成采购入库单', 2, 103, 'purchase/ship/create_stock_in_entry', 'scm/purchase/ship/create_stock_in_entry', '', 1, 0, 'C', '1', '0', '', 'button', 'admin', '2023-12-31 12:31:32', 'admin', '2024-04-21 11:05:53', '');
 INSERT INTO `sys_menu` VALUES (2029, '店铺售后管理', 5, 2, 'shop_refund', 'shop/refund/index', '', 1, 0, 'C', '0', '0', '', 'clipboard', 'admin', '2023-12-31 17:29:03', 'admin', '2025-04-17 12:20:16', '');
-INSERT INTO `sys_menu` VALUES (2033, '订单库', 3, 1, 'list', 'order/index', '', 1, 0, 'C', '1', '0', '', 'list', 'admin', '2023-12-31 20:05:05', 'admin', '2025-04-17 12:10:25', '');
+INSERT INTO `sys_menu` VALUES (2033, '订单库', 3, 1, 'list', 'order/index', '', 1, 0, 'C', '0', '0', '', 'list', 'admin', '2023-12-31 20:05:05', 'admin', '2025-04-19 10:45:33', '');
 INSERT INTO `sys_menu` VALUES (2035, '订单退货', 5, 4, 'order_returned', 'afterSale/returned', '', 1, 0, 'C', '0', '0', '', 'upload', 'admin', '2024-01-01 14:13:47', 'admin', '2024-04-10 11:29:27', '');
-INSERT INTO `sys_menu` VALUES (2036, '店铺订单管理', 3, 0, 'shop_order', 'shop/order/index', '', 1, 1, 'C', '0', '0', '', 'excel', 'admin', '2024-01-01 14:14:42', 'admin', '2025-04-17 12:14:35', '');
+INSERT INTO `sys_menu` VALUES (2036, '店铺订单管理', 3, 10, 'shop_order', 'shop/order/index', '', 1, 1, 'C', '0', '0', '', 'excel', 'admin', '2024-01-01 14:14:42', 'admin', '2025-04-19 10:45:27', '');
 INSERT INTO `sys_menu` VALUES (2041, '订单补发', 5, 6, 'order_ship_again', 'afterSale/shipAgain', NULL, 1, 0, 'C', '0', '0', '', 'checkbox', 'admin', '2024-01-02 14:11:34', 'admin', '2024-04-10 11:28:26', '');
 INSERT INTO `sys_menu` VALUES (2042, '订单拦截', 5, 3, 'order_intercept', 'afterSale/intercept', NULL, 1, 0, 'C', '0', '0', '', 'edit', 'admin', '2024-01-02 14:11:56', 'admin', '2024-04-10 11:28:32', '');
 INSERT INTO `sys_menu` VALUES (2044, '订单换货', 5, 5, 'order_exchange', 'afterSale/exchange', NULL, 1, 0, 'C', '0', '0', '', 'skill', 'admin', '2024-01-03 09:18:53', 'admin', '2024-04-10 11:30:38', '');
@@ -1800,6 +1810,7 @@ INSERT INTO `sys_menu` VALUES (2082, '售后设置', 5, 10, 'set', NULL, NULL, 1
 INSERT INTO `sys_menu` VALUES (2083, '库存日志', 6, 99, 'logs', NULL, NULL, 1, 0, 'C', '0', '0', NULL, 'bug', 'admin', '2024-04-21 11:12:07', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2085, '商品分类属性', 8, 90, 'category_attr', 'goods/category/categoryAttribute', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2024-04-21 14:29:04', 'admin', '2024-04-21 14:40:53', '');
 INSERT INTO `sys_menu` VALUES (2086, '分类属性值', 8, 91, 'category_attr_val', 'goods/category/categoryAttributeValue', NULL, 1, 0, 'C', '1', '0', '', 'clipboard', 'admin', '2024-04-21 15:13:03', 'admin', '2024-04-21 15:13:54', '');
+INSERT INTO `sys_menu` VALUES (2088, '手动添加订单', 3, 9, 'create', 'order/create', NULL, 1, 0, 'C', '0', '0', NULL, 'form', 'admin', '2025-04-19 10:57:29', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -2074,13 +2085,13 @@ CREATE TABLE `sys_user`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 101 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 117 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2025-04-01', '0', '127.0.0.1', '2025-04-17 12:10:11', 'admin', '2023-08-07 19:31:37', '', '2025-04-17 12:10:10', '管理员');
-INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-04-25 17:45:22', 'admin', '2024-04-21 10:36:49', 'admin', '2025-04-25 17:45:21', NULL);
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$JYO9dJ9suY5mYRS9BvqKFOhV7DqTqfQjYy1WudBn6tzPItNrtTFAm', '0', '2025-04-01', '0', '219.133.110.177', '2025-04-25 21:35:20', 'admin', '2023-08-07 19:31:37', '', '2025-04-25 13:35:19', '管理员');
+INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '219.133.110.177', '2025-04-25 19:23:58', 'admin', '2024-04-21 10:36:49', 'admin', '2025-04-25 11:23:57', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -2119,17 +2130,18 @@ CREATE TABLE `wms_goods_bad_stock`  (
   `status` tinyint NOT NULL DEFAULT 0 COMMENT '是否处理0未处理1已处理',
   `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `modifyTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '不良品库存' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_goods_bad_stock
 -- ----------------------------
-INSERT INTO `wms_goods_bad_stock` VALUES (1, 13, 88, '28202206810101', '20', 1, 0, 1, 29, 0, '计入损失', '2022-10-03 17:39:32', '货物损坏，供应商拒收，消费者退款成功', 1, '2022-10-03 17:39:32', '2022-10-03 17:39:32');
-INSERT INTO `wms_goods_bad_stock` VALUES (2, 33, 497, 'HN08017503', '76', 1, 0, 1, 28, 0, '计入损失', '2022-10-16 18:00:00', '货物损坏，供应商拒收，消费者退款成功', 1, '2022-10-16 18:00:00', '2022-10-16 18:00:00');
-INSERT INTO `wms_goods_bad_stock` VALUES (3, 33, 502, 'HN08012903', '249', 1, 0, 1, 28, 0, '计入损失', '2022-11-07 09:42:33', '货物损坏，供应商拒收，消费者退款成功', 1, '2022-11-07 09:42:33', '2022-11-07 09:42:33');
-INSERT INTO `wms_goods_bad_stock` VALUES (4, 15, 119, '28202106610102', '174', 1, 0, 1, 29, 0, '计入损失', '2022-11-07 09:43:20', '货物损坏，供应商拒收，消费者退款成功', 1, '2022-11-07 09:43:20', '2022-11-07 09:43:20');
-INSERT INTO `wms_goods_bad_stock` VALUES (5, 37, 558, 'HN1062904', '327', 1, 0, 1, 31, 0, '计入损失', '2022-12-08 10:08:14', '货物损坏，供应商拒收，消费者退款成功', 1, '2022-12-08 10:08:14', '2022-12-08 10:08:14');
+INSERT INTO `wms_goods_bad_stock` VALUES (1, 13, 88, '28202206810101', '20', 1, 0, 1, 29, 0, '计入损失', '2022-10-03 17:39:32', '货物损坏，供应商拒收，消费者退款成功', 1, '2022-10-03 17:39:32', '2022-10-03 17:39:32', 0);
+INSERT INTO `wms_goods_bad_stock` VALUES (2, 33, 497, 'HN08017503', '76', 1, 0, 1, 28, 0, '计入损失', '2022-10-16 18:00:00', '货物损坏，供应商拒收，消费者退款成功', 1, '2022-10-16 18:00:00', '2022-10-16 18:00:00', 0);
+INSERT INTO `wms_goods_bad_stock` VALUES (3, 33, 502, 'HN08012903', '249', 1, 0, 1, 28, 0, '计入损失', '2022-11-07 09:42:33', '货物损坏，供应商拒收，消费者退款成功', 1, '2022-11-07 09:42:33', '2022-11-07 09:42:33', 0);
+INSERT INTO `wms_goods_bad_stock` VALUES (4, 15, 119, '28202106610102', '174', 1, 0, 1, 29, 0, '计入损失', '2022-11-07 09:43:20', '货物损坏，供应商拒收，消费者退款成功', 1, '2022-11-07 09:43:20', '2022-11-07 09:43:20', 0);
+INSERT INTO `wms_goods_bad_stock` VALUES (5, 37, 558, 'HN1062904', '327', 1, 0, 1, 31, 0, '计入损失', '2022-12-08 10:08:14', '货物损坏，供应商拒收，消费者退款成功', 1, '2022-12-08 10:08:14', '2022-12-08 10:08:14', 0);
 
 -- ----------------------------
 -- Table structure for wms_goods_bad_stock_log
@@ -2144,17 +2156,18 @@ CREATE TABLE `wms_goods_bad_stock_log`  (
   `quantity` bigint NOT NULL DEFAULT 0 COMMENT '数量',
   `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '不良品库存日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_goods_bad_stock_log
 -- ----------------------------
-INSERT INTO `wms_goods_bad_stock_log` VALUES (1, 1, 88, 0, 1, 1, '退货不良品入库SKU :28202206810101退货单号:BAD221003173932494', '2022-10-03 17:39:32');
-INSERT INTO `wms_goods_bad_stock_log` VALUES (2, 2, 497, 0, 1, 1, '退货不良品入库SKU :HN08017503退货单号:BAD221016180000005', '2022-10-16 18:00:00');
-INSERT INTO `wms_goods_bad_stock_log` VALUES (3, 3, 502, 0, 1, 1, '退货不良品入库SKU :HN08012903退货单号:BAD221107094233114', '2022-11-07 09:42:33');
-INSERT INTO `wms_goods_bad_stock_log` VALUES (4, 4, 119, 0, 1, 1, '退货不良品入库SKU :28202106610102退货单号:BAD221107094320707', '2022-11-07 09:43:20');
-INSERT INTO `wms_goods_bad_stock_log` VALUES (5, 5, 558, 0, 1, 1, '退货不良品入库SKU :HN1062904退货单号:BAD221208100814778', '2022-12-08 10:08:14');
+INSERT INTO `wms_goods_bad_stock_log` VALUES (1, 1, 88, 0, 1, 1, '退货不良品入库SKU :28202206810101退货单号:BAD221003173932494', '2022-10-03 17:39:32', 0);
+INSERT INTO `wms_goods_bad_stock_log` VALUES (2, 2, 497, 0, 1, 1, '退货不良品入库SKU :HN08017503退货单号:BAD221016180000005', '2022-10-16 18:00:00', 0);
+INSERT INTO `wms_goods_bad_stock_log` VALUES (3, 3, 502, 0, 1, 1, '退货不良品入库SKU :HN08012903退货单号:BAD221107094233114', '2022-11-07 09:42:33', 0);
+INSERT INTO `wms_goods_bad_stock_log` VALUES (4, 4, 119, 0, 1, 1, '退货不良品入库SKU :28202106610102退货单号:BAD221107094320707', '2022-11-07 09:43:20', 0);
+INSERT INTO `wms_goods_bad_stock_log` VALUES (5, 5, 558, 0, 1, 1, '退货不良品入库SKU :HN1062904退货单号:BAD221208100814778', '2022-12-08 10:08:14', 0);
 
 -- ----------------------------
 -- Table structure for wms_order_shipping
@@ -2189,14 +2202,15 @@ CREATE TABLE `wms_order_shipping`  (
   `create_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
   `update_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '仓库订单发货表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_order_shipping
 -- ----------------------------
-INSERT INTO `wms_order_shipping` VALUES (11, 6, 4, '1631273557325601885', 15, 12, '2022-07-31 18:14:00', 9, 32, '8026牛仔短裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01AfNgvA2FOyAvwXZxv_!!2208857268871-0-cib.jpg', '272021008026', '黑色,2XL', '2720210080260105', 1, NULL, NULL, NULL, NULL, NULL, 'admin', '20', '2024-01-16 14:52:43', 2, '2024-01-16 13:44:26', 'admin', 'admin', '2024-01-16 14:52:43');
-INSERT INTO `wms_order_shipping` VALUES (12, 6, 4, '1642473483353670599', 16, 13, '2022-08-13 19:09:13', 9, 32, '8026牛仔短裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01AfNgvA2FOyAvwXZxv_!!2208857268871-0-cib.jpg', '272021008026', '黑色,2XL', '2720210080260105', 1, NULL, NULL, NULL, NULL, NULL, 'admin', '20', '2024-01-16 15:05:47', 3, '2024-01-16 15:04:52', 'admin', 'admin', '2024-01-16 15:42:53');
+INSERT INTO `wms_order_shipping` VALUES (11, 6, 4, '1631273557325601885', 15, 12, '2022-07-31 18:14:00', 9, 32, '8026牛仔短裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01AfNgvA2FOyAvwXZxv_!!2208857268871-0-cib.jpg', '272021008026', '黑色,2XL', '2720210080260105', 1, NULL, NULL, NULL, NULL, NULL, 'admin', '20', '2024-01-16 14:52:43', 2, '2024-01-16 13:44:26', 'admin', 'admin', '2024-01-16 14:52:43', 0);
+INSERT INTO `wms_order_shipping` VALUES (12, 6, 4, '1642473483353670599', 16, 13, '2022-08-13 19:09:13', 9, 32, '8026牛仔短裤', 'https://cbu01.alicdn.com/img/ibank/O1CN01AfNgvA2FOyAvwXZxv_!!2208857268871-0-cib.jpg', '272021008026', '黑色,2XL', '2720210080260105', 1, NULL, NULL, NULL, NULL, NULL, 'admin', '20', '2024-01-16 15:05:47', 3, '2024-01-16 15:04:52', 'admin', 'admin', '2024-01-16 15:42:53', 0);
 
 -- ----------------------------
 -- Table structure for wms_stock_in_entry
@@ -2289,32 +2303,33 @@ CREATE TABLE `wms_stock_location`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '仓库货架表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_stock_location
 -- ----------------------------
-INSERT INTO `wms_stock_location` VALUES (1, '001', '深圳虚拟仓库', 0, 1, 0, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:10', NULL, '2022-03-07 20:06:10');
-INSERT INTO `wms_stock_location` VALUES (2, 'A', 'A区', 1, 2, 1, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:24', NULL, '2022-03-07 20:06:24');
-INSERT INTO `wms_stock_location` VALUES (3, 'B', 'B区', 1, 2, 1, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:38', NULL, '2022-03-07 20:06:38');
-INSERT INTO `wms_stock_location` VALUES (4, 'C', 'C区', 1, 2, 1, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:47', NULL, '2022-03-07 20:06:47');
-INSERT INTO `wms_stock_location` VALUES (5, 'A01-1-01', 'A01-1-01', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (6, 'A01-1-02', 'A01-1-02', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (7, 'A01-1-03', 'A01-1-03', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (8, 'A01-1-04', 'A01-1-04', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (9, 'A01-1-05', 'A01-1-05', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (10, 'A01-1-06', 'A01-1-06', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (11, 'A01-1-07', 'A01-1-07', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (12, 'A01-1-08', 'A01-1-08', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (13, 'A01-1-09', 'A01-1-09', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (14, 'A01-1-10', 'A01-1-10', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (15, 'A01-1-11', 'A01-1-11', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (16, 'A01-1-12', 'A01-1-12', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (17, 'A01-1-13', 'A01-1-13', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (18, 'A01-1-14', 'A01-1-14', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (19, 'A01-1-15', 'A01-1-15', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_stock_location` VALUES (20, 'A01-1-16', 'A01-1-16', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
+INSERT INTO `wms_stock_location` VALUES (1, '001', '深圳虚拟仓库', 0, 1, 0, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:10', NULL, '2022-03-07 20:06:10', 0);
+INSERT INTO `wms_stock_location` VALUES (2, 'A', 'A区', 1, 2, 1, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:24', NULL, '2022-03-07 20:06:24', 0);
+INSERT INTO `wms_stock_location` VALUES (3, 'B', 'B区', 1, 2, 1, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:38', NULL, '2022-03-07 20:06:38', 0);
+INSERT INTO `wms_stock_location` VALUES (4, 'C', 'C区', 1, 2, 1, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:47', NULL, '2022-03-07 20:06:47', 0);
+INSERT INTO `wms_stock_location` VALUES (5, 'A01-1-01', 'A01-1-01', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (6, 'A01-1-02', 'A01-1-02', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (7, 'A01-1-03', 'A01-1-03', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (8, 'A01-1-04', 'A01-1-04', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (9, 'A01-1-05', 'A01-1-05', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (10, 'A01-1-06', 'A01-1-06', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (11, 'A01-1-07', 'A01-1-07', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (12, 'A01-1-08', 'A01-1-08', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (13, 'A01-1-09', 'A01-1-09', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (14, 'A01-1-10', 'A01-1-10', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (15, 'A01-1-11', 'A01-1-11', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (16, 'A01-1-12', 'A01-1-12', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (17, 'A01-1-13', 'A01-1-13', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (18, 'A01-1-14', 'A01-1-14', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (19, 'A01-1-15', 'A01-1-15', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
+INSERT INTO `wms_stock_location` VALUES (20, 'A01-1-16', 'A01-1-16', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 0);
 
 -- ----------------------------
 -- Table structure for wms_stock_out_entry
@@ -2342,14 +2357,15 @@ CREATE TABLE `wms_stock_out_entry`  (
   `goodsUnit` int NOT NULL COMMENT '商品数',
   `specUnit` int NOT NULL COMMENT '商品规格数',
   `specUnitTotal` int NOT NULL COMMENT '总件数',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_stock_out_entry
 -- ----------------------------
-INSERT INTO `wms_stock_out_entry` VALUES (2, '202401161452276', NULL, NULL, 1, 0, 0, NULL, '2024-01-16 14:52:29', 'admin', '2024-01-16 14:52:29', NULL, NULL, 0, NULL, NULL, NULL, 0, 1, 1, 1);
-INSERT INTO `wms_stock_out_entry` VALUES (3, '202401161504597', NULL, NULL, 1, 0, 0, NULL, '2024-01-16 15:05:02', 'admin', '2024-01-16 15:05:01', NULL, NULL, 0, NULL, NULL, NULL, 0, 1, 1, 1);
+INSERT INTO `wms_stock_out_entry` VALUES (2, '202401161452276', NULL, NULL, 1, 0, 0, NULL, '2024-01-16 14:52:29', 'admin', '2024-01-16 14:52:29', NULL, NULL, 0, NULL, NULL, NULL, 0, 1, 1, 1, 0);
+INSERT INTO `wms_stock_out_entry` VALUES (3, '202401161504597', NULL, NULL, 1, 0, 0, NULL, '2024-01-16 15:05:02', 'admin', '2024-01-16 15:05:01', NULL, NULL, 0, NULL, NULL, NULL, 0, 1, 1, 1, 0);
 
 -- ----------------------------
 -- Table structure for wms_stock_out_entry_item
@@ -2369,6 +2385,7 @@ CREATE TABLE `wms_stock_out_entry_item`  (
   `completeTime` datetime NULL DEFAULT NULL COMMENT '完成出库时间',
   `pickedTime` datetime NULL DEFAULT NULL COMMENT '完成拣货时间',
   `status` int NOT NULL DEFAULT 0 COMMENT '状态：0待出库1部分出库2全部出库',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `specIndex`(`specId`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单明细' ROW_FORMAT = DYNAMIC;
@@ -2376,8 +2393,8 @@ CREATE TABLE `wms_stock_out_entry_item`  (
 -- ----------------------------
 -- Records of wms_stock_out_entry_item
 -- ----------------------------
-INSERT INTO `wms_stock_out_entry_item` VALUES (8, 2, 15, '1631273557325601885', 12, 9, 32, '2720210080260105', 1, 1, '2024-01-16 14:52:43', '2024-01-16 14:52:43', 2);
-INSERT INTO `wms_stock_out_entry_item` VALUES (9, 3, 16, '1642473483353670599', 13, 9, 32, '2720210080260105', 1, 1, '2024-01-16 15:05:37', '2024-01-16 15:05:36', 2);
+INSERT INTO `wms_stock_out_entry_item` VALUES (8, 2, 15, '1631273557325601885', 12, 9, 32, '2720210080260105', 1, 1, '2024-01-16 14:52:43', '2024-01-16 14:52:43', 2, 0);
+INSERT INTO `wms_stock_out_entry_item` VALUES (9, 3, 16, '1642473483353670599', 13, 9, 32, '2720210080260105', 1, 1, '2024-01-16 15:05:37', '2024-01-16 15:05:36', 2, 0);
 
 -- ----------------------------
 -- Table structure for wms_stock_out_entry_item_detail
@@ -2394,6 +2411,7 @@ CREATE TABLE `wms_stock_out_entry_item_detail`  (
   `stockOutOperatorId` int NULL DEFAULT 0 COMMENT '出库操作人userid',
   `stockOutOperatorName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '出库操作人',
   `stockOutTime` datetime NULL DEFAULT NULL COMMENT '出库时间',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goods_stock_info_item_id_index`(`goodsInventoryDetailId`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库明细详情' ROW_FORMAT = DYNAMIC;
@@ -2401,7 +2419,7 @@ CREATE TABLE `wms_stock_out_entry_item_detail`  (
 -- ----------------------------
 -- Records of wms_stock_out_entry_item_detail
 -- ----------------------------
-INSERT INTO `wms_stock_out_entry_item_detail` VALUES (4, 2, 8, 6, 7, 1, 20, 1, 'admin', '2024-01-16 14:52:43');
-INSERT INTO `wms_stock_out_entry_item_detail` VALUES (5, 3, 9, 6, 7, 1, 20, 1, 'admin', '2024-01-16 15:05:32');
+INSERT INTO `wms_stock_out_entry_item_detail` VALUES (4, 2, 8, 6, 7, 1, 20, 1, 'admin', '2024-01-16 14:52:43', 0);
+INSERT INTO `wms_stock_out_entry_item_detail` VALUES (5, 3, 9, 6, 7, 1, 20, 1, 'admin', '2024-01-16 15:05:32', 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

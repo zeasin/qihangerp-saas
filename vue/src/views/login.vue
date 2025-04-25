@@ -3,7 +3,7 @@
     <div class="layout">
       <div class="bgLeft"></div>
       <div class="bgRight"></div>
-      <h3 class="title">启航电商ERP系统-微信小店版</h3>
+      <h3 class="title">启航电商ERP系统-SAAS版</h3>
       <div class="login-form">
         <div class="zhuce"  v-if="n !==3"></div>
         <div class="tabs" v-if="n !==3">

@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -17,6 +19,7 @@ public class ErpOrder implements Serializable {
     /**
      * 订单id，自增
      */
+    @TableId(type = IdType.AUTO)
     private String id;
 
 

@@ -1,13 +1,13 @@
 spring:
   application:
-    name: qihangerp-weishop
+    name: qihangerp-saas
   messages:
     # 国际化资源文件路径
     basename: i18n/messages
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/qihangerp-saas?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-#    url: jdbc:mysql://10.0.2.22:3306/qihangerp-saas?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+#    url: jdbc:mysql://127.0.0.1:3306/qihangerp-saas?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://10.0.2.22:3306/qihangerp-saas?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
     password: Andy_123
 
@@ -15,8 +15,8 @@ spring:
     # redis 配置
     redis:
       # 地址
-#      host: 10.0.2.22
-      host: 127.0.0.1
+      host: 10.0.2.22
+#      host: 127.0.0.1
       # 端口，默认为6379
       port: 6379
       # 数据库索引

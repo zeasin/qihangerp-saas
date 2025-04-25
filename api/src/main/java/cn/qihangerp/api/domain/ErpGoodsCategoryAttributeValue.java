@@ -1,6 +1,9 @@
 package cn.qihangerp.api.domain;
 
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -12,6 +15,7 @@ public class ErpGoodsCategoryAttributeValue implements Serializable {
     /**
      * 主键，属性值id
      */
+    @TableId(type = IdType.AUTO)
     private String id;
 
     /**
