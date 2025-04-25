@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 25/04/2025 18:12:31
+ Date: 25/04/2025 19:27:48
 */
 
 SET NAMES utf8mb4;
@@ -954,7 +954,7 @@ INSERT INTO `erp_shop_goods_sku` VALUES (1912513769162936321, 191249282646631219
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_shop_order`;
 CREATE TABLE `erp_shop_order`  (
-  `id` bigint NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `tenant_id` int NOT NULL COMMENT '租户id',
   `shop_id` bigint NOT NULL COMMENT '店铺id',
   `order_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单号',
@@ -1024,7 +1024,7 @@ INSERT INTO `erp_shop_order` VALUES (1912512446954844162, 100, 6, '3727292673311
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_shop_order_item`;
 CREATE TABLE `erp_shop_order_item`  (
-  `id` bigint NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `tenant_id` bigint NOT NULL COMMENT '租户id',
   `shop_id` bigint NULL DEFAULT NULL COMMENT '店铺id',
   `shop_order_id` bigint NULL DEFAULT NULL COMMENT '外键id',
