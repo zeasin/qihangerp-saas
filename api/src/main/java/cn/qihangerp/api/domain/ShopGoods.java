@@ -3,7 +3,9 @@ package cn.qihangerp.api.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -17,6 +19,7 @@ public class ShopGoods implements Serializable {
     /**
      * 
      */
+    @TableId(type = IdType.AUTO)
     private String id;
 
     /**
@@ -98,6 +101,7 @@ public class ShopGoods implements Serializable {
      * 商品草稿最近一次修改时间
      */
     private String editTime;
+    private Long erpGoodsId;
 
     @TableField(exist = false)
     private List<ShopGoodsSku> skus;

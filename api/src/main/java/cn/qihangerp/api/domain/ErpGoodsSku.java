@@ -2,6 +2,9 @@ package cn.qihangerp.api.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -13,7 +16,8 @@ public class ErpGoodsSku implements Serializable {
     /**
      * 主键id
      */
-    private Long id;
+    @TableId(type = IdType.AUTO)
+    private String id;
 
     /**
      * 商品id

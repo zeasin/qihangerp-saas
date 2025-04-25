@@ -6,7 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import cn.qihangerp.api.domain.bo.GoodsSpecAddBo;
 
@@ -19,6 +21,7 @@ public class ErpGoods implements Serializable {
     /**
      * 主键id
      */
+    @TableId(type = IdType.AUTO)
     private String id;
     /**
      * 租户id（sys_user_id）
