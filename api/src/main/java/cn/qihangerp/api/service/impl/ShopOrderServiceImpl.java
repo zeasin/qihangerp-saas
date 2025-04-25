@@ -1,5 +1,7 @@
 package cn.qihangerp.api.service.impl;
 
+import cn.qihangerp.api.common.utils.DateUtils;
+import cn.qihangerp.api.request.ShopOrderSearchRequest;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -25,6 +27,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
 * @author qilip
@@ -40,11 +44,40 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
     private final ErpOrderMapper erpOrderMapper;
     private final ErpOrderItemMapper erpOrderItemMapper;
 
+    private final String DATE_PATTERN =
+            "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
+    private final Pattern DATE_FORMAT = Pattern.compile(DATE_PATTERN);
     @Override
-    public PageResult<ShopOrder> queryPageList(ShopOrder bo, PageQuery pageQuery) {
+    public PageResult<ShopOrder> queryPageList(ShopOrderSearchRequest bo, PageQuery pageQuery) {
+        Long startTime = null;
+        Long endTime = null;
+
+        if(org.springframework.util.StringUtils.hasText(bo.getStartTime())){
+            Matcher matcher = DATE_FORMAT.matcher(bo.getStartTime());
+            boolean b = matcher.find();
+            if(b){
+//                bo.setStartTime(bo.getStartTime()+" 00:00:00");
+               startTime = DateUtils.parseDate(bo.getStartTime()+" 00:00:00").getTime() /1000;
+            }
+        }
+        if(org.springframework.util.StringUtils.hasText(bo.getEndTime())){
+            Matcher matcher = DATE_FORMAT.matcher(bo.getEndTime());
+            boolean b = matcher.find();
+            if(b){
+//                bo.setEndTime(bo.getEndTime()+" 23:59:59");
+                endTime = DateUtils.parseDate(bo.getEndTime()+" 23:59:59").getTime() /1000;
+            }
+        }
+        pageQuery.setOrderByColumn("create_time");
+        pageQuery.setIsAsc("desc");
+
+
         LambdaQueryWrapper<ShopOrder> queryWrapper = new LambdaQueryWrapper<ShopOrder>()
                 .eq(ShopOrder::getTenantId,bo.getTenantId())
+                .eq(bo.getStatus()!=null, ShopOrder::getStatus,bo.getStatus())
                 .eq(bo.getShopId()!=null, ShopOrder::getShopId,bo.getShopId())
+                .ge(startTime!=null, ShopOrder::getCreateTime,startTime)
+                .le(endTime!=null, ShopOrder::getCreateTime,endTime)
                 .eq(StringUtils.hasText(bo.getOrderId()), ShopOrder::getOrderId,bo.getOrderId())
                 ;
 

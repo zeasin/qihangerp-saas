@@ -32,13 +32,17 @@
     <el-table v-loading="loading" :data="lists" >
 <!--      <el-table-column type="selection" width="55" align="center" />-->
       <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="店铺" align="center" prop="shopId" />
-      <el-table-column label="平台" align="center" prop="shopType" >
+      <el-table-column label="店铺" align="center" prop="shopId" >
         <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.shopType === 1">天猫</el-tag>
-          <el-tag size="small" v-if="scope.row.shopType === 2">京东</el-tag>
+          <el-tag type="info">{{ shopList.find(x=>x.id == scope.row.shopId) ? shopList.find(x=>x.id == scope.row.shopId).name : '' }}</el-tag>
         </template>
       </el-table-column>
+<!--      <el-table-column label="平台" align="center" prop="shopType" >-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-tag size="small" v-if="scope.row.shopType === 1">天猫</el-tag>-->
+<!--          <el-tag size="small" v-if="scope.row.shopType === 2">京东</el-tag>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="类型" align="center" prop="pullType" >
         <template slot-scope="scope">
           <el-tag size="small" v-if="scope.row.pullType === 'GOODS'">拉取商品</el-tag>

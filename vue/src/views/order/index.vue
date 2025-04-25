@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="订单编号" prop="orderNum">
+      <el-form-item label="订单编号" prop="orderId">
         <el-input
-          v-model="queryParams.orderNum"
+          v-model="queryParams.orderId"
           placeholder="请输入订单编号"
           clearable
           @keyup.enter.native="handleQuery"

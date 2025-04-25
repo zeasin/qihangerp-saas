@@ -1,5 +1,6 @@
 package cn.qihangerp.api.controller.shop;
 
+import cn.qihangerp.api.request.ShopOrderSearchRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import cn.qihangerp.api.common.*;
@@ -13,7 +14,7 @@ import cn.qihangerp.api.service.ShopOrderService;
 public class ShopOrderController extends BaseController {
     private final ShopOrderService orderService;
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public TableDataInfo goodsList(ShopOrder bo, PageQuery pageQuery) {
+    public TableDataInfo goodsList(ShopOrderSearchRequest bo, PageQuery pageQuery) {
         bo.setTenantId(getUserId());
         PageResult<ShopOrder> result = orderService.queryPageList(bo, pageQuery);
 

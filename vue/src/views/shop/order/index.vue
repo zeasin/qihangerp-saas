@@ -19,7 +19,26 @@
           </el-option>
         </el-select>
       </el-form-item>
-
+      <el-form-item label="下单时间" prop="orderTime">
+        <el-date-picker clearable
+                        v-model="orderTime" value-format="yyyy-MM-dd"
+                        type="daterange"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="订单状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable @change="handleQuery">
+          <el-option label="待付款" value="10" ></el-option>
+          <el-option label="待发货" value="20"></el-option>
+          <el-option label="部分发货" value="21"> </el-option>
+          <el-option label="待收货" value="30"></el-option>
+          <el-option label="完成" value="100"></el-option>
+          <el-option label="售后之后订单取消" value="200"></el-option>
+          <el-option label="未付款订单取消" value="250"></el-option>
+        </el-select>
+      </el-form-item>
 <!--      <el-form-item label="下单日期" prop="orderCreateTime">-->
 <!--        <el-date-picker clearable-->
 <!--          v-model="queryParams.orderCreateTime"-->
@@ -54,16 +73,16 @@
           @click="handlePull"
         >API拉取订单</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-refresh"
-          size="mini"
-          :disabled="multiple"
-          @click="handleConfirm"
-        >批量确认订单</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          plain-->
+<!--          icon="el-icon-refresh"-->
+<!--          size="mini"-->
+<!--          :disabled="multiple"-->
+<!--          @click="handleConfirm"-->
+<!--        >批量确认订单</el-button>-->
+<!--      </el-col>-->
 
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -136,8 +155,9 @@
           <el-tag v-if="scope.row.status === 20 " size="small">待发货</el-tag>
           <el-tag v-if="scope.row.status === 30 " size="small">待收货</el-tag>
           <el-tag v-if="scope.row.status === 100 " size="small">完成</el-tag>
+          <el-tag v-if="scope.row.status === 250 " size="small">未付款超时取消</el-tag>
           <br/>
-          <el-tag style="margin-top: 5px" type="warning" v-if="scope.row.confirmStatus === 0 " size="small">待确认</el-tag>
+<!--          <el-tag style="margin-top: 5px" type="warning" v-if="scope.row.confirmStatus === 0 " size="small">待确认</el-tag>-->
         </template>
       </el-table-column>
 <!--      <el-table-column label="快递单号" align="center" prop="logisticsCode" />-->
@@ -145,8 +165,8 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            type="success"
-            icon="el-icon-success"
+            type=""
+            icon="el-icon-refresh"
             :loading="pullLoading"
             @click="handlePullUpdate(scope.row)"
           >更新订单</el-button>
@@ -194,6 +214,7 @@ export default {
       // 淘宝订单表格数据
       orderList: [],
       shopList:[],
+      orderTime:null,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -249,6 +270,13 @@ export default {
     /** 查询淘宝订单列表 */
     getList() {
       this.loading = true;
+      if(this.orderTime){
+        this.queryParams.startTime = this.orderTime[0]
+        this.queryParams.endTime = this.orderTime[1]
+      }else {
+        this.queryParams.startTime = null
+        this.queryParams.endTime = null
+      }
       listShopOrder(this.queryParams).then(response => {
         this.orderList = response.rows;
         this.total = response.total;
@@ -308,7 +336,12 @@ export default {
       this.pullLoading = true
       pullOrderDetail({shopId:row.shopId,orderId:row.orderId}).then(response => {
         console.log('拉取订单详情返回接口返回=====',response)
-        this.$modal.msgSuccess(JSON.stringify(response));
+        if(response.code>1000){
+          this.$modal.msgError(response.msg);
+        }else{
+          this.$modal.msgSuccess(JSON.stringify(response));
+        }
+
         this.pullLoading = false
       })
     },
