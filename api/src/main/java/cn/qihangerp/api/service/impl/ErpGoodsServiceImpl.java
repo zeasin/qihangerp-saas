@@ -75,6 +75,8 @@ public class ErpGoodsServiceImpl extends ServiceImpl<ErpGoodsMapper, ErpGoods>
         for (GoodsSpecAddBo bo:goods.getSpecList()) {
             ErpGoodsSku spec = new ErpGoodsSku();
             spec.setTenantId(goods.getTenantId());
+            spec.setGoodsName(goods.getName());
+            spec.setGoodsNum(goods.getNumber());
             spec.setGoodsId(goods.getId());
             spec.setSpecNum(bo.getSpecNum());
             spec.setColorId(bo.getColorId());

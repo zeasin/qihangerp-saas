@@ -2,11 +2,15 @@ package cn.qihangerp.api.service.impl;
 
 import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.PageResult;
+import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.utils.StringUtils;
 import cn.qihangerp.api.domain.*;
+import cn.qihangerp.api.mapper.ErpGoodsMapper;
 import cn.qihangerp.api.mapper.ErpGoodsSkuMapper;
 import cn.qihangerp.api.mapper.ShopGoodsSkuMapper;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,7 +18,10 @@ import cn.qihangerp.api.service.ShopGoodsService;
 import cn.qihangerp.api.mapper.ShopGoodsMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +36,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
     private final ShopGoodsMapper mapper;
     private final ShopGoodsSkuMapper skuMapper;
     private final ErpGoodsSkuMapper goodsSkuMapper;
+    private final ErpGoodsMapper goodsMapper;
 
     @Override
     public PageResult<ShopGoods> queryPageList(ShopGoods bo, PageQuery pageQuery) {
@@ -101,6 +109,83 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
             }
             return 0;
         }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public ResultVo pushToErp(Long shopGoodsId) {
+        ShopGoods shopGoods = mapper.selectById(shopGoodsId);
+        if(shopGoods==null) return ResultVo.error("店铺商品数据不存在");
+        List<ShopGoodsSku> shopGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<ShopGoodsSku>().eq(ShopGoodsSku::getShopGoodsId, shopGoodsId));
+        if(shopGoodsSkus==null || shopGoodsSkus.isEmpty()) return ResultVo.error("店铺商品Sku数据不存在");
+
+        if(org.springframework.util.StringUtils.hasText(shopGoods.getOutProductId())){
+            // 用商家编码查询
+            List<ErpGoods> erpGoodsList = goodsMapper.selectList(new LambdaQueryWrapper<ErpGoods>()
+                    .eq(ErpGoods::getNumber, shopGoods.getOutProductId()));
+            if(erpGoodsList!=null && !erpGoodsList.isEmpty()){
+                return ResultVo.error(ResultVoEnum.DataExist.getIndex(),"商家编码已存在");
+            }
+        }
+        // 添加商品
+        ErpGoods erpGoods = new ErpGoods();
+        erpGoods.setTenantId(shopGoods.getTenantId());
+        erpGoods.setName(shopGoods.getTitle());
+        erpGoods.setImage(shopGoods.getHeadImg());
+        erpGoods.setNumber(shopGoods.getOutProductId());
+        erpGoods.setRemark("店铺商品同步");
+        erpGoods.setStatus(1);
+        erpGoods.setDisable(1);
+        if (shopGoods.getMinPrice() != null) {
+            erpGoods.setRetailPrice(BigDecimal.valueOf(shopGoods.getMinPrice()/100));
+        }
+        erpGoods.setCreateBy("店铺商品同步");
+        erpGoods.setCreateTime(new Date());
+        goodsMapper.insert(erpGoods);
+
+        // 添加商品SKU
+        for (var sku:shopGoodsSkus){
+            ErpGoodsSku erpGoodsSku = new ErpGoodsSku();
+            erpGoodsSku.setGoodsId(erpGoods.getId());
+            erpGoodsSku.setTenantId(erpGoods.getTenantId());
+            erpGoodsSku.setGoodsName(erpGoods.getName());
+            erpGoodsSku.setGoodsNum(erpGoods.getNumber());
+            erpGoodsSku.setSpecNum(sku.getSkuCode());
+
+            // sku属性拆解
+            if(StringUtils.isNotEmpty(sku.getSkuAttrs())){
+                try{
+                    JSONArray jsonArray = JSONArray.parse(sku.getSkuAttrs());
+                    if(jsonArray!=null && !jsonArray.isEmpty()){
+                        if(jsonArray.size()>0){
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            erpGoodsSku.setColorId(0L);
+                            erpGoodsSku.setColorLabel(jsonObject.getString("attr_key"));
+                            erpGoodsSku.setColorValue(jsonObject.getString("attr_value"));
+                        }else if(jsonArray.size()>1){
+                            JSONObject jsonObject = jsonArray.getJSONObject(1);
+                            erpGoodsSku.setSizeId(0L);
+                            erpGoodsSku.setSizeLabel(jsonObject.getString("attr_key"));
+                            erpGoodsSku.setSizeValue(jsonObject.getString("attr_value"));
+                        }else if(jsonArray.size()>2){
+                            JSONObject jsonObject = jsonArray.getJSONObject(2);
+                            erpGoodsSku.setStyleId(0L);
+                            erpGoodsSku.setStyleLabel(jsonObject.getString("attr_key"));
+                            erpGoodsSku.setStyleValue(jsonObject.getString("attr_value"));
+                        }
+                    }
+                }catch (Exception e){
+
+                }
+            }
+            if(sku.getSalePrice()!=null){
+                erpGoodsSku.setRetailPrice(BigDecimal.valueOf(sku.getSalePrice()/100));
+            }
+            erpGoodsSku.setStatus(1);
+            goodsSkuMapper.insert(erpGoodsSku);
+        }
+
+        return ResultVo.success();
     }
 }
 

@@ -203,7 +203,7 @@
 
 <script>
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { listGoods, getGoods, delGoods, addGoods, updateGoods,pullGoodsList } from "@/api/shop/goods";
+import { listGoods, getGoods, delGoods, addGoods, updateGoods,pullGoodsList,pushToErp } from "@/api/shop/goods";
 import {listShop} from "@/api/shop/shop";
 
 export default {
@@ -348,8 +348,11 @@ export default {
             });
 
             // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
+          }else if(response.code === 1001) {
+            this.$modal.msgSuccess(JSON.stringify(response));
           }else{
             this.$modal.msgSuccess(JSON.stringify(response));
+            this.pullLoading = false
             this.getList()
           }
 
@@ -370,7 +373,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.loading = true
-        syncIdoSellGoodsBatch().then(response => {
+        pushToErp( this.ids ).then(response => {
           this.$message.success('商品同步成功')
           this.getList()
         }).finally(() => {

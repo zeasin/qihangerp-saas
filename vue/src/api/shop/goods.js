@@ -50,3 +50,11 @@ export function pullGoodsList(data) {
     data: data
   })
 }
+
+export function pushToErp(data) {
+  return request({
+    url: '/shop/goods/push_erp',
+    method: 'post',
+    data: data
+  })
+}

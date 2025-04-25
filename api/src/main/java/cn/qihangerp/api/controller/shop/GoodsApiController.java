@@ -41,7 +41,8 @@ public class GoodsApiController extends BaseController {
         long startTime = System.currentTimeMillis();
         var checkResult = apiCommon.checkBefore(params.getShopId());
         if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
-            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
+//            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
+            return AjaxResult.error(checkResult.getMsg());
         }
         String accessToken = checkResult.getData().getAccessToken();
         String serverUrl = checkResult.getData().getServerUrl();

@@ -28,12 +28,15 @@ public class ErpGoodsSku implements Serializable {
      * 规格名
      */
     private String specName;
+    private String goodsName;
 
     /**
      * 规格编码
      */
     private String specNum;
+    private String goodsNum;
 
+    private String colorLabel;
     /**
      * 颜色id
      */
@@ -44,6 +47,7 @@ public class ErpGoodsSku implements Serializable {
      */
     private String colorValue;
 
+
     /**
      * 颜色图片
      */
@@ -53,6 +57,8 @@ public class ErpGoodsSku implements Serializable {
      * 尺码id
      */
     private Long sizeId;
+
+    private String sizeLabel;
 
     /**
      * 尺码值
@@ -68,6 +74,7 @@ public class ErpGoodsSku implements Serializable {
      * 款式值
      */
     private String styleValue;
+    private String styleLabel;
 
     /**
      * 库存条形码

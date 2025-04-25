@@ -99,7 +99,9 @@
       <!-- <el-table-column label="单位成本" align="center" prop="unitCost" /> -->
       <el-table-column label="供应商" align="center" prop="supplierId" >
         <template slot-scope="scope">
-          <el-tag size="small">{{supplierList.find(x=>x.id === scope.row.supplierId).name}}</el-tag>
+          <el-tag size="small">
+            {{scope.row.supplierId>0?supplierList.find(x=>x.id === scope.row.supplierId).name:''}}
+          </el-tag>
         </template>
       </el-table-column>
       <!-- <el-table-column label="品牌id" align="center" prop="brandId" />
