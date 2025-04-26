@@ -13,6 +13,8 @@
             <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 2">京东</span>
             <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 3">抖店</span>
             <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 4">拼多多</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 5">微信小店</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 9">其他渠道</span>
           </el-option>
         </el-select>
       </el-form-item>

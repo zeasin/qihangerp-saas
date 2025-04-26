@@ -149,5 +149,15 @@ public class ShopOrderItem implements Serializable {
      */
     private String orderProductCouponInfoList;
 
+    /**
+     * erp系统商品id
+     */
+    private Long erpGoodsId;
+
+    /**
+     * erp系统商品规格id
+     */
+    private Long erpSkuId;
+
     private static final long serialVersionUID = 1L;
 }

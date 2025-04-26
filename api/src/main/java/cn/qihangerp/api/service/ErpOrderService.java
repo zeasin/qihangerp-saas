@@ -6,6 +6,7 @@ import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.common.bo.ErpOrderShipBo;
 import cn.qihangerp.api.domain.ErpOrder;
 import cn.qihangerp.api.domain.vo.SalesDailyVo;
+import cn.qihangerp.api.request.OrderSearchRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 * @createDate 2024-04-03 15:57:41
 */
 public interface ErpOrderService extends IService<ErpOrder> {
-    PageResult<ErpOrder> queryPageList(ErpOrder bo, PageQuery pageQuery);
+    PageResult<ErpOrder> queryPageList(OrderSearchRequest bo, PageQuery pageQuery);
 
     ResultVo<Integer> shipErpOrder(ErpOrderShipBo shipBo);
 

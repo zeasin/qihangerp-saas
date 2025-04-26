@@ -1,5 +1,6 @@
 package cn.qihangerp.api.controller;
 
+import cn.qihangerp.api.request.OrderSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,11 @@ public class OrderController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('shop:order:list')")
     @GetMapping("/list")
-    public TableDataInfo list(ErpOrder order, PageQuery pageQuery)
+    public TableDataInfo list(OrderSearchRequest order, PageQuery pageQuery)
     {
-        order.setTenantId(getUserId());
+        if(getUserId()!=1) {
+            order.setTenantId(getUserId());
+        }
         var pageList = orderService.queryPageList(order,pageQuery);
         return getDataTable(pageList);
     }

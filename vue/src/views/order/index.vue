@@ -347,7 +347,9 @@ export default {
         pageNum: 1,
         pageSize: 10,
         orderNum: null,
-        shopId: null
+        shopId: null,
+        startTime:null,
+        endTime:null
       },
       // 表单参数
       form: {
@@ -402,6 +404,13 @@ export default {
     /** 查询店铺订单列表 */
     getList() {
       this.loading = true;
+      if(this.orderTime){
+        this.queryParams.startTime = this.orderTime[0]
+        this.queryParams.endTime = this.orderTime[1]
+      }else {
+        this.queryParams.startTime = null
+        this.queryParams.endTime = null
+      }
       listOrder(this.queryParams).then(response => {
         this.orderList = response.rows;
         this.total = response.total;
