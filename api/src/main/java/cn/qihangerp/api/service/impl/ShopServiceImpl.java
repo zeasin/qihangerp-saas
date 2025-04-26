@@ -23,8 +23,10 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
     private final ShopMapper mapper;
     @Override
     public List<Shop> selectShopList(Shop shop) {
+        if(shop.getType()==null) shop.setType(5);
+
         LambdaQueryWrapper<Shop> qw = new LambdaQueryWrapper<Shop>()
-                .eq(Shop::getType,5)
+                .eq(shop.getType()!=null,Shop::getType,shop.getType())
                 .eq(shop.getTenantId()!=null,Shop::getTenantId,shop.getTenantId())
                 ;
         return mapper.selectList(qw);

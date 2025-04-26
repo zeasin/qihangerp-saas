@@ -67,10 +67,10 @@
         <result property="colorImage"    column="color_image"    />
         <result property="sizeValue"    column="size_value"    />
         <result property="styleValue"    column="style_value"    />
-        <result property="purPrice"    column="pur_price"    />
+        <result property="goodsPrice"    column="goods_price"    />
     </resultMap>
     <select id="searchGoodsSpec" parameterType="GoodsSpecListVo" resultMap="GoodsSpecListVoResult">
-        SELECT spec.id,spec.goods_id,g.number,g.`name`,spec.spec_num,spec.color_value,spec.color_image,spec.size_value,spec.style_value,spec.pur_price
+        SELECT spec.id,spec.goods_id,g.number,g.`name`,spec.spec_num,spec.color_value,spec.color_image,spec.size_value,spec.style_value,spec.retail_price as goods_price
         FROM `erp_goods_sku` as spec
         LEFT JOIN erp_goods as g on g.id = spec.goods_id
         <where>

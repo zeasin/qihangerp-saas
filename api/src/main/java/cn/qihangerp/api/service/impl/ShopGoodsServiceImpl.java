@@ -165,7 +165,11 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
             erpGoodsSku.setGoodsName(erpGoods.getName());
             erpGoodsSku.setGoodsNum(erpGoods.getNumber());
             erpGoodsSku.setSpecNum(sku.getSkuCode());
-
+            if(org.springframework.util.StringUtils.hasText(sku.getThumbImg())) {
+                erpGoodsSku.setColorImage(sku.getThumbImg());
+            }else {
+                erpGoodsSku.setColorImage(erpGoods.getImage());
+            }
             // sku属性拆解
             if(StringUtils.isNotEmpty(sku.getSkuAttrs())){
                 try{

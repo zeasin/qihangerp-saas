@@ -1,6 +1,10 @@
 package cn.qihangerp.api.service.impl;
 
+import cn.qihangerp.api.common.*;
 import cn.qihangerp.api.common.utils.DateUtils;
+import cn.qihangerp.api.domain.*;
+import cn.qihangerp.api.mapper.*;
+import cn.qihangerp.api.request.ShopOrderCreateBo;
 import cn.qihangerp.api.request.ShopOrderSearchRequest;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,22 +13,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
-import cn.qihangerp.api.common.PageQuery;
-import cn.qihangerp.api.common.PageResult;
-import cn.qihangerp.api.common.ResultVo;
-import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.enums.EnumShopType;
-import cn.qihangerp.api.domain.ErpOrder;
-import cn.qihangerp.api.domain.ErpOrderItem;
-import cn.qihangerp.api.domain.ShopOrder;
-import cn.qihangerp.api.domain.ShopOrderItem;
-import cn.qihangerp.api.mapper.ErpOrderItemMapper;
-import cn.qihangerp.api.mapper.ErpOrderMapper;
-import cn.qihangerp.api.mapper.ShopOrderItemMapper;
 import cn.qihangerp.api.service.ShopOrderService;
-import cn.qihangerp.api.mapper.ShopOrderMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -43,6 +36,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
     private final ShopOrderItemMapper itemMapper;
     private final ErpOrderMapper erpOrderMapper;
     private final ErpOrderItemMapper erpOrderItemMapper;
+    private final ShopGoodsSkuMapper goodsSkuMapper;
 
     private final String DATE_PATTERN =
             "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
@@ -219,6 +213,76 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
         }else {
             return ResultVo.error(ResultVoEnum.ParamsError, "没有订单ID：");
         }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public ResultVo insertOrder(ShopOrderCreateBo bo, String createBy) {
+        if(!StringUtils.hasText(bo.getOrderId())) return ResultVo.error("请输入订单号");
+        if(bo.getShopId()==null) return ResultVo.error("请选择店铺");
+        if(!StringUtils.hasText(bo.getOrderTime())) return ResultVo.error("请选择下单时间");
+        if(bo.getStatus()==null) return ResultVo.error("请选择订单状态");
+        if(bo.getItemList()==null || bo.getItemList().isEmpty()) return ResultVo.error("请添加商品");
+
+        Matcher matcher = DATE_FORMAT.matcher(bo.getOrderTime());
+        if(matcher.find()) return ResultVo.error("下单时间格式不正确");
+
+
+        List<ShopOrder> shopOrders = mapper.selectList(new LambdaQueryWrapper<ShopOrder>()
+                .eq(ShopOrder::getShopId, bo.getShopId())
+                .eq(ShopOrder::getOrderId, bo.getOrderId()));
+        if(shopOrders!=null && shopOrders.size()>0) return ResultVo.error("订单已存在");
+
+        ShopOrder shopOrder = new ShopOrder();
+        shopOrder.setShopId(bo.getShopId());
+        shopOrder.setOrderId(bo.getOrderId());
+        shopOrder.setTenantId(bo.getTenantId());
+        shopOrder.setCreateTime(Integer.parseInt(DateUtils.parseDate(bo.getOrderTime()).getTime()/1000+""));
+        shopOrder.setUpdateTime(0);
+        shopOrder.setStatus(bo.getStatus());
+        shopOrder.setProductPrice(BigDecimal.valueOf(bo.getGoodsAmount()*100).intValue());
+        shopOrder.setOrderPrice(BigDecimal.valueOf(bo.getOrderAmount()*100).intValue());
+        shopOrder.setFreight(0);
+        shopOrder.setDiscountedPrice(0);
+        shopOrder.setUserName(bo.getReceiverName());
+        shopOrder.setProvinceName(bo.getProvince());
+        shopOrder.setCityName(bo.getCity());
+        shopOrder.setCountyName(bo.getCounty());
+        shopOrder.setDetailInfo("");
+        shopOrder.setTelNumber(bo.getReceiverPhone());
+        shopOrder.setUseTelNumber(0);
+        shopOrder.setShipDoneTime(0);
+        shopOrder.setConfirmStatus(0);
+        shopOrder.setErpSendStatus(0);
+        mapper.insert(shopOrder);
+
+        //添加item
+        for(var item : bo.getItemList()){
+            ShopOrderItem shopOrderItem = new ShopOrderItem();
+            shopOrderItem.setShopOrderId(shopOrder.getId());
+            shopOrderItem.setTenantId(shopOrder.getTenantId());
+            shopOrderItem.setShopId(shopOrder.getShopId());
+            //查询店铺商品
+            List<ShopGoodsSku> shopGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<ShopGoodsSku>().eq(ShopGoodsSku::getErpGoodsSkuId, item.getSkuId()));
+            if(shopGoodsSkus!=null && shopGoodsSkus.size()>0) {
+                shopOrderItem.setProductId(shopGoodsSkus.get(0).getProductId());
+                shopOrderItem.setSkuId(shopGoodsSkus.get(0).getSkuId());
+            }
+            shopOrderItem.setThumbImg(item.getGoodsImg());
+            shopOrderItem.setSkuCnt(item.getQuantity());
+            shopOrderItem.setSalePrice(item.getGoodsPrice().multiply(BigDecimal.valueOf(100)).intValue());
+            shopOrderItem.setTitle(item.getGoodsName());
+            shopOrderItem.setOnAftersaleSkuCnt(0);
+            shopOrderItem.setFinishAftersaleSkuCnt(0);
+            shopOrderItem.setSkuCode(item.getSkuCode());
+            shopOrderItem.setMarketPrice(item.getGoodsPrice().multiply(BigDecimal.valueOf(100)).intValue());
+            shopOrderItem.setRealPrice(item.getGoodsPrice().multiply(BigDecimal.valueOf(100)).intValue());
+            shopOrderItem.setSkuAttrs(item.getSkuName());
+            itemMapper.insert(shopOrderItem);
+        }
+        String[] ids = new String[]{shopOrder.getId()};
+        orderConfirm(ids);
+        return ResultVo.success();
     }
 }
 

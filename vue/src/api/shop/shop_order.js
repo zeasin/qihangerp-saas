@@ -35,3 +35,11 @@ export function orderConfirm(data) {
     data: data
   })
 }
+// 新增店铺订单
+export function addOrder(data) {
+  return request({
+    url: '/shop/order',
+    method: 'post',
+    data: data
+  })
+}

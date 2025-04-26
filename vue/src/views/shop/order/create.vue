@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="form" :rules="rules" label-width="108px">
-        <el-form-item label="订单编号" prop="orderNum">
+        <el-form-item label="订单号" prop="orderId">
           <el-col :span="24">
-            <el-input v-model="form.orderNum" style="width:220px" placeholder="请输入订单编号" />
+            <el-input v-model="form.orderId" style="width:220px" placeholder="请输入订单编号" />
           </el-col>
 
         </el-form-item>
@@ -67,10 +67,10 @@
               <el-input v-model="scope.row.specId" placeholder="请输入erp系统商品规格id" />
             </template>
           </el-table-column> -->
-          <el-table-column label="商品" prop="goodsId" width="350">
+          <el-table-column label="商品" prop="skuId" width="350">
             <template slot-scope="scope">
               <!-- <el-input v-model="scope.row.goodsTitle" placeholder="请输入商品标题" /> -->
-              <el-select v-model="scope.row.goodsId" filterable remote reserve-keyword placeholder="搜索商品" style="width: 330px;"
+              <el-select v-model="scope.row.skuId" filterable remote reserve-keyword placeholder="搜索商品" style="width: 330px;"
                 :remote-method="searchSku" :loading="skuListLoading" @change="skuChanage(scope.row)">
                 <el-option v-for="item in skuList" :key="item.id"
                   :label="item.name + ' - ' + item.colorValue + ' ' + item.sizeValue + ' ' + item.styleValue"
@@ -90,19 +90,19 @@
               <el-input v-model="scope.row.goodsNum" disabled placeholder="请输入商品编码" />
             </template>
           </el-table-column>
-          <el-table-column label="商品规格" prop="goodsSpec" width="150">
+          <el-table-column label="商品规格" prop="skuName" width="150">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.goodsSpec" disabled placeholder="请输入商品规格" />
+              <el-input v-model="scope.row.skuName" placeholder="请输入商品规格" />
             </template>
           </el-table-column>
-          <el-table-column label="商品规格编码" prop="specNum" width="150">
+          <el-table-column label="SKU编码" prop="skuCode" width="150">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.specNum" disabled placeholder="请输入商品规格编码" />
+              <el-input v-model="scope.row.skuCode" placeholder="请输入商品规格编码" />
             </template>
           </el-table-column>
           <el-table-column label="商品单价" prop="goodsPrice" width="150">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.goodsPrice" disabled placeholder="请输入商品单价" />
+              <el-input v-model="scope.row.goodsPrice" placeholder="请输入商品单价" />
             </template>
           </el-table-column>
           <el-table-column label="商品数量" prop="quantity" width="150">
@@ -112,19 +112,19 @@
           </el-table-column>
           <el-table-column label="金额" prop="itemAmount" width="150">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.itemAmount" disabled placeholder="请输入子订单金额" />
+              <el-input v-model="scope.row.itemAmount" placeholder="请输入子订单金额" />
             </template>
           </el-table-column>
 
-          <el-table-column label="是否赠品0否1是" prop="isGift" width="150">
-            <template slot-scope="scope">
-              <!-- <el-input v-model="scope.row.isGift" placeholder="请输入是否赠品0否1是" /> -->
-              <el-select v-model="scope.row.isGift" placeholder="是否赠品">
-                <el-option label="否" value="0" />
-                <el-option label="是" value="1" />
-              </el-select>
-            </template>
-          </el-table-column>
+<!--          <el-table-column label="是否赠品0否1是" prop="isGift" width="150">-->
+<!--            <template slot-scope="scope">-->
+<!--              &lt;!&ndash; <el-input v-model="scope.row.isGift" placeholder="请输入是否赠品0否1是" /> &ndash;&gt;-->
+<!--              <el-select v-model="scope.row.isGift" placeholder="是否赠品">-->
+<!--                <el-option label="否" value="0" />-->
+<!--                <el-option label="是" value="1" />-->
+<!--              </el-select>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
           <!-- <el-table-column label="已退货数量" prop="refundCount" width="150">
             <template slot-scope="scope">
               <el-input v-model="scope.row.refundCount" placeholder="请输入已退货数量" />
@@ -152,19 +152,21 @@
 <!--          <el-input v-model="form.payAmount" style="width: 220px;" placeholder="请输入支付金额，单位：元，支付金额=商品金额-折扣金额+邮费" />-->
 <!--        </el-form-item>-->
         <el-form-item label="下单时间" prop="orderTime">
-          <el-date-picker clearable v-model="form.orderTime" type="datetime" style="width: 220px;" value-format="yyyy-MM-dd" placeholder="请选择下单时间">
+          <el-date-picker clearable v-model="form.orderTime" type="datetime" style="width: 220px;" value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择下单时间">
         </el-date-picker>
           <!-- <el-input v-model="form.payTime" style="width: 220px;" placeholder="请输入支付时间" /> -->
         </el-form-item>
-        <el-form-item label="订单备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="买家留言" prop="buyerMemo">
-          <el-input v-model="form.buyerMemo" type="textarea" placeholder="请输入买家留言信息" />
-        </el-form-item>
-<!--        <el-form-item label="标签" prop="tag">-->
-<!--          <el-input v-model="form.tag" placeholder="请输入标签" style="width: 220px;" />-->
-<!--        </el-form-item>-->
+      <el-form-item label="订单状态" prop="status">
+        <el-select v-model="form.status" placeholder="请选择状态" >
+          <el-option label="待付款" value="10" ></el-option>
+          <el-option label="待发货" value="20"></el-option>
+          <el-option label="部分发货" value="21"> </el-option>
+          <el-option label="待收货" value="30"></el-option>
+          <el-option label="完成" value="100"></el-option>
+          <el-option label="售后之后订单取消" value="200"></el-option>
+          <el-option label="未付款订单取消" value="250"></el-option>
+        </el-select>
+      </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" style="margin-left: 108px;">
         <el-button type="primary" @click="submitForm">创建订单</el-button>
@@ -193,13 +195,17 @@ export default {
       form: {
         shopId:null,
         goodsAmount:null,
+        orderAmount:null,
         itemList:[],
-        provinces: []
+        provinces: [],
+        province:'',
+        city:'',
+        county:''
       },
       pcaTextArr,
       // 表单校验
       rules: {
-        orderNum: [{ required: true, message: '订单编码不能为空' }],
+        orderId: [{ required: true, message: '订单编码不能为空' }],
         shopId: [{ required: true, message: '请选择店铺' }],
         receiverName: [{ required: true, message: '请填写收件人信息' }],
         receiverPhone: [{ required: true, message: '请填写收件人信息' }],
@@ -210,6 +216,7 @@ export default {
         goodsTitle: [{ required: true, message: '请完善商品信息' }],
         orderAmount: [{ required: true, message: '请填写订单金额' }],
         orderTime: [{ required: true, message: '请填写下单时间' }],
+        status: [{ required: true, message: '请选择订单状态' }],
       },
       shopLoading: false,
       shopList: [],
@@ -222,7 +229,7 @@ export default {
   },
   created() {
     this.form.orderDate = this.getDate()
-    listShop({type:9}).then(response => {
+    listShop({}).then(response => {
         this.shopList = response.rows;
       });
   },
@@ -251,17 +258,26 @@ export default {
       })
     },
     skuChanage(row) {
-      console.log('=========',row)
-      const spec = this.skuList.find(x => x.id === row.goodsId);
+      console.log('=====变化选择====',row)
+      const spec = this.skuList.find(x => x.id === row.skuId);
       if (spec) {
-        console.log('=========', spec)
-        row.specId = spec.id
-        row.goodsPrice = spec.purPrice
-        row.goodsSpec = spec.colorValue + ' ' + spec.sizeValue + ' ' + spec.styleValue
+        console.log('=====找到了====', spec)
+        row.skuId = spec.id
+        row.goodsId = spec.goodsId
+        row.goodsPrice = spec.goodsPrice
+
+        row.skuName = spec.colorValue
+        //+ ' ' + spec.sizeValue??spec.sizeValue + ' ' + spec.styleValue??spec.styleValue
+        if(spec.sizeValue){
+          row.skuName+= " "+ spec.sizeValue
+        }
+        if(spec.styleValue){
+          row.skuName+= " "+ spec.styleValue
+        }
         row.goodsImg = spec.colorImage
         row.goodsNum = spec.number
-        row.goodsTitle = spec.name
-        row.specNum = spec.specNum
+        row.goodsName = spec.name
+        row.skuCode = spec.specNum
         row.isGift = '0'
         row.quantity = 1
         row.itemAmount = row.goodsPrice * row.quantity
@@ -270,6 +286,7 @@ export default {
         let goodsAmount = this.form.goodsAmount ? this.form.goodsAmount:0.0
         goodsAmount += row.itemAmount
         this.form.goodsAmount = goodsAmount
+        this.form.orderAmount = goodsAmount
 
 
       //   this.goodsForm.id = spec.id
@@ -362,7 +379,7 @@ export default {
 
           this.form.province = this.form.provinces[0]
           this.form.city = this.form.provinces[1]
-          this.form.town = this.form.provinces[2]
+          this.form.county = this.form.provinces[2]
 
           if(this.form.itemList && this.form.itemList.length >0){
             this.form.itemList.forEach(x=>{
@@ -377,7 +394,7 @@ export default {
               this.$modal.msgSuccess("订单创建成功");
               // 调用全局挂载的方法,关闭当前标签页
               this.$store.dispatch("tagsView/delView", this.$route);
-              this.$router.push('/sale/order/list');
+              this.$router.push('/order/shop_order');
             });
 
         }else{

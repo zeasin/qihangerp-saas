@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="订单号" prop="tid">
+      <el-form-item label="订单号" prop="orderId">
         <el-input
-          v-model="queryParams.tid"
+          v-model="queryParams.orderId"
           placeholder="请输入订单号"
           clearable
           @keyup.enter.native="handleQuery"
@@ -72,6 +72,15 @@
           size="mini"
           @click="handlePull"
         >API拉取订单</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-refresh"
+          size="mini"
+          @click="handleCreate"
+        >手动创建订单</el-button>
       </el-col>
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
@@ -316,6 +325,9 @@ export default {
       this.ids = selection.map(item => item.id)
       this.single = selection.length!==1
       this.multiple = !selection.length
+    },
+    handleCreate(){
+      this.$router.push("/order/shop_order_create")
     },
     handlePull() {
       if(this.queryParams.shopId){

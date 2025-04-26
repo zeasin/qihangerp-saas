@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 @Data
 public class GoodsSpecListVo {
 
-    private Long id;
-    private Long goodsId;
+    private String id;
+    private String goodsId;
 
     /** 商品名称 */
     private String name;
@@ -22,6 +22,6 @@ public class GoodsSpecListVo {
     private String colorImage;
     private String sizeValue;
     private String styleValue;
-    private BigDecimal purPrice;
+    private BigDecimal goodsPrice;
 
 }

@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="订单编号" prop="orderId">
+      <el-form-item label="订单编号" prop="orderNum">
         <el-input
-          v-model="queryParams.orderId"
+          v-model="queryParams.orderNum"
           placeholder="请输入订单编号"
           clearable
           @keyup.enter.native="handleQuery"
@@ -105,13 +105,14 @@
               <div style="margin-left:10px">
               <p>{{item.goodsTitle}}</p>
               <p>
-                <div v-if="JSON.parse(item.goodsSpec)">
-                {{JSON.parse(item.goodsSpec)[0].attr_key}}&nbsp;： {{JSON.parse(item.goodsSpec)[0].attr_value}}&nbsp;
-                </div>
-                <div v-else-if="JSON.parse(item.goodsSpec).length>1">
-                {{JSON.parse(item.goodsSpec)[1].attr_key}}&nbsp;： {{JSON.parse(item.goodsSpec)[1].attr_value}}&nbsp;
-                </div>
+<!--                <div v-if="JSON.parse(item.goodsSpec)">-->
+<!--                {{JSON.parse(item.goodsSpec)[0].attr_key}}&nbsp;： {{JSON.parse(item.goodsSpec)[0].attr_value}}&nbsp;-->
+<!--                </div>-->
+<!--                <div v-else-if="JSON.parse(item.goodsSpec).length>1">-->
+<!--                {{JSON.parse(item.goodsSpec)[1].attr_key}}&nbsp;： {{JSON.parse(item.goodsSpec)[1].attr_value}}&nbsp;-->
+<!--                </div>-->
                 <div>
+                {{ getSkuValues(item.goodsSpec)}}
                 数量：<el-tag size="small">x {{item.quantity}}</el-tag>
                 </div>
                 </p>
@@ -148,6 +149,11 @@
         <template slot-scope="scope">
           {{scope.row.receiverName}}&nbsp;  {{scope.row.receiverMobile}} <br />
           {{scope.row.province}} {{scope.row.city}} {{scope.row.town}}
+        </template>
+      </el-table-column>
+      <el-table-column label="下单时间" align="center" prop="createTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.orderTime, '{y}-{m}-{d} {h}:{m}:{s}') }}</span>
         </template>
       </el-table-column>
 <!--      <el-table-column label="发货信息" align="center" prop="shippingNumber" >-->
@@ -363,6 +369,17 @@ export default {
     this.getList();
   },
   methods: {
+    getSkuValues(spec){
+      try {
+        // 解析 JSON，返回一个数组
+        const parsedSpec = JSON.parse(spec) || [];
+
+        // 使用 map 提取所有 value，使用 join() 用逗号连接
+        return parsedSpec.map(item => item.attr_value || item.value).join(', ') || '';
+      } catch (error) {
+        return spec; // 如果 JSON 解析出错，返回空字符串
+      }
+    },
     amountFormatter(row, column, cellValue, index) {
       return '￥' + cellValue.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     },

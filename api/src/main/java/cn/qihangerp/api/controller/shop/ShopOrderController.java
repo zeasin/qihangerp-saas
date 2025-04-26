@@ -1,5 +1,6 @@
 package cn.qihangerp.api.controller.shop;
 
+import cn.qihangerp.api.request.ShopOrderCreateBo;
 import cn.qihangerp.api.request.ShopOrderSearchRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -31,5 +32,15 @@ public class ShopOrderController extends BaseController {
         }else{
             return AjaxResult.error("没有选择任何订单！");
         }
+    }
+
+    @PostMapping
+    public AjaxResult add(@RequestBody ShopOrderCreateBo order)
+    {
+        if(order.getGoodsAmount()==null)return new AjaxResult(1503,"请填写商品价格！");
+        order.setTenantId(getUserId());
+        var result = orderService.insertOrder(order,getUsername());
+        if(result.getCode()==0) return AjaxResult.success();
+        else return AjaxResult.error(result.getMsg());
     }
 }

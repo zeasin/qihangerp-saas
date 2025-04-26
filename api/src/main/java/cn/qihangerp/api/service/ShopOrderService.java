@@ -4,6 +4,7 @@ import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.domain.ShopOrder;
+import cn.qihangerp.api.request.ShopOrderCreateBo;
 import cn.qihangerp.api.request.ShopOrderSearchRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,4 +17,5 @@ public interface ShopOrderService extends IService<ShopOrder> {
     PageResult<ShopOrder> queryPageList(ShopOrderSearchRequest bo, PageQuery pageQuery);
     ResultVo<Long> saveOrder(Long shopId, ShopOrder order);
     ResultVo<Integer> orderConfirm(String[] ids);
+    ResultVo insertOrder(ShopOrderCreateBo shopOrderCreateBo, String createBy);
 }

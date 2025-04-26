@@ -48,6 +48,7 @@
       <el-table-column label="平台" align="center" prop="type" >
         <template slot-scope="scope">
           <el-tag v-if="scope.row.type===5">微店小店</el-tag>
+          <el-tag v-if="scope.row.type===9">其他渠道</el-tag>
         </template>
       </el-table-column>
        <el-table-column label="appKey" align="center" prop="appKey" />
@@ -92,16 +93,13 @@
         <el-form-item label="店铺名" prop="name">
           <el-input v-model="form.name" placeholder="请输入店铺名" />
         </el-form-item>
-<!--        <el-form-item label="平台" prop="type">-->
-<!--          <el-select v-model="form.type" placeholder="请选择平台">-->
-<!--           <el-option-->
-<!--              v-for="item in typeList"-->
-<!--              :key="item.id"-->
-<!--              :label="item.name"-->
-<!--              :value="item.id">-->
-<!--            </el-option>-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
+        <el-form-item label="平台" prop="type">
+          <el-select v-model="form.type" placeholder="请选择平台">
+           <el-option label="其他渠道" value="9" ></el-option>
+           <el-option label="微信小店" value="5"></el-option>
+
+          </el-select>
+        </el-form-item>
         <el-form-item label="appId" prop="appKey">
           <el-input v-model="form.appKey" placeholder="请输入appId" />
         </el-form-item>
@@ -165,11 +163,12 @@ export default {
       },
       // 表单参数
       form: {
-        type:null
+        type: '5'
       },
       // 表单校验
       rules: {
         name: [{ required: true, message: "店铺名不能为空", trigger: "blur" }],
+        type: [{ required: true, message: "不能为空", trigger: "blur" }],
         appKey: [{ required: true, message: "不能为空", trigger: "change" }],
         appSercet: [{ required: true, message: "不能为空", trigger: "change" }],
       }
