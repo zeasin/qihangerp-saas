@@ -17,12 +17,8 @@
             :label="item.name"
             :value="item.id">
             <span style="float: left">{{ item.name }}</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 4">淘宝天猫</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 5">拼多多</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 6">抖店</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 7">小红书</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 13">快手小店</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 99">其他</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 5">微信小店</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 9">其他渠道</span>
           </el-option>
         </el-select>
       </el-form-item>
@@ -105,7 +101,7 @@
       <el-table-column label="订单编号" align="center" prop="orderNum" />
       <el-table-column label="店铺" align="center" prop="shopId" >
         <template slot-scope="scope">
-          <span>{{ shopList.find(x=>x.id === scope.row.shopId).name  }}</span>
+          <span>{{ shopList.find(x=>x.id == scope.row.shopId)?shopList.find(x=>x.id == scope.row.shopId).name:'' }}</span>
         </template>
       </el-table-column>
 
@@ -419,9 +415,10 @@
 </template>
 
 <script>
-import { listOrder, getOrder, shipOrder } from "@/api/shop/order";
+
 import { listShop } from "@/api/shop/shop";
 import { listLogistics } from "@/api/api/logistics";
+import {listOrder,getOrder} from "@/api/order/order";
 export default {
   name: "Order",
   data() {
@@ -458,7 +455,7 @@ export default {
         shopId: null,
         tag: null,
         refundStatus: 1,
-        orderStatus: 2,
+        orderStatus: 1,
         receiverName: null,
         receiverPhone: null,
         town: null,

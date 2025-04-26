@@ -101,7 +101,7 @@ import {isRelogin} from "@/utils/request";
 import {addLogistics, listLogistics} from "@/api/api/logistics";
 
 export default {
-  name: "Shop",
+  name: "LogisticsCompany",
   data() {
     return {
       // 遮罩层

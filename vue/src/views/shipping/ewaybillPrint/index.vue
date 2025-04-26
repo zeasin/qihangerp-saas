@@ -28,16 +28,16 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="primary"-->
-<!--          plain-->
-<!--          icon="el-icon-time"-->
-<!--          size="mini"-->
-<!--          :disabled="multiple"-->
-<!--          @click="handleGetEwaybillCode"-->
-<!--        >电子面单取号&发货</el-button>-->
-<!--      </el-col>-->
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-time"
+          size="mini"
+          :disabled="multiple"
+          @click="handleGetEwaybillCode"
+        >电子面单取号&发货</el-button>
+      </el-col>
 
       <el-col :span="1.5">
 
@@ -219,7 +219,7 @@
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import {listOrder, getOrder,budadanListOrder } from "@/api/order/order";
 
-// import {getWaybillAccountList,cancelWaybillCode,getWaybillPrintData, getWaybillCode, pushWaybillPrintSuccess,pushShipSend,getWaybillCodeAndSend} from "@/api/ewaybill/wei";
+import {getWaybillAccountList,cancelWaybillCode,getWaybillPrintData, getWaybillCode, pushWaybillPrintSuccess,pushShipSend,getWaybillCodeAndSend} from "@/api/ship/ewaybill";
 
 // import {listOrder} from "@/api/order/wei";
 
