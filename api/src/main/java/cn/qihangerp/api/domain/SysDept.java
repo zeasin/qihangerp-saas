@@ -2,6 +2,7 @@ package cn.qihangerp.api.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,6 +91,7 @@ public class SysDept extends BaseEntity
         this.deptName = deptName;
     }
 
+
     public Integer getOrderNum()
     {
         return orderNum;
@@ -119,6 +121,7 @@ public class SysDept extends BaseEntity
     {
         this.phone = phone;
     }
+
 
     public String getEmail()
     {

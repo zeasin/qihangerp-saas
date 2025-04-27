@@ -5,8 +5,10 @@ import cn.qihangerp.api.common.BaseController;
 import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.TableDataInfo;
 import cn.qihangerp.api.common.security.SecurityUtils;
+import cn.qihangerp.api.domain.SysDept;
 import cn.qihangerp.api.domain.SysRole;
 import cn.qihangerp.api.domain.SysUser;
+import cn.qihangerp.api.service.ISysDeptService;
 import cn.qihangerp.api.service.ISysRoleService;
 import cn.qihangerp.api.service.ISysUserService;
 import org.apache.commons.lang3.ArrayUtils;
@@ -36,8 +38,8 @@ public class SysUserController extends BaseController
     @Autowired
     private ISysRoleService roleService;
 
-//    @Autowired
-//    private ISysDeptService deptService;
+    @Autowired
+    private ISysDeptService deptService;
 //
 //    @Autowired
 //    private ISysPostService postService;
@@ -202,14 +204,14 @@ public class SysUserController extends BaseController
 //        userService.insertUserAuth(userId, roleIds);
 //        return success();
 //    }
-//
-//    /**
-//     * 获取部门树列表
-//     */
-//    @PreAuthorize("@ss.hasPermi('system:user:list')")
-//    @GetMapping("/deptTree")
-//    public AjaxResult deptTree(SysDept dept)
-//    {
-//        return success(deptService.selectDeptTreeList(dept));
-//    }
+
+    /**
+     * 获取部门树列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:user:list')")
+    @GetMapping("/deptTree")
+    public AjaxResult deptTree(SysDept dept)
+    {
+        return success(deptService.selectDeptTreeList(dept));
+    }
 }
