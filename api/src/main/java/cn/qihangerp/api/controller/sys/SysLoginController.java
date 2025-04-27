@@ -1,9 +1,8 @@
-package cn.qihangerp.api.controller;
+package cn.qihangerp.api.controller.sys;
 
 import cn.qihangerp.api.request.SingOnReq;
 import cn.qihangerp.api.service.ISysUserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

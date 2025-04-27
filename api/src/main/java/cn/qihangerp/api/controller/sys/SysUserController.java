@@ -1,8 +1,7 @@
-package cn.qihangerp.api.controller;
+package cn.qihangerp.api.controller.sys;
 
 import cn.qihangerp.api.common.AjaxResult;
 import cn.qihangerp.api.common.BaseController;
-import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.TableDataInfo;
 import cn.qihangerp.api.common.security.SecurityUtils;
 import cn.qihangerp.api.domain.SysDept;
@@ -11,13 +10,11 @@ import cn.qihangerp.api.domain.SysUser;
 import cn.qihangerp.api.service.ISysDeptService;
 import cn.qihangerp.api.service.ISysRoleService;
 import cn.qihangerp.api.service.ISysUserService;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package cn.qihangerp.api.controller;
+package cn.qihangerp.api.controller.sys;
 
 import cn.qihangerp.api.common.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;

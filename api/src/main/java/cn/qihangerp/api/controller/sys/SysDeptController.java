@@ -1,4 +1,4 @@
-package cn.qihangerp.api.controller;
+package cn.qihangerp.api.controller.sys;
 
 import cn.qihangerp.api.common.AjaxResult;
 import cn.qihangerp.api.common.BaseController;

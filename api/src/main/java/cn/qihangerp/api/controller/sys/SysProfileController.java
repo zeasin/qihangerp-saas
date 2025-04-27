@@ -1,4 +1,4 @@
-package cn.qihangerp.api.controller;
+package cn.qihangerp.api.controller.sys;
 
 import cn.qihangerp.api.common.AjaxResult;
 import cn.qihangerp.api.common.BaseController;
@@ -10,9 +10,6 @@ import cn.qihangerp.api.domain.SysUser;
 import cn.qihangerp.api.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import static cn.qihangerp.api.common.security.SecurityUtils.getLoginUser;
 
 /**
  * 个人信息 业务处理
