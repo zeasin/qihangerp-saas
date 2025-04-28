@@ -195,9 +195,10 @@ public class WxLoginHelper {
         SysUser sysUser = userService.selectUserByWxOpenId(fromUserName);
         if(sysUser == null) {
             //新增用户
-            log.info("=============新增用户====={}", JSONObject.toJSONString(sysUser));
+            String userName ="user"+NumberUtils.generateOrderNumber();
+            log.info("=============新增用户====={}", userName);
             SysUser newUser = new SysUser();
-            newUser.setUserName(fromUserName);
+            newUser.setUserName(userName);
             newUser.setNickName("微信公众号扫码登录用户");
             newUser.setPassword(SecurityUtils.encryptPassword("123456"));
             //试用期一个月
@@ -210,7 +211,7 @@ public class WxLoginHelper {
             newUser.setWxOpenId(fromUserName);
 
             userService.insertUser(newUser);
-            token = loginService.login(fromUserName, "123456", "",null);
+            token = loginService.login(userName, "123456", "",null);
         }else{
             log.info("=============老用户登录====={}", JSONObject.toJSONString(sysUser));
             LoginUser loginUser = new LoginUser();

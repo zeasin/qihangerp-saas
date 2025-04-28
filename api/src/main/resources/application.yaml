@@ -12,14 +12,10 @@ spring:
     password: Andy_123
 
   data:
-    # redis 配置
     redis:
-      # 地址
 #      host: 10.0.2.22
       host: 127.0.0.1
-      # 端口，默认为6379
       port: 6379
-      # 数据库索引
       database: 0
       # 密码
       #    password: 123321
