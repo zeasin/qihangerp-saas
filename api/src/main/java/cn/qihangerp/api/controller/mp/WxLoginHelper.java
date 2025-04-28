@@ -3,8 +3,15 @@ package cn.qihangerp.api.controller.mp;
 
 import cn.qihangerp.api.common.cache.RedisCache;
 import cn.qihangerp.api.common.exception.NoVlaInGuavaException;
+import cn.qihangerp.api.common.security.LoginUser;
+import cn.qihangerp.api.common.security.SecurityUtils;
+import cn.qihangerp.api.common.security.TokenService;
+import cn.qihangerp.api.common.utils.IpUtils;
 import cn.qihangerp.api.common.utils.NumberUtils;
+import cn.qihangerp.api.domain.SysUser;
+import cn.qihangerp.api.service.ISysUserService;
 import cn.qihangerp.api.service.SysLoginService;
+import com.alibaba.fastjson2.JSONObject;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -14,6 +21,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -25,6 +35,11 @@ import java.util.concurrent.TimeUnit;
 public class WxLoginHelper {
     @Autowired
     private SysLoginService loginService;
+    @Autowired
+    private ISysUserService userService;
+    @Autowired
+    private TokenService tokenService;
+
     /**
      * sse的超时时间，默认15min
      */
@@ -74,7 +89,7 @@ public class WxLoginHelper {
     public SseEmitter subscribe(String deviceId) throws IOException {
 //        String deviceId = ReqInfoContext.getReqInfo().getDeviceId();
         String realCode = deviceCodeCache.getUnchecked(deviceId) ;
-        redisCache.setCacheObject(deviceId,realCode);
+        redisCache.setCacheObject("MP_LOGIN_CODE:"+realCode,deviceId,5,TimeUnit.MINUTES);
         // fixme 设置15min的超时时间, 超时时间一旦设置不能修改；因此导致刷新验证码并不会增加连接的有效期
         SseEmitter sseEmitter = new SseEmitter(SSE_EXPIRE_TIME);
         SseEmitter oldSse = verifyCodeCache.getIfPresent(realCode);
@@ -155,6 +170,60 @@ public class WxLoginHelper {
 
 //        String session = sessionService.loginByWx(ReqInfoContext.getReqInfo().getUserId());
         String token = loginService.login("qihang", "admin123", "",null);
+        try {
+            // 登录成功，写入session
+            sseEmitter.send(token);
+            // 设置cookie的路径
+            sseEmitter.send("login#Token=" + token + ";path=/;");
+            return true;
+        } catch (Exception e) {
+            log.error("登录异常: {}", verifyCode, e);
+        } finally {
+            sseEmitter.complete();
+            verifyCodeCache.invalidate(verifyCode);
+        }
+        return false;
+    }
+    public boolean login(String verifyCode,String fromUserName) {
+        // 通过验证码找到对应的长连接
+        SseEmitter sseEmitter = verifyCodeCache.getIfPresent(verifyCode);
+        if (sseEmitter == null) {
+            return false;
+        }
+//        Object cacheObject = redisCache.getCacheObject("MP_LOGIN_CODE:" + verifyCode);
+        String token = "";
+        SysUser sysUser = userService.selectUserByWxOpenId(fromUserName);
+        if(sysUser == null) {
+            //新增用户
+            log.info("=============新增用户====={}", JSONObject.toJSONString(sysUser));
+            SysUser newUser = new SysUser();
+            newUser.setUserName(fromUserName);
+            newUser.setNickName("微信公众号扫码登录用户");
+            newUser.setPassword(SecurityUtils.encryptPassword("123456"));
+            //试用期一个月
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String expirationDate = LocalDate.now().plusMonths(1L).format(formatter);
+            newUser.setExpirationDate(expirationDate);
+            newUser.setLoginDate(new Date());
+            newUser.setCreateBy("微信公众号扫码登录");
+            newUser.setCreateTime(new Date());
+            newUser.setWxOpenId(fromUserName);
+
+            userService.insertUser(newUser);
+            token = loginService.login(fromUserName, "123456", "",null);
+        }else{
+            log.info("=============老用户登录====={}", JSONObject.toJSONString(sysUser));
+            LoginUser loginUser = new LoginUser();
+            loginUser.setUser(sysUser);
+            loginUser.setUserId(sysUser.getUserId());
+            loginUser.setLoginLocation("");
+            loginUser.setLoginTime(System.currentTimeMillis()/1000);
+            loginUser.setDeptId(sysUser.getDeptId());
+            token = tokenService.createToken(loginUser);
+        }
+//        String session = sessionService.loginByWx(ReqInfoContext.getReqInfo().getUserId());
+
+//        tokenService.createToken(sysUser);
         try {
             // 登录成功，写入session
             sseEmitter.send(token);

@@ -77,6 +77,7 @@ public class SysUser
     /** 创建者 */
     private String createBy;
     private String remark;
+    private String wxOpenId;
 
 
     private Map<String, Object> params;
@@ -323,5 +324,13 @@ public class SysUser
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getWxOpenId() {
+        return wxOpenId;
+    }
+
+    public void setWxOpenId(String wxOpenId) {
+        this.wxOpenId = wxOpenId;
     }
 }

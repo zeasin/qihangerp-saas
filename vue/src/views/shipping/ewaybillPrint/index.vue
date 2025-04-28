@@ -121,9 +121,9 @@
                 <image-preview :src="scope.row.goodsImg" :width="40" :height="40"/>
               </template>
             </el-table-column>
-            <el-table-column label="商品名" align="left" width="250px" prop="goodsName" >
+            <el-table-column label="商品名" align="left" width="250px" prop="goodsTitle" >
               <template slot-scope="scope">
-                {{scope.row.goodsName}}
+                {{scope.row.goodsTitle}}
                 <!--                <el-tag size="small" v-if="scope.row.refundStatus === 1">无售后或售后关闭</el-tag>-->
                 <el-tag size="small" v-if="scope.row.refundStatus === 2">售后处理中</el-tag>
                 <el-tag size="small" v-if="scope.row.refundStatus === 3">退款中</el-tag>
@@ -131,12 +131,12 @@
                 <el-tag size="small" v-if="scope.row.refundStatus === 11">已取消</el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="SKU名" align="left" prop="skuName" width="150"  :show-overflow-tooltip="true">
+            <el-table-column label="SKU名" align="left" prop="goodsSpec" width="150"  :show-overflow-tooltip="true">
               <template slot-scope="scope">
-                {{ getSkuValues(scope.row.skuName)}}
+                {{ getSkuValues(scope.row.goodsSpec)}}
               </template>
             </el-table-column>
-            <el-table-column label="Sku编码" align="left" prop="skuCode" width="200"/>
+            <el-table-column label="Sku编码" align="left" prop="skuNum" width="200"/>
             <!--            <el-table-column label="平台SkuId" align="left" prop="skuId" width="150"/>-->
             <el-table-column label="商品数量" align="center" prop="quantity" width="50px">
               <template slot-scope="scope">

@@ -1,6 +1,8 @@
 package cn.qihangerp.api.controller.mp;
 
 import cn.qihangerp.api.common.ResultVo;
+import cn.qihangerp.api.common.utils.AddressUtils;
+import cn.qihangerp.api.common.utils.IpUtils;
 import cn.qihangerp.api.domain.SysConfig;
 import cn.qihangerp.api.service.SysConfigService;
 import com.hankcs.hanlp.HanLP;
@@ -85,7 +87,7 @@ public class WxMessageController {
                     // 先判断是否登陆
                     if(content.length()==8&&content.substring(0,2).equals("DL")){
                         log.info("======用户登陆============");
-                        qrLoginHelper.login(content);
+                        qrLoginHelper.login(content,fromUserName);
                         log.info("===========登陆成功==========");
                         return "";
                     }

@@ -94,6 +94,11 @@ public class SysUserServiceImpl implements ISysUserService
         return userMapper.selectUserByUserName(userName);
     }
 
+    @Override
+    public SysUser selectUserByWxOpenId(String wxOpenId) {
+        return userMapper.selectUserByWxOpenId(wxOpenId);
+    }
+
     /**
      * 通过用户ID查询用户
      *

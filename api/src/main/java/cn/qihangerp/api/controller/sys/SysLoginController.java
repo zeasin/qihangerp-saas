@@ -1,8 +1,13 @@
 package cn.qihangerp.api.controller.sys;
 
+import cn.qihangerp.api.common.security.LoginUser;
+import cn.qihangerp.api.common.security.TokenService;
+import cn.qihangerp.api.common.utils.IpUtils;
 import cn.qihangerp.api.request.SingOnReq;
 import cn.qihangerp.api.service.ISysUserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +24,7 @@ import cn.qihangerp.api.service.SysPermissionService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -39,6 +45,7 @@ public class SysLoginController
 
     private final ISysUserService userService;
 
+    private final TokenService tokenService;
 
     /**
      * 登录方法
@@ -47,12 +54,23 @@ public class SysLoginController
      * @return 结果
      */
     @PostMapping("/login")
-    public AjaxResult login(@RequestBody LoginBody loginBody) {
+    public AjaxResult login(@RequestBody LoginBody loginBody, HttpServletRequest request) {
         try {
+            SysUser sysUser = userService.selectUserByUserName(loginBody.getUsername());
             AjaxResult ajax = AjaxResult.success();
             // 生成令牌
-            String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
-                    loginBody.getUuid());
+            String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(), loginBody.getUuid());
+//            String token = loginService.login(loginBody.getUsername(), sysUser.getPassword(), loginBody.getCode(), loginBody.getUuid());
+
+
+//            LoginUser loginUser = new LoginUser();
+//            loginUser.setUser(sysUser);
+//            loginUser.setUserId(sysUser.getUserId());
+//            loginUser.setLoginLocation("");
+//            loginUser.setLoginTime(System.currentTimeMillis()/1000);
+//            loginUser.setDeptId(sysUser.getDeptId());
+//            loginUser.setIpaddr(IpUtils.getIpAddr(request));
+//            String token = tokenService.createToken(loginUser);
             ajax.put(Constants.TOKEN, token);
             return ajax;
         } catch (Exception e) {

@@ -4,6 +4,7 @@ import cn.qihangerp.api.common.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -69,9 +70,11 @@ public class UserDetailsServiceImpl implements UserDetailsService
                 }
             }
         }
-
-        passwordService.validate(user);
-
+//        Authentication usernamePasswordAuthenticationToken = AuthenticationContextHolder.getContext();
+//        String password = usernamePasswordAuthenticationToken.getCredentials().toString();
+//        if(!password.equals(user.getPassword())) {
+            passwordService.validate(user);
+//        }
 
         return createLoginUser(user);
     }
