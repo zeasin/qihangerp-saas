@@ -1,18 +1,21 @@
 package cn.qihangerp.api.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Data;
-
 /**
  * 入库单明细
- * @TableName wms_stock_in_entry_item
+ * @TableName wms_stock_in_item
  */
+@TableName(value ="wms_stock_in_item")
 @Data
-public class WmsStockInEntryItem implements Serializable {
+public class WmsStockInItem implements Serializable {
     /**
      * 
      */
@@ -20,24 +23,24 @@ public class WmsStockInEntryItem implements Serializable {
     private Long id;
 
     /**
-     * 租户id
-     */
-    private Long tenantId;
-
-    /**
      * 入库单id
      */
-    private Long entryId;
+    private Long stockInId;
 
     /**
      * 来源类型（1采购订单2退货订单）
      */
-    private Integer sourceType;
+    private Integer stockInType;
+
+    /**
+     * 来源单号
+     */
+    private String sourceNo;
 
     /**
      * 来源单id
      */
-    private String sourceId;
+    private Long sourceId;
 
     /**
      * 来源单itemId
@@ -47,7 +50,7 @@ public class WmsStockInEntryItem implements Serializable {
     /**
      * 商品id
      */
-    private Long goodsId;
+    private String goodsId;
 
     /**
      * 商品编码
@@ -60,44 +63,39 @@ public class WmsStockInEntryItem implements Serializable {
     private String goodsName;
 
     /**
+     * 商品图片
+     */
+    private String goodsImage;
+
+    /**
      * 商品规格id
      */
-    private Long specId;
+    private String skuId;
 
     /**
      * 商品规格编码
      */
-    private String specNum;
+    private String skuCode;
 
     /**
      * 颜色
      */
-    private String colorValue;
-
-    /**
-     * 图片
-     */
-    private String colorImage;
-
-    /**
-     * 尺码
-     */
-    private String sizeValue;
-
-    /**
-     * 款式
-     */
-    private String styleValue;
+    private String skuName;
 
     /**
      * 原始数量
      */
-    private Long originalQuantity;
+    private Integer quantity;
+
+    /**
+     * 入库价格
+     */
+    private Double purPrice;
 
     /**
      * 入库数量
      */
-    private Long inQuantity;
+    private Integer inQuantity;
 
     /**
      * 备注
@@ -105,17 +103,7 @@ public class WmsStockInEntryItem implements Serializable {
     private String remark;
 
     /**
-     * 入库仓位
-     */
-    private Integer locationId;
-
-    /**
-     * 入库仓位编码
-     */
-    private String locationNum;
-
-    /**
-     * 状态（0待入库1部分入库2全部入库）
+     * 状态（0待入库2已入库）
      */
     private Integer status;
 
@@ -139,5 +127,21 @@ public class WmsStockInEntryItem implements Serializable {
      */
     private Date updateTime;
 
+    /**
+     * 仓库id
+     */
+    private Long warehouseId;
+
+    /**
+     * 仓位id
+     */
+    private Long positionId;
+
+    /**
+     * 仓位编码
+     */
+    private String positionNum;
+
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

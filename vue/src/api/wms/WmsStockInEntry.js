@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询入库单列表
 export function listWmsStockInEntry(query) {
   return request({
-    url: '/wms/WmsStockInEntry/list',
+    url: '/stockIn/list',
     method: 'get',
     params: query
   })

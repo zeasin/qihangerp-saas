@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.api.mapper.OGoodsInventoryMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.OGoodsInventory">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="goodsId" column="goods_id" jdbcType="BIGINT"/>
+        <result property="goodsNum" column="goods_num" jdbcType="VARCHAR"/>
+        <result property="skuId" column="sku_id" jdbcType="BIGINT"/>
+        <result property="skuCode" column="sku_code" jdbcType="VARCHAR"/>
+        <result property="goodsName" column="goods_name" jdbcType="VARCHAR"/>
+        <result property="goodsImg" column="goods_img" jdbcType="VARCHAR"/>
+        <result property="skuName" column="sku_name" jdbcType="VARCHAR"/>
+        <result property="quantity" column="quantity" jdbcType="BIGINT"/>
+        <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,goods_id,goods_num,
+        sku_id,sku_code,goods_name,
+        goods_img,sku_name,quantity,
+        is_delete,create_time,create_by,
+        update_time,update_by
+    </sql>
+    <select id="getAllInventoryQuantity" resultType="Long">
+        SELECT IFNULL(SUM(quantity),0) as count FROM o_goods_inventory where is_delete=0
+    </select>
+
+    <select id="searchSkuInventoryBatch" parameterType="String" resultType="cn.qihangerp.api.request.GoodsSkuInventoryVo">
+        SELECT inv.id as batchId,inv.batch_num,inv.current_qty,inv.sku_id,inv.goods_id,inv.sku_code,inv.warehouse_id,
+               inv.position_id ,inv.position_num,inv.pur_price,
+               spec.`sku_name`,spec.color_value,spec.color_image,spec.size_value,spec.style_value,spec.goods_name
+        ,ww.`name` as warehouse_name
+        FROM o_goods_inventory_batch as inv
+        left JOIN `o_goods_sku` as spec on inv.sku_id=spec.id
+        LEFT JOIN wms_warehouse as ww on ww.id = inv.warehouse_id
+        <where>
+            and inv.current_qty &gt; 0
+            <if test="keyword != null  and keyword != ''">
+                and inv.sku_code like concat('%', #{keyword}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

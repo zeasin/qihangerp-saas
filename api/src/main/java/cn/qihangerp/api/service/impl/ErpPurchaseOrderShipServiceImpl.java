@@ -4,12 +4,8 @@ import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.common.utils.DateUtils;
 import cn.qihangerp.api.domain.ErpPurchaseOrder;
-import cn.qihangerp.api.domain.WmsStockInEntry;
-import cn.qihangerp.api.domain.WmsStockInEntryItem;
 import cn.qihangerp.api.domain.bo.PurchaseOrderStockInBo;
 import cn.qihangerp.api.mapper.ErpPurchaseOrderMapper;
-import cn.qihangerp.api.mapper.WmsStockInEntryItemMapper;
-import cn.qihangerp.api.mapper.WmsStockInEntryMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -35,8 +31,8 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
     implements ErpPurchaseOrderShipService{
     private final ErpPurchaseOrderShipMapper mapper;
     private final ErpPurchaseOrderMapper orderMapper;
-    private final WmsStockInEntryMapper stockInEntryMapper;
-    private final WmsStockInEntryItemMapper stockInEntryItemMapper;
+//    private final WmsStockInEntryMapper stockInEntryMapper;
+//    private final WmsStockInEntryItemMapper stockInEntryItemMapper;
 
     @Override
     public PageResult<ErpPurchaseOrderShip> queryPageList(ErpPurchaseOrderShip bo, PageQuery pageQuery) {
@@ -81,85 +77,85 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
      * @param bo
      * @return
      */
-    @Transactional
-    @Override
-    public int createStockInEntry(PurchaseOrderStockInBo bo) {
-        ErpPurchaseOrderShip ship = mapper.selectById(bo.getId());
-        if(ship == null) return -1;//数据不存在
-
-        else if(ship.getStatus().intValue() == 0) return -2;//未确认收货不允许操作
-        else if(ship.getStatus().intValue() == 2) return -3;//已入库请勿重复操作
-        else if (ship.getStatus().intValue() == 1) {
-            WmsStockInEntry entry = new WmsStockInEntry();
-            entry.setNo(DateUtils.parseDateToStr("yyyyMMddHHmmss",new Date()));
-            entry.setSourceId(ship.getId());
-            entry.setTenantId(ship.getTenantId());
-            entry.setSourceNo(ship.getOrderNo());
-            entry.setSourceSpecUnit(ship.getOrderSpecUnit());
-            entry.setSourceGoodsUnit(ship.getOrderGoodsUnit());
-            entry.setSourceSpecUnitTotal(ship.getOrderSpecUnitTotal());
-            entry.setSourceType(1);
-            entry.setStatus(0);
-            entry.setCreateBy(bo.getCreateBy());
-            entry.setCreateTime(new Date());
-            stockInEntryMapper.insert(entry);
-
-            // 子表
-
-            if(bo.getGoodsList()!=null && bo.getGoodsList().size()>0){
-                List<WmsStockInEntryItem> items = new ArrayList<>();
-                for (var item:bo.getGoodsList()) {
-                    WmsStockInEntryItem entryItem = new WmsStockInEntryItem();
-                    entryItem.setEntryId(entry.getId());
-                    entryItem.setTenantId(entry.getTenantId());
-                    entryItem.setSourceType(1);
-                    entryItem.setSourceId(ship.getId());
-                    entryItem.setSourceItemId(item.getId());
-                    entryItem.setGoodsId(item.getGoodsId());
-                    entryItem.setGoodsNum(item.getGoodsNum());
-                    entryItem.setGoodsName(item.getGoodsName());
-                    entryItem.setSpecId(item.getSpecId());
-                    entryItem.setSpecNum(item.getSpecNum());
-                    entryItem.setColorValue(item.getColorValue());
-                    entryItem.setColorImage(item.getColorImage());
-                    entryItem.setSizeValue(item.getSizeValue());
-                    entryItem.setStyleValue(item.getStyleValue());
-                    entryItem.setOriginalQuantity(item.getQuantity());
-                    entryItem.setInQuantity(0L);
-                    entryItem.setCreateBy(bo.getCreateBy());
-                    entryItem.setCreateTime(new Date());
-                    entryItem.setRemark("");
-//                    entryItem.setLocationId(0L);
-                    entryItem.setStatus(0);
-                    items.add(entryItem);
-                    stockInEntryItemMapper.insert(entryItem);
-                }
-
-            }
-
-            // 更新表状态
-            ErpPurchaseOrderShip update = new ErpPurchaseOrderShip();
-            update.setUpdateTime(DateUtils.getNowDate());
-            update.setStockInTime(DateUtils.getNowDate());
-            update.setUpdateBy(bo.getCreateBy());
-            update.setStatus(2);
-            update.setId(ship.getId());
-            mapper.updateById(update);
-
-            //更新 采购订单
-            // 更新采购单状态
-            ErpPurchaseOrder order = new ErpPurchaseOrder();
-            order.setId(bo.getId().toString());
-            order.setStatus(3);
-            order.setStockInTime(DateUtils.getNowDate());
-            order.setUpdateTime(DateUtils.getNowDate());
-            order.setUpdateBy(bo.getCreateBy());
-            orderMapper.updateById(order);
-
-            return 1;
-        }
-        else return -4;
-    }
+//    @Transactional
+//    @Override
+//    public int createStockInEntry(PurchaseOrderStockInBo bo) {
+//        ErpPurchaseOrderShip ship = mapper.selectById(bo.getId());
+//        if(ship == null) return -1;//数据不存在
+//
+//        else if(ship.getStatus().intValue() == 0) return -2;//未确认收货不允许操作
+//        else if(ship.getStatus().intValue() == 2) return -3;//已入库请勿重复操作
+//        else if (ship.getStatus().intValue() == 1) {
+//            WmsStockInEntry entry = new WmsStockInEntry();
+//            entry.setNo(DateUtils.parseDateToStr("yyyyMMddHHmmss",new Date()));
+//            entry.setSourceId(ship.getId());
+//            entry.setTenantId(ship.getTenantId());
+//            entry.setSourceNo(ship.getOrderNo());
+//            entry.setSourceSpecUnit(ship.getOrderSpecUnit());
+//            entry.setSourceGoodsUnit(ship.getOrderGoodsUnit());
+//            entry.setSourceSpecUnitTotal(ship.getOrderSpecUnitTotal());
+//            entry.setSourceType(1);
+//            entry.setStatus(0);
+//            entry.setCreateBy(bo.getCreateBy());
+//            entry.setCreateTime(new Date());
+//            stockInEntryMapper.insert(entry);
+//
+//            // 子表
+//
+//            if(bo.getGoodsList()!=null && bo.getGoodsList().size()>0){
+//                List<WmsStockInEntryItem> items = new ArrayList<>();
+//                for (var item:bo.getGoodsList()) {
+//                    WmsStockInEntryItem entryItem = new WmsStockInEntryItem();
+//                    entryItem.setEntryId(entry.getId());
+//                    entryItem.setTenantId(entry.getTenantId());
+//                    entryItem.setSourceType(1);
+//                    entryItem.setSourceId(ship.getId());
+//                    entryItem.setSourceItemId(item.getId());
+//                    entryItem.setGoodsId(item.getGoodsId());
+//                    entryItem.setGoodsNum(item.getGoodsNum());
+//                    entryItem.setGoodsName(item.getGoodsName());
+//                    entryItem.setSpecId(item.getSpecId());
+//                    entryItem.setSpecNum(item.getSpecNum());
+//                    entryItem.setColorValue(item.getColorValue());
+//                    entryItem.setColorImage(item.getColorImage());
+//                    entryItem.setSizeValue(item.getSizeValue());
+//                    entryItem.setStyleValue(item.getStyleValue());
+//                    entryItem.setOriginalQuantity(item.getQuantity());
+//                    entryItem.setInQuantity(0L);
+//                    entryItem.setCreateBy(bo.getCreateBy());
+//                    entryItem.setCreateTime(new Date());
+//                    entryItem.setRemark("");
+////                    entryItem.setLocationId(0L);
+//                    entryItem.setStatus(0);
+//                    items.add(entryItem);
+//                    stockInEntryItemMapper.insert(entryItem);
+//                }
+//
+//            }
+//
+//            // 更新表状态
+//            ErpPurchaseOrderShip update = new ErpPurchaseOrderShip();
+//            update.setUpdateTime(DateUtils.getNowDate());
+//            update.setStockInTime(DateUtils.getNowDate());
+//            update.setUpdateBy(bo.getCreateBy());
+//            update.setStatus(2);
+//            update.setId(ship.getId());
+//            mapper.updateById(update);
+//
+//            //更新 采购订单
+//            // 更新采购单状态
+//            ErpPurchaseOrder order = new ErpPurchaseOrder();
+//            order.setId(bo.getId().toString());
+//            order.setStatus(3);
+//            order.setStockInTime(DateUtils.getNowDate());
+//            order.setUpdateTime(DateUtils.getNowDate());
+//            order.setUpdateBy(bo.getCreateBy());
+//            orderMapper.updateById(order);
+//
+//            return 1;
+//        }
+//        else return -4;
+//    }
 }
 
 

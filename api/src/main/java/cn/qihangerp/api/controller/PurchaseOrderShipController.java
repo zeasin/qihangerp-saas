@@ -59,21 +59,21 @@ public class PurchaseOrderShipController extends BaseController
         return toAjax(shipService.confirmPurchaseOrderShip(bo));
     }
 
-    @PostMapping("/createStockInEntry")
-    public AjaxResult createStockInEntry(@RequestBody PurchaseOrderStockInBo bo)
-    {
-        bo.setCreateBy(getUsername());
-        int result = shipService.createStockInEntry(bo);
-        if(result == -1) return new AjaxResult(1404,"采购物流不存在");
-        else if (result == -2) return new AjaxResult(501,"未确认收货不允许操作");
-        else if (result == -3) {
-            return new AjaxResult(502,"已处理过了请勿重复操作");
-        } else if (result == -4) {
-            return new AjaxResult(503,"状态不正确不能操作");
-        } else if (result == 1) {
-            return toAjax(1);
-        }else return toAjax(result);
-    }
+//    @PostMapping("/createStockInEntry")
+//    public AjaxResult createStockInEntry(@RequestBody PurchaseOrderStockInBo bo)
+//    {
+//        bo.setCreateBy(getUsername());
+//        int result = shipService.createStockInEntry(bo);
+//        if(result == -1) return new AjaxResult(1404,"采购物流不存在");
+//        else if (result == -2) return new AjaxResult(501,"未确认收货不允许操作");
+//        else if (result == -3) {
+//            return new AjaxResult(502,"已处理过了请勿重复操作");
+//        } else if (result == -4) {
+//            return new AjaxResult(503,"状态不正确不能操作");
+//        } else if (result == 1) {
+//            return toAjax(1);
+//        }else return toAjax(result);
+//    }
 
 
 }

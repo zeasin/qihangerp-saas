@@ -1,0 +1,17 @@
+package cn.qihangerp.api.request;
+
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class StockOutCreateRequest {
+    private Long shopId;
+    private Long shopGroupId;
+    private String outNum;
+    private Integer type;
+    private String sourceNo;
+    private String operator;
+    private String remark;
+    private List<GoodsSkuInventoryVo> itemList;
+}

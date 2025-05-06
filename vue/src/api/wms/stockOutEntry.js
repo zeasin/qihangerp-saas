@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询出库单列表
 export function listStockOutEntry(query) {
   return request({
-    url: '/wms/stockOutEntry/list',
+    url: '/stockOut/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listStockOutEntry(query) {
 // 查询出库单详细
 export function getStockOutEntry(id) {
   return request({
-    url: '/wms/stockOutEntry/' + id,
+    url: '/stockOut/' + id,
     method: 'get'
   })
 }

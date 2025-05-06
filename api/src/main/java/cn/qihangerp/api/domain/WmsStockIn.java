@@ -1,33 +1,35 @@
 package cn.qihangerp.api.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
 /**
  * 入库单
- * @TableName wms_stock_in_entry
+ * @TableName wms_stock_in
  */
 @Data
-public class WmsStockInEntry implements Serializable {
+public class WmsStockIn implements Serializable {
     /**
      * 主键ID
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
     /**
-     * 租户id
+     * 入库单据编号
      */
-    private Long tenantId;
+    private String stockInNum;
 
     /**
-     * 单据编号
+     * 来源类型（1采购订单2退货订单）
      */
-    private String no;
+    private Integer stockInType;
 
     /**
      * 来源单号
@@ -37,12 +39,7 @@ public class WmsStockInEntry implements Serializable {
     /**
      * 来源单id
      */
-    private String sourceId;
-
-    /**
-     * 来源类型（1采购订单2退货订单）
-     */
-    private Integer sourceType;
+    private Long sourceId;
 
     /**
      * 采购订单商品数
@@ -52,7 +49,7 @@ public class WmsStockInEntry implements Serializable {
     /**
      * 采购订单总件数
      */
-    private Long sourceSpecUnitTotal;
+    private Integer sourceSpecUnitTotal;
 
     /**
      * 采购订单商品规格数
@@ -67,7 +64,7 @@ public class WmsStockInEntry implements Serializable {
     /**
      * 操作入库人id
      */
-    private Integer stockInOperatorId;
+    private String stockInOperatorId;
 
     /**
      * 操作入库人
@@ -103,6 +100,9 @@ public class WmsStockInEntry implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+
+    @TableField(exist = false)
+    private List<WmsStockInItem> itemList;
 
     private static final long serialVersionUID = 1L;
 }
