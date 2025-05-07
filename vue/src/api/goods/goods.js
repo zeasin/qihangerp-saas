@@ -38,7 +38,7 @@ export function addGoods(data) {
 // 修改商品管理
 export function updateGoods(data) {
   return request({
-    url: '/goods/goods',
+    url: '/goods/edit',
     method: 'put',
     data: data
   })

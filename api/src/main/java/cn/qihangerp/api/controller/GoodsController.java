@@ -60,7 +60,9 @@ public class GoodsController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(ErpGoods goods, PageQuery pageQuery)
     {
-        goods.setTenantId(getUserId());
+        if(getUserId()!=1) {
+            goods.setTenantId(getUserId());
+        }
         PageResult<ErpGoods> pageResult = goodsService.queryPageList(goods, pageQuery);
         return getDataTable(pageResult);
     }
@@ -89,6 +91,9 @@ public class GoodsController extends BaseController
     @PostMapping("/add")
     public AjaxResult add(@RequestBody ErpGoods goods)
     {
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
+        }
         goods.setTenantId(getUserId());
         goods.setCreateBy(getUsername());
         goods.setCreateTime(new Date());
@@ -107,16 +112,21 @@ public class GoodsController extends BaseController
 //        if(result == -1) new AjaxResult(501,"商品编码已存在");
 //        return toAjax(1);
 //    }
-//
-//    /**
-//     * 修改商品管理
-//     */
-//    @PreAuthorize("@ss.hasPermi('goods:goods:edit')")
-//    @PutMapping
-//    public AjaxResult edit(@RequestBody OGoods goods)
-//    {
-//        return toAjax(goodsService.updateGoods(goods));
-//    }
+
+    /**
+     * 修改商品管理
+     */
+    @PreAuthorize("@ss.hasPermi('goods:goods:edit')")
+    @PutMapping("/edit")
+    public AjaxResult edit(@RequestBody ErpGoods goods)
+    {
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
+        }
+        if(StringUtils.isEmpty(goods.getId())) return AjaxResult.error("缺少参数id");
+
+        return toAjax(goodsService.updateById(goods));
+    }
 //    @PutMapping("/sku")
 //    public AjaxResult editSku(@RequestBody OGoodsSku sku)
 //    {
@@ -130,6 +140,9 @@ public class GoodsController extends BaseController
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
+        }
         return toAjax(goodsService.deleteGoods(ids));
     }
 //

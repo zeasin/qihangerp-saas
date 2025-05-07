@@ -23,7 +23,8 @@ public class ErpSupplierServiceImpl extends ServiceImpl<ErpSupplierMapper, ErpSu
     private final ErpSupplierMapper mapper;
     @Override
     public PageResult<ErpSupplier> queryPageList(ErpSupplier bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<ErpSupplier> queryWrapper = new LambdaQueryWrapper<ErpSupplier>().eq(ErpSupplier::getTenantId,bo.getTenantId());
+        LambdaQueryWrapper<ErpSupplier> queryWrapper = new LambdaQueryWrapper<ErpSupplier>()
+                .eq(bo.getTenantId()!=null,ErpSupplier::getTenantId,bo.getTenantId());
 
         Page<ErpSupplier> pages = mapper.selectPage(pageQuery.build(), queryWrapper);
 

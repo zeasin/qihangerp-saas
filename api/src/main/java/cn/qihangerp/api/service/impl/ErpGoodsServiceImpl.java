@@ -37,7 +37,7 @@ public class ErpGoodsServiceImpl extends ServiceImpl<ErpGoodsMapper, ErpGoods>
     @Override
     public PageResult<ErpGoods> queryPageList(ErpGoods bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ErpGoods> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ErpGoods::getTenantId,bo.getTenantId());
+        queryWrapper.eq(bo.getTenantId()!=null,ErpGoods::getTenantId,bo.getTenantId());
 //        queryWrapper.eq(bo.getErpGoodsId()!=null,OGoodsSku::getErpGoodsId,bo.getErpGoodsId());
 //        queryWrapper.eq(StringUtils.hasText(bo.getSkuNum()),OGoodsSku::getSkuNum,bo.getSkuNum());
         Page<ErpGoods> pages = mapper.selectPage(pageQuery.build(), queryWrapper);

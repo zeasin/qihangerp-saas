@@ -16,7 +16,9 @@ public class ShopOrderController extends BaseController {
     private final ShopOrderService orderService;
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public TableDataInfo goodsList(ShopOrderSearchRequest bo, PageQuery pageQuery) {
-        bo.setTenantId(getUserId());
+        if(getUserId()!=1) {
+            bo.setTenantId(getUserId());
+        }
         PageResult<ShopOrder> result = orderService.queryPageList(bo, pageQuery);
 
         return getDataTable(result);

@@ -87,6 +87,7 @@
           <span>{{ parseTime(scope.row.createTime)}}</span>
         </template>
       </el-table-column>
+      <el-table-column label="tenant" align="center" prop="tenantId" v-if="isAdmin"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -156,6 +157,7 @@
 
 <script>
 import { listSupplier, getSupplier, delSupplier, addSupplier, updateSupplier } from "@/api/scm/supplier";
+import {getUserProfile} from "@/api/system/user";
 
 export default {
   name: "Supplier",
@@ -167,6 +169,7 @@ export default {
       ids: [],
       // 非单个禁用
       single: true,
+      isAdmin: false,
       // 非多个禁用
       multiple: true,
       // 显示搜索条件
@@ -199,6 +202,9 @@ export default {
     };
   },
   created() {
+    getUserProfile().then(resp=>{
+      this.isAdmin = resp.data.admin
+    })
     this.getList();
   },
   methods: {

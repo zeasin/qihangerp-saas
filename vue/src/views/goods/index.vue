@@ -189,6 +189,7 @@
           <el-tag size="small" v-if="scope.row.status === 2">已下架</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="tenant" align="center" prop="tenantId" v-if="isAdmin"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -376,6 +377,8 @@ import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { listCategory } from "@/api/goods/category";
 import {getToken} from "@/utils/auth";
+import {listAllSupplier} from "@/api/scm/supplier";
+import {getUserProfile} from "@/api/system/user";
 
 export default {
   name: "Goods",
@@ -386,6 +389,7 @@ export default {
       headers: { 'Authorization': 'Bearer ' + getToken() },
       // 遮罩层
       loading: true,
+      isAdmin: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -435,10 +439,18 @@ export default {
     };
   },
   created() {
+    getUserProfile().then(resp=>{
+      this.isAdmin = resp.data.admin
+    })
+
     listCategory(this.queryParams).then(response => {
         this.categoryList = response.rows
-        this.categoryTree = this.buildTree(response.rows,0)
-      this.getList();
+        this.categoryTree = this.buildTree(response.rows,"0")
+      listAllSupplier().then(resp=>{
+        this.supplierList = resp.rows
+        this.getList();
+      })
+
       });
 
 

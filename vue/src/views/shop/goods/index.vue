@@ -163,6 +163,7 @@
           <el-tag size="small" v-if="scope.row.status === 20">商品被封禁</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="tenant" align="center" prop="tenantId" v-if="isAdmin"/>
 <!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
 <!--        <template slot-scope="scope">-->
 <!--          <el-button-->
@@ -205,6 +206,7 @@
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { listGoods, getGoods, delGoods, addGoods, updateGoods,pullGoodsList,pushToErp } from "@/api/shop/goods";
 import {listShop} from "@/api/shop/shop";
+import {getUserProfile} from "@/api/system/user";
 
 export default {
   name: "Goods",
@@ -216,6 +218,7 @@ export default {
       ids: [],
       // 非单个禁用
       single: true,
+      isAdmin: false,
       pullLoading: false,
       // 非多个禁用
       multiple: true,
@@ -253,6 +256,9 @@ export default {
     };
   },
   created() {
+    getUserProfile().then(resp=>{
+      this.isAdmin = resp.data.admin
+    })
     listShop().then(response => {
       this.shopList = response.rows;
       this.getList();

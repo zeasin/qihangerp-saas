@@ -66,6 +66,7 @@
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{m}:{s}') }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="tenant" align="center" prop="tenantId" v-if="isAdmin"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -117,6 +118,7 @@
 
 <script>
 import { listBrand, getBrand, delBrand, addBrand, updateBrand } from "@/api/goods/brand";
+import {getUserProfile} from "@/api/system/user";
 
 export default {
   name: "Brand",
@@ -124,6 +126,7 @@ export default {
     return {
       // 遮罩层
       loading: true,
+      isAdmin: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -157,6 +160,9 @@ export default {
     };
   },
   created() {
+    getUserProfile().then(resp=>{
+      this.isAdmin = resp.data.admin
+    })
     this.getList();
   },
   methods: {

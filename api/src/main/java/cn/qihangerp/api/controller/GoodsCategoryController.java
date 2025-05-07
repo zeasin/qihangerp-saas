@@ -31,7 +31,13 @@ public class GoodsCategoryController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list()
     {
-        List<ErpGoodsCategory> list = categoryService.list(new LambdaQueryWrapper<ErpGoodsCategory>().eq(ErpGoodsCategory::getTenantId,getUserId()));
+        Long tenantId=null;
+        if(getUserId()!=1) {
+            tenantId=getUserId();
+        }
+
+        List<ErpGoodsCategory> list = categoryService.list(new LambdaQueryWrapper<ErpGoodsCategory>()
+                .eq(tenantId!=null,ErpGoodsCategory::getTenantId,tenantId));
         return getDataTable(list);
     }
     /**
@@ -50,6 +56,9 @@ public class GoodsCategoryController extends BaseController {
     @PostMapping
     public AjaxResult add(@RequestBody ErpGoodsCategory bo)
     {
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
+        }
         bo.setTenantId(getUserId());
         bo.setCreateBy("手动添加");
         bo.setCreateTime(new Date());
@@ -76,6 +85,9 @@ public class GoodsCategoryController extends BaseController {
     @PutMapping
     public AjaxResult edit(@RequestBody ErpGoodsCategory erpGoodsCategory)
     {
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
+        }
         erpGoodsCategory.setTenantId(null);
         erpGoodsCategory.setCreateTime(null);
         erpGoodsCategory.setCreateBy(null);
@@ -90,6 +102,9 @@ public class GoodsCategoryController extends BaseController {
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
+        }
         return toAjax(categoryService.removeBatchByIds(Arrays.stream(ids).toList()));
     }
 
@@ -107,6 +122,9 @@ public class GoodsCategoryController extends BaseController {
     {
         if(StringUtils.isEmpty(bo.getCategoryId())){
             return AjaxResult.error("缺少参数categoryId");
+        }
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
         }
         if(bo.getType() == 1){
             // 不能超过三个规格
@@ -135,6 +153,9 @@ public class GoodsCategoryController extends BaseController {
     @PutMapping("/attribute")
     public AjaxResult attributeEdit(@RequestBody ErpGoodsCategoryAttribute bo)
     {
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
+        }
         bo.setCategoryId(null);
         return toAjax(attributeService.updateById(bo));
     }
@@ -145,6 +166,9 @@ public class GoodsCategoryController extends BaseController {
     @DeleteMapping("/attribute/{ids}")
     public AjaxResult attributeRemove(@PathVariable Long[] ids)
     {
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
+        }
         return toAjax(attributeService.removeBatchByIds(Arrays.stream(ids).toList()));
     }
 
@@ -162,8 +186,12 @@ public class GoodsCategoryController extends BaseController {
     @PostMapping("/attributeValue")
     public AjaxResult attributeValueAdd(@RequestBody ErpGoodsCategoryAttributeValue bo)
     {
+
         if(StringUtils.isEmpty(bo.getCategoryAttributeId())){
             return AjaxResult.error("缺少参数CategoryAttributeId");
+        }
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
         }
         if(bo.getOrderNum() == null) bo.setOrderNum(0);
         if(StringUtils.isEmpty(bo.getSkuCode())) bo.setSkuCode("00");
@@ -180,6 +208,9 @@ public class GoodsCategoryController extends BaseController {
     @PutMapping("/attributeValue")
     public AjaxResult attributeValueEdit(@RequestBody ErpGoodsCategoryAttributeValue bo)
     {
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
+        }
         bo.setCategoryAttributeId(null);
         return toAjax(attributeValueService.updateById(bo));
     }
@@ -190,6 +221,9 @@ public class GoodsCategoryController extends BaseController {
     @DeleteMapping("/attributeValue/{ids}")
     public AjaxResult attributeValueRemove(@PathVariable Long[] ids)
     {
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
+        }
         return toAjax(attributeValueService.removeBatchByIds(Arrays.stream(ids).toList()));
     }
 

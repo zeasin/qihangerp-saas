@@ -162,6 +162,7 @@
 <!--          {{scope.row.shippingTime}}-->
 <!--        </template>-->
 <!--      </el-table-column>-->
+      <el-table-column label="tenant" align="center" prop="tenantId" v-if="isAdmin"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -312,6 +313,7 @@
 import {listOrder, getOrder, delOrder, addOrder, updateOrder, shipOrder} from "@/api/order/order";
 import { listShop } from "@/api/shop/shop";
 import Clipboard from "clipboard";
+import {getUserProfile} from "@/api/system/user";
 
 export default {
   name: "Order",
@@ -319,6 +321,7 @@ export default {
     return {
       // 遮罩层
       loading: true,
+      isAdmin: false,
       // 选中数组
       ids: [],
       // 子表选中数据
@@ -365,6 +368,9 @@ export default {
     };
   },
   created() {
+    getUserProfile().then(resp=>{
+      this.isAdmin = resp.data.admin
+    })
      listShop({}).then(response => {
         this.shopList = response.rows;
       });

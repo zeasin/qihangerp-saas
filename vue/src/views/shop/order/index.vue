@@ -169,6 +169,7 @@
 <!--          <el-tag style="margin-top: 5px" type="warning" v-if="scope.row.confirmStatus === 0 " size="small">待确认</el-tag>-->
         </template>
       </el-table-column>
+      <el-table-column label="tenant" align="center" prop="tenantId" v-if="isAdmin"/>
 <!--      <el-table-column label="快递单号" align="center" prop="logisticsCode" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -203,6 +204,7 @@ import {MessageBox} from "element-ui";
 import {isRelogin} from "../../../utils/request";
 import {listShopOrder, pullOrder, orderConfirm, pullOrderDetail} from "@/api/shop/shop_order";
 import Clipboard from "clipboard";
+import {getUserProfile} from "@/api/system/user";
 
 export default {
   name: "OrderTao",
@@ -213,6 +215,7 @@ export default {
       // 显示搜索条件
       showSearch: true,
       pullLoading: false,
+      isAdmin: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -240,6 +243,9 @@ export default {
     };
   },
   created() {
+    getUserProfile().then(resp=>{
+      this.isAdmin = resp.data.admin
+    })
     listShop({type:5}).then(response => {
         this.shopList = response.rows;
       this.getList();

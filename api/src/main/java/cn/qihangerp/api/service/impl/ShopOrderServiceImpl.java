@@ -70,6 +70,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                 .eq(ShopOrder::getTenantId,bo.getTenantId())
                 .eq(bo.getStatus()!=null, ShopOrder::getStatus,bo.getStatus())
                 .eq(bo.getShopId()!=null, ShopOrder::getShopId,bo.getShopId())
+                .eq(bo.getTenantId()!=null, ShopOrder::getTenantId,bo.getTenantId())
                 .ge(startTime!=null, ShopOrder::getCreateTime,startTime)
                 .le(endTime!=null, ShopOrder::getCreateTime,endTime)
                 .eq(StringUtils.hasText(bo.getOrderId()), ShopOrder::getOrderId,bo.getOrderId())

@@ -20,7 +20,9 @@ public class GoodsBrandController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(ErpGoodsBrand bo, PageQuery pageQuery)
     {
-        bo.setTenantId(getUserId());
+        if(getUserId()!=1) {
+            bo.setTenantId(getUserId());
+        }
         PageResult<ErpGoodsBrand> pageResult = brandService.queryPageList(bo, pageQuery);
         return getDataTable(pageResult);
     }
@@ -31,6 +33,9 @@ public class GoodsBrandController extends BaseController {
     @PostMapping
     public AjaxResult add(@RequestBody ErpGoodsBrand bo)
     {
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
+        }
         bo.setTenantId(getUserId());
         bo.setCreateBy("手动添加");
         bo.setCreateTime(new Date());
@@ -53,6 +58,9 @@ public class GoodsBrandController extends BaseController {
     @PutMapping
     public AjaxResult edit(@RequestBody ErpGoodsBrand bo)
     {
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
+        }
         bo.setCreateTime(null);
         bo.setCreateBy(null);
         bo.setUpdateBy("手动修改");
@@ -68,6 +76,9 @@ public class GoodsBrandController extends BaseController {
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
+        if(getUserId()==1) {
+            return AjaxResult.error("超级管理员账号不允许操作");
+        }
         return toAjax(brandService.removeBatchByIds(Arrays.stream(ids).toList()));
     }
 }

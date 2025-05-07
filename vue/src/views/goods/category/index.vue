@@ -56,6 +56,7 @@
           <el-tag size="small" v-if="scope.row.isDelete === 1">已删除</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="tenant" align="center" prop="tenantId" v-if="isAdmin"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -139,6 +140,8 @@
 
 <script>
 import { listCategory, getCategory, delCategory, addCategory, updateCategory } from "@/api/goods/category";
+import {getUserProfile} from "@/api/system/user";
+
 
 export default {
   name: "Category",
@@ -150,6 +153,7 @@ export default {
       ids: [],
       // 非单个禁用
       single: true,
+      isAdmin: false,
       // 非多个禁用
       multiple: true,
       // 显示搜索条件
@@ -186,6 +190,10 @@ export default {
     };
   },
   created() {
+    getUserProfile().then(resp=>{
+      console.log("=======userInfo=========",resp.data)
+      this.isAdmin = resp.data.admin
+    })
     this.getList();
   },
   methods: {
@@ -202,6 +210,7 @@ export default {
             parentId:list[i].parentId,
             remark:list[i].remark,
             isDelete:list[i].isDelete,
+            tenantId:list[i].tenantId,
             children: this.buildTree(list, list[i].id)
           };
           tree.push(node);
