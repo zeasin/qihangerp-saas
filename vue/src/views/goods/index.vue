@@ -33,10 +33,19 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="状态" prop="disable">
-        <el-select v-model="queryParams.disable" placeholder="请选择状态">
-          <el-option label="启用" value="1"></el-option>
-          <el-option label="禁用" value="0"></el-option>
+<!--      <el-form-item label="条码" prop="barCode">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.barCode"-->
+<!--          placeholder="请输入条码"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+
+      <el-form-item label="状态" prop="status">
+        <el-select v-model="queryParams.status" filterable  placeholder="状态">
+          <el-option label="销售中" value="1"></el-option>
+          <el-option label="已下架" value="2"></el-option>
         </el-select>
       </el-form-item>
 
@@ -51,38 +60,95 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          plain-->
+<!--          icon="el-icon-plus"-->
+<!--          size="mini"-->
+<!--          @click="handleAdd"-->
+<!--          v-hasPermi="['goods:goods:add']"-->
+<!--        >添加商品</el-button>-->
+<!--      </el-col>-->
       <el-col :span="1.5">
         <el-button
           type="primary"
           plain
           icon="el-icon-plus"
           size="mini"
-          @click="handleAdd"
+          @click="handleAdd2"
           v-hasPermi="['goods:goods:add']"
         >添加商品</el-button>
       </el-col>
-
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="success"-->
+<!--          plain-->
+<!--          icon="el-icon-edit"-->
+<!--          size="mini"-->
+<!--          @click="handleImport"-->
+<!--          v-hasPermi="['goods:goods:edit']"-->
+<!--        >推送到线下渠道店铺</el-button>-->
+<!--      </el-col>-->
+      <!--
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+          v-hasPermi="['goods:goods:remove']"
+        >删除</el-button>
+      </el-col> -->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="warning"-->
+<!--          plain-->
+<!--          icon="el-icon-download"-->
+<!--          size="mini"-->
+<!--          @click="handleExport"-->
+<!--          v-hasPermi="['goods:goods:export']"-->
+<!--        >导出</el-button>-->
+<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
-      <!-- <el-table-column type="selection" width="55" align="center" /> -->
+<!--       <el-table-column type="selection" width="55" align="center" />-->
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="商品名称" align="center" prop="name" />
-<!--      <el-table-column label="商品图片" align="center" prop="image" width="100">-->
-<!--        <template slot-scope="scope">-->
-<!--          <image-preview :src="scope.row.image" :width="50" :height="50"/>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-      <el-table-column label="商品编号" align="center" prop="number" />
-      <!-- <el-table-column label="单位名称" align="center" prop="unitName" /> -->
-      <el-table-column label="商品分类" align="center" prop="categoryId" >
+      <el-table-column label="商品编号" align="left" prop="goodsNum" width="150" >
         <template slot-scope="scope">
+          {{scope.row.number}}<br/>
           <el-tag size="small">{{categoryList.find(x=>x.id === scope.row.categoryId)?categoryList.find(x=>x.id === scope.row.categoryId).name:''}}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="商品图片" align="center" prop="image" width="100">
+        <template slot-scope="scope">
+          <image-preview :src="scope.row.image" :width="50" :height="50"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="商品名称" align="left" prop="name" width="300"/>
+
+
+      <!-- <el-table-column label="单位名称" align="center" prop="unitName" /> -->
+<!--      <el-table-column label="商品分类" align="center" prop="categoryId" >-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-tag size="small">{{categoryList.find(x=>x.id === scope.row.categoryId)?categoryList.find(x=>x.id === scope.row.categoryId).name:''}}</el-tag>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <!-- <el-table-column label="条码" align="center" prop="barCode" /> -->
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="SKU明细" align="center" >
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-info"
+            @click="handleViewSkuList(scope.row)"
+          >查看SKU明细</el-button>
+        </template>
+      </el-table-column>
 
       <!-- <el-table-column label="衣长/裙长/裤长" align="center" prop="length" />
       <el-table-column label="高度/袖长" align="center" prop="height" />
@@ -93,15 +159,19 @@
       <el-table-column label="重量" align="center" prop="weight" />
       <el-table-column label="0启用   1禁用" align="center" prop="disable" />
       <el-table-column label="保质期" align="center" prop="period" /> -->
-      <el-table-column label="预计采购价格" align="center" prop="purPrice" />
-      <el-table-column label="建议批发价" align="center" prop="wholePrice" />
-      <el-table-column label="建议零售价" align="center" prop="retailPrice" />
+      <el-table-column label="预计采购价格" align="center" prop="purPrice" :formatter="amountFormatter"/>
+<!--      <el-table-column label="建议批发" align="center" prop="wholePrice" />-->
+      <el-table-column label="建议零售价" align="center" prop="retailPrice" :formatter="amountFormatter"/>
       <!-- <el-table-column label="单位成本" align="center" prop="unitCost" /> -->
-      <el-table-column label="供应商" align="center" prop="supplierId" >
+      <el-table-column label="供应商" align="left" prop="supplierId" >
         <template slot-scope="scope">
-          <el-tag size="small">
-            {{scope.row.supplierId>0?supplierList.find(x=>x.id === scope.row.supplierId).name:''}}
-          </el-tag>
+         {{supplierList.find(x=>x.id == scope.row.supplierId)?supplierList.find(x=>x.id == scope.row.supplierId).name:''}}
+        </template>
+      </el-table-column>
+      <el-table-column label="发货方式" align="center" prop="shipType" >
+        <template slot-scope="scope">
+          <el-tag size="small" v-if="scope.row.shipType === 10">自营发货</el-tag>
+          <el-tag size="small" v-if="scope.row.shipType === 20">供应商发货</el-tag>
         </template>
       </el-table-column>
       <!-- <el-table-column label="品牌id" align="center" prop="brandId" />
@@ -121,20 +191,43 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['goods:goods:edit']"
+          >修改基本资料</el-button>
 <!--          <el-button-->
 <!--            size="mini"-->
 <!--            type="text"-->
 <!--            icon="el-icon-edit"-->
-<!--            @click="handleUpdate(scope.row)"-->
-<!--            v-hasPermi="['goods:goods:edit']"-->
-<!--          >修改</el-button>-->
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['goods:goods:remove']"
-          >删除</el-button>
+<!--            @click="handleAddSku(scope.row)"-->
+<!--          >新增SKU</el-button>-->
+          <el-row>
+            <el-button
+              v-if="scope.row.status === 1"
+              size="mini"
+              type="text"
+              icon="el-icon-arrow-down"
+              @click="handleUpdateStatus(scope.row)"
+            >下架</el-button>
+            <el-button
+              v-if="scope.row.status === 2"
+              size="mini"
+              type="text"
+              icon="el-icon-arrow-up"
+              @click="handleUpdateStatus(scope.row)"
+            >上架</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-delete"
+              @click="handleDelete(scope.row)"
+              v-hasPermi="['goods:goods:remove']"
+            >删除</el-button>
+          </el-row>
+
         </template>
       </el-table-column>
     </el-table>
@@ -146,101 +239,128 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
+    <!-- 导入ERP商品 -->
+    <el-dialog title="导入商品" :visible.sync="importOpen" width="400px" append-to-body>
+      <el-upload
+        class="upload-demo"
+        :headers="headers"
+        drag
+        action="/dev-api/tao/order/order_import"
+        accept="xlsx"
+        multiple >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+      </el-upload>
+    </el-dialog>
 
-
+    <el-dialog :title="title" :visible.sync="skuOpen" width="1000px" append-to-body>
+      <el-table v-loading="loading" :data="skuList">
+        <!-- <el-table-column type="selection" width="55" align="center" /> -->
+<!--        <el-table-column label="Sku Id" align="center" prop="id" />-->
+        <el-table-column label="SKU编码" align="center" prop="specNum" />
+        <el-table-column label="图片" align="center" prop="colorImage" width="100">
+          <template slot-scope="scope">
+            <image-preview :src="scope.row.colorImage" :width="50" :height="50"/>
+          </template>
+        </el-table-column>
+        <el-table-column label="商品名称" align="left" prop="goodsName" width="288px"/>
+        <el-table-column label="规格" align="center" prop="specName" />
+        <el-table-column label="预计采购价" align="center" prop="purPrice" :formatter="amountFormatter"/>
+        <el-table-column label="发货方式" align="center" prop="shipType" >
+          <template slot-scope="scope">
+            <el-tag size="small" v-if="scope.row.shipType === 10">自营发货</el-tag>
+            <el-tag size="small" v-if="scope.row.shipType === 20">供应商发货</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="状态" align="center" prop="status" >
+          <template slot-scope="scope">
+            <el-tag size="small" v-if="scope.row.status === 1">销售中</el-tag>
+            <el-tag size="small" v-if="scope.row.status === 2">已下架</el-tag>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
     <!-- 添加或修改商品管理对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="商品名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入商品名称" />
         </el-form-item>
+        <el-form-item label="供应商" prop="supplierId">
+          <!--          <el-input v-model="form.supplierId" placeholder="请输入供应商id" />-->
+          <el-select v-model="form.supplierId" filterable  placeholder="请选择供应商名称">
+            <el-option v-for="item in supplierList" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="商品图片地址" prop="image">
-          <image-upload v-model="form.image"/>
+          <image-upload v-model="form.image" :limit="1"/>
+          <el-input v-model="form.image" placeholder="请输入商品图片Url"  />
         </el-form-item>
         <el-form-item label="商品编号" prop="number">
-          <el-input v-model="form.number" placeholder="请输入商品编号" />
+          <el-input v-model="form.number" placeholder="请输入商品编号" style="width: 230px;" />
         </el-form-item>
-        <el-form-item label="单位名称" prop="unitName">
-          <el-input v-model="form.unitName" placeholder="请输入单位名称" />
+<!--        <el-form-item label="单位名称" prop="unitName">-->
+<!--          <el-input v-model="form.unitName" placeholder="请输入单位名称" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="商品分类" prop="categoryId">
+<!--          <el-input v-model="form.categoryId" placeholder="请输入商品分类ID" />-->
+          <treeselect :options="categoryTree" placeholder="请选择上级菜单" v-model="form.categoryId" style="width: 230px;"/>
         </el-form-item>
-        <el-form-item label="商品分类ID" prop="categoryId">
-          <el-input v-model="form.categoryId" placeholder="请输入商品分类ID" />
+<!--        <el-form-item label="条码" prop="barCode">-->
+<!--          <el-input v-model="form.barCode" placeholder="请输入条码" />-->
+<!--        </el-form-item>-->
+
+        <el-form-item label="预计采购价" prop="purPrice">
+          <el-input type="number" v-model.number="form.purPrice" placeholder="请输入预计采购价" @input="limitDecimalLength"  style="width: 230px;"/>
         </el-form-item>
-        <el-form-item label="条码" prop="barCode">
-          <el-input v-model="form.barCode" placeholder="请输入条码" />
+<!--        <el-form-item label="建议批发价" prop="wholePrice">-->
+<!--          <el-input v-model="form.wholePrice" placeholder="请输入建议批发价" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="建议零售价" prop="retailPrice">
+          <el-input  type="number" v-model.number="form.retailPrice" placeholder="请输入建议零售价" style="width: 230px;"/>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" style="width: 430px;" />
         </el-form-item>
-        <el-form-item label="衣长/裙长/裤长" prop="length">
-          <el-input v-model="form.length" placeholder="请输入衣长/裙长/裤长" />
-        </el-form-item>
-        <el-form-item label="高度/袖长" prop="height">
-          <el-input v-model="form.height" placeholder="请输入高度/袖长" />
-        </el-form-item>
-        <el-form-item label="宽度/胸阔(围)" prop="width">
-          <el-input v-model="form.width" placeholder="请输入宽度/胸阔(围)" />
-        </el-form-item>
-        <el-form-item label="肩阔" prop="width1">
-          <el-input v-model="form.width1" placeholder="请输入肩阔" />
-        </el-form-item>
-        <el-form-item label="腰阔" prop="width2">
-          <el-input v-model="form.width2" placeholder="请输入腰阔" />
-        </el-form-item>
-        <el-form-item label="臀阔" prop="width3">
-          <el-input v-model="form.width3" placeholder="请输入臀阔" />
-        </el-form-item>
-        <el-form-item label="重量" prop="weight">
-          <el-input v-model="form.weight" placeholder="请输入重量" />
-        </el-form-item>
-        <el-form-item label="0启用   1禁用" prop="disable">
-          <el-input v-model="form.disable" placeholder="请输入0启用   1禁用" />
-        </el-form-item>
-        <el-form-item label="保质期" prop="period">
-          <el-input v-model="form.period" placeholder="请输入保质期" />
-        </el-form-item>
-        <el-form-item label="预计采购价格" prop="purPrice">
-          <el-input v-model="form.purPrice" placeholder="请输入预计采购价格" />
-        </el-form-item>
-        <el-form-item label="建议批发价" prop="wholePrice">
-          <el-input v-model="form.wholePrice" placeholder="请输入建议批发价" />
-        </el-form-item>
-        <el-form-item label="建议零售价" prop="retailPrice">
-          <el-input v-model="form.retailPrice" placeholder="请输入建议零售价" />
-        </el-form-item>
-        <el-form-item label="单位成本" prop="unitCost">
-          <el-input v-model="form.unitCost" placeholder="请输入单位成本" />
-        </el-form-item>
-        <el-form-item label="供应商id" prop="supplierId">
-          <el-input v-model="form.supplierId" placeholder="请输入供应商id" />
-        </el-form-item>
-        <el-form-item label="品牌id" prop="brandId">
-          <el-input v-model="form.brandId" placeholder="请输入品牌id" />
-        </el-form-item>
-        <el-form-item label="属性1：季节" prop="attr1">
-          <el-input v-model="form.attr1" placeholder="请输入属性1：季节" />
-        </el-form-item>
-        <el-form-item label="属性2：分类" prop="attr2">
-          <el-input v-model="form.attr2" placeholder="请输入属性2：分类" />
-        </el-form-item>
-        <el-form-item label="属性3：风格" prop="attr3">
-          <el-input v-model="form.attr3" placeholder="请输入属性3：风格" />
-        </el-form-item>
-        <el-form-item label="属性4：年份" prop="attr4">
-          <el-input v-model="form.attr4" placeholder="请输入属性4：年份" />
-        </el-form-item>
-        <el-form-item label="属性5：面料" prop="attr5">
-          <el-input v-model="form.attr5" placeholder="请输入属性5：面料" />
-        </el-form-item>
-        <el-form-item label="外链url" prop="linkUrl">
-          <el-input v-model="form.linkUrl" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="最低库存" prop="lowQty">
-          <el-input v-model="form.lowQty" placeholder="请输入最低库存" />
-        </el-form-item>
-        <el-form-item label="最高库存" prop="highQty">
-          <el-input v-model="form.highQty" placeholder="请输入最高库存" />
-        </el-form-item>
+<!--        <el-form-item label="单位成本" prop="unitCost">-->
+<!--          <el-input v-model="form.unitCost" placeholder="请输入单位成本" />-->
+<!--        </el-form-item>-->
+
+<!--        <el-form-item label="状态" prop="status">-->
+<!--          <el-select v-model="form.status"   placeholder="状态">-->
+<!--            <el-option label="销售中" :value="1"></el-option>-->
+<!--            <el-option label="已下架" :value="2"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="品牌" prop="brandId">-->
+<!--          <el-input v-model="form.brandId" placeholder="请输入品牌id" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="属性1：季节" prop="attr1">-->
+<!--          <el-input v-model="form.attr1" placeholder="请输入属性1：季节" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="属性2：分类" prop="attr2">-->
+<!--          <el-input v-model="form.attr2" placeholder="请输入属性2：分类" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="属性3：风格" prop="attr3">-->
+<!--          <el-input v-model="form.attr3" placeholder="请输入属性3：风格" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="属性4：年份" prop="attr4">-->
+<!--          <el-input v-model="form.attr4" placeholder="请输入属性4：年份" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="属性5：面料" prop="attr5">-->
+<!--          <el-input v-model="form.attr5" placeholder="请输入属性5：面料" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="外链url" prop="linkUrl">-->
+<!--          <el-input v-model="form.linkUrl" type="textarea" placeholder="请输入内容" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="最低库存" prop="lowQty">-->
+<!--          <el-input v-model="form.lowQty" placeholder="请输入最低库存" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="最高库存" prop="highQty">-->
+<!--          <el-input v-model="form.highQty" placeholder="请输入最高库存" />-->
+<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -251,12 +371,12 @@
 </template>
 
 <script>
-import { listGoods, getGoods, delGoods, addGoods, updateGoods } from "@/api/goods/goods";
+import { listGoods, getGoods, delGoods, updateGoods,updateGoodsStatus } from "@/api/goods/goods";
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { listCategory } from "@/api/goods/category";
 import {getToken} from "@/utils/auth";
-import {listAllSupplier} from "@/api/scm/supplier";
+
 export default {
   name: "Goods",
   components: { Treeselect },
@@ -282,6 +402,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      skuOpen: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -300,50 +421,45 @@ export default {
       },
       // 表单参数
       form: {},
-      supplierList: [],
       categoryList: [],
       categoryTree: [],
+      supplierList: [],
+      skuList: [],
       // 表单校验
       rules: {
-        status: [
-          { required: true, message: "状态1销售中2已下架不能为空", trigger: "change" }
-        ],
-        length: [
-          { required: true, message: "衣长/裙长/裤长不能为空", trigger: "blur" }
-        ],
-        height: [
-          { required: true, message: "高度/袖长不能为空", trigger: "blur" }
-        ],
-        width: [
-          { required: true, message: "宽度/胸阔(围)不能为空", trigger: "blur" }
-        ],
-        width1: [
-          { required: true, message: "肩阔不能为空", trigger: "blur" }
-        ],
-        width2: [
-          { required: true, message: "腰阔不能为空", trigger: "blur" }
-        ],
-        width3: [
-          { required: true, message: "臀阔不能为空", trigger: "blur" }
-        ],
-        weight: [
-          { required: true, message: "重量不能为空", trigger: "blur" }
-        ],
+        name: [{ required: true, message: "不能为空", trigger: "change" }],
+        supplierId: [{ required: true, message: "不能为空", trigger: "blur" }],
+        number: [{ required: true, message: "不能为空", trigger: "blur" }],
+        categoryId: [{ required: true, message: "不能为空", trigger: "blur" }],
       }
     };
   },
   created() {
     listCategory(this.queryParams).then(response => {
         this.categoryList = response.rows
-        this.categoryTree = this.buildTree(response.rows,"0")
+        this.categoryTree = this.buildTree(response.rows,0)
+      this.getList();
       });
-    listAllSupplier({}).then(response => {
-      this.supplierList = response.rows;
-      // this.supplierLoading = false;
-    });
-    this.getList();
+
+
   },
   methods: {
+    amountFormatter(row, column, cellValue, index) {
+      return '￥' + parseFloat(cellValue).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    },
+    limitDecimalLength() {
+      if (this.form.purPrice) {
+        const value = this.form.purPrice.toString();
+        // 如果输入的值有小数点，限制小数位数为2位
+        if (value.includes('.')) {
+          const parts = value.split('.');
+          if (parts[1] && parts[1].length > 2) {
+            this.form.purPrice = parseFloat(value).toFixed(2);
+          }
+        }
+      }
+
+    },
     normalizer(node) {
       return {
         id: node.id,
@@ -376,9 +492,18 @@ export default {
     handleAdd(){
       this.$router.push('/goods/create');
     },
+    handleAdd2(){
+      this.$router.push('/goods/create2');
+    },
+    /** 新增SKU */
+    handleAddSku(row) {
+      this.$router.push({path:'/goods/sku/add',query:{id:row.id}});
+    },
     // 取消按钮
     cancel() {
       this.open = false;
+      this.skuOpen = false;
+      this.skuList = []
       this.reset();
     },
     // 表单重置
@@ -439,26 +564,72 @@ export default {
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
+    /** 查看SKU List*/
+    handleViewSkuList(row){
+      this.skuList = row.skus
+      this.skuOpen = true;
 
+    },
+    /** 修改按钮操作 */
+    handleUpdate(row) {
+      this.reset();
+      const id = row.id || this.ids
+      getGoods(id).then(response => {
+        this.form = response.data;
+        this.form.disable = response.data.disable+''
+        this.open = true;
+        this.title = "修改商品基本信息";
+      });
+    },
+    handleUpdateStatus(row) {
+      var cz = "";
+      var status;
+      if (row.status === 1) {
+        cz = '下架';
+        status = 2;
+      } else if (row.status === 2) {
+        cz = '上架';
+        status = 1;
+      }
+      this.$modal.confirm('是否进行' + cz + '操作？').then(function() {
+        return updateGoodsStatus({id:row.id,status:status});
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("操作成功");
+      }).catch(() => {});
+    },
+      // this.$modal.confirm('是否进行' + cz + '操作？').then(function() {
+      //   return updateGoodsStatus({id:row.id,status:status});
+      // }).then(() => {
+      //   this.getList();
+      //   this.$modal.msgSuccess("操作成功");
+      // }).catch(() => {});
+    // ｝,
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除商品管理编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除商品编号为"' + ids + '"的数据项？').then(function() {
         return delGoods(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('goods/goods/export', {
-        ...this.queryParams
-      }, `goods_${new Date().getTime()}.xlsx`)
+    /** 提交按钮 */
+    submitForm() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          if (this.form.id != null) {
+            updateGoods(this.form).then(response => {
+              this.$modal.msgSuccess("修改成功");
+              this.open = false;
+              this.getList();
+            });
+          }
+        }
+      });
     },
-    submitForm(){
 
-    },
     handleImport(){
       this.importOpen = true
     }

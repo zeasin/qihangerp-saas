@@ -180,12 +180,14 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
                             erpGoodsSku.setColorId(0L);
                             erpGoodsSku.setColorLabel(jsonObject.getString("attr_key"));
                             erpGoodsSku.setColorValue(jsonObject.getString("attr_value"));
-                        }else if(jsonArray.size()>1){
+                        }
+                        if(jsonArray.size()>1){
                             JSONObject jsonObject = jsonArray.getJSONObject(1);
                             erpGoodsSku.setSizeId(0L);
                             erpGoodsSku.setSizeLabel(jsonObject.getString("attr_key"));
                             erpGoodsSku.setSizeValue(jsonObject.getString("attr_value"));
-                        }else if(jsonArray.size()>2){
+                        }
+                        if(jsonArray.size()>2){
                             JSONObject jsonObject = jsonArray.getJSONObject(2);
                             erpGoodsSku.setStyleId(0L);
                             erpGoodsSku.setStyleLabel(jsonObject.getString("attr_key"));
@@ -196,6 +198,17 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
 
                 }
             }
+            String spec="默认";
+            if(StringUtils.isNotEmpty(erpGoodsSku.getColorValue())){
+                spec = erpGoodsSku.getColorValue();
+            }
+            if(StringUtils.isNotEmpty(erpGoodsSku.getSizeValue())){
+                spec += " "+erpGoodsSku.getSizeValue();
+            }
+            if(StringUtils.isNotEmpty(erpGoodsSku.getStyleValue())){
+                spec += " "+erpGoodsSku.getStyleValue();
+            }
+            erpGoodsSku.setSpecName(spec);
             if(sku.getSalePrice()!=null){
                 erpGoodsSku.setRetailPrice(BigDecimal.valueOf(sku.getSalePrice()/100));
             }

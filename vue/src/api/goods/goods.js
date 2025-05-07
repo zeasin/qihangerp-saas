@@ -21,7 +21,7 @@ export function searchSku(query) {
 // 查询商品管理详细
 export function getGoods(id) {
   return request({
-    url: '/goods/goods/' + id,
+    url: '/goods/detail/' + id,
     method: 'get'
   })
 }

@@ -204,6 +204,9 @@ public class ErpGoods implements Serializable {
     private Date updateTime;
 
     @TableField(exist = false)
+    private List<ErpGoodsSku> skus;
+
+    @TableField(exist = false)
     private Long[] colorValues;
     @TableField(exist = false)
     private Map<Long,String> colorImages;

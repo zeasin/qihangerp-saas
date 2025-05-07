@@ -64,16 +64,16 @@ public class GoodsController extends BaseController
         PageResult<ErpGoods> pageResult = goodsService.queryPageList(goods, pageQuery);
         return getDataTable(pageResult);
     }
-//
-//    /**
-//     * 获取商品管理详细信息
-//     */
-//    @PreAuthorize("@ss.hasPermi('goods:goods:query')")
-//    @GetMapping(value = "/{id}")
-//    public AjaxResult getInfo(@PathVariable("id") Long id)
-//    {
-//        return success(goodsService.selectGoodsById(id));
-//    }
+
+    /**
+     * 获取商品管理详细信息
+     */
+    @PreAuthorize("@ss.hasPermi('goods:goods:query')")
+    @GetMapping(value = "/detail/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Long id)
+    {
+        return success(goodsService.getById(id));
+    }
 //    /**
 //     * 获取商品管理详细信息
 //     */

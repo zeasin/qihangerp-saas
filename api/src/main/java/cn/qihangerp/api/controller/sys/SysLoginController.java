@@ -93,6 +93,8 @@ public class SysLoginController
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String expirationDate = LocalDate.now().plusMonths(1L).format(formatter);
         sysUser.setExpirationDate(expirationDate);
+        sysUser.setCreateTime(new Date());
+        sysUser.setUpdateTime(new Date());
         userService.insertUser(sysUser);
         try {
             AjaxResult ajax = AjaxResult.success();

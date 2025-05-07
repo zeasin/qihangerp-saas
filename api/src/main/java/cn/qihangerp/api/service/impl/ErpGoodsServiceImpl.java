@@ -41,7 +41,11 @@ public class ErpGoodsServiceImpl extends ServiceImpl<ErpGoodsMapper, ErpGoods>
 //        queryWrapper.eq(bo.getErpGoodsId()!=null,OGoodsSku::getErpGoodsId,bo.getErpGoodsId());
 //        queryWrapper.eq(StringUtils.hasText(bo.getSkuNum()),OGoodsSku::getSkuNum,bo.getSkuNum());
         Page<ErpGoods> pages = mapper.selectPage(pageQuery.build(), queryWrapper);
-
+        if(!pages.getRecords().isEmpty()){
+            for (ErpGoods goods : pages.getRecords()) {
+                goods.setSkus(skuMapper.selectList(new LambdaQueryWrapper<ErpGoodsSku>().eq(ErpGoodsSku::getGoodsId,goods.getId())));
+            }
+        }
         return PageResult.build(pages);
     }
 
