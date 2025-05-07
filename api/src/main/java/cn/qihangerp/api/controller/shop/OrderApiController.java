@@ -327,7 +327,10 @@ public class OrderApiController extends BaseController {
                     itemList.add(oi);
                 }
                 order.setItems(itemList);
-                weiOrderService.saveOrder(params.getShopId(), order);
+                ResultVo<Long> result = weiOrderService.saveOrder(params.getShopId(), order);
+                String[] ids = new String[] {result.getData().toString()};
+                ResultVo<Integer> resultVo = orderService.orderConfirm(ids);
+                log.info("======店铺订单同步更新OMS订单库====={}",JSONObject.toJSONString(resultVo));
             }
         }
 

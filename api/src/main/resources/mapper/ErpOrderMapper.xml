@@ -95,7 +95,7 @@
         COUNT(*) AS count
         FROM
         erp_order as o
-        WHERE 1=1
+        WHERE order_status=1
         <if test="tenantId!=null">
             and o.tenant_id = #{tenantId}
         </if>

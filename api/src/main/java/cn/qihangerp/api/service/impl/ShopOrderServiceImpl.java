@@ -67,7 +67,6 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
 
 
         LambdaQueryWrapper<ShopOrder> queryWrapper = new LambdaQueryWrapper<ShopOrder>()
-                .eq(ShopOrder::getTenantId,bo.getTenantId())
                 .eq(bo.getStatus()!=null, ShopOrder::getStatus,bo.getStatus())
                 .eq(bo.getShopId()!=null, ShopOrder::getShopId,bo.getShopId())
                 .eq(bo.getTenantId()!=null, ShopOrder::getTenantId,bo.getTenantId())
@@ -192,7 +191,9 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                                 insert.setTown(weiOrder.getCountyName());
                                 insert.setAddress(weiOrder.getDetailInfo());
                                 insert.setShipType(-1);
-                                insert.setOrderTime(new Date(weiOrder.getCreateTime() * 1000));
+                                Long orderTime =weiOrder.getCreateTime().longValue();
+                                insert.setOrderTime(new Date(orderTime*1000));
+
                                 insert.setCreateTime(new Date());
                                 insert.setCreateBy("手动确认");
                                 erpOrderMapper.insert(insert);
@@ -240,6 +241,8 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                                 update.setRefundStatus(refundStatus);
                                 update.setOrderStatus(orderStatus);
                                 update.setUpdateTime(new Date());
+                                Long orderTime =weiOrder.getCreateTime().longValue();
+                                update.setOrderTime(new Date(orderTime*1000));
                                 erpOrderMapper.updateById(update);
                             }
 //                        }
