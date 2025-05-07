@@ -34,13 +34,13 @@ public class ReportController extends BaseController {
         List<Shop> list = shopService.selectShopList(shop);
         Long shopCount = list.stream().count();
 
-        Map<String,Double> result = new HashMap<>();
+        Map<String,Object> result = new HashMap<>();
         // 今日销售
-        SalesDailyVo todaySalesDaily = orderService.getTodaySalesDaily(getUserId());
+        SalesDailyVo todaySalesDaily = orderService.getTodaySalesDaily(shop.getTenantId());
         // 查询库存
 //        Long allInventoryQuantity = inventoryService.getAllInventoryQuantity();
-        Long allInventoryQuantity = 0L;
-        result.put("inventory",allInventoryQuantity.doubleValue());
+//        Long allInventoryQuantity = 0L;
+        result.put("waitShip",orderService.getWaitShipOrderAllCount(shop.getTenantId()));
         result.put("salesVolume",todaySalesDaily.getAmount()==null?0.00:todaySalesDaily.getAmount().doubleValue());
         result.put("orderCount",todaySalesDaily.getCount().doubleValue());
         result.put("shopCount",shopCount.doubleValue());
@@ -52,7 +52,11 @@ public class ReportController extends BaseController {
     @GetMapping("/salesDaily")
     public AjaxResult salesDaily()
     {
-        List<SalesDailyVo> salesDailyVos = orderService.salesDaily(getUserId());
+        Long tenantId = null;
+        if (getUserId() != 1) {
+            tenantId = getUserId();
+        }
+        List<SalesDailyVo> salesDailyVos = orderService.salesDaily(tenantId);
 
         return AjaxResult.success(salesDailyVos);
     }

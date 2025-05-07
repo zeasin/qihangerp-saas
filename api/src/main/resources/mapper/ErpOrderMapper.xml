@@ -64,7 +64,10 @@
 
         FROM
             erp_order
-        WHERE  tenant_id=#{tenantId}
+        WHERE  1=1
+        <if test="tenantId!=null">
+            and tenant_id = #{tenantId}
+        </if>
         GROUP BY
             date
         ORDER BY
@@ -82,7 +85,19 @@
         FROM
             erp_order
 
-        WHERE DATE(`order_time`) = CURDATE() AND tenant_id=#{tenantId};
+        WHERE DATE(`order_time`) = CURDATE()
+        <if test="tenantId!=null">
+            and tenant_id = #{tenantId}
+        </if>
     </select>
-
+    <select id="getWaitShipOrderAllCount" resultType="int">
+        SELECT
+        COUNT(*) AS count
+        FROM
+        erp_order as o
+        WHERE 1=1
+        <if test="tenantId!=null">
+            and o.tenant_id = #{tenantId}
+        </if>
+    </select>
 </mapper>

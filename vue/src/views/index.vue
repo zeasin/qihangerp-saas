@@ -77,7 +77,7 @@ export default {
         salesOrder:[]
       },
       report:{
-        inventory:0,
+        waitShip:0,
         salesVolume:0.00,
         orderCount:0,
         shopCount:0

@@ -3,6 +3,7 @@ package cn.qihangerp.api.mapper;
 import cn.qihangerp.api.domain.ErpOrder;
 import cn.qihangerp.api.domain.vo.SalesDailyVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public interface ErpOrderMapper extends BaseMapper<ErpOrder> {
     List<SalesDailyVo> salesDaily(Long tenantId);
     SalesDailyVo getTodaySalesDaily(Long tenantId);
+    Integer getWaitShipOrderAllCount(@Param("tenantId") Long tenantId);
 }
 
 

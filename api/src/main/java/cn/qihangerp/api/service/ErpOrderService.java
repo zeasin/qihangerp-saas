@@ -23,4 +23,5 @@ public interface ErpOrderService extends IService<ErpOrder> {
 
     List<SalesDailyVo> salesDaily(Long tenantId);
     SalesDailyVo getTodaySalesDaily(Long tenantId);
+    Integer getWaitShipOrderAllCount(Long tenantId);
 }

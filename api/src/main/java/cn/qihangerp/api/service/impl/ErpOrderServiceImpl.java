@@ -112,6 +112,11 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
     public SalesDailyVo getTodaySalesDaily(Long tenantId) {
         return mapper.getTodaySalesDaily(tenantId);
     }
+
+    @Override
+    public Integer getWaitShipOrderAllCount(Long tenantId) {
+        return mapper.getWaitShipOrderAllCount(tenantId);
+    }
 }
 
 
