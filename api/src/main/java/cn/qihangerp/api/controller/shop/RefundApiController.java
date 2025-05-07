@@ -19,7 +19,11 @@ import cn.qihangerp.api.common.enums.HttpStatus;
 import cn.qihangerp.api.domain.*;
 import cn.qihangerp.api.service.ShopRefundService;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequestMapping("/shop/refund")
 @RestController
@@ -47,7 +51,9 @@ public class RefundApiController extends BaseController {
         String serverUrl = checkResult.getData().getServerUrl();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
-
+        // 定义格式化器
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        ZoneId zoneId = ZoneId.of("Asia/Shanghai");
         // 获取最后更新时间
         LocalDateTime startTime = null;
         LocalDateTime  endTime = null;
@@ -59,7 +65,8 @@ public class RefundApiController extends BaseController {
             startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
             endTime = startTime.plusDays(1);//取24小时
             if(endTime.isAfter(LocalDateTime.now())){
-                endTime = LocalDateTime.now();
+//                endTime = LocalDateTime.now();
+                endTime = LocalDateTime.now(zoneId);
             }
         }
 
@@ -151,6 +158,13 @@ public class RefundApiController extends BaseController {
         logs.setDuration(System.currentTimeMillis() - beginTime);
         pullLogsService.save(logs);
 
-        return AjaxResult.success();
+        Map<String, Object> data = new HashMap<>();
+        data.put("startTime", startTime.format(formatter));
+        data.put("endTime", endTime.format(formatter));
+        data.put("insert", insertSuccess);
+        data.put("update", hasExistOrder);
+        data.put("fail", totalError);
+        data.put("total", insertSuccess + hasExistOrder+totalError);
+        return AjaxResult.success(data);
     }
 }

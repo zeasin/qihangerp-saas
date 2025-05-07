@@ -1,8 +1,11 @@
 package cn.qihangerp.api.controller.shop;
 
 import cn.qihangerp.api.common.BaseController;
+import cn.qihangerp.api.common.enums.EnumShopType;
+import cn.qihangerp.api.domain.ErpShopPullLogs;
 import cn.qihangerp.api.domain.ShopGoods;
 import cn.qihangerp.api.domain.ShopGoodsSku;
+import cn.qihangerp.api.service.ErpShopPullLogsService;
 import cn.qihangerp.api.service.ShopGoodsService;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.wei.WeiGoodsApiService;
@@ -30,6 +33,7 @@ public class GoodsApiController extends BaseController {
     private final ApiCommon apiCommon;
     private final ShopGoodsService shopGoodsService;
     private final WeiGoodsApiService goodsApiService;
+    private final ErpShopPullLogsService pullLogsService;
 
     @RequestMapping(value = "/pull_list", method = RequestMethod.POST)
     public AjaxResult pullList(@RequestBody PullRequest params) throws Exception {
@@ -38,7 +42,8 @@ public class GoodsApiController extends BaseController {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
         Date currDateTime = new Date();
-        long startTime = System.currentTimeMillis();
+        long beginTime = System.currentTimeMillis();
+
         var checkResult = apiCommon.checkBefore(params.getShopId());
         if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
 //            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
@@ -102,7 +107,33 @@ public class GoodsApiController extends BaseController {
                     update++;
                 }
             }
-        }else return AjaxResult.error(productApiResultVo.getMsg());
+            ErpShopPullLogs logs = new ErpShopPullLogs();
+            logs.setTenantId(getUserId());
+            logs.setShopType(EnumShopType.WEI.getIndex());
+            logs.setShopId(params.getShopId());
+            logs.setPullType("GOODS");
+            logs.setPullWay("主动拉取");
+            logs.setPullParams("{status:5}");
+            logs.setPullResult("{insert:" + insert + ",update:" + update + ",fail:" + fail + "}");
+            logs.setPullTime(currDateTime);
+            logs.setDuration(System.currentTimeMillis() - beginTime);
+            pullLogsService.save(logs);
+        }else {
+            ErpShopPullLogs logs = new ErpShopPullLogs();
+            logs.setTenantId(getUserId());
+            logs.setShopType(EnumShopType.WEI.getIndex());
+            logs.setShopId(params.getShopId());
+            logs.setPullType("GOODS");
+            logs.setPullWay("主动拉取");
+            logs.setPullParams("{status:5}");
+            logs.setPullResult("{insert:0,update:0,fail:0}");
+            logs.setPullTime(currDateTime);
+            logs.setDuration(System.currentTimeMillis() - beginTime);
+            pullLogsService.save(logs);
+
+            return AjaxResult.error(productApiResultVo.getMsg());
+        }
+
         Map<String, Object> data = new HashMap<>();
         data.put("insert", insert);
         data.put("update", update);
