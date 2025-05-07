@@ -9,6 +9,7 @@ import cn.qihangerp.api.domain.*;
 import cn.qihangerp.api.mapper.ErpGoodsMapper;
 import cn.qihangerp.api.mapper.ErpGoodsSkuMapper;
 import cn.qihangerp.api.mapper.ShopGoodsSkuMapper;
+import cn.qihangerp.api.service.ShopService;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -37,6 +38,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
     private final ShopGoodsSkuMapper skuMapper;
     private final ErpGoodsSkuMapper goodsSkuMapper;
     private final ErpGoodsMapper goodsMapper;
+    private final ShopService shopService;
 
     @Override
     public PageResult<ShopGoods> queryPageList(ShopGoods bo, PageQuery pageQuery) {
@@ -55,7 +57,9 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
     }
 
     @Override
-    public int saveAndUpdateGoods(Long shopId, ShopGoods goods) {
+    public ResultVo saveAndUpdateGoods(Long shopId, ShopGoods goods) {
+        Shop shop = shopService.getById(shopId);
+        if(shop==null) return ResultVo.error("店铺不存在");
         List<ShopGoods> goodsList = mapper.selectList(
                 new LambdaQueryWrapper<ShopGoods>()
                 .eq(ShopGoods::getProductId, goods.getProductId())
@@ -65,6 +69,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
             // 更新
             // 存在，更新
             goods.setShopId(shopId);
+            goods.setTenantId(shop.getTenantId());
             goods.setId(goodsList.get(0).getId());
             mapper.updateById(goods);
 
@@ -74,6 +79,8 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
             if(goods.getSkus()!=null) {
                 for (var sku : goods.getSkus()) {
                     sku.setShopGoodsId(Long.parseLong(goods.getId()));
+                    sku.setShopId(goods.getShopId());
+                    sku.setTenantId(goods.getTenantId());
                     // 根据OuterId查找ERP系统中的skuid
                     if(StringUtils.isNotEmpty(sku.getSkuCode())) {
                         List<ErpGoodsSku> erpGoodsSkus = goodsSkuMapper.selectList(
@@ -89,16 +96,19 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
                 }
             }
 
-            return ResultVoEnum.DataExist.getIndex();
+            return ResultVo.error(ResultVoEnum.DataExist.getIndex(),"更新成功");
         } else {
             // 不存在，新增return 0;
             // 不存在，新增
             goods.setShopId(shopId);
+            goods.setTenantId(shop.getTenantId());
             mapper.insert(goods);
             // 插入sku
             if(goods.getSkus()!=null) {
                 for (var sku : goods.getSkus()) {
                     sku.setShopGoodsId(Long.parseLong(goods.getId()));
+                    sku.setShopId(goods.getShopId());
+                    sku.setTenantId(goods.getTenantId());
                     // 根据OuterId查找ERP系统中的skuid
                     if(StringUtils.isNotEmpty(sku.getSkuCode())) {
                         List<ErpGoodsSku> erpGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<ErpGoodsSku>().eq(ErpGoodsSku::getSpecNum, sku.getSkuCode()));
@@ -110,7 +120,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
                     skuMapper.insert(sku);
                 }
             }
-            return 0;
+            return ResultVo.success();
         }
     }
 

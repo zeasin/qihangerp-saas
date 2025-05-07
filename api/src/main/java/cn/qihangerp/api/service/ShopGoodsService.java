@@ -13,6 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface ShopGoodsService extends IService<ShopGoods> {
     PageResult<ShopGoods> queryPageList(ShopGoods bo, PageQuery pageQuery);
-    int saveAndUpdateGoods(Long shopId,ShopGoods goods);
+    ResultVo saveAndUpdateGoods(Long shopId,ShopGoods goods);
     ResultVo pushToErp(Long shopGoodsId);
 }

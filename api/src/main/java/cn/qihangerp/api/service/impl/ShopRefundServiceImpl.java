@@ -1,5 +1,7 @@
 package cn.qihangerp.api.service.impl;
 
+import cn.qihangerp.api.domain.Shop;
+import cn.qihangerp.api.service.ShopService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -33,6 +35,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
     implements ShopRefundService {
     private final ShopRefundMapper mapper;
     private final ErpAfterSaleMapper afterSaleMapper;
+    private final ShopService shopService;
 
     @Override
     public PageResult<ShopRefund> queryPageList(ShopRefund bo, PageQuery pageQuery) {
@@ -49,12 +52,17 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
     @Transactional
     @Override
     public ResultVo<Integer> saveRefund(Long shopId, ShopRefund refund) {
+        Shop shop = shopService.getById(shopId);
+        if(shop==null) return ResultVo.error("店铺不存在");
+
         try {
             List<ShopRefund> refunds = mapper.selectList(new LambdaQueryWrapper<ShopRefund>().eq(ShopRefund::getAfterSaleOrderId, refund.getAfterSaleOrderId()));
             if (refunds != null && refunds.size() > 0) {
                 // 存在，修改
                 ShopRefund update = new ShopRefund();
                 update.setId(refunds.get(0).getId());
+                update.setShopId(shopId);
+                update.setTenantId(shop.getTenantId());
                 update.setOrderId(refund.getOrderId());
                 update.setStatus(refund.getStatus());
                 update.setUpdateTime(refund.getUpdateTime());
@@ -68,6 +76,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
             } else {
                 // 不存在，新增
                 refund.setShopId(shopId);
+                refund.setTenantId(shop.getTenantId());
                 mapper.insert(refund);
                 return ResultVo.success();
             }
@@ -86,6 +95,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
             afterSale.setType(10);
             afterSale.setShopId(refund.getShopId());
             afterSale.setShopType(EnumShopType.WEI.getIndex());
+            afterSale.setTenantId(refund.getTenantId());
             afterSale.setAfterSaleOrderId(refund.getAfterSaleOrderId());
             afterSale.setOrderId(refund.getOrderId());
             afterSale.setProductId(refund.getProductId());
@@ -116,6 +126,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
             afterSale.setType(99);
             afterSale.setShopId(refund.getShopId());
             afterSale.setShopType(EnumShopType.WEI.getIndex());
+            afterSale.setTenantId(refund.getTenantId());
             afterSale.setAfterSaleOrderId(refund.getAfterSaleOrderId());
             afterSale.setOrderId(refund.getOrderId());
             afterSale.setProductId(refund.getProductId());

@@ -7,7 +7,8 @@
     <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.ErpAfterSale">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="type" column="type" jdbcType="INTEGER"/>
-            <result property="shopId" column="shop_id" jdbcType="INTEGER"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
             <result property="shopType" column="shop_type" jdbcType="INTEGER"/>
             <result property="afterSaleOrderId" column="after_sale_order_id" jdbcType="VARCHAR"/>
             <result property="orderId" column="order_id" jdbcType="VARCHAR"/>
@@ -41,7 +42,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,type,shop_id,
+        id,type,shop_id,tenant_id,
         shop_type,after_sale_order_id,order_id,
         sub_order_id,product_id,sku_id,
         count,title,img,

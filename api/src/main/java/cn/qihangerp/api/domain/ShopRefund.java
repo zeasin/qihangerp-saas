@@ -142,6 +142,7 @@ public class ShopRefund implements Serializable {
     private String refundResp;
     private Integer confirmStatus;
     private Date confirmTime;
+    private Long tenantId;
 
     private static final long serialVersionUID = 1L;
 }

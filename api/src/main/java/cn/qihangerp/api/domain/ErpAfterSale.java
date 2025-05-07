@@ -28,6 +28,7 @@ public class ErpAfterSale implements Serializable {
      * 店铺id
      */
     private Long shopId;
+    private Long tenantId;
 
     /**
      * 店铺类型

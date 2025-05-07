@@ -6,6 +6,7 @@ import cn.qihangerp.api.domain.*;
 import cn.qihangerp.api.mapper.*;
 import cn.qihangerp.api.request.ShopOrderCreateBo;
 import cn.qihangerp.api.request.ShopOrderSearchRequest;
+import cn.qihangerp.api.service.ShopService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -37,6 +38,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
     private final ErpOrderMapper erpOrderMapper;
     private final ErpOrderItemMapper erpOrderItemMapper;
     private final ShopGoodsSkuMapper goodsSkuMapper;
+    private final ShopService shopService;
 
     private final String DATE_PATTERN =
             "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
@@ -87,11 +89,15 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
     @Transactional
     @Override
     public ResultVo<Long> saveOrder(Long shopId, ShopOrder order) {
+        Shop shop = shopService.getById(shopId);
+        if(shop==null) return ResultVo.error("店铺不存在");
         try {
             List<ShopOrder> orders = mapper.selectList(new LambdaQueryWrapper<ShopOrder>().eq(ShopOrder::getOrderId, order.getOrderId()));
             if (orders != null && orders.size() > 0) {
                 // 存在，修改
                 ShopOrder update = new ShopOrder();
+                update.setShopId(shopId);
+                update.setTenantId(shop.getTenantId());
                 update.setId(orders.get(0).getId());
                 update.setStatus(order.getStatus());
                 update.setUpdateTime(order.getUpdateTime());
@@ -105,9 +111,14 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                     List<ShopOrderItem> taoOrderItems = itemMapper.selectList(new LambdaQueryWrapper<ShopOrderItem>().eq(ShopOrderItem::getSkuId, item.getSkuId()));
                     if (taoOrderItems != null && taoOrderItems.size() > 0) {
                         // 不处理
+                        item.setId(taoOrderItems.get(0).getId());
+                        item.setShopId(shopId);
+                        item.setTenantId(shop.getTenantId());
+                        itemMapper.updateById(item);
                     } else {
                         // 新增
                         item.setShopId(shopId);
+                        item.setTenantId(shop.getTenantId());
                         item.setShopOrderId(update.getId());
                         itemMapper.insert(item);
                     }
@@ -116,10 +127,12 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             } else {
                 // 不存在，新增
                 order.setShopId(shopId);
+                order.setTenantId(shop.getTenantId());
                 mapper.insert(order);
                 // 添加item
                 for (var item : order.getItems()) {
                     item.setShopId(shopId);
+                    item.setTenantId(shop.getTenantId());
                     item.setShopOrderId(order.getId());
                     itemMapper.insert(item);
                 }
@@ -237,6 +250,8 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                             }else{
                                 // 更新订单状态
                                 ErpOrder update = new ErpOrder();
+                                update.setShopId(weiOrder.getShopId());
+                                update.setTenantId(weiOrder.getTenantId());
                                 update.setId(erpOrders.get(0).getId());
                                 update.setRefundStatus(refundStatus);
                                 update.setOrderStatus(orderStatus);

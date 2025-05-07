@@ -100,11 +100,13 @@ public class GoodsApiController extends BaseController {
                     skuList.add(goodsSku);
                 }
                 goods.setSkus(skuList);
-                int result = shopGoodsService.saveAndUpdateGoods(params.getShopId(), goods);
-                if(result == 0){
+                var result = shopGoodsService.saveAndUpdateGoods(params.getShopId(), goods);
+                if(result.getCode() == 0){
                     insert++;
-                } else if (result==800) {
+                } else if (result.getCode()==ResultVoEnum.DataExist.getIndex()) {
                     update++;
+                }else{
+                    fail++;
                 }
             }
             ErpShopPullLogs logs = new ErpShopPullLogs();

@@ -91,6 +91,7 @@ public class OrderApiController extends BaseController {
         int insertSuccess = 0;//新增成功的订单
         int totalError = 0;
         int hasExistOrder = 0;//已存在的订单数
+
         if (orderApiResultVo.getCode() == 0) {
             if (orderApiResultVo.getList() != null) {
                 // 拉取到了数据 拉取详情
