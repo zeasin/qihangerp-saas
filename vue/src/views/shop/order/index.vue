@@ -336,6 +336,7 @@ export default {
           console.log('拉取订单接口返回=====',response)
             this.$modal.msgSuccess(JSON.stringify(response));
             this.pullLoading = false
+          this.getList()
         })
       }else{
         this.$modal.msgSuccess("请先选择店铺");
@@ -352,9 +353,11 @@ export default {
           this.$modal.msgError(response.msg);
         }else{
           this.$modal.msgSuccess(JSON.stringify(response));
+          this.pullLoading = false
+          this.getList()
         }
 
-        this.pullLoading = false
+
       })
     },
     handleConfirm(row) {

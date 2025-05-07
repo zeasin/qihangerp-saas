@@ -26,6 +26,7 @@ import cn.qihangerp.api.domain.ShopOrder;
 import cn.qihangerp.api.domain.ShopOrderItem;
 import cn.qihangerp.api.service.ShopOrderService;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -65,6 +66,7 @@ public class OrderApiController extends BaseController {
         String appSecret = checkResult.getData().getAppSecret();
         // 定义格式化器
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        ZoneId zoneId = ZoneId.of("Asia/Shanghai");
         // 获取最后更新时间
         LocalDateTime startTime = null;
         LocalDateTime endTime = null;
@@ -76,9 +78,13 @@ public class OrderApiController extends BaseController {
             startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
             endTime = startTime.plusDays(1);//取24小时
             if (endTime.isAfter(LocalDateTime.now())) {
-                endTime = LocalDateTime.now();
+//                endTime = LocalDateTime.now();
+                endTime = LocalDateTime.now(zoneId);
             }
         }
+        log.info("拉取订单,开始时间：{}====结束时间：{}",startTime.format(formatter),endTime.format(formatter));
+
+
 
         ApiResultVo<Order> orderApiResultVo = WeiOrderApiHelper.pullOrderList(startTime, endTime, accessToken);
 
