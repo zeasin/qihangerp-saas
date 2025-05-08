@@ -5,7 +5,7 @@
         <logistics-company></logistics-company>
       </el-tab-pane>
       <el-tab-pane label="电子面单账户设置" name="EwaybillAccount" lazy>
-
+        <shop-waybill-account></shop-waybill-account>
       </el-tab-pane>
     </el-tabs>
 
@@ -14,11 +14,11 @@
 
 <script>
 import LogisticsCompany from "@/views/shipping/set/logistics_company.vue";
-
+import ShopWaybillAccount from "@/views/shipping/set/shop_ewaybill_account.vue"
 export default {
   name: "set",
   components:{
-    LogisticsCompany
+    LogisticsCompany,ShopWaybillAccount
   },
   data() {
     return {
