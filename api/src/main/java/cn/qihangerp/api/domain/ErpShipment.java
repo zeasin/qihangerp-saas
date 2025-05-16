@@ -1,19 +1,21 @@
 package cn.qihangerp.api.domain;
 
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.math.BigDecimal;
 import java.util.Date;
-
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
  * 发货记录表
- * @TableName erp_order_shipping
+ * @TableName erp_shipment
  */
+@TableName(value ="erp_shipment")
 @Data
-public class ErpOrderShipping implements Serializable {
+public class ErpShipment {
     /**
      * 
      */
@@ -21,12 +23,19 @@ public class ErpOrderShipping implements Serializable {
     private Long id;
 
     /**
+     * 租户id
+     */
+    private Long tenantId;
+
+    /**
      * 店铺id
      */
     private Long shopId;
-    private int shopType;
-    //发货方 0 仓库发货 1 供应商发货
-    private int shipper;
+
+    /**
+     * 店铺类型
+     */
+    private Integer shopType;
 
     /**
      * o_order表id
@@ -39,6 +48,11 @@ public class ErpOrderShipping implements Serializable {
     private String orderNum;
 
     /**
+     * 发货方 0 仓库发货 1 供应商发货
+     */
+    private Integer shipper;
+
+    /**
      * 发货类型（1订单发货2商品补发3商品换货）
      */
     private Integer shipType;
@@ -47,6 +61,10 @@ public class ErpOrderShipping implements Serializable {
      * 物流公司
      */
     private String shipCompany;
+
+    /**
+     * 物流公司code
+     */
     private String shipCompanyCode;
 
     /**
@@ -57,7 +75,7 @@ public class ErpOrderShipping implements Serializable {
     /**
      * 物流费用
      */
-    private Float shipFee;
+    private BigDecimal shipFee;
 
     /**
      * 发货时间
@@ -70,29 +88,29 @@ public class ErpOrderShipping implements Serializable {
     private String shipOperator;
 
     /**
-     * 物流状态（1运输中2已完成）
+     * 物流状态（0 待发货1已发货2已完成）
      */
     private Integer shipStatus;
 
     /**
      * 包裹重量
      */
-    private Float packageWeight;
+    private Double packageWeight;
 
     /**
      * 包裹长度
      */
-    private Float packageLength;
+    private Double packageLength;
 
     /**
      * 包裹宽度
      */
-    private Float packageWidth;
+    private Double packageWidth;
 
     /**
      * 包裹高度
      */
-    private Float packageHeight;
+    private Double packageHeight;
 
     /**
      * 打包操作人
@@ -133,6 +151,4 @@ public class ErpOrderShipping implements Serializable {
      * 
      */
     private Date updateBy;
-
-    private static final long serialVersionUID = 1L;
 }

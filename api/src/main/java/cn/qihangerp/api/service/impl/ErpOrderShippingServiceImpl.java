@@ -1,27 +1,18 @@
 package cn.qihangerp.api.service.impl;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.PageResult;
-import cn.qihangerp.api.common.ResultVo;
-import cn.qihangerp.api.common.ResultVoEnum;
-import cn.qihangerp.api.domain.ErpOrder;
-import cn.qihangerp.api.domain.ErpOrderItem;
-import cn.qihangerp.api.domain.ErpOrderShipping;
+import cn.qihangerp.api.domain.ErpShipment;
 import cn.qihangerp.api.mapper.ErpOrderItemMapper;
 import cn.qihangerp.api.mapper.ErpOrderMapper;
 import cn.qihangerp.api.service.ErpOrderShippingService;
-import cn.qihangerp.api.mapper.ErpOrderShippingMapper;
+import cn.qihangerp.api.mapper.ErpShipmentMapper;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.List;
 
 /**
 * @author TW
@@ -30,20 +21,20 @@ import java.util.List;
 */
 @AllArgsConstructor
 @Service
-public class ErpOrderShippingServiceImpl extends ServiceImpl<ErpOrderShippingMapper, ErpOrderShipping>
+public class ErpOrderShippingServiceImpl extends ServiceImpl<ErpShipmentMapper, ErpShipment>
     implements ErpOrderShippingService{
-    private final ErpOrderShippingMapper mapper;
+    private final ErpShipmentMapper mapper;
     private final ErpOrderMapper orderMapper;
     private final ErpOrderItemMapper itemMapper;
 
     @Override
-    public PageResult<ErpOrderShipping> queryPageList(ErpOrderShipping shipping, PageQuery pageQuery) {
-        LambdaQueryWrapper<ErpOrderShipping> queryWrapper = new LambdaQueryWrapper<ErpOrderShipping>()
-                .eq(StringUtils.hasText(shipping.getOrderNum()),ErpOrderShipping::getOrderNum, shipping.getOrderNum())
-                .eq(StringUtils.hasText(shipping.getShipCode()),ErpOrderShipping::getShipCode, shipping.getShipCode())
-                .eq(shipping.getShopId() != null, ErpOrderShipping::getShopId, shipping.getShopId());
+    public PageResult<ErpShipment> queryPageList(ErpShipment shipping, PageQuery pageQuery) {
+        LambdaQueryWrapper<ErpShipment> queryWrapper = new LambdaQueryWrapper<ErpShipment>()
+                .eq(StringUtils.hasText(shipping.getOrderNum()), ErpShipment::getOrderNum, shipping.getOrderNum())
+                .eq(StringUtils.hasText(shipping.getShipCode()), ErpShipment::getShipCode, shipping.getShipCode())
+                .eq(shipping.getShopId() != null, ErpShipment::getShopId, shipping.getShopId());
 
-        Page<ErpOrderShipping> pages = mapper.selectPage(pageQuery.build(), queryWrapper);
+        Page<ErpShipment> pages = mapper.selectPage(pageQuery.build(), queryWrapper);
         return PageResult.build(pages);
     }
 

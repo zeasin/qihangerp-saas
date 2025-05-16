@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.api.mapper.ErpShipmentMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.ErpShipment">
+            <id property="id" column="id" />
+            <result property="tenantId" column="tenant_id" />
+            <result property="shopId" column="shop_id" />
+            <result property="shopType" column="shop_type" />
+            <result property="orderId" column="order_id" />
+            <result property="orderNum" column="order_num" />
+            <result property="shipper" column="shipper" />
+            <result property="shipType" column="ship_type" />
+            <result property="shipCompany" column="ship_company" />
+            <result property="shipCompanyCode" column="ship_company_code" />
+            <result property="shipCode" column="ship_code" />
+            <result property="shipFee" column="ship_fee" />
+            <result property="shipTime" column="ship_time" />
+            <result property="shipOperator" column="ship_operator" />
+            <result property="shipStatus" column="ship_status" />
+            <result property="packageWeight" column="package_weight" />
+            <result property="packageLength" column="package_length" />
+            <result property="packageWidth" column="package_width" />
+            <result property="packageHeight" column="package_height" />
+            <result property="packsgeOperator" column="packsge_operator" />
+            <result property="packsgeTime" column="packsge_time" />
+            <result property="packages" column="packages" />
+            <result property="remark" column="remark" />
+            <result property="createTime" column="create_time" />
+            <result property="createBy" column="create_by" />
+            <result property="updateTime" column="update_time" />
+            <result property="updateBy" column="update_by" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,tenant_id,shop_id,shop_type,order_id,order_num,
+        shipper,ship_type,ship_company,ship_company_code,ship_code,
+        ship_fee,ship_time,ship_operator,ship_status,package_weight,
+        package_length,package_width,package_height,packsge_operator,packsge_time,
+        packages,remark,create_time,create_by,update_time,
+        update_by
+    </sql>
+</mapper>

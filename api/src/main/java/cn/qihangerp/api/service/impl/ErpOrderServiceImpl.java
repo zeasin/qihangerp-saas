@@ -1,9 +1,9 @@
 package cn.qihangerp.api.service.impl;
 
 import cn.qihangerp.api.domain.ErpLogisticsCompany;
-import cn.qihangerp.api.domain.ErpOrderShipping;
+import cn.qihangerp.api.domain.ErpShipment;
 import cn.qihangerp.api.domain.vo.SalesDailyVo;
-import cn.qihangerp.api.mapper.ErpOrderShippingMapper;
+import cn.qihangerp.api.mapper.ErpShipmentMapper;
 import cn.qihangerp.api.mapper.ErpLogisticsCompanyMapper;
 import cn.qihangerp.api.request.OrderSearchRequest;
 import com.alibaba.fastjson2.JSONObject;
@@ -25,7 +25,6 @@ import cn.qihangerp.api.mapper.ErpOrderMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -42,7 +41,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
     implements ErpOrderService{
     private final ErpOrderMapper mapper;
     private final ErpOrderItemMapper orderItemMapper;
-    private final ErpOrderShippingMapper orderShippingMapper;
+    private final ErpShipmentMapper orderShippingMapper;
     private final ErpLogisticsCompanyMapper erpLogisticsCompanyMapper;
 
     private final String DATE_PATTERN =
@@ -115,34 +114,35 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         if(erpLogisticsCompany==null) return ResultVo.error("快递公司选择错误");
 
         List<ErpOrderItem> oOrderItems = orderItemMapper.selectList(new LambdaQueryWrapper<ErpOrderItem>().eq(ErpOrderItem::getOrderId, erpOrder.getId()));
-
+        if(oOrderItems==null) return ResultVo.error("订单 item 数据错误，无法发货！");
         // 添加发货记录
-        ErpOrderShipping erpOrderShipping = new ErpOrderShipping();
-        erpOrderShipping.setShipper(0);//发货方 0 仓库发货 1 供应商发货
-        erpOrderShipping.setShopId(erpOrder.getShopId());
-        erpOrderShipping.setShopType(erpOrder.getShopType());
-        erpOrderShipping.setOrderId(erpOrder.getId());
-        erpOrderShipping.setOrderNum(erpOrder.getOrderNum());
-        erpOrderShipping.setShipType(1);//发货类型（1订单发货2商品补发3商品换货）
-        erpOrderShipping.setShipCompany(erpLogisticsCompany.getName());
-        erpOrderShipping.setShipCompanyCode(erpLogisticsCompany.getCode());
-        erpOrderShipping.setShipCode(shipBo.getShippingNumber());
-        erpOrderShipping.setShipFee(shipBo.getShippingCost());
-        erpOrderShipping.setShipTime(new Date());
-        erpOrderShipping.setShipOperator(shipBo.getShippingMan());
-        erpOrderShipping.setShipStatus(1);//物流状态（1运输中2已完成）
+        ErpShipment erpShipment = new ErpShipment();
+        erpShipment.setShipper(0);//发货方 0 仓库发货 1 供应商发货】
+        erpShipment.setTenantId(erpOrder.getTenantId());
+        erpShipment.setShopId(erpOrder.getShopId());
+        erpShipment.setShopType(erpOrder.getShopType());
+        erpShipment.setOrderId(erpOrder.getId());
+        erpShipment.setOrderNum(erpOrder.getOrderNum());
+        erpShipment.setShipType(1);//发货类型（1订单发货2商品补发3商品换货）
+        erpShipment.setShipCompany(erpLogisticsCompany.getName());
+        erpShipment.setShipCompanyCode(erpLogisticsCompany.getCode());
+        erpShipment.setShipCode(shipBo.getShippingNumber());
+        erpShipment.setShipFee(shipBo.getShippingCost());
+        erpShipment.setShipTime(new Date());
+        erpShipment.setShipOperator(shipBo.getShippingMan());
+        erpShipment.setShipStatus(1);//物流状态（0 待发货1已发货2已完成）
 
-        erpOrderShipping.setPackageHeight(shipBo.getHeight());
-        erpOrderShipping.setPackageWeight(shipBo.getWeight());
-        erpOrderShipping.setPackageLength(shipBo.getLength());
-        erpOrderShipping.setPackageWidth(shipBo.getWidth());
-        erpOrderShipping.setPacksgeOperator(shipBo.getShippingMan());
-        erpOrderShipping.setPackages(JSONObject.toJSONString(oOrderItems));
-        erpOrderShipping.setRemark(shipBo.getRemark());
-        erpOrderShipping.setCreateBy(createBy);
-        erpOrderShipping.setCreateTime(new Date());
+        erpShipment.setPackageHeight(shipBo.getHeight());
+        erpShipment.setPackageWeight(shipBo.getWeight());
+        erpShipment.setPackageLength(shipBo.getLength());
+        erpShipment.setPackageWidth(shipBo.getWidth());
+        erpShipment.setPacksgeOperator(shipBo.getShippingMan());
+//        erpShipment.setPackages(JSONObject.toJSONString(oOrderItems));
+        erpShipment.setRemark(shipBo.getRemark());
+        erpShipment.setCreateBy(createBy);
+        erpShipment.setCreateTime(new Date());
 
-        orderShippingMapper.insert(erpOrderShipping);
+        orderShippingMapper.insert(erpShipment);
 
 
         // 更新状态、发货方式

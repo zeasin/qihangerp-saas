@@ -3,16 +3,16 @@ package cn.qihangerp.api.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import cn.qihangerp.api.common.*;
-import cn.qihangerp.api.domain.ErpOrderShipping;
+import cn.qihangerp.api.domain.ErpShipment;
 import cn.qihangerp.api.service.ErpOrderShippingService;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/shipping")
-public class ShippingController extends BaseController {
+public class ShipmentController extends BaseController {
     private final ErpOrderShippingService shippingService;
     @GetMapping("/list")
-    public TableDataInfo list(ErpOrderShipping shipping, PageQuery pageQuery)
+    public TableDataInfo list(ErpShipment shipping, PageQuery pageQuery)
     {
         return getDataTable(shippingService.queryPageList(shipping,pageQuery));
     }
