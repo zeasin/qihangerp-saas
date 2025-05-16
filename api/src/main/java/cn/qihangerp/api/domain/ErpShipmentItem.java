@@ -30,6 +30,7 @@ public class ErpShipmentItem {
      */
     private Integer shipper;
     private Long supplierId;
+    private String supplier;
     /**
      * 发货id
      */

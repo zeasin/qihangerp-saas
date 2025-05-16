@@ -56,6 +56,7 @@ public class ErpShipment {
      */
     private Integer shipper;
     private Long supplierId;
+    private String supplier;
 
     /**
      * 发货类型（1订单发货2商品补发3商品换货）
