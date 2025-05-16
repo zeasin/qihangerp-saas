@@ -117,6 +117,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         erpShipment.setShopType(erpOrder.getShopType());
         erpShipment.setOrderId(erpOrder.getId());
         erpShipment.setOrderNum(erpOrder.getOrderNum());
+        erpShipment.setOrderTime(erpOrder.getOrderTime());
         erpShipment.setShipType(1);//发货类型（1订单发货2商品补发3商品换货）
         erpShipment.setShipCompany(erpLogisticsCompany.getName());
         erpShipment.setShipCompanyCode(erpLogisticsCompany.getCode());
@@ -147,6 +148,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
             erpShipmentItem.setShipmentId(erpShipment.getId());
             erpShipmentItem.setOrderId(erpShipment.getOrderId());
             erpShipmentItem.setOrderNum(erpShipment.getOrderNum());
+            erpShipmentItem.setOrderTime(erpShipment.getOrderTime());
             erpShipmentItem.setOrderItemId(orderItem.getId());
             erpShipmentItem.setErpGoodsId(orderItem.getErpGoodsId());
             erpShipmentItem.setErpSkuId(orderItem.getErpSkuId());

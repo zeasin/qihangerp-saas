@@ -46,11 +46,16 @@ public class ErpShipment {
      * 订单编号
      */
     private String orderNum;
+    /**
+     * 订单时间
+     */
+    private Date orderTime;
 
     /**
      * 发货方 0 仓库发货 1 供应商发货
      */
     private Integer shipper;
+    private Long supplierId;
 
     /**
      * 发货类型（1订单发货2商品补发3商品换货）

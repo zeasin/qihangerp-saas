@@ -29,6 +29,7 @@ public class ErpShipmentItem {
      * 发货方 0 仓库发货 1 供应商发货
      */
     private Integer shipper;
+    private Long supplierId;
     /**
      * 发货id
      */
@@ -52,6 +53,10 @@ public class ErpShipmentItem {
      * 订单编号
      */
     private String orderNum;
+    /**
+     * 订单时间
+     */
+    private Date orderTime;
 
     /**
      * 订单itemID（o_order_item外键）

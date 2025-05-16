@@ -129,11 +129,11 @@
       </el-table-column> -->
 
 <!--       <el-table-column label="子订单编号" align="center" prop="subOrderNum" />-->
-<!--      <el-table-column label="下单日期" align="center" prop="orderDate" width="180">-->
-<!--        <template slot-scope="scope">-->
-<!--          <span>{{ parseTime(scope.row.orderDate, '{y}-{m}-{d}') }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column label="下单日期" align="center" prop="orderDate" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.orderTime) }}</span>
+        </template>
+      </el-table-column>
 
       <el-table-column label="商品图片" width="80px">
         <template slot-scope="scope">

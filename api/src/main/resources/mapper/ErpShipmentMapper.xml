@@ -11,7 +11,9 @@
             <result property="shopType" column="shop_type" />
             <result property="orderId" column="order_id" />
             <result property="orderNum" column="order_num" />
+            <result property="orderTime" column="order_time" jdbcType="TIMESTAMP"/>
             <result property="shipper" column="shipper" />
+            <result property="supplierId" column="supplier_id" />
             <result property="shipType" column="ship_type" />
             <result property="shipCompany" column="ship_company" />
             <result property="shipCompanyCode" column="ship_company_code" />
@@ -35,7 +37,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,tenant_id,shop_id,shop_type,order_id,order_num,
+        id,tenant_id,shop_id,shop_type,order_id,order_num,order_time,supplier_id,
         shipper,ship_type,ship_company,ship_company_code,ship_code,
         ship_fee,ship_time,ship_operator,ship_status,package_weight,
         package_length,package_width,package_height,packsge_operator,packsge_time,
