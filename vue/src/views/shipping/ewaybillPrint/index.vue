@@ -99,8 +99,8 @@
           :disabled="single"
           icon="el-icon-download"
           size="mini"
-          @click="handleShipSend"
-        >分配给供应商发货AA</el-button>
+          @click="allocateShipmentToSupplier"
+        >分配给供应商发货</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -328,6 +328,57 @@
       </div>
     </el-dialog>
 
+    <!-- 分配给供应商发货对话框 -->
+    <el-dialog title="分配给供应商发货" :visible.sync="allocateShipmentOpen" width="1100px" append-to-body>
+
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" >
+        <el-descriptions title="订单信息">
+          <el-descriptions-item label="订单号">{{form.orderNum}}</el-descriptions-item>
+
+          <el-descriptions-item label="买家留言">
+            {{form.buyerMemo}}
+          </el-descriptions-item>
+          <el-descriptions-item label="备注">
+            {{form.remark}}
+          </el-descriptions-item>
+          <el-descriptions-item label="创建时间">
+            {{ parseTime(form.createTime) }}
+          </el-descriptions-item>
+
+
+          <el-descriptions-item label="收件人姓名">{{form.receiverName}}</el-descriptions-item>
+          <el-descriptions-item label="收件人手机号">{{form.receiverMobile}}</el-descriptions-item>
+          <el-descriptions-item label="省市区">{{form.province}}{{form.city}}{{form.town}}</el-descriptions-item>
+          <el-descriptions-item label="详细地址">{{form.address}}</el-descriptions-item>
+
+
+
+        </el-descriptions>
+
+        <el-divider content-position="center">商品明细</el-divider>
+        <el-table :data="form.itemList"  style="margin-bottom: 10px;">
+          <!-- <el-table-column type="selection" width="50" align="center" /> -->
+          <el-table-column label="序号" align="center" type="index" width="50"/>
+
+          <el-table-column label="商品图片" prop="goodsImg" width="80">
+            <template slot-scope="scope">
+              <el-image style="width: 70px; height: 70px" :src="scope.row.goodsImg"></el-image>
+            </template>
+          </el-table-column>
+          <el-table-column label="商品标题" prop="goodsTitle" ></el-table-column>
+          <el-table-column label="SKU" prop="goodsSpec" width="150"></el-table-column>
+          <el-table-column label="sku编码" prop="skuNum"></el-table-column>
+          <!--          <el-table-column label="单价" prop="goodsPrice"></el-table-column>-->
+          <el-table-column label="数量" prop="quantity"></el-table-column>
+          <!-- <el-table-column label="商品金额" prop="itemAmount"></el-table-column> -->
+        </el-table>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitShipForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
@@ -369,6 +420,7 @@ export default {
       // 是否显示弹出层
       open: false,
       shipOpen: false,
+      allocateShipmentOpen: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -486,6 +538,8 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false;
+      this.allocateShipmentOpen = false;
+      this.shipOpen = false;
       this.getCodeOpen = false;
       this.reset();
     },
@@ -647,6 +701,22 @@ export default {
         }
       }
       return uuid.join('');
+    },
+    // 分配给供应商发货
+    allocateShipmentToSupplier(row){
+      this.reset();
+      const id = row.id || this.ids
+      console.log('======',id)
+      getOrder(id).then(response => {
+        this.form = response.data;
+        this.form.length=0
+        this.form.width=0
+        this.form.height=0
+        this.form.weight=0.0
+        this.form.shippingCost=0.0
+        this.allocateShipmentOpen = true;
+        // this.detailTitle = "订单详情";
+      });
     },
     handleShipSend(){
       pushShipSend({shopId: this.queryParams.shopId, ids: this.ids}).then(response => {

@@ -303,7 +303,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
         shopOrder.setProvinceName(bo.getProvince());
         shopOrder.setCityName(bo.getCity());
         shopOrder.setCountyName(bo.getCounty());
-        shopOrder.setDetailInfo("");
+        shopOrder.setDetailInfo(bo.getAddress());
         shopOrder.setTelNumber(bo.getReceiverPhone());
         shopOrder.setUseTelNumber(0);
         shopOrder.setShipDoneTime(0);
