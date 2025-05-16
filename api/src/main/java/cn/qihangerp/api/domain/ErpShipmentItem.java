@@ -26,29 +26,29 @@ public class ErpShipmentItem {
     private Long tenantId;
 
     /**
+     * 发货id
+     */
+    private Long shipmentId;
+
+    /**
+     * 店铺类型
+     */
+    private Integer shopType;
+
+    /**
      * 店铺id
      */
     private Long shopId;
 
     /**
-     * 订单ID（o_order外键）
+     * 订单 id
      */
-    private Long orderId;
+    private String orderId;
 
     /**
-     * 订单号（第三方平台）
+     * 订单itemID（o_order_item外键）
      */
-    private String orderNum;
-
-    /**
-     * 子订单号（第三方平台）
-     */
-    private String subOrderNum;
-
-    /**
-     * 第三方平台skuId
-     */
-    private String skuId;
+    private Long orderItemId;
 
     /**
      * erp系统商品id
@@ -86,16 +86,6 @@ public class ErpShipmentItem {
     private String skuNum;
 
     /**
-     * 商品单价
-     */
-    private Double goodsPrice;
-
-    /**
-     * 子订单金额
-     */
-    private Double itemAmount;
-
-    /**
      * 商品数量
      */
     private Integer quantity;
@@ -106,19 +96,9 @@ public class ErpShipmentItem {
     private String remark;
 
     /**
-     * 已退货数量
+     * 仓库状态 0 备货中 1 已出库 2 已发走
      */
-    private Integer refundCount;
-
-    /**
-     * 售后状态 1：无售后或售后关闭，2：售后处理中，3：退款中，4： 退款成功 
-     */
-    private Integer refundStatus;
-
-    /**
-     * 是否推送到ERP
-     */
-    private Integer hasPushErp;
+    private Integer stockStatus;
 
     /**
      * 创建时间

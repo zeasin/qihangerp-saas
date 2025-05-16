@@ -7,11 +7,11 @@
     <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.ErpShipmentItem">
             <id property="id" column="id" />
             <result property="tenantId" column="tenant_id" />
+            <result property="shipmentId" column="shipment_id" />
+            <result property="shopType" column="shop_type" />
             <result property="shopId" column="shop_id" />
             <result property="orderId" column="order_id" />
-            <result property="orderNum" column="order_num" />
-            <result property="subOrderNum" column="sub_order_num" />
-            <result property="skuId" column="sku_id" />
+            <result property="orderItemId" column="order_item_id" />
             <result property="erpGoodsId" column="erp_goods_id" />
             <result property="erpSkuId" column="erp_sku_id" />
             <result property="goodsTitle" column="goods_title" />
@@ -19,13 +19,9 @@
             <result property="goodsNum" column="goods_num" />
             <result property="goodsSpec" column="goods_spec" />
             <result property="skuNum" column="sku_num" />
-            <result property="goodsPrice" column="goods_price" />
-            <result property="itemAmount" column="item_amount" />
             <result property="quantity" column="quantity" />
             <result property="remark" column="remark" />
-            <result property="refundCount" column="refund_count" />
-            <result property="refundStatus" column="refund_status" />
-            <result property="hasPushErp" column="has_push_erp" />
+            <result property="stockStatus" column="stock_status" />
             <result property="createTime" column="create_time" />
             <result property="createBy" column="create_by" />
             <result property="updateTime" column="update_time" />
@@ -33,10 +29,9 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,tenant_id,shop_id,order_id,order_num,sub_order_num,
-        sku_id,erp_goods_id,erp_sku_id,goods_title,goods_img,
-        goods_num,goods_spec,sku_num,goods_price,item_amount,
-        quantity,remark,refund_count,refund_status,has_push_erp,
-        create_time,create_by,update_time,update_by
+        id,tenant_id,shipment_id,shop_type,shop_id,order_id,
+        order_item_id,erp_goods_id,erp_sku_id,goods_title,goods_img,
+        goods_num,goods_spec,sku_num,quantity,remark,
+        stock_status,create_time,create_by,update_time,update_by
     </sql>
 </mapper>

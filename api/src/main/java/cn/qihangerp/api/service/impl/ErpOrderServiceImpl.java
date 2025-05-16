@@ -1,12 +1,9 @@
 package cn.qihangerp.api.service.impl;
 
-import cn.qihangerp.api.domain.ErpLogisticsCompany;
-import cn.qihangerp.api.domain.ErpShipment;
+import cn.qihangerp.api.domain.*;
 import cn.qihangerp.api.domain.vo.SalesDailyVo;
-import cn.qihangerp.api.mapper.ErpShipmentMapper;
-import cn.qihangerp.api.mapper.ErpLogisticsCompanyMapper;
+import cn.qihangerp.api.mapper.*;
 import cn.qihangerp.api.request.OrderSearchRequest;
-import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -17,11 +14,7 @@ import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.bo.ErpOrderShipBo;
-import cn.qihangerp.api.domain.ErpOrder;
-import cn.qihangerp.api.domain.ErpOrderItem;
-import cn.qihangerp.api.mapper.ErpOrderItemMapper;
 import cn.qihangerp.api.service.ErpOrderService;
-import cn.qihangerp.api.mapper.ErpOrderMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -41,7 +34,8 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
     implements ErpOrderService{
     private final ErpOrderMapper mapper;
     private final ErpOrderItemMapper orderItemMapper;
-    private final ErpShipmentMapper orderShippingMapper;
+    private final ErpShipmentMapper shipmentMapper;
+    private final ErpShipmentItemMapper shipmentItemMapper;
     private final ErpLogisticsCompanyMapper erpLogisticsCompanyMapper;
 
     private final String DATE_PATTERN =
@@ -142,7 +136,30 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         erpShipment.setCreateBy(createBy);
         erpShipment.setCreateTime(new Date());
 
-        orderShippingMapper.insert(erpShipment);
+        shipmentMapper.insert(erpShipment);
+
+        for(ErpOrderItem orderItem:oOrderItems){
+            ErpShipmentItem erpShipmentItem = new ErpShipmentItem();
+            erpShipmentItem.setTenantId(erpShipment.getTenantId());
+            erpShipmentItem.setShopId(erpShipment.getShopId());
+            erpShipmentItem.setShopType(erpShipment.getShopType());
+            erpShipmentItem.setShipmentId(erpShipment.getId());
+            erpShipmentItem.setOrderId(erpShipment.getOrderId());
+            erpShipmentItem.setOrderItemId(orderItem.getId());
+            erpShipmentItem.setErpGoodsId(orderItem.getErpGoodsId());
+            erpShipmentItem.setErpSkuId(orderItem.getErpSkuId());
+            erpShipmentItem.setGoodsTitle(orderItem.getGoodsTitle());
+            erpShipmentItem.setGoodsNum(orderItem.getGoodsNum());
+            erpShipmentItem.setGoodsImg(orderItem.getGoodsImg());
+            erpShipmentItem.setGoodsSpec(orderItem.getGoodsSpec());
+            erpShipmentItem.setSkuNum(orderItem.getSkuNum());
+            erpShipmentItem.setQuantity(orderItem.getQuantity());
+            erpShipmentItem.setRemark(orderItem.getRemark());
+            erpShipmentItem.setStockStatus(0);
+            erpShipmentItem.setCreateBy(createBy);
+            erpShipmentItem.setCreateTime(new Date());
+            shipmentItemMapper.insert(erpShipmentItem);
+        }
 
 
         // 更新状态、发货方式
