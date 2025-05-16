@@ -49,25 +49,25 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-refresh"
-          size="mini"
-          @click="handleCreate"
-        >手动创建订单</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-refresh"
-          size="mini"
-          :disabled="multiple"
-          @click="handleShip"
-        >批量分配发货</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          plain-->
+<!--          icon="el-icon-refresh"-->
+<!--          size="mini"-->
+<!--          @click="handleCreate"-->
+<!--        >手动创建订单</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          plain-->
+<!--          icon="el-icon-refresh"-->
+<!--          size="mini"-->
+<!--          :disabled="multiple"-->
+<!--          @click="handleShip"-->
+<!--        >批量分配发货</el-button>-->
+<!--      </el-col>-->
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
 <!--          type="warning"-->
@@ -82,7 +82,7 @@
     </el-row>
 
     <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center"  :selectable="isRowSelectable" />
+<!--      <el-table-column type="selection" width="55" align="center"  :selectable="isRowSelectable" />-->
 <!--      <el-table-column label="订单ID" align="center" prop="id" />-->
       <el-table-column label="订单号" align="left" prop="orderNum" width="200px">
         <template slot-scope="scope">
@@ -436,7 +436,7 @@ export default {
       this.handleQuery();
     },
     isRowSelectable(row, index) {
-      return row.orderStatus === 0 ;
+      return row.orderStatus === 1 ;
     },
     // 多选框选中数据
     handleSelectionChange(selection) {

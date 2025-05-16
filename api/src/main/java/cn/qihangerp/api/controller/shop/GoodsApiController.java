@@ -47,6 +47,17 @@ public class GoodsApiController extends BaseController {
         var checkResult = apiCommon.checkBefore(params.getShopId());
         if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
 //            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
+            ErpShopPullLogs logs = new ErpShopPullLogs();
+            logs.setTenantId(getUserId());
+            logs.setShopType(EnumShopType.WEI.getIndex());
+            logs.setShopId(params.getShopId());
+            logs.setPullType("GOODS");
+            logs.setPullWay("主动拉取");
+            logs.setPullParams("{status:5}");
+            logs.setPullResult("{insert:0,update:0,fail:0}");
+            logs.setPullTime(currDateTime);
+            logs.setDuration(System.currentTimeMillis() - beginTime);
+            pullLogsService.save(logs);
             return AjaxResult.error(checkResult.getMsg());
         }
         String accessToken = checkResult.getData().getAccessToken();
@@ -120,20 +131,6 @@ public class GoodsApiController extends BaseController {
             logs.setPullTime(currDateTime);
             logs.setDuration(System.currentTimeMillis() - beginTime);
             pullLogsService.save(logs);
-        }else {
-            ErpShopPullLogs logs = new ErpShopPullLogs();
-            logs.setTenantId(getUserId());
-            logs.setShopType(EnumShopType.WEI.getIndex());
-            logs.setShopId(params.getShopId());
-            logs.setPullType("GOODS");
-            logs.setPullWay("主动拉取");
-            logs.setPullParams("{status:5}");
-            logs.setPullResult("{insert:0,update:0,fail:0}");
-            logs.setPullTime(currDateTime);
-            logs.setDuration(System.currentTimeMillis() - beginTime);
-            pullLogsService.save(logs);
-
-            return AjaxResult.error(productApiResultVo.getMsg());
         }
 
         Map<String, Object> data = new HashMap<>();
