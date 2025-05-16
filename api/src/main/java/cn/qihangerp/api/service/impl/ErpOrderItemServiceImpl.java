@@ -32,7 +32,6 @@ public class ErpOrderItemServiceImpl extends ServiceImpl<ErpOrderItemMapper, Erp
         List<String> ids = null;
         if(shipType!=null|| status!= null){
             LambdaQueryWrapper<ErpOrder> qw = new LambdaQueryWrapper<ErpOrder>()
-                    .eq(shipType!=null,ErpOrder::getShipType,shipType)
                     .eq(status!=null,ErpOrder::getOrderStatus,status);
             List<ErpOrder> erpOrders = orderMapper.selectList(qw);
             if(erpOrders!=null&&erpOrders.size()>0) {

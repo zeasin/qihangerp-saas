@@ -26,6 +26,10 @@ public class ErpShipmentItem {
     private Long tenantId;
 
     /**
+     * 发货方 0 仓库发货 1 供应商发货
+     */
+    private Integer shipper;
+    /**
      * 发货id
      */
     private Long shipmentId;

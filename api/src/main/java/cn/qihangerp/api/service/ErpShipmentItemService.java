@@ -1,5 +1,8 @@
 package cn.qihangerp.api.service;
 
+import cn.qihangerp.api.common.PageQuery;
+import cn.qihangerp.api.common.PageResult;
+import cn.qihangerp.api.domain.ErpShipment;
 import cn.qihangerp.api.domain.ErpShipmentItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -9,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-05-16 17:20:49
 */
 public interface ErpShipmentItemService extends IService<ErpShipmentItem> {
-
+    PageResult<ErpShipmentItem> queryPageList(ErpShipmentItem shipping, PageQuery pageQuery);
 }

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询仓库订单发货列表
 export function listShippingStock(query) {
   return request({
-    url: '/shipping/stock_ship_list',
+    url: '/shipping/stock_shipment_list',
     method: 'get',
     params: query
   })
@@ -11,7 +11,7 @@ export function listShippingStock(query) {
 // 查询供应商订单发货列表
 export function listShippingSupplier(query) {
   return request({
-    url: '/shipping/supplier_ship_list',
+    url: '/shipping/supplier_shipment_list',
     method: 'get',
     params: query
   })

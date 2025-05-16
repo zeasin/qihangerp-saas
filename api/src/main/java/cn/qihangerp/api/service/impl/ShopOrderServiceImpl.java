@@ -203,7 +203,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                                 insert.setCity(weiOrder.getCityName());
                                 insert.setTown(weiOrder.getCountyName());
                                 insert.setAddress(weiOrder.getDetailInfo());
-                                insert.setShipType(-1);
+                                insert.setShipStatus(0);
                                 Long orderTime =weiOrder.getCreateTime().longValue();
                                 insert.setOrderTime(new Date(orderTime*1000));
 

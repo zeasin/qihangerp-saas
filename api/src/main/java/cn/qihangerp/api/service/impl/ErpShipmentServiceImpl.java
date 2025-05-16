@@ -10,7 +10,7 @@ import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.domain.ErpShipment;
 import cn.qihangerp.api.mapper.ErpOrderItemMapper;
 import cn.qihangerp.api.mapper.ErpOrderMapper;
-import cn.qihangerp.api.service.ErpOrderShippingService;
+import cn.qihangerp.api.service.ErpShipmentService;
 import cn.qihangerp.api.mapper.ErpShipmentMapper;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +21,8 @@ import org.springframework.stereotype.Service;
 */
 @AllArgsConstructor
 @Service
-public class ErpOrderShippingServiceImpl extends ServiceImpl<ErpShipmentMapper, ErpShipment>
-    implements ErpOrderShippingService{
+public class ErpShipmentServiceImpl extends ServiceImpl<ErpShipmentMapper, ErpShipment>
+    implements ErpShipmentService {
     private final ErpShipmentMapper mapper;
     private final ErpOrderMapper orderMapper;
     private final ErpOrderItemMapper itemMapper;
