@@ -25,6 +25,7 @@
             <result property="town" column="town" jdbcType="VARCHAR"/>
             <result property="orderTime" column="order_time" jdbcType="TIMESTAMP"/>
             <result property="shipStatus" column="ship_status" jdbcType="INTEGER"/>
+            <result property="shipType" column="ship_type" jdbcType="INTEGER"/>
             <result property="hasPushErp" column="has_push_erp" jdbcType="INTEGER"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
@@ -33,7 +34,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,order_num,shop_type,
+        id,order_num,shop_type,ship_type,
         shop_id,remark,buyer_memo,
         seller_memo,tag,refund_status,
         order_status,goods_amount,amount,

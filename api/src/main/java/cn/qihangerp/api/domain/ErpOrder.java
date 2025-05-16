@@ -118,6 +118,8 @@ public class ErpOrder implements Serializable {
      * 发货状态 0 待发货 1 已分配供应商发货 2已发货
      */
     private Integer shipStatus;
+    //发货方式 0 自己发货1联合发货2供应商发货
+    private Integer shipType;
 
 
 

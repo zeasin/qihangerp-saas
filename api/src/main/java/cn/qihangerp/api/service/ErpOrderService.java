@@ -18,6 +18,14 @@ import java.util.List;
 */
 public interface ErpOrderService extends IService<ErpOrder> {
     PageResult<ErpOrder> queryPageList(OrderSearchRequest bo, PageQuery pageQuery);
+
+    /**
+     * 获取自己待发货list（订单打印发货）
+     * @param bo
+     * @param pageQuery
+     * @return
+     */
+    PageResult<ErpOrder> queryWaitSelfShipmentPageList(OrderSearchRequest bo, PageQuery pageQuery);
     ErpOrder queryDetailById(Long id);
 
     /**
@@ -26,6 +34,14 @@ public interface ErpOrderService extends IService<ErpOrder> {
      * @return
      */
     ResultVo<Integer> manualShipmentOrder(ErpOrderShipBo shipBo,String createBy);
+
+    /**
+     * 分配给供应商发货
+     * @param shipBo
+     * @param createBy
+     * @return
+     */
+    ResultVo<Integer> allocateShipmentOrder(ErpOrderShipBo shipBo,String createBy);
 
     List<SalesDailyVo> salesDaily(Long tenantId);
     SalesDailyVo getTodaySalesDaily(Long tenantId);

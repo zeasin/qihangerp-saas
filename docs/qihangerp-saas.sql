@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 16/05/2025 20:39:37
+ Date: 16/05/2025 22:00:46
 */
 
 SET NAMES utf8mb4;
@@ -517,12 +517,13 @@ CREATE TABLE `erp_order`  (
   `city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '市',
   `town` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '区',
   `order_time` datetime NULL DEFAULT NULL COMMENT '订单时间',
-  `ship_status` int NOT NULL COMMENT '发货状态 0 待发货 1 已分配供应商发货 2已发货',
+  `ship_status` int NOT NULL DEFAULT 0 COMMENT '发货状态 0 待发货 1 已分配供应商发货 2仓库已发货',
   `has_push_erp` int NULL DEFAULT 0 COMMENT '是否推送到ERP',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
+  `ship_type` int NOT NULL DEFAULT 0 COMMENT '发货方式 0 自己发货1联合发货2供应商发货',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `order_sn_index`(`order_num`) USING BTREE,
   INDEX `shopid_index`(`shop_id`) USING BTREE
@@ -531,9 +532,9 @@ CREATE TABLE `erp_order`  (
 -- ----------------------------
 -- Records of erp_order
 -- ----------------------------
-INSERT INTO `erp_order` VALUES (1778674707316772867, 100, '3727945891454531072', 5, 6, NULL, NULL, NULL, NULL, 11, 11, 44.5, 44.5, '齐**', '158****0119', '****', '广东省', '深圳市', '宝安区', '2025-05-07 13:19:57', 0, 0, '2025-05-07 13:37:29', '手动确认', '2025-05-07 16:34:31', NULL);
-INSERT INTO `erp_order` VALUES (1778674707316772868, 100, '2009300499001', 5, 6, NULL, NULL, NULL, NULL, 1, 1, 89, 89, '启航', '15818590119', '', '广东省', '深圳市', '宝安区', '2025-05-16 09:00:21', 0, 0, '2025-05-16 09:00:26', '手动确认', '2025-05-16 11:54:05', '手动发货');
-INSERT INTO `erp_order` VALUES (1778674707316772869, 100, '1009930999302', 5, 6, NULL, NULL, NULL, NULL, 1, 2, 99, 99, '启航a', '15818590111', '北京政府大楼 100 号', '北京市', '市辖区', '东城区', '2025-05-16 14:55:08', 2, 0, '2025-05-16 14:55:12', '手动确认', '2025-05-16 17:53:55', '手动发货');
+INSERT INTO `erp_order` VALUES (1778674707316772867, 100, '3727945891454531072', 5, 6, NULL, NULL, NULL, NULL, 11, 11, 44.5, 44.5, '齐**', '158****0119', '****', '广东省', '深圳市', '宝安区', '2025-05-07 13:19:57', 0, 0, '2025-05-07 13:37:29', '手动确认', '2025-05-07 16:34:31', NULL, 0);
+INSERT INTO `erp_order` VALUES (1778674707316772868, 100, '2009300499001', 5, 6, NULL, NULL, NULL, NULL, 1, 1, 89, 89, '启航', '15818590119', '', '广东省', '深圳市', '宝安区', '2025-05-16 09:00:21', 0, 0, '2025-05-16 09:00:26', '手动确认', '2025-05-16 11:54:05', '手动发货', 0);
+INSERT INTO `erp_order` VALUES (1778674707316772869, 100, '1009930999302', 5, 6, NULL, NULL, NULL, NULL, 1, 2, 99, 99, '启航a', '15818590111', '北京政府大楼 100 号', '北京市', '市辖区', '东城区', '2025-05-16 14:55:08', 2, 0, '2025-05-16 14:55:12', '手动确认', '2025-05-16 17:53:55', '手动发货', 0);
 
 -- ----------------------------
 -- Table structure for erp_order_item
@@ -565,6 +566,8 @@ CREATE TABLE `erp_order_item`  (
   `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
+  `ship_status` int NOT NULL DEFAULT 0 COMMENT '发货状态 0 待发货 1 已发货',
+  `ship_type` int NOT NULL DEFAULT 0 COMMENT '发货方式 0 自己发货 2供应商发货',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goodId_index`(`erp_goods_id`) USING BTREE,
   INDEX `order_id`(`order_id`) USING BTREE
@@ -573,9 +576,9 @@ CREATE TABLE `erp_order_item`  (
 -- ----------------------------
 -- Records of erp_order_item
 -- ----------------------------
-INSERT INTO `erp_order_item` VALUES (1778674707337744386, 100, 6, 1778674707316772867, '3727945891454531072', '1912512446954844164', '3387757956', 0, 0, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://wst.wxapp.tc.qq.com/161/20304/snscosdownload/SZ/reserved/681ae501000026f90b46d9131a2b5515000000a000004f50', NULL, '[{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', 'A20701', 89, 44.5, 1, NULL, 0, 1, 0, NULL, NULL, NULL, NULL);
-INSERT INTO `erp_order_item` VALUES (1778674707337744387, 100, 6, 1778674707316772868, '2009300499001', '1912512446954844165', '3387753301', 1, 5, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', NULL, '2XL', 'A20705', 89, 89, 1, NULL, 0, 1, 0, NULL, NULL, NULL, NULL);
-INSERT INTO `erp_order_item` VALUES (1778674707337744388, 100, 6, 1778674707316772869, '1009930999302', '1912512446954844166', '3386353837', 2, 7, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', NULL, '黑色 M', 'A00112', 99, 99, 1, NULL, 0, 1, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_order_item` VALUES (1778674707337744386, 100, 6, 1778674707316772867, '3727945891454531072', '1912512446954844164', '3387757956', 0, 0, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://wst.wxapp.tc.qq.com/161/20304/snscosdownload/SZ/reserved/681ae501000026f90b46d9131a2b5515000000a000004f50', NULL, '[{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', 'A20701', 89, 44.5, 1, NULL, 0, 1, 0, NULL, NULL, NULL, NULL, 0, 0);
+INSERT INTO `erp_order_item` VALUES (1778674707337744387, 100, 6, 1778674707316772868, '2009300499001', '1912512446954844165', '3387753301', 1, 5, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', NULL, '2XL', 'A20705', 89, 89, 1, NULL, 0, 1, 0, NULL, NULL, NULL, NULL, 0, 0);
+INSERT INTO `erp_order_item` VALUES (1778674707337744388, 100, 6, 1778674707316772869, '1009930999302', '1912512446954844166', '3386353837', 2, 7, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', NULL, '黑色 M', 'A00112', 99, 99, 1, NULL, 0, 1, 0, NULL, NULL, NULL, NULL, 0, 0);
 
 -- ----------------------------
 -- Table structure for erp_purchase_order
@@ -2008,7 +2011,7 @@ CREATE TABLE `sys_user`  (
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$JYO9dJ9suY5mYRS9BvqKFOhV7DqTqfQjYy1WudBn6tzPItNrtTFAm', '0', '2025-04-01', '0', '127.0.0.1', '2025-05-16 08:57:40', 'admin', '2023-08-07 19:31:37', '', '2025-05-16 08:57:39', '管理员', NULL);
-INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-05-16 19:52:05', 'admin', '2024-04-21 10:36:49', 'admin', '2025-05-16 19:52:04', NULL, NULL);
+INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-05-16 21:02:42', 'admin', '2024-04-21 10:36:49', 'admin', '2025-05-16 21:02:41', NULL, NULL);
 INSERT INTO `sys_user` VALUES (101, NULL, '15818590119', '试用会员0119', '00', '', '', '0', '', '$2a$10$yMgN6PZKiuafBVHaEHhk3OoSQ5o98xVG8RHEs2sg5.Yv/TEQuR/86', '0', '2025-05-17', '0', '113.118.102.209', '2025-04-17 21:13:06', '主动注册', '2025-04-17 13:13:04', '', '2025-04-17 13:13:05', NULL, NULL);
 INSERT INTO `sys_user` VALUES (102, NULL, '15286902105', '试用会员2105', '00', '', '', '0', '', '$2a$10$nbDujbCk2SrdamYRHr217ORRipaa5p5lVMVFctBU6fPt/rd3k.5E.', '0', '2025-05-17', '0', '114.86.55.0', '2025-04-17 21:16:37', '主动注册', '2025-04-17 13:16:36', '', '2025-04-17 13:16:37', NULL, NULL);
 INSERT INTO `sys_user` VALUES (103, NULL, '13335117173', '试用会员7173', '00', '', '', '0', '', '$2a$10$oPYmtdGZ1rYNUCFpKaaIYOr1Z7mAtVAXmWrqyEj2qhAA.nqD2xjeC', '0', '2025-05-17', '0', '119.185.23.133', '2025-04-17 23:29:48', '主动注册', '2025-04-17 13:43:51', '', '2025-04-17 15:29:48', NULL, NULL);

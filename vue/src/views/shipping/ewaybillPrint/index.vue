@@ -385,15 +385,18 @@
 
 <script>
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import {listOrder, getOrder, budadanListOrder, manualShipmentOrder, allocateShipmentOrder} from "@/api/order/order";
+import {
+  getOrder,
+  budadanListOrder,
+  manualShipmentOrder,
+  allocateShipmentOrder,
+  waitSelfShipmentList
+} from "@/api/order/order";
 
 import {getWaybillAccountList,cancelWaybillCode,getWaybillPrintData, getWaybillCode, pushWaybillPrintSuccess,pushShipSend,getWaybillCodeAndSend} from "@/api/ship/ewaybill";
 import {listLogisticsStatus} from "@/api/api/logistics";
 import {listShop} from "@/api/shop/shop";
 import {parseTime} from "../../../utils/zhijian";
-
-// import {listOrder} from "@/api/order/wei";
-
 
 export default {
   name: "printWei",
@@ -474,7 +477,7 @@ export default {
     /** 查询列表 */
     getList() {
       this.loading = true;
-      listOrder({
+      waitSelfShipmentList({
         orderStatus:1,
         refundStatus:1
       }).then(response => {

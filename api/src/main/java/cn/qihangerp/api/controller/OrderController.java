@@ -26,7 +26,7 @@ public class OrderController extends BaseController
     private ErpOrderService orderService;
 
     /**
-     * 查询店铺订单列表
+     * 查询订单列表
      */
     @PreAuthorize("@ss.hasPermi('shop:order:list')")
     @GetMapping("/list")
@@ -36,6 +36,16 @@ public class OrderController extends BaseController
             order.setTenantId(getUserId());
         }
         var pageList = orderService.queryPageList(order,pageQuery);
+        return getDataTable(pageList);
+    }
+
+    @GetMapping("/waitSelfShipmentList")
+    public TableDataInfo queryWaitSelfShipmentPageList(OrderSearchRequest order, PageQuery pageQuery)
+    {
+        if(getUserId()!=1) {
+            order.setTenantId(getUserId());
+        }
+        var pageList = orderService.queryWaitSelfShipmentPageList(order,pageQuery);
         return getDataTable(pageList);
     }
 
@@ -73,10 +83,9 @@ public class OrderController extends BaseController
     @PostMapping("/allocateShipmentOrder")
     public AjaxResult allocateShipmentOrder(@RequestBody ErpOrderShipBo shipBo)
     {
-//        var result = orderService.manualShipmentOrder(shipBo,getUsername());
-//        if(result.getCode() == 0) return AjaxResult.success();
-//        else return AjaxResult.error(result.getMsg());
-        return AjaxResult.error("未实现");
+        var result = orderService.allocateShipmentOrder(shipBo,getUsername());
+        if(result.getCode() == 0) return AjaxResult.success();
+        else return AjaxResult.error(result.getMsg());
     }
 
 
