@@ -25,6 +25,8 @@ public class ErpOrderShipping implements Serializable {
      */
     private Long shopId;
     private int shopType;
+    //发货方 0 仓库发货 1 供应商发货
+    private int shipper;
 
     /**
      * o_order表id

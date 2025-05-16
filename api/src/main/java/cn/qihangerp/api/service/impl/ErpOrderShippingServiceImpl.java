@@ -47,37 +47,37 @@ public class ErpOrderShippingServiceImpl extends ServiceImpl<ErpOrderShippingMap
         return PageResult.build(pages);
     }
 
-    @Transactional
-    @Override
-    public ResultVo<Integer> handShip(ErpOrderShipping shipping) {
-        // 查询店铺订单是否存在
-        List<ErpOrder> oOrders = orderMapper.selectList(new LambdaQueryWrapper<ErpOrder>().eq(ErpOrder::getOrderNum, shipping.getOrderNum()).eq(ErpOrder::getShopId, shipping.getShopId()));
-        if(oOrders== null || oOrders.isEmpty()) {
-            // 没有找到订单
-            return ResultVo.error(ResultVoEnum.NotFound,shipping.getOrderNum()+"订单未找到");
-        }
-        // 查询订单ITEM
-        List<ErpOrderItem> oOrderItems = itemMapper.selectList(new LambdaQueryWrapper<ErpOrderItem>().eq(ErpOrderItem::getOrderId, oOrders.get(0).getId()));
-        shipping.setShipTime(new Date());
-        shipping.setPackages(JSONObject.toJSONString(oOrderItems));
-        shipping.setOrderId(oOrders.get(0).getId());
-        shipping.setRemark("手动发货");
-        shipping.setCreateTime(new Date());
-        mapper.insert(shipping);
-        // 回写状态
-        ErpOrder update = new ErpOrder();
-        update.setId(oOrders.get(0).getId());
-        update.setOrderStatus(2);//2已发货
-        update.setShippingTime(new Date());
-        update.setShippingCompany(shipping.getShipCompany());
-        update.setShippingNumber(shipping.getShipCode());
-        update.setShippingMan(shipping.getShipOperator());
-        update.setUpdateTime(new Date());
-        update.setUpdateBy("手动发货");
-        orderMapper.updateById(update);
-
-        return ResultVo.success();
-    }
+//    @Transactional
+//    @Override
+//    public ResultVo<Integer> handShip(ErpOrderShipping shipping) {
+//        // 查询店铺订单是否存在
+//        List<ErpOrder> oOrders = orderMapper.selectList(new LambdaQueryWrapper<ErpOrder>().eq(ErpOrder::getOrderNum, shipping.getOrderNum()).eq(ErpOrder::getShopId, shipping.getShopId()));
+//        if(oOrders== null || oOrders.isEmpty()) {
+//            // 没有找到订单
+//            return ResultVo.error(ResultVoEnum.NotFound,shipping.getOrderNum()+"订单未找到");
+//        }
+//        // 查询订单ITEM
+//        List<ErpOrderItem> oOrderItems = itemMapper.selectList(new LambdaQueryWrapper<ErpOrderItem>().eq(ErpOrderItem::getOrderId, oOrders.get(0).getId()));
+//        shipping.setShipTime(new Date());
+//        shipping.setPackages(JSONObject.toJSONString(oOrderItems));
+//        shipping.setOrderId(oOrders.get(0).getId());
+//        shipping.setRemark("手动发货");
+//        shipping.setCreateTime(new Date());
+//        mapper.insert(shipping);
+//        // 回写状态
+//        ErpOrder update = new ErpOrder();
+//        update.setId(oOrders.get(0).getId());
+//        update.setOrderStatus(2);//2已发货
+//        update.setShippingTime(new Date());
+//        update.setShippingCompany(shipping.getShipCompany());
+//        update.setShippingNumber(shipping.getShipCode());
+//        update.setShippingMan(shipping.getShipOperator());
+//        update.setUpdateTime(new Date());
+//        update.setUpdateBy("手动发货");
+//        orderMapper.updateById(update);
+//
+//        return ResultVo.success();
+//    }
 }
 
 

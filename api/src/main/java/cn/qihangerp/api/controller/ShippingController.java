@@ -16,15 +16,15 @@ public class ShippingController extends BaseController {
     {
         return getDataTable(shippingService.queryPageList(shipping,pageQuery));
     }
-    @PostMapping("/handShip")
-    public AjaxResult add(@RequestBody ErpOrderShipping shipping)
-    {
-        shipping.setShipType(1);
-        var result = shippingService.handShip(shipping);
-        if(result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
-            return AjaxResult.success();
-        }else{
-            return AjaxResult.error(result.getCode(),result.getMsg());
-        }
-    }
+//    @PostMapping("/handShip")
+//    public AjaxResult add(@RequestBody ErpOrderShipping shipping)
+//    {
+//        shipping.setShipType(1);
+//        var result = shippingService.handShip(shipping);
+//        if(result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
+//            return AjaxResult.success();
+//        }else{
+//            return AjaxResult.error(result.getCode(),result.getMsg());
+//        }
+//    }
 }

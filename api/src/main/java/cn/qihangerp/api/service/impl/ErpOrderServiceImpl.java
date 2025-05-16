@@ -118,6 +118,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
 
         // 添加发货记录
         ErpOrderShipping erpOrderShipping = new ErpOrderShipping();
+        erpOrderShipping.setShipper(0);//发货方 0 仓库发货 1 供应商发货
         erpOrderShipping.setShopId(erpOrder.getShopId());
         erpOrderShipping.setShopType(erpOrder.getShopType());
         erpOrderShipping.setOrderId(erpOrder.getId());
@@ -129,7 +130,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         erpOrderShipping.setShipFee(shipBo.getShippingCost());
         erpOrderShipping.setShipTime(new Date());
         erpOrderShipping.setShipOperator(shipBo.getShippingMan());
-        erpOrderShipping.setShipStatus(1);
+        erpOrderShipping.setShipStatus(1);//物流状态（1运输中2已完成）
 
         erpOrderShipping.setPackageHeight(shipBo.getHeight());
         erpOrderShipping.setPackageWeight(shipBo.getWeight());
@@ -147,16 +148,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         // 更新状态、发货方式
         ErpOrder update = new ErpOrder();
         update.setId(erpOrder.getId());
-        update.setShipType(0);
-        update.setShippingCompany(shipBo.getShippingCompany());
-        update.setShippingMan(shipBo.getShippingMan());
-        update.setShippingCost(BigDecimal.valueOf(shipBo.getShippingCost()));
-        update.setShippingNumber(shipBo.getShippingNumber());
-        update.setShippingTime(new Date());
-        update.setLength(shipBo.getLength());
-        update.setWidth(shipBo.getWidth());
-        update.setHeight(shipBo.getHeight());
-        update.setWeight(shipBo.getWeight());
+        update.setShipStatus(2);
         update.setOrderStatus(2);
         update.setUpdateTime(new Date());
         update.setUpdateBy("手动发货");

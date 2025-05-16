@@ -24,17 +24,8 @@
             <result property="city" column="city" jdbcType="VARCHAR"/>
             <result property="town" column="town" jdbcType="VARCHAR"/>
             <result property="orderTime" column="order_time" jdbcType="TIMESTAMP"/>
-            <result property="shipType" column="ship_type" jdbcType="INTEGER"/>
-            <result property="shippingTime" column="shipping_time" jdbcType="TIMESTAMP"/>
-            <result property="shippingNumber" column="shipping_number" jdbcType="VARCHAR"/>
-            <result property="shippingCompany" column="shipping_company" jdbcType="VARCHAR"/>
-            <result property="shippingMan" column="shipping_man" jdbcType="VARCHAR"/>
-            <result property="shippingCost" column="shipping_cost" jdbcType="DECIMAL"/>
+            <result property="shipStatus" column="ship_status" jdbcType="INTEGER"/>
             <result property="hasPushErp" column="has_push_erp" jdbcType="INTEGER"/>
-            <result property="length" column="length" jdbcType="FLOAT"/>
-            <result property="width" column="width" jdbcType="FLOAT"/>
-            <result property="height" column="height" jdbcType="FLOAT"/>
-            <result property="weight" column="weight" jdbcType="FLOAT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
@@ -48,12 +39,8 @@
         order_status,goods_amount,amount,
         receiver_name,receiver_mobile,address,
         province,city,town,
-        order_time,ship_type,shipping_time,
-        shipping_number,shipping_company,shipping_man,
-        shipping_cost,has_push_erp,length,
-        width,height,weight,
-        create_time,create_by,update_time,
-        update_by
+        order_time,ship_status,
+        has_push_erp,create_time,create_by,update_time,update_by
     </sql>
 
     <select id="salesDaily" resultType="cn.qihangerp.api.domain.vo.SalesDailyVo">

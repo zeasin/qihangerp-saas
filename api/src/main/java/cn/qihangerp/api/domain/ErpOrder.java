@@ -115,59 +115,19 @@ public class ErpOrder implements Serializable {
     private Date orderTime;
 
     /**
-     * 发货类型（0仓库发货；1供应商代发）
+     * 发货状态 0 待发货 1 已分配供应商发货 2已发货
      */
-    private Integer shipType;
+    private Integer shipStatus;
 
-    /**
-     * 发货时间
-     */
-    private Date shippingTime;
 
-    /**
-     * 快递单号
-     */
-    private String shippingNumber;
 
-    /**
-     * 物流公司
-     */
-    private String shippingCompany;
 
-    /**
-     * 发货人
-     */
-    private String shippingMan;
-
-    /**
-     * 发货费用
-     */
-    private BigDecimal shippingCost;
 
     /**
      * 是否推送到ERP
      */
     private Integer hasPushErp;
 
-    /**
-     * 长
-     */
-    private Float length;
-
-    /**
-     * 宽
-     */
-    private Float width;
-
-    /**
-     * 高
-     */
-    private Float height;
-
-    /**
-     * 重量
-     */
-    private Float weight;
 
     /**
      * 创建时间

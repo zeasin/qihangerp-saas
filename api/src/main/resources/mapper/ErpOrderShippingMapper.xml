@@ -8,6 +8,7 @@
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
             <result property="shopType" column="shop_type" jdbcType="INTEGER"/>
+            <result property="shipper" column="shipper" jdbcType="INTEGER"/>
             <result property="orderId" column="order_id" jdbcType="BIGINT"/>
             <result property="orderNum" column="order_num" jdbcType="VARCHAR"/>
             <result property="shipType" column="ship_type" jdbcType="INTEGER"/>
@@ -33,7 +34,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,shop_id,order_id,shop_type,
+        id,shop_id,order_id,shop_type,shipper,
         order_num,ship_type,ship_company,ship_company_code,
         ship_code,ship_fee,ship_time,
         ship_operator,ship_status,package_weight,

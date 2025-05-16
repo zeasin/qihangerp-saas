@@ -14,5 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ErpOrderShippingService extends IService<ErpOrderShipping> {
     PageResult<ErpOrderShipping> queryPageList(ErpOrderShipping shipping, PageQuery pageQuery);
 
-    ResultVo<Integer> handShip(ErpOrderShipping shipping);
+//    ResultVo<Integer> handShip(ErpOrderShipping shipping);
 }
