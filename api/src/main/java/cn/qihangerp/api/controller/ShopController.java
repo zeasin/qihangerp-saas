@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import cn.qihangerp.api.common.AjaxResult;
 import cn.qihangerp.api.common.BaseController;
 import cn.qihangerp.api.common.TableDataInfo;
-import cn.qihangerp.api.service.LogisticsCompanyService;
+import cn.qihangerp.api.service.ErpLogisticsCompanyService;
 import java.util.List;
 
 /**
@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/shop")
 public class ShopController extends BaseController {
-    private final LogisticsCompanyService logisticsCompanyService;
+    private final ErpLogisticsCompanyService erpLogisticsCompanyService;
     private final ShopService shopService;
 
     /**

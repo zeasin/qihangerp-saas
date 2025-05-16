@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @TableName("erp_logistics_company")
 @Data
-public class LogisticsCompany implements Serializable {
+public class ErpLogisticsCompany implements Serializable {
     /**
      * 主键ID
      */

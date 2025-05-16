@@ -43,6 +43,7 @@ public class ErpOrderShipping implements Serializable {
      * 物流公司
      */
     private String shipCompany;
+    private String shipCompanyCode;
 
     /**
      * 物流单号

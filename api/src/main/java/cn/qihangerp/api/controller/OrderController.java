@@ -46,22 +46,24 @@ public class OrderController extends BaseController
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
-        return success(orderService.getById(id));
+        ErpOrder erpOrder = orderService.queryDetailById(id);
+
+        return success(erpOrder);
     }
 
 
     /**
-     * 订单发货
+     * 订单发货(手动发货)
      * @param shipBo
      * @return
      */
-    @PostMapping("/ship")
-    public AjaxResult ship(@RequestBody ErpOrderShipBo shipBo)
+    @PostMapping("/manualShipment")
+    public AjaxResult manualShipment(@RequestBody ErpOrderShipBo shipBo)
     {
-        var result = orderService.shipErpOrder(shipBo);
-        if(result.getCode() == -1) return new AjaxResult(501,"订单不存在！");
-        else if(result.getCode() == -2) return new AjaxResult(502,"订单号已存在！");
-        return toAjax(result.getCode());
+        var result = orderService.manualShipmentOrder(shipBo);
+        if(result.getCode() == 0) return AjaxResult.success();
+        else return AjaxResult.error(result.getMsg());
+
     }
 
 }

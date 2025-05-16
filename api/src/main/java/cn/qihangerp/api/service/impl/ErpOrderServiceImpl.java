@@ -1,6 +1,10 @@
 package cn.qihangerp.api.service.impl;
 
+import cn.qihangerp.api.domain.ErpLogisticsCompany;
+import cn.qihangerp.api.domain.ErpOrderShipping;
 import cn.qihangerp.api.domain.vo.SalesDailyVo;
+import cn.qihangerp.api.mapper.ErpOrderShippingMapper;
+import cn.qihangerp.api.mapper.ErpLogisticsCompanyMapper;
 import cn.qihangerp.api.request.OrderSearchRequest;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -18,6 +22,7 @@ import cn.qihangerp.api.mapper.ErpOrderItemMapper;
 import cn.qihangerp.api.service.ErpOrderService;
 import cn.qihangerp.api.mapper.ErpOrderMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -35,6 +40,8 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
     implements ErpOrderService{
     private final ErpOrderMapper mapper;
     private final ErpOrderItemMapper orderItemMapper;
+    private final ErpOrderShippingMapper orderShippingMapper;
+    private final ErpLogisticsCompanyMapper erpLogisticsCompanyMapper;
 
     private final String DATE_PATTERN =
             "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
@@ -81,26 +88,46 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         return PageResult.build(pages);
     }
 
+    @Override
+    public ErpOrder queryDetailById(Long id) {
+        ErpOrder order = mapper.selectById(id);
+        if(order!=null){
+            order.setItemList(orderItemMapper.selectList(new LambdaQueryWrapper<ErpOrderItem>().eq(ErpOrderItem::getOrderId, order.getId())));
+        }
+        return order;
+    }
+
     @Transactional
     @Override
-    public ResultVo<Integer> shipErpOrder(ErpOrderShipBo shipBo) {
-        if(shipBo.getOrderIds()==null||shipBo.getOrderIds().length==0) return ResultVo.error(ResultVoEnum.ParamsError,"请选择订单");
-        if(shipBo.getShipType()==null) return ResultVo.error(ResultVoEnum.ParamsError,"请指定发货方式");
-        for(String orderId:shipBo.getOrderIds()){
-            ErpOrder erpOrder = mapper.selectById(orderId);
-            if(erpOrder!=null){
-                if(erpOrder.getOrderStatus()==0){
-                    // 更新状态、发货方式
-                    ErpOrder update = new ErpOrder();
-                    update.setId(erpOrder.getId());
-                    update.setShipType(shipBo.getShipType());
-                    update.setOrderStatus(1);
-                    update.setUpdateTime(new Date());
-                    update.setUpdateBy("确认发货方式");
-                    mapper.updateById(update);
-                }
-            }
+    public ResultVo<Integer> manualShipmentOrder(ErpOrderShipBo shipBo) {
+        if (StringUtils.isEmpty(shipBo.getId()) || shipBo.getId().equals("0"))
+            return ResultVo.error(ResultVoEnum.ParamsError, "缺少参数：id");
+
+        ErpOrder erpOrder = mapper.selectById(shipBo.getId());
+        if (erpOrder == null) {
+            return ResultVo.error("找不到订单数据");
+        } else if (erpOrder.getOrderStatus().intValue() != 1 && erpOrder.getRefundStatus().intValue() != 1) {
+            return ResultVo.error("订单状态不对，不允许发货");
         }
+        ErpLogisticsCompany erpLogisticsCompany = erpLogisticsCompanyMapper.selectById(shipBo.getShippingCompany());
+        if(erpLogisticsCompany==null) return ResultVo.error("快递公司选择错误");
+
+        // 添加发货记录
+        ErpOrderShipping erpOrderShipping = new ErpOrderShipping();
+
+        erpOrderShipping.setOrderId(shipBo.getId());
+//        orderShippingMapper.insert(erpOrderShipping);
+
+
+        // 更新状态、发货方式
+        ErpOrder update = new ErpOrder();
+        update.setId(erpOrder.getId());
+//        update.setShipType(shipBo.getShipType());
+        update.setOrderStatus(1);
+        update.setUpdateTime(new Date());
+        update.setUpdateBy("确认发货方式");
+//        mapper.updateById(update);
+
         return ResultVo.success();
     }
 

@@ -18,9 +18,9 @@ export function getOrder(id) {
 }
 
 
-export function shipOrder(data) {
+export function manualShipmentOrder(data) {
   return request({
-    url: '/order/ship',
+    url: '/order/manualShipment',
     method: 'post',
     data: data
   })

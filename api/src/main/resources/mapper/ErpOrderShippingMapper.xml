@@ -11,6 +11,7 @@
             <result property="orderNum" column="order_num" jdbcType="VARCHAR"/>
             <result property="shipType" column="ship_type" jdbcType="INTEGER"/>
             <result property="shipCompany" column="ship_company" jdbcType="VARCHAR"/>
+            <result property="shipCompanyCode" column="ship_company_code" jdbcType="VARCHAR"/>
             <result property="shipCode" column="ship_code" jdbcType="VARCHAR"/>
             <result property="shipFee" column="ship_fee" jdbcType="DECIMAL"/>
             <result property="shipTime" column="ship_time" jdbcType="TIMESTAMP"/>
@@ -32,7 +33,7 @@
 
     <sql id="Base_Column_List">
         id,shop_id,order_id,
-        order_num,ship_type,ship_company,
+        order_num,ship_type,ship_company,ship_company_code,
         ship_code,ship_fee,ship_time,
         ship_operator,ship_status,package_weight,
         package_length,package_width,package_height,

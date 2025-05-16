@@ -18,8 +18,14 @@ import java.util.List;
 */
 public interface ErpOrderService extends IService<ErpOrder> {
     PageResult<ErpOrder> queryPageList(OrderSearchRequest bo, PageQuery pageQuery);
+    ErpOrder queryDetailById(Long id);
 
-    ResultVo<Integer> shipErpOrder(ErpOrderShipBo shipBo);
+    /**
+     * 手动发货
+     * @param shipBo
+     * @return
+     */
+    ResultVo<Integer> manualShipmentOrder(ErpOrderShipBo shipBo);
 
     List<SalesDailyVo> salesDaily(Long tenantId);
     SalesDailyVo getTodaySalesDaily(Long tenantId);

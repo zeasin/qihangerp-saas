@@ -9,7 +9,19 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-
+      <el-form-item label="店铺" prop="shopId">
+        <el-select v-model="queryParams.shopId" placeholder="请选择店铺" clearable @change="handleQuery">
+          <el-option
+            v-for="item in shopList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+            <span style="float: left">{{ item.name }}</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 5">微信小店</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 9">其他渠道</span>
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -74,9 +86,10 @@
         <el-button
           type="primary"
           plain
+          :disabled="single"
           icon="el-icon-download"
           size="mini"
-          @click="handleShipping"
+          @click="handleShip"
         >手动发货</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -212,14 +225,120 @@
       </div>
     </el-dialog>
 
+
+    <!-- 打包发货对话框 -->
+    <el-dialog title="打包发货" :visible.sync="shipOpen" width="1100px" append-to-body>
+
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" >
+        <el-descriptions title="订单信息">
+          <el-descriptions-item label="ID">{{form.id}}</el-descriptions-item>
+          <el-descriptions-item label="订单号">{{form.orderNum}}</el-descriptions-item>
+
+          <el-descriptions-item label="店铺">
+            {{ shopList.find(x=>x.id == form.shopId)?shopList.find(x=>x.id == form.shopId).name:'' }}
+            <el-tag size="small" v-if="form.shopType === 5">微信小店</el-tag>
+
+          </el-descriptions-item>
+          <el-descriptions-item label="买家留言">
+            {{form.buyerMemo}}
+          </el-descriptions-item>
+          <el-descriptions-item label="备注">
+            {{form.remark}}
+          </el-descriptions-item>
+          <el-descriptions-item label="创建时间">
+            {{ parseTime(form.createTime) }}
+          </el-descriptions-item>
+
+          <el-descriptions-item label="订单状态">
+            <el-tag v-if="form.orderStatus === 1" style="margin-bottom: 6px;">待发货</el-tag>
+            <el-tag v-if="form.orderStatus === 2" style="margin-bottom: 6px;">已发货</el-tag>
+            <el-tag v-if="form.orderStatus === 3" style="margin-bottom: 6px;">已签收</el-tag>
+          </el-descriptions-item>
+          <el-descriptions-item label="退款状态">
+            <el-tag v-if="form.refundStatus === 1">无售后或售后关闭</el-tag>
+            <el-tag v-if="form.refundStatus === 2">售后处理中</el-tag>
+            <el-tag v-if="form.refundStatus === 3">退款中</el-tag>
+            <el-tag v-if="form.refundStatus === 4">退款成功</el-tag>
+          </el-descriptions-item>
+          <el-descriptions-item label="">
+<!--            <el-tag v-if="form.shipType === 1"  type="danger">供应商代发</el-tag>-->
+<!--            <el-tag v-if="form.shipType === 0" type="danger">仓库发货</el-tag>-->
+          </el-descriptions-item>
+          <el-descriptions-item label="收件人姓名">{{form.receiverName}}</el-descriptions-item>
+          <el-descriptions-item label="收件人手机号">{{form.receiverMobile}}</el-descriptions-item>
+          <el-descriptions-item label="省市区">{{form.province}}{{form.city}}{{form.town}}</el-descriptions-item>
+          <el-descriptions-item label="详细地址">{{form.address}}</el-descriptions-item>
+
+
+
+        </el-descriptions>
+
+        <el-divider content-position="center">商品明细</el-divider>
+        <el-table :data="form.itemList"  style="margin-bottom: 10px;">
+          <!-- <el-table-column type="selection" width="50" align="center" /> -->
+          <el-table-column label="序号" align="center" type="index" width="50"/>
+
+          <el-table-column label="商品图片" prop="goodsImg" width="80">
+            <template slot-scope="scope">
+              <el-image style="width: 70px; height: 70px" :src="scope.row.goodsImg"></el-image>
+            </template>
+          </el-table-column>
+          <el-table-column label="商品标题" prop="goodsTitle" ></el-table-column>
+          <el-table-column label="SKU" prop="goodsSpec" width="150"></el-table-column>
+          <el-table-column label="sku编码" prop="skuNum"></el-table-column>
+          <!--          <el-table-column label="单价" prop="goodsPrice"></el-table-column>-->
+          <el-table-column label="数量" prop="quantity"></el-table-column>
+          <!-- <el-table-column label="商品金额" prop="itemAmount"></el-table-column> -->
+        </el-table>
+        <el-form-item label="包裹尺寸" prop="height">
+          <el-input type="number" v-model.number="form.length" placeholder="长mm" style="width:90px" /> x
+          <el-input type="number"  v-model.number="form.width" placeholder="宽mm" style="width:90px" /> x
+          <el-input type="number" v-model.number="form.height" placeholder="高mm" style="width:90px" />
+        </el-form-item>
+        <el-form-item label="包裹重量" prop="weight">
+          <el-input type="number" v-model.number="form.weight" placeholder="请输入包裹重量（单位g）" style="width:300px" />
+        </el-form-item>
+        <el-row>
+          <el-col>
+            <el-form-item label="物流公司" prop="shippingCompany">
+              <!--              <el-input v-model="form.shippingCompany" placeholder="请输入物流公司" style="width:300px" />-->
+              <el-select v-model="form.shippingCompany" filterable r placeholder="选择快递公司" style="width:300px">
+                <el-option v-for="item in logisticsList" :key="item.id" :label="item.name" :value="item.name">
+                  <span style="float: left">{{ item.name }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px" >{{item.number}}</span>
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="物流单号" prop="shippingNumber">
+              <el-input v-model="form.shippingNumber" placeholder="请输入物流单号" style="width:300px" />
+            </el-form-item>
+            <el-form-item label="物流费用" prop="shippingCost">
+              <el-input v-model="form.shippingCost" placeholder="请输入物流费用" style="width:300px" />
+            </el-form-item>
+            <el-form-item label="发货人" prop="shippingMan">
+              <el-input v-model="form.shippingMan" placeholder="请输入发货人" style="width:300px" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitShipForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+
   </div>
 </template>
 
 <script>
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import {listOrder, getOrder,budadanListOrder } from "@/api/order/order";
+import {listOrder, getOrder, budadanListOrder, manualShipmentOrder} from "@/api/order/order";
 
 import {getWaybillAccountList,cancelWaybillCode,getWaybillPrintData, getWaybillCode, pushWaybillPrintSuccess,pushShipSend,getWaybillCodeAndSend} from "@/api/ship/ewaybill";
+import {listLogisticsStatus} from "@/api/api/logistics";
+import {listShop} from "@/api/shop/shop";
+import {parseTime} from "../../../utils/zhijian";
 
 // import {listOrder} from "@/api/order/wei";
 
@@ -235,6 +354,7 @@ export default {
       ids: [],
       shopList: [],
       orderList: [],
+      logisticsList: [],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -247,6 +367,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      shipOpen: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -260,18 +381,32 @@ export default {
         printer: null
       },
       // 表单参数
-      form: {},
+      form: {
+        weight:0.0
+      },
       printerList: [],
       deliverList: [],
       // 表单校验
-      rules: {}
+      rules: {
+        height: [{ required: true, message: '不能为空' }],
+        weight: [{ required: true, message: '不能为空' }],
+        shippingNumber: [{ required: true, message: '不能为空' }],
+        shippingCompany: [{ required: true, message: '不能为空' }],
+        shippingCost: [{ required: true, message: '不能为空' }],
+        // shippingMan: [{ required: true, message: '不能为空' }],
+      }
     };
   },
   created() {
     this.openWs()
-    this.getList();
+    listShop({}).then(response => {
+      this.shopList = response.rows;
+      this.getList();
+    });
+
   },
   methods: {
+    parseTime,
     getSkuValues(spec){
       try {
         // 解析 JSON，返回一个数组
@@ -518,6 +653,33 @@ export default {
         this.getList()
       })
     },
+    handleShip(row){
+      this.reset();
+      const id = row.id || this.ids
+      console.log('======',id)
+      getOrder(id).then(response => {
+        this.form = response.data;
+        this.form.length=0
+        this.form.width=0
+        this.form.height=0
+        this.form.weight=0.0
+        this.form.shippingCost=0.0
+        listLogisticsStatus({}).then(resp=>{
+          this.logisticsList = resp.rows
+        })
+        this.shipOpen = true;
+        // this.detailTitle = "订单详情";
+      });
+    },
+    submitShipForm(){
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          manualShipmentOrder(this.form).then(resp =>{
+            this.$modal.msgSuccess("手动发货成功");
+          })
+        }
+      })
+    }
   }
 };
 </script>
