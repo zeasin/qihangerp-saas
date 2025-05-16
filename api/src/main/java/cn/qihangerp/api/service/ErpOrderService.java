@@ -25,7 +25,7 @@ public interface ErpOrderService extends IService<ErpOrder> {
      * @param shipBo
      * @return
      */
-    ResultVo<Integer> manualShipmentOrder(ErpOrderShipBo shipBo);
+    ResultVo<Integer> manualShipmentOrder(ErpOrderShipBo shipBo,String createBy);
 
     List<SalesDailyVo> salesDaily(Long tenantId);
     SalesDailyVo getTodaySalesDaily(Long tenantId);

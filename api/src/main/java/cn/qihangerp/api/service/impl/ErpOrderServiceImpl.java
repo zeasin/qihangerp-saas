@@ -6,6 +6,7 @@ import cn.qihangerp.api.domain.vo.SalesDailyVo;
 import cn.qihangerp.api.mapper.ErpOrderShippingMapper;
 import cn.qihangerp.api.mapper.ErpLogisticsCompanyMapper;
 import cn.qihangerp.api.request.OrderSearchRequest;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -24,6 +25,7 @@ import cn.qihangerp.api.mapper.ErpOrderMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -99,7 +101,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
 
     @Transactional
     @Override
-    public ResultVo<Integer> manualShipmentOrder(ErpOrderShipBo shipBo) {
+    public ResultVo<Integer> manualShipmentOrder(ErpOrderShipBo shipBo,String createBy) {
         if (StringUtils.isEmpty(shipBo.getId()) || shipBo.getId().equals("0"))
             return ResultVo.error(ResultVoEnum.ParamsError, "缺少参数：id");
 
@@ -112,21 +114,53 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         ErpLogisticsCompany erpLogisticsCompany = erpLogisticsCompanyMapper.selectById(shipBo.getShippingCompany());
         if(erpLogisticsCompany==null) return ResultVo.error("快递公司选择错误");
 
+        List<ErpOrderItem> oOrderItems = orderItemMapper.selectList(new LambdaQueryWrapper<ErpOrderItem>().eq(ErpOrderItem::getOrderId, erpOrder.getId()));
+
         // 添加发货记录
         ErpOrderShipping erpOrderShipping = new ErpOrderShipping();
+        erpOrderShipping.setShopId(erpOrder.getShopId());
+        erpOrderShipping.setShopType(erpOrder.getShopType());
+        erpOrderShipping.setOrderId(erpOrder.getId());
+        erpOrderShipping.setOrderNum(erpOrder.getOrderNum());
+        erpOrderShipping.setShipType(1);//发货类型（1订单发货2商品补发3商品换货）
+        erpOrderShipping.setShipCompany(erpLogisticsCompany.getName());
+        erpOrderShipping.setShipCompanyCode(erpLogisticsCompany.getCode());
+        erpOrderShipping.setShipCode(shipBo.getShippingNumber());
+        erpOrderShipping.setShipFee(shipBo.getShippingCost());
+        erpOrderShipping.setShipTime(new Date());
+        erpOrderShipping.setShipOperator(shipBo.getShippingMan());
+        erpOrderShipping.setShipStatus(1);
 
-        erpOrderShipping.setOrderId(shipBo.getId());
-//        orderShippingMapper.insert(erpOrderShipping);
+        erpOrderShipping.setPackageHeight(shipBo.getHeight());
+        erpOrderShipping.setPackageWeight(shipBo.getWeight());
+        erpOrderShipping.setPackageLength(shipBo.getLength());
+        erpOrderShipping.setPackageWidth(shipBo.getWidth());
+        erpOrderShipping.setPacksgeOperator(shipBo.getShippingMan());
+        erpOrderShipping.setPackages(JSONObject.toJSONString(oOrderItems));
+        erpOrderShipping.setRemark(shipBo.getRemark());
+        erpOrderShipping.setCreateBy(createBy);
+        erpOrderShipping.setCreateTime(new Date());
+
+        orderShippingMapper.insert(erpOrderShipping);
 
 
         // 更新状态、发货方式
         ErpOrder update = new ErpOrder();
         update.setId(erpOrder.getId());
-//        update.setShipType(shipBo.getShipType());
-        update.setOrderStatus(1);
+        update.setShipType(0);
+        update.setShippingCompany(shipBo.getShippingCompany());
+        update.setShippingMan(shipBo.getShippingMan());
+        update.setShippingCost(BigDecimal.valueOf(shipBo.getShippingCost()));
+        update.setShippingNumber(shipBo.getShippingNumber());
+        update.setShippingTime(new Date());
+        update.setLength(shipBo.getLength());
+        update.setWidth(shipBo.getWidth());
+        update.setHeight(shipBo.getHeight());
+        update.setWeight(shipBo.getWeight());
+        update.setOrderStatus(2);
         update.setUpdateTime(new Date());
-        update.setUpdateBy("确认发货方式");
-//        mapper.updateById(update);
+        update.setUpdateBy("手动发货");
+        mapper.updateById(update);
 
         return ResultVo.success();
     }

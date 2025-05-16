@@ -1,6 +1,7 @@
 package cn.qihangerp.api.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -22,7 +23,8 @@ public class ErpOrderShipping implements Serializable {
     /**
      * 店铺id
      */
-    private Integer shopId;
+    private Long shopId;
+    private int shopType;
 
     /**
      * o_order表id
@@ -53,7 +55,7 @@ public class ErpOrderShipping implements Serializable {
     /**
      * 物流费用
      */
-    private Integer shipFee;
+    private Float shipFee;
 
     /**
      * 发货时间
@@ -73,22 +75,22 @@ public class ErpOrderShipping implements Serializable {
     /**
      * 包裹重量
      */
-    private Double packageWeight;
+    private Float packageWeight;
 
     /**
      * 包裹长度
      */
-    private Double packageLength;
+    private Float packageLength;
 
     /**
      * 包裹宽度
      */
-    private Double packageWidth;
+    private Float packageWidth;
 
     /**
      * 包裹高度
      */
-    private Double packageHeight;
+    private Float packageHeight;
 
     /**
      * 打包操作人

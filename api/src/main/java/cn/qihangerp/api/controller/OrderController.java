@@ -60,7 +60,7 @@ public class OrderController extends BaseController
     @PostMapping("/manualShipment")
     public AjaxResult manualShipment(@RequestBody ErpOrderShipBo shipBo)
     {
-        var result = orderService.manualShipmentOrder(shipBo);
+        var result = orderService.manualShipmentOrder(shipBo,getUsername());
         if(result.getCode() == 0) return AjaxResult.success();
         else return AjaxResult.error(result.getMsg());
 

@@ -43,15 +43,15 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleShipping"
-        >手动发货</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          plain-->
+<!--          icon="el-icon-download"-->
+<!--          size="mini"-->
+<!--          @click="handleShipping"-->
+<!--        >手动发货</el-button>-->
+<!--      </el-col>-->
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
 <!--          type="danger"-->
@@ -69,7 +69,7 @@
       <el-table-column label="订单编号" align="center" prop="orderNum" />
       <el-table-column label="店铺" align="center" prop="shopId" >
         <template slot-scope="scope">
-          <span>{{ shopList.find(x=>x.id === scope.row.shopId).name  }}</span>
+          <span>{{ shopList.find(x=>x.id == scope.row.shopId).name  }}</span>
         </template>
       </el-table-column>
       <el-table-column label="类型" align="center" prop="shipType;" >

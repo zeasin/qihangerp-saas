@@ -303,7 +303,7 @@
             <el-form-item label="物流公司" prop="shippingCompany">
               <!--              <el-input v-model="form.shippingCompany" placeholder="请输入物流公司" style="width:300px" />-->
               <el-select v-model="form.shippingCompany" filterable r placeholder="选择快递公司" style="width:300px">
-                <el-option v-for="item in logisticsList" :key="item.id" :label="item.name" :value="item.name">
+                <el-option v-for="item in logisticsList" :key="item.id" :label="item.name" :value="item.id">
                   <span style="float: left">{{ item.name }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px" >{{item.number}}</span>
                 </el-option>
@@ -676,6 +676,8 @@ export default {
         if (valid) {
           manualShipmentOrder(this.form).then(resp =>{
             this.$modal.msgSuccess("手动发货成功");
+            this.shipOpen = false
+            this.getList()
           })
         }
       })

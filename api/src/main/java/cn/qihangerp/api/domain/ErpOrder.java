@@ -152,22 +152,22 @@ public class ErpOrder implements Serializable {
     /**
      * 长
      */
-    private Double length;
+    private Float length;
 
     /**
      * 宽
      */
-    private Double width;
+    private Float width;
 
     /**
      * 高
      */
-    private Double height;
+    private Float height;
 
     /**
      * 重量
      */
-    private Double weight;
+    private Float weight;
 
     /**
      * 创建时间
