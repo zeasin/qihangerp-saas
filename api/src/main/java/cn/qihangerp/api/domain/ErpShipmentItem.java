@@ -48,6 +48,10 @@ public class ErpShipmentItem {
      * 订单 id
      */
     private String orderId;
+    /**
+     * 订单编号
+     */
+    private String orderNum;
 
     /**
      * 订单itemID（o_order_item外键）

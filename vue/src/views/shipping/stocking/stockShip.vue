@@ -63,17 +63,28 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="danger"-->
-<!--          plain-->
-<!--          icon="el-icon-document-copy"-->
-<!--          size="mini"-->
-<!--          :disabled="multiple"-->
-<!--          @click="handleSelection"-->
-<!--          v-hasPermi="['xhs:orderReceiver:remove']"-->
-<!--        >生成拣货单</el-button>-->
-<!--      </el-col>-->
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-document-copy"
+          size="mini"
+          :disabled="multiple"
+          @click="handleSelection"
+          v-hasPermi="['xhs:orderReceiver:remove']"
+        >生成拣货单</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-document-copy"
+          size="mini"
+          :disabled="multiple"
+          @click="handleSelection"
+          v-hasPermi="['xhs:orderReceiver:remove']"
+        >确认出库</el-button>
+      </el-col>
 <!--      <el-col :span="1.5">-->
 <!--      <el-button-->
 <!--        type="primary"-->
@@ -102,7 +113,7 @@
     <el-table v-loading="loading" :data="shippingList" @selection-change="handleSelectionChange">
        <el-table-column type="selection" width="55" v-if="queryParams.status==='0'" align="center" />
       <!-- <el-table-column label="主键" align="center" prop="id" /> -->
-      <el-table-column label="订单编号" align="center" prop="orderNum" />
+      <el-table-column label="订单号" align="left" prop="orderNum" />
 <!--       <el-table-column label="店铺" align="center" prop="shopId" >-->
 <!--        <template slot-scope="scope">-->
 <!--          <span>{{ shopList.find(x=>x.id === scope.row.shopId).name  }}</span>-->
@@ -117,19 +128,19 @@
          </template>
       </el-table-column> -->
 
-       <el-table-column label="子订单编号" align="center" prop="subOrderNum" />
-      <el-table-column label="下单日期" align="center" prop="orderDate" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.orderDate, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
+<!--       <el-table-column label="子订单编号" align="center" prop="subOrderNum" />-->
+<!--      <el-table-column label="下单日期" align="center" prop="orderDate" width="180">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ parseTime(scope.row.orderDate, '{y}-{m}-{d}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
 
-      <el-table-column label="商品" >
+      <el-table-column label="商品图片" width="80px">
         <template slot-scope="scope">
               <el-image  style="width: 70px; height: 70px;" :src="scope.row.goodsImg"></el-image>
         </template>
       </el-table-column>
-      <el-table-column label="商品标题" align="center" prop="goodsTitle" />
+      <el-table-column label="商品标题" align="left" prop="goodsTitle" />
       <el-table-column label="商品SKU" align="center" prop="goodsSpec" />
       <el-table-column label="数量" align="center" prop="quantity" />
 

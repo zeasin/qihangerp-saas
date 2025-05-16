@@ -146,6 +146,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
             erpShipmentItem.setShopType(erpShipment.getShopType());
             erpShipmentItem.setShipmentId(erpShipment.getId());
             erpShipmentItem.setOrderId(erpShipment.getOrderId());
+            erpShipmentItem.setOrderNum(erpShipment.getOrderNum());
             erpShipmentItem.setOrderItemId(orderItem.getId());
             erpShipmentItem.setErpGoodsId(orderItem.getErpGoodsId());
             erpShipmentItem.setErpSkuId(orderItem.getErpSkuId());
