@@ -96,10 +96,11 @@
         <el-button
           type=""
           plain
+          :disabled="single"
           icon="el-icon-download"
           size="mini"
-          @click="handleShipping"
-        >分配给供应商发货</el-button>
+          @click="handleShipSend"
+        >分配给供应商发货AA</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
