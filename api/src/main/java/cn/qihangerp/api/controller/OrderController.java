@@ -63,7 +63,22 @@ public class OrderController extends BaseController
         var result = orderService.manualShipmentOrder(shipBo,getUsername());
         if(result.getCode() == 0) return AjaxResult.success();
         else return AjaxResult.error(result.getMsg());
-
     }
+
+    /**
+     * 分配供应商发货
+     * @param shipBo
+     * @return
+     */
+    @PostMapping("/allocateShipmentOrder")
+    public AjaxResult allocateShipmentOrder(@RequestBody ErpOrderShipBo shipBo)
+    {
+//        var result = orderService.manualShipmentOrder(shipBo,getUsername());
+//        if(result.getCode() == 0) return AjaxResult.success();
+//        else return AjaxResult.error(result.getMsg());
+        return AjaxResult.error("未实现");
+    }
+
+
 
 }

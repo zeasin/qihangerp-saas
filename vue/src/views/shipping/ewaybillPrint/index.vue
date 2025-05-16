@@ -375,7 +375,7 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitShipForm">确 定</el-button>
+        <el-button type="primary" @click="submitAllocateShipmentForm">分配给供应商发货</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -385,7 +385,7 @@
 
 <script>
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import {listOrder, getOrder, budadanListOrder, manualShipmentOrder} from "@/api/order/order";
+import {listOrder, getOrder, budadanListOrder, manualShipmentOrder, allocateShipmentOrder} from "@/api/order/order";
 
 import {getWaybillAccountList,cancelWaybillCode,getWaybillPrintData, getWaybillCode, pushWaybillPrintSuccess,pushShipSend,getWaybillCodeAndSend} from "@/api/ship/ewaybill";
 import {listLogisticsStatus} from "@/api/api/logistics";
@@ -709,11 +709,6 @@ export default {
       console.log('======',id)
       getOrder(id).then(response => {
         this.form = response.data;
-        this.form.length=0
-        this.form.width=0
-        this.form.height=0
-        this.form.weight=0.0
-        this.form.shippingCost=0.0
         this.allocateShipmentOpen = true;
         // this.detailTitle = "订单详情";
       });
@@ -742,6 +737,7 @@ export default {
         // this.detailTitle = "订单详情";
       });
     },
+    // 手动发货
     submitShipForm(){
       this.$refs["form"].validate(valid => {
         if (valid) {
@@ -749,6 +745,23 @@ export default {
             this.$modal.msgSuccess("手动发货成功");
             this.shipOpen = false
             this.getList()
+          })
+        }
+      })
+    },
+    // 分配给供应商发货
+    submitAllocateShipmentForm(){
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          allocateShipmentOrder(this.form).then(resp =>{
+            if(resp.code==200){
+              this.$modal.msgSuccess("分配发货成功");
+              this.allocateShipmentOpen = false
+              this.getList()
+            }else{
+              this.$modal.msgError(resp.msg);
+            }
+
           })
         }
       })

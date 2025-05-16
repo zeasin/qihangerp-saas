@@ -17,7 +17,7 @@ export function getOrder(id) {
   })
 }
 
-
+// 手动发货
 export function manualShipmentOrder(data) {
   return request({
     url: '/order/manualShipment',
@@ -26,3 +26,11 @@ export function manualShipmentOrder(data) {
   })
 }
 
+// 分配供应商发货
+export function allocateShipmentOrder(data) {
+  return request({
+    url: '/order/allocateShipmentOrder',
+    method: 'post',
+    data: data
+  })
+}
