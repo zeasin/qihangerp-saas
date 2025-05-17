@@ -34,28 +34,12 @@ export function supplierAgentShipment(data) {
     data:data
   })
 }
-// 新增仓库拣货单
-export function stockingAdd(data) {
+// 自己发货确认出库
+export function stockOutConfirm(data) {
   return request({
-    url: '/wms/shipping/stockingAdd',
+    url: '/shipping/stock_out_confirm',
     method: 'post',
     data: data
   })
 }
 
-// 修改仓库订单发货
-export function updateShipping(data) {
-  return request({
-    url: '/wms/shipping',
-    method: 'put',
-    data: data
-  })
-}
-
-// 删除仓库订单发货
-export function delShipping(id) {
-  return request({
-    url: '/wms/shipping/' + id,
-    method: 'delete'
-  })
-}

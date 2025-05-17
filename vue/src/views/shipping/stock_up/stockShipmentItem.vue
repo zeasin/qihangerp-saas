@@ -63,17 +63,17 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-document-copy"
-          size="mini"
-          :disabled="multiple"
-          @click="handleSelection"
-          v-hasPermi="['xhs:orderReceiver:remove']"
-        >生成拣货单</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="danger"-->
+<!--          plain-->
+<!--          icon="el-icon-document-copy"-->
+<!--          size="mini"-->
+<!--          :disabled="multiple"-->
+<!--          @click="handleSelection"-->
+<!--          v-hasPermi="['xhs:orderReceiver:remove']"-->
+<!--        >生成拣货单</el-button>-->
+<!--      </el-col>-->
       <el-col :span="1.5">
         <el-button
           type="primary"
@@ -82,7 +82,6 @@
           size="mini"
           :disabled="multiple"
           @click="handleSelection"
-          v-hasPermi="['xhs:orderReceiver:remove']"
         >确认出库</el-button>
       </el-col>
 <!--      <el-col :span="1.5">-->
@@ -200,14 +199,14 @@
           </el-table-column>
           <el-table-column label="商品标题" prop="goodsTitle" ></el-table-column>
           <el-table-column label="规格" prop="goodsSpec" ></el-table-column>
-          <el-table-column label="sku编码" prop="specNum" ></el-table-column>
+          <el-table-column label="sku编码" prop="skuNum" ></el-table-column>
           <el-table-column label="数量" prop="quantity"></el-table-column>
           <el-table-column label="仓库库存" prop="inventory"></el-table-column>
 
         </el-table>
       </el-form>
       <div slot="footer" class="dialog-footer" v-if="isGen">
-        <el-button type="primary" @click="submitForm">生成拣货单</el-button>
+        <el-button type="primary" @click="submitForm">确认出库</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -215,8 +214,9 @@
 </template>
 
 <script>
-import { listShippingStock, getShippingDetail, stockingAdd } from "@/api/wms/shipping";
+import { listShippingStock, getShippingDetail, stockOutConfirm } from "@/api/wms/shipping";
 import { listShop } from "@/api/shop/shop";
+import {querySkuInventory} from "@/api/goods/goodsInventory";
 export default {
   name: "stockShipmentItem",
   data() {
@@ -344,7 +344,7 @@ export default {
             this.$modal.msgError("请选择备货商品");
           }
           this.form.ids = this.ids;
-          stockingAdd(this.form).then(response => {
+          stockOutConfirm(this.form).then(response => {
             this.$modal.msgSuccess("拣货单生成成功");
             this.open = false;
             this.getList();
@@ -361,13 +361,13 @@ export default {
       const ids = row.id || this.ids;
       // console.log("=====生成出库单=====",ids)
       if(!ids && ids.length===0){
-        this.$modal.msgError("请选选择要备货的商品");
+        this.$modal.msgError("请选选择要出库的商品");
         return
       }
       if(isGen===undefined) this.isGen = true
       else this.isGen = isGen
       if(this.isGen === false)this.title = "备货统计";
-      else this.title = "生成拣货单";
+      else this.title = "商品出库";
 
       // 创建一个包含年月日小时分钟秒的字符串作为基本编号
       var date = new Date();
@@ -389,37 +389,35 @@ export default {
 
       ids.forEach(id=>{
         const obj = this.shippingList.find(y=>y.id === id)
-        const has = this.skuList.find(y=>y.specId === obj.specId)
+        const has = this.skuList.find(y=>y.erpSkuId === obj.erpSkuId)
         if(has){
           // 增加数量即可
           has.quantity = has.quantity + obj.quantity
           has.ids.push(id)
         }else{
-          // 新增数据
-          const ids1 =[]
-          ids1.push(id);
-          this.skuList.push({
-            ids:ids1,
-            specId:obj.specId,
-            goodsImg:obj.goodsImg,
-            goodsNum:obj.goodsNum,
-            goodsTitle:obj.goodsTitle,
-            goodsSpec:obj.goodsSpec,
-            specNum:obj.specNum,
-            quantity:obj.quantity,
-            inventory:obj.inventory
-          })
+          console.log("=====去服务器查询skuId的库存=====",obj)
+          // 去服务器查询skuId的库存
+          querySkuInventory(obj.erpSkuId).then(resp=>{
+            console.log("=====去服务器查询skuId的库存=====",resp)
+            // 新增数据
+            const ids1 =[]
+            ids1.push(id);
+            this.skuList.push({
+              ids:ids1,
+              erpSkuId:obj.erpSkuId,
+              goodsImg:obj.goodsImg,
+              goodsNum:obj.goodsNum,
+              goodsTitle:obj.goodsTitle,
+              goodsSpec:obj.goodsSpec,
+              skuNum:obj.skuNum,
+              quantity:obj.quantity,
+              inventory:resp.data
+            })
+          });
+
         }
       })
-
-
       this.open = true;
-      // this.$modal.confirm('是否确认删除仓库订单发货编号为"' + ids + '"的数据项？').then(function() {
-      //   return delShipping(ids);
-      // }).then(() => {
-      //   this.getList();
-      //   this.$modal.msgSuccess("删除成功");
-      // }).catch(() => {});
     },
     /** 导出按钮操作 */
     handleExport() {

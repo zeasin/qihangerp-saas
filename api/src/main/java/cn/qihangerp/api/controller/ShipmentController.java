@@ -1,9 +1,12 @@
 package cn.qihangerp.api.controller;
 
 import cn.qihangerp.api.domain.ErpShipmentItem;
+import cn.qihangerp.api.request.StockOutCreateRequest;
+import cn.qihangerp.api.request.StockShipmentStockOutRequest;
 import cn.qihangerp.api.request.SupplierAgentShipmentRequest;
 import cn.qihangerp.api.service.ErpShipmentItemService;
 import lombok.AllArgsConstructor;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.web.bind.annotation.*;
 import cn.qihangerp.api.common.*;
 import cn.qihangerp.api.domain.ErpShipment;
@@ -48,6 +51,21 @@ public class ShipmentController extends BaseController {
         bo.setTenantId(getUserId());
         PageResult<ErpShipmentItem> list = shippingItemService.queryPageList(bo, pageQuery);
         return getDataTable(list);
+    }
+
+    /**
+     * 仓库发货-确认出库
+     * @param request
+     * @return
+     */
+    @PostMapping("/stock_out_confirm")
+    public AjaxResult stockOutConfirm(@RequestBody StockShipmentStockOutRequest request)
+    {
+//        ResultVo<Long> resultVo = stockOutService.createEntry(getUserId(), getUsername(), request);
+//        if(resultVo.getCode()==0)
+//            return AjaxResult.success();
+//        else return AjaxResult.error(resultVo.getMsg());
+        return AjaxResult.error("未实现");
     }
 
     /**

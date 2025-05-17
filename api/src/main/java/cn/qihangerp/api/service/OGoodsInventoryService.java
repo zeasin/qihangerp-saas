@@ -18,4 +18,11 @@ public interface OGoodsInventoryService extends IService<OGoodsInventory> {
     long getAllInventoryQuantity();
 
     List<GoodsSkuInventoryVo> searchSkuInventoryBatch(String keyword);
+
+    /**
+     *  查看SKUID库存
+     * @param skuId
+     * @return
+     */
+    long querySkuInventory(Long skuId);
 }

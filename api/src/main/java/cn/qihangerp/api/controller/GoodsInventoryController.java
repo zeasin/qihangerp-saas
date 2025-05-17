@@ -51,4 +51,16 @@ public class GoodsInventoryController extends BaseController {
         List<GoodsSkuInventoryVo> list = goodsInventoryService.searchSkuInventoryBatch(keyword);
         return getDataTable(list);
     }
+
+    /**
+     * 查询skuid库存
+     * @param skuId
+     * @return
+     */
+    @GetMapping("/querySkuInventory")
+    public AjaxResult querySkuInventory(Long skuId)
+    {
+        long inventory = goodsInventoryService.querySkuInventory(skuId);
+        return AjaxResult.success(inventory);
+    }
 }

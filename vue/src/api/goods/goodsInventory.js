@@ -9,6 +9,13 @@ export function listGoodsInventory(query) {
   })
 }
 
+// 查询skuid库存
+export function querySkuInventory(skuId) {
+  return request({
+    url: '/goodsInventory/querySkuInventory?skuId=' + skuId,
+    method: 'get'
+  })
+}
 // 查询商品库存详细
 export function getGoodsInventory(id) {
   return request({

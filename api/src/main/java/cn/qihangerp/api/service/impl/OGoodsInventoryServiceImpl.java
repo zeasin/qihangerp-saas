@@ -48,6 +48,18 @@ public class OGoodsInventoryServiceImpl extends ServiceImpl<OGoodsInventoryMappe
     public List<GoodsSkuInventoryVo> searchSkuInventoryBatch(String keyword) {
         return mapper.searchSkuInventoryBatch(keyword);
     }
+
+    @Override
+    public long querySkuInventory(Long skuId) {
+        LambdaQueryWrapper<OGoodsInventory> queryWrapper = new LambdaQueryWrapper<OGoodsInventory>();
+        queryWrapper.eq(OGoodsInventory::getSkuId,skuId);
+        List<OGoodsInventory> oGoodsInventories = mapper.selectList(queryWrapper);
+        if(oGoodsInventories==null||oGoodsInventories.isEmpty()){
+            return 0;
+        }else {
+            return oGoodsInventories.get(0).getQuantity();
+        }
+    }
 }
 
 

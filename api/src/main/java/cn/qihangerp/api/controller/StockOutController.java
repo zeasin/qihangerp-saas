@@ -21,6 +21,8 @@ public class StockOutController extends BaseController {
         return getDataTable(pageList);
     }
 
+
+
     @PostMapping("/create")
     public AjaxResult createEntry(@RequestBody StockOutCreateRequest request)
     {
