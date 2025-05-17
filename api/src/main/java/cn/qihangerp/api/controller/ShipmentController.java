@@ -82,4 +82,21 @@ public class ShipmentController extends BaseController {
         return success(shippingService.queryDetailById(id));
     }
 
+    /**
+     * 供应商发货
+     * @param shipping
+     * @return
+     */
+    @PostMapping("/supplier_shipment")
+    public AjaxResult supplierShipment(@RequestBody ErpOrderShipping shipping)
+    {
+        shipping.setShipType(1);
+        var result = shippingService.handShip(shipping);
+        if(result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
+            return AjaxResult.success();
+        }else{
+            return AjaxResult.error(result.getCode(),result.getMsg());
+        }
+    }
+
 }

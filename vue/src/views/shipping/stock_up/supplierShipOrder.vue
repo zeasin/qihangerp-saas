@@ -136,17 +136,62 @@
           <span>{{ parseTime(scope.row.orderTime) }}</span>
         </template>
       </el-table-column>
-
-      <el-table-column label="商品" >
-        <template slot-scope="scope">
-          <el-image  style="width: 70px; height: 70px;" :src="scope.row.goodsImg"></el-image>
+      <el-table-column label="商品明细" align="center" width="900px" >
+        <template slot="header">
+          <table>
+            <th>
+              <td width="50px">图片</td>
+              <td width="250px" align="left">标题</td>
+              <td width="150" align="left">SKU名</td>
+              <td width="200" align="left">Sku编码</td>
+              <!--              <td width="150" align="left">平台SkuId</td>-->
+              <td width="50" align="left">数量</td>
+            </th>
+          </table>
+        </template>
+        <template slot-scope="scope" >
+          <el-table :data="scope.row.itemList" :show-header="false" :cell-style="{border:0 + 'px' }"  :row-style="{border:0 + 'px' }" >
+            <el-table-column label="商品图片" width="50px">
+              <template slot-scope="scope">
+                <!--                <el-image  style="width: 40px; height: 40px;" :src="scope.row.goodsImg" :preview-src-list="[scope.row.goodsImg]"></el-image>-->
+                <image-preview :src="scope.row.goodsImg" :width="40" :height="40"/>
+              </template>
+            </el-table-column>
+            <el-table-column label="商品名" align="left" width="250px" prop="goodsTitle" >
+              <template slot-scope="scope">
+                {{scope.row.goodsTitle}}
+                <!--                <el-tag size="small" v-if="scope.row.refundStatus === 1">无售后或售后关闭</el-tag>-->
+                <el-tag size="small" v-if="scope.row.refundStatus === 2">售后处理中</el-tag>
+                <el-tag size="small" v-if="scope.row.refundStatus === 3">退款中</el-tag>
+                <el-tag size="small" v-if="scope.row.refundStatus === 4">退款成功</el-tag>
+                <el-tag size="small" v-if="scope.row.refundStatus === 11">已取消</el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column label="SKU名" align="left" prop="goodsSpec" width="150"  :show-overflow-tooltip="true">
+              <template slot-scope="scope">
+                {{ scope.row.goodsSpec }}
+              </template>
+            </el-table-column>
+            <el-table-column label="Sku编码" align="left" prop="skuNum" width="200"/>
+            <!--            <el-table-column label="平台SkuId" align="left" prop="skuId" width="150"/>-->
+            <el-table-column label="商品数量" align="center" prop="quantity" width="50px">
+              <template slot-scope="scope">
+                <el-tag size="small" type="danger">{{scope.row.quantity}}</el-tag>
+              </template>
+            </el-table-column>
+          </el-table>
         </template>
       </el-table-column>
-      <el-table-column label="商品标题" align="center" prop="goodsTitle" />
-      <el-table-column label="商品SKU" align="center" prop="goodsSpec" />
-      <el-table-column label="数量" align="center" prop="quantity" />
+<!--      <el-table-column label="商品" >-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-image  style="width: 70px; height: 70px;" :src="scope.row.goodsImg"></el-image>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="商品标题" align="center" prop="goodsTitle" />-->
+<!--      <el-table-column label="商品SKU" align="center" prop="goodsSpec" />-->
+<!--      <el-table-column label="数量" align="center" prop="quantity" />-->
 
-      <el-table-column label="SKU编码" align="center" prop="skuNum" />
+<!--      <el-table-column label="SKU编码" align="center" prop="skuNum" />-->
       <el-table-column label="操作" align="center" >
         <template slot-scope="scope">
           <el-button
@@ -180,59 +225,22 @@
     <!-- 添加或修改供应商代发货对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="店铺">
-          <el-input placeholder="请输入店铺" :value=" shopList.find(x=>x.id === form.shopId)?shopList.find(x=>x.id === form.shopId).name:''  " disabled/>
-        </el-form-item>
-        <el-form-item label="供应商" prop="supplierName">
-<!--          <el-input v-model="form.supplierId" placeholder="请输入供应商ID" />-->
-          <el-input placeholder="请输入供应商" ref="supplierName" :value=" supplierList.find(x=>x.id === form.supplierId)?supplierList.find(x=>x.id === form.supplierId).name:''  " disabled/>
-        </el-form-item>
         <el-form-item label="订单编号" prop="orderNum">
           <el-input v-model="form.orderNum" placeholder="请输入订单编号" disabled/>
         </el-form-item>
 
         <el-form-item label="订单日期" prop="orderDate">
           <el-date-picker clearable
-            v-model="form.orderDate"
+            v-model="form.orderTime"
                           disabled
-            type="date"
-            value-format="yyyy-MM-dd"
+            type="datetime"
+            value-format="yyyy-MM-dd HH:mm:ss"
             placeholder="请选择订单日期">
           </el-date-picker>
         </el-form-item>
-<!--        <el-form-item label="erp系统商品id" prop="goodsId">-->
-<!--          <el-input v-model="form.goodsId" placeholder="请输入erp系统商品id" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="erp系统商品规格id" prop="specId">-->
-<!--          <el-input v-model="form.specId" placeholder="请输入erp系统商品规格id" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="商品标题" prop="goodsTitle">-->
-<!--          <el-input v-model="form.goodsTitle" placeholder="请输入商品标题" />-->
-<!--        </el-form-item>-->
-        <el-form-item label="商品图片" prop="goodsImg">
-          <el-row :gutter="20">
-            <div style="float: left;display: flex;align-items: center;" >
-              <el-image  style="width: 70px; height: 70px;" :src="form.goodsImg"></el-image>
-              <div style="margin-left:10px">
-                <p>{{form.goodsTitle}}</p>
-                <p>{{form.goodsSpec}}&nbsp;({{form.specNum}}) <el-tag size="small">x {{form.quantity}}</el-tag>
-                </p>
-              </div>
-            </div>
-          </el-row>
-<!--          <el-image  style="width: 70px; height: 70px;" :src="form.goodsImg"></el-image>-->
-        </el-form-item>
-<!--        <el-form-item label="商品编码" prop="goodsNum">-->
-<!--          <el-input v-model="form.goodsNum" placeholder="请输入商品编码" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="商品规格" prop="goodsSpec">-->
-<!--          <el-input v-model="form.goodsSpec" placeholder="请输入商品规格" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="商品规格编码" prop="specNum">-->
-<!--          <el-input v-model="form.specNum" placeholder="请输入商品规格编码" />-->
-<!--        </el-form-item>-->
-        <el-form-item label="商品单价" prop="goodsPrice">
-          <el-input v-model.number="form.goodsPrice" type="number" placeholder="请输入商品单价" />
+
+        <el-form-item label="商品总价" prop="goodsAmount">
+          <el-input type="number" v-model.number="form.goodsAmount"  placeholder="请输入商品总价" />
         </el-form-item>
 <!--        <el-form-item label="商品数量" prop="quantity">-->
 <!--          <el-input v-model="form.quantity" placeholder="请输入商品数量" />-->
@@ -251,7 +259,7 @@
           <el-input v-model="form.shipNo" placeholder="请输入物流单号" />
         </el-form-item>
         <el-form-item label="运费" prop="shipCost">
-          <el-input v-model="form.shipCost" placeholder="请输入运费" />
+          <el-input type="number" v-model.number="form.shipCost" placeholder="请输入运费" />
         </el-form-item>
         <el-form-item label="发货时间" prop="shipTime">
           <el-date-picker clearable
@@ -280,10 +288,10 @@
 
 import { listSupplier} from "@/api/scm/supplier";
 import { listShop } from "@/api/shop/shop";
-import {listLogistics} from "@/api/api/logistics";
+import {listLogistics, listLogisticsStatus} from "@/api/api/logistics";
 import {listShippingSupplier,getShippingDetail} from "@/api/wms/shipping";
 export default {
-  name: "supplierShip",
+  name: "supplierShipOrder",
   data() {
     return {
       // 遮罩层
@@ -320,7 +328,7 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        goodsPrice: [{ required: true, message: '不能为空' }],
+        goodsAmount: [{ required: true, message: '不能为空' }],
         shipCompany: [{ required: true, message: '不能为空' }],
         shipNo: [{ required: true, message: '不能为空' }],
         shipCost: [{ required: true, message: '不能为空' }],
@@ -359,6 +367,7 @@ export default {
       this.loading = true;
       listShippingSupplier(this.queryParams).then(response => {
         this.agentShippingList = response.rows;
+        console.log('=======',this.agentShippingList)
         this.total = response.total;
         this.loading = false;
       });
@@ -385,7 +394,7 @@ export default {
         goodsNum: null,
         goodsSpec: null,
         specNum: null,
-        goodsPrice: null,
+        goodsAmount: null,
         quantity: null,
         remark: null,
         shipCompany: null,
@@ -429,8 +438,12 @@ export default {
       const id = row.id || this.ids
       getShippingDetail(id).then(response => {
         this.form = response.data;
-        this.open = true;
-        this.title = "修改供应商代发货";
+        listLogisticsStatus({}).then(resp=>{
+          this.logisticsList = resp.rows
+          this.open = true;
+          this.title = "填写供应商发货物流信息";
+        })
+
       });
     },
     /** 提交按钮 */
