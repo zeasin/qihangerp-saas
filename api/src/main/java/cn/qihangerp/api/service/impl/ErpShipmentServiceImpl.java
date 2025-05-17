@@ -1,5 +1,7 @@
 package cn.qihangerp.api.service.impl;
 
+import cn.qihangerp.api.domain.ErpShipmentItem;
+import cn.qihangerp.api.mapper.ErpShipmentItemMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -24,18 +26,35 @@ import org.springframework.stereotype.Service;
 public class ErpShipmentServiceImpl extends ServiceImpl<ErpShipmentMapper, ErpShipment>
     implements ErpShipmentService {
     private final ErpShipmentMapper mapper;
+    private final ErpShipmentItemMapper shipmentItemMapper;
     private final ErpOrderMapper orderMapper;
     private final ErpOrderItemMapper itemMapper;
 
     @Override
     public PageResult<ErpShipment> queryPageList(ErpShipment shipping, PageQuery pageQuery) {
         LambdaQueryWrapper<ErpShipment> queryWrapper = new LambdaQueryWrapper<ErpShipment>()
+                .eq(shipping.getShipper()!=null,ErpShipment::getShipper,shipping.getShipper())
+                .eq(ErpShipment::getTenantId,shipping.getTenantId())
                 .eq(StringUtils.hasText(shipping.getOrderNum()), ErpShipment::getOrderNum, shipping.getOrderNum())
                 .eq(StringUtils.hasText(shipping.getShipCode()), ErpShipment::getShipCode, shipping.getShipCode())
                 .eq(shipping.getShopId() != null, ErpShipment::getShopId, shipping.getShopId());
 
         Page<ErpShipment> pages = mapper.selectPage(pageQuery.build(), queryWrapper);
+        if(pages.getRecords().size()>0){
+            for(ErpShipment item : pages.getRecords()){
+                item.setItemList(shipmentItemMapper.selectList(new LambdaQueryWrapper<ErpShipmentItem>().eq(ErpShipmentItem::getShipmentId,item.getId())));
+            }
+        }
         return PageResult.build(pages);
+    }
+
+    @Override
+    public ErpShipment queryDetailById(Long id) {
+        ErpShipment erpShipment = mapper.selectById(id);
+        if(erpShipment!=null){
+            erpShipment.setItemList(shipmentItemMapper.selectList(new LambdaQueryWrapper<ErpShipmentItem>().eq(ErpShipmentItem::getShipmentId,erpShipment.getId())));
+        }
+        return erpShipment;
     }
 
 //    @Transactional

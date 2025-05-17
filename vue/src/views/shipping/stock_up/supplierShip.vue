@@ -115,9 +115,10 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="订单编号" align="center" prop="orderNum" />
       <!-- <el-table-column label="主键ID" align="center" prop="id" /> -->
-      <el-table-column label="店铺" align="center" prop="shopId" >
+      <el-table-column label="供应商" align="center" prop="shopId" >
         <template slot-scope="scope">
-          <span>{{ shopList.find(x=>x.id === scope.row.shopId)?shopList.find(x=>x.id === scope.row.shopId).name:''  }}</span>
+          <el-tag>{{scope.row.supplier}}</el-tag>
+<!--          <span>{{ shopList.find(x=>x.id === scope.row.shopId)?shopList.find(x=>x.id === scope.row.shopId).name:''  }}</span>-->
         </template>
       </el-table-column>
       <!-- <el-table-column label="店铺平台" align="center" prop="shopType" >
@@ -132,7 +133,7 @@
 <!--      <el-table-column label="子订单编号" align="center" prop="subOrderNum" />-->
       <el-table-column label="下单日期" align="center" prop="orderDate" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.orderDate, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.orderTime) }}</span>
         </template>
       </el-table-column>
 
@@ -146,26 +147,26 @@
       <el-table-column label="数量" align="center" prop="quantity" />
 
       <el-table-column label="SKU编码" align="center" prop="skuNum" />
-<!--      <el-table-column label="操作" align="center" >-->
-<!--        <template slot-scope="scope">-->
-<!--          <el-button-->
-<!--            v-if="scope.row.status === 0"-->
-<!--            size="mini"-->
-<!--            type="primary"-->
-<!--            icon="el-icon-edit"-->
-<!--            @click="handleUpdate(scope.row)"-->
-<!--            v-hasPermi="['scm:agentShipping:edit']"-->
-<!--          >供应商发货</el-button>-->
-<!--          <el-button-->
-<!--            v-if="scope.row.status === 1"-->
-<!--            size="mini"-->
-<!--            type="text"-->
-<!--            icon="el-icon-document-checked"-->
-<!--            @click="handleDelete(scope.row)"-->
-<!--            v-hasPermi="['scm:agentShipping:remove']"-->
-<!--          >付款确认</el-button>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column label="操作" align="center" >
+        <template slot-scope="scope">
+          <el-button
+            v-if="scope.row.shipStatus === 0"
+            size="mini"
+            type="primary"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['scm:agentShipping:edit']"
+          >供应商发货</el-button>
+          <el-button
+            v-if="scope.row.status === 1"
+            size="mini"
+            type="text"
+            icon="el-icon-document-checked"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['scm:agentShipping:remove']"
+          >付款确认</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination
@@ -276,11 +277,11 @@
 </template>
 
 <script>
-import { listAgentShipping, getAgentShipping, delAgentShipping, addAgentShipping, updateAgentShipping } from "@/api/scm/agentShipping";
+
 import { listSupplier} from "@/api/scm/supplier";
 import { listShop } from "@/api/shop/shop";
 import {listLogistics} from "@/api/api/logistics";
-import {listShippingSupplier} from "@/api/wms/shipping";
+import {listShippingSupplier,getShippingDetail} from "@/api/wms/shipping";
 export default {
   name: "supplierShip",
   data() {
@@ -426,7 +427,7 @@ export default {
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      getAgentShipping(id).then(response => {
+      getShippingDetail(id).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改供应商代发货";

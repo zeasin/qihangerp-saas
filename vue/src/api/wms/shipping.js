@@ -19,9 +19,9 @@ export function listShippingSupplier(query) {
 
 
 // 查询仓库订单发货详细
-export function getShipping(id) {
+export function getShippingDetail(id) {
   return request({
-    url: '/wms/shipping/' + id,
+    url: '/shipping/detail/' + id,
     method: 'get'
   })
 }

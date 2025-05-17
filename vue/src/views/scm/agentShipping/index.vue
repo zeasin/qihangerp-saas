@@ -318,7 +318,7 @@
 </template>
 
 <script>
-import { listAgentShipping, getAgentShipping, delAgentShipping, addAgentShipping, updateAgentShipping } from "@/api/scm/agentShipping";
+
 import { listSupplier} from "@/api/scm/supplier";
 import { listShop } from "@/api/shop/shop";
 import {listLogistics} from "@/api/api/logistics";

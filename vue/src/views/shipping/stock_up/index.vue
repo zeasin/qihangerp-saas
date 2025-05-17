@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="仓库发货" name="stockShip">
+      <el-tab-pane label="仓库备货" name="stockShip">
         <stock-ship></stock-ship>
 
       </el-tab-pane>
-      <el-tab-pane label="供应商代发" name="supplierShip" lazy>
+      <el-tab-pane label="供应商备货" name="supplierShip" lazy>
         <supplier-ship></supplier-ship>
       </el-tab-pane>
     </el-tabs>
@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import stockShip  from "@/views/shipping/stocking/stockShip.vue";
-import supplierShip  from "@/views/shipping/stocking/supplierShip.vue";
+import stockShip  from "@/views/shipping/stock_up/stockShip.vue";
+import supplierShip  from "@/views/shipping/stock_up/supplierShip.vue";
 
 export default {
   name: "stocking",

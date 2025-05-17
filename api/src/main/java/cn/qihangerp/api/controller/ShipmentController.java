@@ -4,6 +4,7 @@ import cn.qihangerp.api.domain.ErpOrderItem;
 import cn.qihangerp.api.domain.ErpShipmentItem;
 import cn.qihangerp.api.service.ErpShipmentItemService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import cn.qihangerp.api.common.*;
 import cn.qihangerp.api.domain.ErpShipment;
@@ -15,6 +16,7 @@ import cn.qihangerp.api.service.ErpShipmentService;
 public class ShipmentController extends BaseController {
     private final ErpShipmentService shippingService;
     private final ErpShipmentItemService shippingItemService;
+
     @GetMapping("/list")
     public TableDataInfo list(ErpShipment shipping, PageQuery pageQuery)
     {
@@ -55,12 +57,29 @@ public class ShipmentController extends BaseController {
      * @return
      */
     @GetMapping("/supplier_shipment_list")
-    public TableDataInfo supplierShipList(ErpShipmentItem bo, PageQuery pageQuery)
+    public TableDataInfo supplierShipList(ErpShipment bo, PageQuery pageQuery)
     {
+//        bo.setShipper(1);
+//        bo.setStockStatus(0);
+//        bo.setTenantId(getUserId());
+//        PageResult<ErpShipmentItem> list = shippingItemService.queryPageList(bo, pageQuery);
+//        return getDataTable(list);
         bo.setShipper(1);
-        bo.setStockStatus(0);
         bo.setTenantId(getUserId());
-        PageResult<ErpShipmentItem> list = shippingItemService.queryPageList(bo, pageQuery);
-        return getDataTable(list);
+        PageResult<ErpShipment> erpShipmentPageResult = shippingService.queryPageList(bo, pageQuery);
+        return getDataTable(erpShipmentPageResult);
     }
+
+
+    /**
+     * 详情
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "/detail/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Long id)
+    {
+        return success(shippingService.queryDetailById(id));
+    }
+
 }

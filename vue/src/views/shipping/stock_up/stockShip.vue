@@ -215,7 +215,7 @@
 </template>
 
 <script>
-import { listShippingStock, getShipping, stockingAdd } from "@/api/wms/shipping";
+import { listShippingStock, getShippingDetail, stockingAdd } from "@/api/wms/shipping";
 import { listShop } from "@/api/shop/shop";
 export default {
   name: "stockShip",

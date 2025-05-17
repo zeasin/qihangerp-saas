@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -157,4 +159,7 @@ public class ErpShipment {
      * 
      */
     private Date updateBy;
+
+    @TableField(exist = false)
+    private List<ErpShipmentItem> itemList;
 }
