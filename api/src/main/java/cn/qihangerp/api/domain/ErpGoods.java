@@ -22,7 +22,7 @@ public class ErpGoods implements Serializable {
      * 主键id
      */
     @TableId(type = IdType.AUTO)
-    private String id;
+    private Long id;
     /**
      * 租户id（sys_user_id）
      */

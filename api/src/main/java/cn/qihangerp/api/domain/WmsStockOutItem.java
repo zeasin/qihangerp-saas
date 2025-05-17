@@ -50,7 +50,7 @@ public class WmsStockOutItem implements Serializable {
     /**
      * 总数量
      */
-    private Long originalQuantity;
+    private Integer originalQuantity;
 
     /**
      * 已出库数量
@@ -95,7 +95,7 @@ public class WmsStockOutItem implements Serializable {
     /**
      * 商品id
      */
-    private String goodsId;
+    private Long goodsId;
 
     /**
      * 商品编码
@@ -115,7 +115,7 @@ public class WmsStockOutItem implements Serializable {
     /**
      * 商品规格id
      */
-    private String skuId;
+    private Long skuId;
 
     /**
      * 商品规格编码

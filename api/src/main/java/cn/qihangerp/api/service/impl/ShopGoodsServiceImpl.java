@@ -86,8 +86,8 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
                                 .eq(ErpGoodsSku::getSpecNum, sku.getSkuCode()));
 
                         if(erpGoodsSkus!=null && !erpGoodsSkus.isEmpty()){
-                            sku.setErpGoodsId(Long.parseLong(erpGoodsSkus.get(0).getGoodsId()));
-                            sku.setErpGoodsSkuId(Long.parseLong(erpGoodsSkus.get(0).getId()));
+                            sku.setErpGoodsId(erpGoodsSkus.get(0).getGoodsId());
+                            sku.setErpGoodsSkuId(erpGoodsSkus.get(0).getId());
                         }
                     }
                     skuMapper.insert(sku);
@@ -111,8 +111,8 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
                     if(StringUtils.isNotEmpty(sku.getSkuCode())) {
                         List<ErpGoodsSku> erpGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<ErpGoodsSku>().eq(ErpGoodsSku::getSpecNum, sku.getSkuCode()));
                         if(erpGoodsSkus!=null && !erpGoodsSkus.isEmpty()){
-                            sku.setErpGoodsId(Long.parseLong(erpGoodsSkus.get(0).getGoodsId()));
-                            sku.setErpGoodsSkuId(Long.parseLong(erpGoodsSkus.get(0).getId()));
+                            sku.setErpGoodsId(erpGoodsSkus.get(0).getGoodsId());
+                            sku.setErpGoodsSkuId(erpGoodsSkus.get(0).getId());
                         }
                     }
                     skuMapper.insert(sku);
@@ -162,7 +162,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
         //更新shopGoods
         ShopGoods shopGoodsUpdate = new ShopGoods();
         shopGoodsUpdate.setId(shopGoods.getId());
-        shopGoodsUpdate.setErpGoodsId(Long.parseLong(erpGoods.getId()));
+        shopGoodsUpdate.setErpGoodsId(erpGoods.getId());
         mapper.updateById(shopGoodsUpdate);
 
         // 添加商品SKU
@@ -242,8 +242,8 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
             //更新ShopGoodsSku
             ShopGoodsSku shopGoodsSkuUpdate = new ShopGoodsSku();
             shopGoodsSkuUpdate.setId(sku.getId());
-            shopGoodsSkuUpdate.setErpGoodsId(Long.parseLong(erpGoods.getId()));
-            shopGoodsSkuUpdate.setErpGoodsSkuId(Long.parseLong(erpGoodsSku.getId()));
+            shopGoodsSkuUpdate.setErpGoodsId(erpGoods.getId());
+            shopGoodsSkuUpdate.setErpGoodsSkuId(erpGoodsSku.getId());
             skuMapper.updateById(shopGoodsSkuUpdate);
         }
 

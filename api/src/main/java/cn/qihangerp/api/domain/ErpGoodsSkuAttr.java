@@ -21,7 +21,7 @@ public class ErpGoodsSkuAttr implements Serializable {
     /**
      * 
      */
-    private String goodsId;
+    private Long goodsId;
 
     /**
      * 

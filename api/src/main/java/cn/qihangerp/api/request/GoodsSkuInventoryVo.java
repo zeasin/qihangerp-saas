@@ -30,5 +30,5 @@ public class GoodsSkuInventoryVo {
     private String warehouseName;
     private String positionNum;
     private Long positionId;
-    private Long quantity;//出库数量
+    private Integer quantity;//出库数量
 }

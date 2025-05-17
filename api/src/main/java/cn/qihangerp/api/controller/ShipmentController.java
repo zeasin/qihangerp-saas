@@ -61,11 +61,13 @@ public class ShipmentController extends BaseController {
     @PostMapping("/stock_out_confirm")
     public AjaxResult stockOutConfirm(@RequestBody StockShipmentStockOutRequest request)
     {
-//        ResultVo<Long> resultVo = stockOutService.createEntry(getUserId(), getUsername(), request);
-//        if(resultVo.getCode()==0)
-//            return AjaxResult.success();
-//        else return AjaxResult.error(resultVo.getMsg());
-        return AjaxResult.error("未实现");
+        if(request.getIds()==null || request.getIds().length==0) return AjaxResult.error("请选择出库的备货订单明细");
+        ResultVo resultVo = shippingItemService.stockOutConfirm(request, getUsername(), getUserId());
+
+        if(resultVo.getCode()==0)
+            return AjaxResult.success();
+        else return AjaxResult.error(resultVo.getMsg());
+
     }
 
     /**

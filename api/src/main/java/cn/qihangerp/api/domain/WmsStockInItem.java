@@ -50,7 +50,7 @@ public class WmsStockInItem implements Serializable {
     /**
      * 商品id
      */
-    private String goodsId;
+    private Long goodsId;
 
     /**
      * 商品编码
@@ -70,7 +70,7 @@ public class WmsStockInItem implements Serializable {
     /**
      * 商品规格id
      */
-    private String skuId;
+    private Long skuId;
 
     /**
      * 商品规格编码

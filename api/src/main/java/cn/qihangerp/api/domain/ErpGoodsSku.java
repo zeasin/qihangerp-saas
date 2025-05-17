@@ -17,12 +17,12 @@ public class ErpGoodsSku implements Serializable {
      * 主键id
      */
     @TableId(type = IdType.AUTO)
-    private String id;
+    private Long id;
 
     /**
      * 商品id
      */
-    private String goodsId;
+    private Long goodsId;
     /**
      * 租户id（sys_user_id）
      */
