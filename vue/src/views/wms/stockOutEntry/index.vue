@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="出库单号" prop="stockOutNum">
+      <el-form-item label="出库单号" prop="outNum">
         <el-input
-          v-model="queryParams.stockOutNum"
+          v-model="queryParams.outNum"
           placeholder="请输入出库单号"
           clearable
           @keyup.enter.native="handleQuery"
@@ -65,17 +65,20 @@
     <el-table v-loading="loading" :data="stockOutEntryList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="出库单号" align="center" prop="stockOutNum" />
+      <el-table-column label="出库单号" align="center" prop="outNum" />
 <!--      <el-table-column label="源单号" align="center" prop="sourceNo" />-->
 <!--      <el-table-column label="源单Id" align="center" prop="sourceId" />-->
       <el-table-column label="出库类型" align="center" prop="stockOutType" >
         <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.stockOutType === 1">订单拣货出库</el-tag>
-          <el-tag size="small" v-if="scope.row.stockOutType === 2">采购退货出库</el-tag>
-          <el-tag size="small" v-if="scope.row.stockOutType === 3">盘点出库</el-tag>
-          <el-tag size="small" v-if="scope.row.stockOutType === 4">报损出库</el-tag>
+          <el-tag size="small" v-if="scope.row.type === 1">订单发货出库</el-tag>
+          <el-tag size="small" v-if="scope.row.type === 2">采购退货出库</el-tag>
+          <el-tag size="small" v-if="scope.row.type === 3">盘点出库</el-tag>
+          <el-tag size="small" v-if="scope.row.type === 4">报损出库</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="商品数" align="center" prop="goodsUnit" />
+      <el-table-column label="商品规格数" align="center" prop="specUnit" />
+      <el-table-column label="总件数" align="center" prop="specUnitTotal" />
       <el-table-column label="状态" align="center" prop="status" >
         <template slot-scope="scope">
           <el-tag size="small" v-if="scope.row.status === 0">待拣货</el-tag>
@@ -92,18 +95,18 @@
       </el-table-column>
       <el-table-column label="打印时间" align="center" prop="printTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.printTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.printTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建日期" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
 <!--      <el-table-column label="创建人" align="center" prop="createBy" />-->
       <el-table-column label="更新时间" align="center" prop="updateTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
 <!--      <el-table-column label="更新人" align="center" prop="updateBy" />-->
@@ -121,9 +124,7 @@
 <!--      </el-table-column>-->
       <el-table-column label="备注" align="center" prop="remark" />
 <!--      <el-table-column label="是否删除0未删除1已删除" align="center" prop="isDelete" />-->
-      <el-table-column label="商品数" align="center" prop="goodsUnit" />
-      <el-table-column label="商品规格数" align="center" prop="specUnit" />
-      <el-table-column label="总件数" align="center" prop="specUnitTotal" />
+
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -172,13 +173,13 @@
           <el-table-column label="序号" align="center" prop="index" width="50"/>
           <el-table-column label="商品图片" prop="colorImage" >
             <template slot-scope="scope">
-              <el-image style="width: 70px; height: 70px" :src="scope.row.colorImage"></el-image>
+              <el-image style="width: 70px; height: 70px" :src="scope.row.goodsImage"></el-image>
             </template>
           </el-table-column>
-          <el-table-column label="规格编码" prop="specNum"></el-table-column>
+          <el-table-column label="SKU编码" prop="skuCode"></el-table-column>
           <el-table-column label="规格"  >
             <template slot-scope="scope">
-              <el-tag size="small">{{scope.row.colorValue}} {{scope.row.sizeValue}} {{scope.row.styleValue}}</el-tag>
+              <el-tag size="small">{{scope.row.skuName}} </el-tag>
             </template>
           </el-table-column>
           <el-table-column label="数量" prop="originalQuantity"></el-table-column>
@@ -196,7 +197,7 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="出库数量" prop="outQty" width="100">
+          <el-table-column label="出库数量" prop="outQty" width="110">
             <template slot-scope="scope">
               <el-input v-model.number="scope.row.outQty" placeholder="出库数量"  v-if="scope.row.status < 2" />
             </template>
@@ -346,7 +347,7 @@ export default {
       const id = row.id || this.ids
       getStockOutEntry(id).then(response => {
         this.form = response.data;
-        this.wmsStockOutEntryItemList = response.data.wmsStockOutEntryItemList;
+        this.wmsStockOutEntryItemList = response.data.itemList;
         // this.wmsStockOutEntryItemList.forEach(x=>{
         //   x.inventoryId = null;
         //   x.outQty = null
