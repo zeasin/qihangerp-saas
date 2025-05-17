@@ -1,11 +1,9 @@
 package cn.qihangerp.api.controller;
 
-import cn.qihangerp.api.domain.ErpOrderItem;
 import cn.qihangerp.api.domain.ErpShipmentItem;
 import cn.qihangerp.api.request.SupplierAgentShipmentRequest;
 import cn.qihangerp.api.service.ErpShipmentItemService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import cn.qihangerp.api.common.*;
 import cn.qihangerp.api.domain.ErpShipment;
@@ -21,6 +19,7 @@ public class ShipmentController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(ErpShipment shipping, PageQuery pageQuery)
     {
+        shipping.setTenantId(getUserId());
         return getDataTable(shippingService.queryPageList(shipping,pageQuery));
     }
 //    @PostMapping("/handShip")
@@ -92,7 +91,7 @@ public class ShipmentController extends BaseController {
     public AjaxResult supplierAgentShipment(@RequestBody SupplierAgentShipmentRequest shipping)
     {
 //        shipping.setShipType(1);
-        var result = shippingService.handShip(shipping);
+        var result = shippingService.supplierAgentShipment(shipping);
         if(result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
             return AjaxResult.success();
         }else{

@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 16/05/2025 22:00:46
+ Date: 17/05/2025 12:37:55
 */
 
 SET NAMES utf8mb4;
@@ -517,7 +517,7 @@ CREATE TABLE `erp_order`  (
   `city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '市',
   `town` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '区',
   `order_time` datetime NULL DEFAULT NULL COMMENT '订单时间',
-  `ship_status` int NOT NULL DEFAULT 0 COMMENT '发货状态 0 待发货 1 已分配供应商发货 2仓库已发货',
+  `ship_status` int NOT NULL DEFAULT 0 COMMENT '发货状态 0 待发货 1 部分发货 2全部发货',
   `has_push_erp` int NULL DEFAULT 0 COMMENT '是否推送到ERP',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
@@ -533,7 +533,7 @@ CREATE TABLE `erp_order`  (
 -- Records of erp_order
 -- ----------------------------
 INSERT INTO `erp_order` VALUES (1778674707316772867, 100, '3727945891454531072', 5, 6, NULL, NULL, NULL, NULL, 11, 11, 44.5, 44.5, '齐**', '158****0119', '****', '广东省', '深圳市', '宝安区', '2025-05-07 13:19:57', 0, 0, '2025-05-07 13:37:29', '手动确认', '2025-05-07 16:34:31', NULL, 0);
-INSERT INTO `erp_order` VALUES (1778674707316772868, 100, '2009300499001', 5, 6, NULL, NULL, NULL, NULL, 1, 1, 89, 89, '启航', '15818590119', '', '广东省', '深圳市', '宝安区', '2025-05-16 09:00:21', 0, 0, '2025-05-16 09:00:26', '手动确认', '2025-05-16 11:54:05', '手动发货', 0);
+INSERT INTO `erp_order` VALUES (1778674707316772868, 100, '2009300499001', 5, 6, NULL, NULL, NULL, NULL, 1, 2, 89, 89, '启航', '15818590119', '', '广东省', '深圳市', '宝安区', '2025-05-16 09:00:21', 2, 0, '2025-05-16 09:00:26', '手动确认', '2025-05-17 12:32:58', '手动填写供应商发货信息', 2);
 INSERT INTO `erp_order` VALUES (1778674707316772869, 100, '1009930999302', 5, 6, NULL, NULL, NULL, NULL, 1, 2, 99, 99, '启航a', '15818590111', '北京政府大楼 100 号', '北京市', '市辖区', '东城区', '2025-05-16 14:55:08', 2, 0, '2025-05-16 14:55:12', '手动确认', '2025-05-16 17:53:55', '手动发货', 0);
 
 -- ----------------------------
@@ -577,7 +577,7 @@ CREATE TABLE `erp_order_item`  (
 -- Records of erp_order_item
 -- ----------------------------
 INSERT INTO `erp_order_item` VALUES (1778674707337744386, 100, 6, 1778674707316772867, '3727945891454531072', '1912512446954844164', '3387757956', 0, 0, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://wst.wxapp.tc.qq.com/161/20304/snscosdownload/SZ/reserved/681ae501000026f90b46d9131a2b5515000000a000004f50', NULL, '[{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', 'A20701', 89, 44.5, 1, NULL, 0, 1, 0, NULL, NULL, NULL, NULL, 0, 0);
-INSERT INTO `erp_order_item` VALUES (1778674707337744387, 100, 6, 1778674707316772868, '2009300499001', '1912512446954844165', '3387753301', 1, 5, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', NULL, '2XL', 'A20705', 89, 89, 1, NULL, 0, 1, 0, NULL, NULL, NULL, NULL, 0, 0);
+INSERT INTO `erp_order_item` VALUES (1778674707337744387, 100, 6, 1778674707316772868, '2009300499001', '1912512446954844165', '3387753301', 1, 5, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', NULL, '2XL', 'A20705', 89, 89, 1, NULL, 0, 1, 0, NULL, NULL, '2025-05-17 12:32:42', '手动填写供应商发货信息', 1, 2);
 INSERT INTO `erp_order_item` VALUES (1778674707337744388, 100, 6, 1778674707316772869, '1009930999302', '1912512446954844166', '3386353837', 2, 7, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', NULL, '黑色 M', 'A00112', 99, 99, 1, NULL, 0, 1, 0, NULL, NULL, NULL, NULL, 0, 0);
 
 -- ----------------------------
@@ -784,12 +784,13 @@ CREATE TABLE `erp_shipment`  (
   `order_time` datetime NULL DEFAULT NULL COMMENT '订单时间',
   `shipper` int NOT NULL DEFAULT 0 COMMENT '发货方 0 仓库发货 1 供应商发货',
   `supplier_id` bigint NOT NULL DEFAULT 0 COMMENT '供应商ID',
+  `supplier` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '供应商',
   `ship_type` int NOT NULL COMMENT '发货类型（1订单发货2商品补发3商品换货）',
   `ship_company` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '物流公司',
   `ship_company_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '物流公司code',
   `ship_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '物流单号',
-  `ship_fee` decimal(6, 0) NOT NULL COMMENT '物流费用',
-  `ship_time` datetime NOT NULL COMMENT '发货时间',
+  `ship_fee` decimal(6, 0) NOT NULL DEFAULT 0 COMMENT '物流费用',
+  `ship_time` datetime NULL DEFAULT NULL COMMENT '发货时间',
   `ship_operator` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发货操作人',
   `ship_status` int NOT NULL COMMENT '物流状态（0 待发货1已发货2已完成）',
   `package_weight` float NOT NULL COMMENT '包裹重量',
@@ -803,14 +804,15 @@ CREATE TABLE `erp_shipment`  (
   `create_time` datetime NULL DEFAULT NULL,
   `create_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `update_time` datetime NULL DEFAULT NULL,
-  `update_by` datetime NULL DEFAULT NULL,
+  `update_by` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '发货记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_shipment
 -- ----------------------------
-INSERT INTO `erp_shipment` VALUES (1, 100, 6, 5, 1778674707316772869, '1009930999302', '2025-05-16 14:55:08', 0, 0, 1, '顺丰', 'SF', 'sf1209930009', 0, '2025-05-16 17:53:55', 'a', 1, 0, 0, 0, 0, 'a', NULL, NULL, NULL, '2025-05-16 17:53:55', 'qihang', NULL, NULL);
+INSERT INTO `erp_shipment` VALUES (1, 100, 6, 5, 1778674707316772869, '1009930999302', '2025-05-16 14:55:08', 0, 0, NULL, 1, '顺丰', 'SF', 'sf1209930009', 0, '2025-05-16 17:53:55', 'a', 1, 0, 0, 0, 0, 'a', NULL, NULL, NULL, '2025-05-16 17:53:55', 'qihang', NULL, NULL);
+INSERT INTO `erp_shipment` VALUES (2, 100, 6, 5, 1778674707316772868, '2009300499001', '2025-05-16 09:00:21', 1, 1781960910751948802, '测试供应商', 1, '顺丰', 'SF', 'SF12333112', 0, '2025-05-17 12:32:23', NULL, 1, 0, 0, 0, 0, '', NULL, NULL, '', '2025-05-16 22:33:03', 'qihang', '2025-05-17 12:32:49', '手动填写供应商发货信息');
 
 -- ----------------------------
 -- Table structure for erp_shipment_item
@@ -821,6 +823,7 @@ CREATE TABLE `erp_shipment_item`  (
   `tenant_id` bigint NOT NULL COMMENT '租户id',
   `shipper` int NOT NULL COMMENT '发货方 0 仓库发货 1 供应商发货',
   `supplier_id` bigint NOT NULL DEFAULT 0 COMMENT '供应商ID',
+  `supplier` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '供应商',
   `shipment_id` bigint NOT NULL COMMENT '发货id',
   `shop_type` int NOT NULL COMMENT '店铺类型',
   `shop_id` bigint NOT NULL COMMENT '店铺id',
@@ -850,7 +853,8 @@ CREATE TABLE `erp_shipment_item`  (
 -- ----------------------------
 -- Records of erp_shipment_item
 -- ----------------------------
-INSERT INTO `erp_shipment_item` VALUES (1, 100, 0, 0, 1, 5, 6, 1778674707316772869, '1009930999302', '2025-05-16 14:55:08', 1778674707337744388, 2, 7, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', NULL, '黑色 M', 'A00112', 1, NULL, 0, '2025-05-16 17:53:55', 'qihang', NULL, NULL);
+INSERT INTO `erp_shipment_item` VALUES (1, 100, 0, 0, NULL, 1, 5, 6, 1778674707316772869, '1009930999302', '2025-05-16 14:55:08', 1778674707337744388, 2, 7, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', NULL, '黑色 M', 'A00112', 1, NULL, 0, '2025-05-16 17:53:55', 'qihang', NULL, NULL);
+INSERT INTO `erp_shipment_item` VALUES (2, 100, 1, 1781960910751948802, '测试供应商', 2, 5, 6, 1778674707316772868, '2009300499001', '2025-05-16 09:00:21', 1778674707337744387, 1, 5, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', NULL, '2XL', 'A20705', 1, NULL, 2, '2025-05-16 22:33:03', 'qihang', '2025-05-17 12:32:40', '手动填写供应商发货信息');
 
 -- ----------------------------
 -- Table structure for erp_shop
@@ -1713,7 +1717,7 @@ INSERT INTO `sys_menu` VALUES (2047, '库存查询', 6, 6, 'goodsInventory', 'go
 INSERT INTO `sys_menu` VALUES (2049, '打单&发货', 4, 10, 'ewaybillPrint', 'shipping/ewaybillPrint/index', NULL, 1, 0, 'C', '0', '0', '', 'guide', 'admin', '2024-01-03 14:09:18', 'admin', '2025-04-26 15:55:30', '');
 INSERT INTO `sys_menu` VALUES (2051, '发货记录', 4, 104, 'logs', 'shipping/logs/index', NULL, 1, 0, 'C', '0', '0', '', 'email', 'admin', '2024-01-03 14:13:12', 'admin', '2025-04-26 16:02:40', '');
 INSERT INTO `sys_menu` VALUES (2054, '售后处理', 5, 1, 'refund_list', 'refund/index', NULL, 1, 0, 'C', '1', '0', '', 'size', 'admin', '2024-01-03 14:24:36', 'admin', '2025-04-17 12:17:13', '');
-INSERT INTO `sys_menu` VALUES (2059, '备货中', 4, 101, 'stocking', 'shipping/stocking/', '', 1, 0, 'C', '0', '0', '', 'component', 'admin', '2024-01-09 11:51:52', 'admin', '2025-04-26 16:03:01', '');
+INSERT INTO `sys_menu` VALUES (2059, '备货中', 4, 101, 'stock_up', 'shipping/stock_up', '', 1, 0, 'C', '0', '0', '', 'component', 'admin', '2024-01-09 11:51:52', 'admin', '2025-05-17 10:30:27', '');
 INSERT INTO `sys_menu` VALUES (2060, '拣货出库', 4, 102, 'stockout', 'wms/orderShipping/stockOut', NULL, 1, 0, 'C', '1', '0', '', 'bug', 'admin', '2024-01-09 13:39:00', 'admin', '2025-04-26 16:03:21', '');
 INSERT INTO `sys_menu` VALUES (2061, '仓位管理', 6, 9, 'stock_location', 'wms/location', NULL, 1, 0, 'C', '0', '0', '', 'education', 'admin', '2024-01-09 13:54:30', 'admin', '2024-04-21 11:11:41', '');
 INSERT INTO `sys_menu` VALUES (2062, '代发账单管理', 9, 4, 'agent_ship_bill', 'shipping/agent/shipBill', NULL, 1, 0, 'C', '0', '0', '', 'money', 'admin', '2024-01-12 18:35:02', 'admin', '2025-04-17 12:23:33', '');
@@ -2010,8 +2014,8 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$JYO9dJ9suY5mYRS9BvqKFOhV7DqTqfQjYy1WudBn6tzPItNrtTFAm', '0', '2025-04-01', '0', '127.0.0.1', '2025-05-16 08:57:40', 'admin', '2023-08-07 19:31:37', '', '2025-05-16 08:57:39', '管理员', NULL);
-INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-05-16 21:02:42', 'admin', '2024-04-21 10:36:49', 'admin', '2025-05-16 21:02:41', NULL, NULL);
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$MkBdzADGzLxAqopkmh3vDu0oA5bxgHWcg173AVni9Rr9MFQtnjplK', '0', '2025-04-01', '0', '127.0.0.1', '2025-05-17 10:31:39', 'admin', '2023-08-07 19:31:37', '', '2025-05-17 10:31:39', '管理员', NULL);
+INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-05-17 10:31:51', 'admin', '2024-04-21 10:36:49', 'admin', '2025-05-17 10:31:50', NULL, NULL);
 INSERT INTO `sys_user` VALUES (101, NULL, '15818590119', '试用会员0119', '00', '', '', '0', '', '$2a$10$yMgN6PZKiuafBVHaEHhk3OoSQ5o98xVG8RHEs2sg5.Yv/TEQuR/86', '0', '2025-05-17', '0', '113.118.102.209', '2025-04-17 21:13:06', '主动注册', '2025-04-17 13:13:04', '', '2025-04-17 13:13:05', NULL, NULL);
 INSERT INTO `sys_user` VALUES (102, NULL, '15286902105', '试用会员2105', '00', '', '', '0', '', '$2a$10$nbDujbCk2SrdamYRHr217ORRipaa5p5lVMVFctBU6fPt/rd3k.5E.', '0', '2025-05-17', '0', '114.86.55.0', '2025-04-17 21:16:37', '主动注册', '2025-04-17 13:16:36', '', '2025-04-17 13:16:37', NULL, NULL);
 INSERT INTO `sys_user` VALUES (103, NULL, '13335117173', '试用会员7173', '00', '', '', '0', '', '$2a$10$oPYmtdGZ1rYNUCFpKaaIYOr1Z7mAtVAXmWrqyEj2qhAA.nqD2xjeC', '0', '2025-05-17', '0', '119.185.23.133', '2025-04-17 23:29:48', '主动注册', '2025-04-17 13:43:51', '', '2025-04-17 15:29:48', NULL, NULL);

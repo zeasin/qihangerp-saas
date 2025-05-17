@@ -67,6 +67,13 @@
     <el-table v-loading="loading" :data="dataList" >
 <!--      <el-table-column type="selection" width="55" align="center" />-->
       <el-table-column label="订单编号" align="center" prop="orderNum" />
+      <el-table-column label="发货人" align="center" prop="shipType;" >
+        <template slot-scope="scope">
+          <el-tag size="small" v-if="scope.row.shipper === 0">自己发货</el-tag>
+          <el-tag size="small" v-if="scope.row.shipper === 1">供应商发货</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="供应商" align="center" prop="supplier" />
       <el-table-column label="店铺" align="center" prop="shopId" >
         <template slot-scope="scope">
           <span>{{ shopList.find(x=>x.id == scope.row.shopId).name  }}</span>

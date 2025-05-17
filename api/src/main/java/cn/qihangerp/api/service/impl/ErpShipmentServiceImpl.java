@@ -63,7 +63,7 @@ public class ErpShipmentServiceImpl extends ServiceImpl<ErpShipmentMapper, ErpSh
 
     @Transactional
     @Override
-    public ResultVo<Integer> handShip(SupplierAgentShipmentRequest shipping) {
+    public ResultVo<Integer> supplierAgentShipment(SupplierAgentShipmentRequest shipping) {
         // 查询店铺订单是否存在
         ErpShipment erpShipment = mapper.selectById(shipping.shipmentId());
         if(erpShipment==null){
