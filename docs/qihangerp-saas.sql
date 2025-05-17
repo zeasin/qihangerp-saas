@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 17/05/2025 14:21:58
+ Date: 17/05/2025 14:27:02
 */
 
 SET NAMES utf8mb4;
@@ -385,6 +385,42 @@ CREATE TABLE `erp_goods_inventory_batch`  (
 
 -- ----------------------------
 -- Records of erp_goods_inventory_batch
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for erp_goods_inventory_operation
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_goods_inventory_operation`;
+CREATE TABLE `erp_goods_inventory_operation`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `goods_id` bigint NOT NULL COMMENT '商品id',
+  `goods_num` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品编码',
+  `sku_id` bigint NOT NULL COMMENT '商品规格id',
+  `sku_code` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '规格编码（唯一）',
+  `batch_id` bigint NOT NULL COMMENT '库存批次id',
+  `batch_num` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '库存批次号',
+  `type` int NOT NULL COMMENT '库存类型（1增加库存2减少库存3锁定库存）',
+  `inventory_detail_id` bigint NOT NULL COMMENT '商品库存id（本表id减库存的时候关联）',
+  `quantity` int NOT NULL DEFAULT 0 COMMENT '操作库存数量',
+  `locked_quantity` int NOT NULL COMMENT '锁定库存数量（status变成已结算时把该字段值更新到quantity）',
+  `price` double NULL DEFAULT 0 COMMENT '价格（type=1采购价格；type=2出库时的价格）',
+  `biz_type` int NOT NULL COMMENT '业务类型（10采购入库20采购退货30退货入库40订单出库）',
+  `biz_id` bigint NOT NULL COMMENT '业务单id',
+  `biz_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '业务单号',
+  `biz_item_id` bigint NOT NULL COMMENT '业务单itemId',
+  `status` int NOT NULL COMMENT '状态（0待结算1已结算）',
+  `remark` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `warehouse_id` bigint NOT NULL COMMENT '仓库id',
+  `position_id` bigint NOT NULL COMMENT '仓位id',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '仓库库存操作记录表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_goods_inventory_operation
 -- ----------------------------
 
 -- ----------------------------
@@ -2125,42 +2161,6 @@ INSERT INTO `wms_goods_bad_stock_log` VALUES (2, 2, 497, 0, 1, 1, '退货不良�
 INSERT INTO `wms_goods_bad_stock_log` VALUES (3, 3, 502, 0, 1, 1, '退货不良品入库SKU :HN08012903退货单号:BAD221107094233114', '2022-11-07 09:42:33', 0);
 INSERT INTO `wms_goods_bad_stock_log` VALUES (4, 4, 119, 0, 1, 1, '退货不良品入库SKU :28202106610102退货单号:BAD221107094320707', '2022-11-07 09:43:20', 0);
 INSERT INTO `wms_goods_bad_stock_log` VALUES (5, 5, 558, 0, 1, 1, '退货不良品入库SKU :HN1062904退货单号:BAD221208100814778', '2022-12-08 10:08:14', 0);
-
--- ----------------------------
--- Table structure for wms_inventory_operation
--- ----------------------------
-DROP TABLE IF EXISTS `wms_inventory_operation`;
-CREATE TABLE `wms_inventory_operation`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `goods_id` bigint NOT NULL COMMENT '商品id',
-  `goods_num` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品编码',
-  `sku_id` bigint NOT NULL COMMENT '商品规格id',
-  `sku_code` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '规格编码（唯一）',
-  `batch_id` bigint NOT NULL COMMENT '库存批次id',
-  `batch_num` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '库存批次号',
-  `type` int NOT NULL COMMENT '库存类型（1增加库存2减少库存3锁定库存）',
-  `inventory_detail_id` bigint NOT NULL COMMENT '商品库存id（本表id减库存的时候关联）',
-  `quantity` int NOT NULL DEFAULT 0 COMMENT '操作库存数量',
-  `locked_quantity` int NOT NULL COMMENT '锁定库存数量（status变成已结算时把该字段值更新到quantity）',
-  `price` double NULL DEFAULT 0 COMMENT '价格（type=1采购价格；type=2出库时的价格）',
-  `biz_type` int NOT NULL COMMENT '业务类型（10采购入库20采购退货30退货入库40订单出库）',
-  `biz_id` bigint NOT NULL COMMENT '业务单id',
-  `biz_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '业务单号',
-  `biz_item_id` bigint NOT NULL COMMENT '业务单itemId',
-  `status` int NOT NULL COMMENT '状态（0待结算1已结算）',
-  `remark` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `warehouse_id` bigint NOT NULL COMMENT '仓库id',
-  `position_id` bigint NOT NULL COMMENT '仓位id',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '仓库库存操作记录表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of wms_inventory_operation
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for wms_stock_in
