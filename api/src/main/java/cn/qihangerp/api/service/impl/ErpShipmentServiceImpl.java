@@ -1,20 +1,23 @@
 package cn.qihangerp.api.service.impl;
 
-import cn.qihangerp.api.domain.ErpShipmentItem;
-import cn.qihangerp.api.mapper.ErpShipmentItemMapper;
+import cn.qihangerp.api.common.ResultVo;
+import cn.qihangerp.api.common.utils.DateUtils;
+import cn.qihangerp.api.domain.*;
+import cn.qihangerp.api.mapper.*;
+import cn.qihangerp.api.request.SupplierAgentShipmentRequest;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.PageResult;
-import cn.qihangerp.api.domain.ErpShipment;
-import cn.qihangerp.api.mapper.ErpOrderItemMapper;
-import cn.qihangerp.api.mapper.ErpOrderMapper;
 import cn.qihangerp.api.service.ErpShipmentService;
-import cn.qihangerp.api.mapper.ErpShipmentMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 /**
 * @author TW
@@ -28,7 +31,8 @@ public class ErpShipmentServiceImpl extends ServiceImpl<ErpShipmentMapper, ErpSh
     private final ErpShipmentMapper mapper;
     private final ErpShipmentItemMapper shipmentItemMapper;
     private final ErpOrderMapper orderMapper;
-    private final ErpOrderItemMapper itemMapper;
+    private final ErpOrderItemMapper orderItemMapper;
+    private final ErpLogisticsCompanyMapper erpLogisticsCompanyMapper;
 
     @Override
     public PageResult<ErpShipment> queryPageList(ErpShipment shipping, PageQuery pageQuery) {
@@ -57,37 +61,75 @@ public class ErpShipmentServiceImpl extends ServiceImpl<ErpShipmentMapper, ErpSh
         return erpShipment;
     }
 
-//    @Transactional
-//    @Override
-//    public ResultVo<Integer> handShip(ErpOrderShipping shipping) {
-//        // 查询店铺订单是否存在
-//        List<ErpOrder> oOrders = orderMapper.selectList(new LambdaQueryWrapper<ErpOrder>().eq(ErpOrder::getOrderNum, shipping.getOrderNum()).eq(ErpOrder::getShopId, shipping.getShopId()));
-//        if(oOrders== null || oOrders.isEmpty()) {
-//            // 没有找到订单
-//            return ResultVo.error(ResultVoEnum.NotFound,shipping.getOrderNum()+"订单未找到");
-//        }
-//        // 查询订单ITEM
-//        List<ErpOrderItem> oOrderItems = itemMapper.selectList(new LambdaQueryWrapper<ErpOrderItem>().eq(ErpOrderItem::getOrderId, oOrders.get(0).getId()));
-//        shipping.setShipTime(new Date());
-//        shipping.setPackages(JSONObject.toJSONString(oOrderItems));
-//        shipping.setOrderId(oOrders.get(0).getId());
-//        shipping.setRemark("手动发货");
-//        shipping.setCreateTime(new Date());
-//        mapper.insert(shipping);
-//        // 回写状态
-//        ErpOrder update = new ErpOrder();
-//        update.setId(oOrders.get(0).getId());
-//        update.setOrderStatus(2);//2已发货
-//        update.setShippingTime(new Date());
-//        update.setShippingCompany(shipping.getShipCompany());
-//        update.setShippingNumber(shipping.getShipCode());
-//        update.setShippingMan(shipping.getShipOperator());
-//        update.setUpdateTime(new Date());
-//        update.setUpdateBy("手动发货");
-//        orderMapper.updateById(update);
-//
-//        return ResultVo.success();
-//    }
+    @Transactional
+    @Override
+    public ResultVo<Integer> handShip(SupplierAgentShipmentRequest shipping) {
+        // 查询店铺订单是否存在
+        ErpShipment erpShipment = mapper.selectById(shipping.shipmentId());
+        if(erpShipment==null){
+            return ResultVo.error("供应商发货订单不存在!");
+        }
+        if(erpShipment.getShipper().intValue()!=1){
+            return ResultVo.error("不是供应商发货订单！无法操作！");
+        }
+        if(erpShipment.getShipStatus().intValue()!=0){
+            return ResultVo.error("已经发货！无需操作！");
+        }
+        List<ErpShipmentItem> erpShipmentItems = shipmentItemMapper.selectList(new LambdaQueryWrapper<ErpShipmentItem>().eq(ErpShipmentItem::getShipmentId, erpShipment.getId()));
+        if(erpShipmentItems==null||erpShipmentItems.size()==0){
+            return ResultVo.error("供应商发货明细数据错误！");
+        }
+        ErpLogisticsCompany erpLogisticsCompany = erpLogisticsCompanyMapper.selectById(shipping.shipCompanyId());
+        if(erpLogisticsCompany==null) return ResultVo.error("快递公司选择错误");
+        // 更新明细
+        for(ErpShipmentItem erpShipmentItem : erpShipmentItems){
+            ErpShipmentItem itemUp = new ErpShipmentItem();
+            itemUp.setId(erpShipmentItem.getId());
+            itemUp.setStockStatus(2);
+            itemUp.setUpdateBy("手动填写供应商发货信息");
+            itemUp.setUpdateTime(new Date());
+            shipmentItemMapper.updateById(itemUp);
+            // 更新 orderItem 发货状态
+            ErpOrderItem orderItemUpdate = new ErpOrderItem();
+            orderItemUpdate.setId( erpShipmentItem.getOrderItemId());
+            orderItemUpdate.setUpdateBy("手动填写供应商发货信息");
+            orderItemUpdate.setUpdateTime(new Date());
+            orderItemUpdate.setShipStatus(1);//发货状态 0 待发货 1 已发货
+            orderItemMapper.updateById(orderItemUpdate);
+        }
+
+        // 更新发货订单
+        ErpShipment update = new ErpShipment();
+        update.setId(erpShipment.getId());
+        update.setShipStatus(1);
+        update.setShipCompany(erpLogisticsCompany.getName());
+        update.setShipCompanyCode(erpLogisticsCompany.getCode());
+        update.setShipCode(shipping.shipNo());
+        update.setShipTime(DateUtils.parseDate(shipping.shipTime()));
+        update.setUpdateTime(new Date());
+        update.setUpdateBy("手动填写供应商发货信息");
+        mapper.updateById(update);
+
+        //
+        // 回写order状态 ====ship_status发货状态 0 待发货 1 部分发货 2全部发货
+        long waitShipCount = orderItemMapper.selectList(new LambdaQueryWrapper<ErpOrderItem>().eq(ErpOrderItem::getOrderId, erpShipment.getOrderId()).eq(ErpOrderItem::getShipStatus, 0)).stream().count();
+
+        ErpOrder orderUpdate = new ErpOrder();
+        orderUpdate.setId(erpShipment.getOrderId());
+        if(waitShipCount==0){
+            // 全部发货了
+            orderUpdate.setOrderStatus(2);//2已发货
+            orderUpdate.setShipStatus(2);
+        }else{
+            // 部分发货了
+            orderUpdate.setShipStatus(1);
+        }
+        orderUpdate.setUpdateTime(new Date());
+        orderUpdate.setUpdateBy("手动填写供应商发货信息");
+        orderMapper.updateById(orderUpdate);
+
+        return ResultVo.success();
+    }
 }
 
 

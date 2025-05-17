@@ -2,6 +2,7 @@ package cn.qihangerp.api.controller;
 
 import cn.qihangerp.api.domain.ErpOrderItem;
 import cn.qihangerp.api.domain.ErpShipmentItem;
+import cn.qihangerp.api.request.SupplierAgentShipmentRequest;
 import cn.qihangerp.api.service.ErpShipmentItemService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -83,14 +84,14 @@ public class ShipmentController extends BaseController {
     }
 
     /**
-     * 供应商发货
+     * 供应商发货(供应商代发货)
      * @param shipping
      * @return
      */
-    @PostMapping("/supplier_shipment")
-    public AjaxResult supplierShipment(@RequestBody ErpOrderShipping shipping)
+    @PostMapping("/supplierAgentShipment")
+    public AjaxResult supplierAgentShipment(@RequestBody SupplierAgentShipmentRequest shipping)
     {
-        shipping.setShipType(1);
+//        shipping.setShipType(1);
         var result = shippingService.handShip(shipping);
         if(result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
             return AjaxResult.success();

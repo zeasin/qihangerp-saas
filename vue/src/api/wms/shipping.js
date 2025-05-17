@@ -26,7 +26,15 @@ export function getShippingDetail(id) {
   })
 }
 
-// 新增仓库订单发货
+// 供应商代发货-
+export function supplierAgentShipment(data) {
+  return request({
+    url: '/shipping/supplierAgentShipment',
+    method: 'post',
+    data:data
+  })
+}
+// 新增仓库拣货单
 export function stockingAdd(data) {
   return request({
     url: '/wms/shipping/stockingAdd',

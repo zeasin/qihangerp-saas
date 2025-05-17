@@ -128,12 +128,23 @@
           {{scope.row.sellerMemo}}
         </template>
       </el-table-column>
-
+      <el-table-column label="发货状态" align="center" prop="shipStatus" >
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.shipStatus === 0" style="margin-bottom: 6px;">待发货</el-tag>
+          <el-tag v-if="scope.row.shipStatus === 1" style="margin-bottom: 6px;">部分发货</el-tag>
+          <el-tag v-if="scope.row.shipStatus === 2" style="margin-bottom: 6px;">全部发货</el-tag>
+          <br />
+          <!-- 1：无售后或售后关闭，2：售后处理中，3：退款中，4： 退款成功 -->
+          <el-tag v-if="scope.row.shipType === 0">自己发货</el-tag>
+          <el-tag v-if="scope.row.shipType === 1">联合发货</el-tag>
+          <el-tag v-if="scope.row.shipType === 2">供应商发货</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="状态" align="center" prop="orderStatus" >
         <template slot-scope="scope">
           <el-tag v-if="scope.row.orderStatus === 0" style="margin-bottom: 6px;">待选择发货方式</el-tag>
           <el-tag v-if="scope.row.orderStatus === 1" style="margin-bottom: 6px;">待发货</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 2" style="margin-bottom: 6px;">已出库</el-tag>
+          <el-tag v-if="scope.row.orderStatus === 2" style="margin-bottom: 6px;">已发货</el-tag>
           <el-tag v-if="scope.row.orderStatus === 3" style="margin-bottom: 6px;">已发货</el-tag>
           <el-tag v-if="scope.row.orderStatus === 4" style="margin-bottom: 6px;">已完成</el-tag>
           <el-tag v-if="scope.row.orderStatus === 11" style="margin-bottom: 6px;">订单取消</el-tag>

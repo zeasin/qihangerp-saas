@@ -2,7 +2,9 @@ package cn.qihangerp.api.service;
 
 import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.PageResult;
+import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.domain.ErpShipment;
+import cn.qihangerp.api.request.SupplierAgentShipmentRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -13,5 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ErpShipmentService extends IService<ErpShipment> {
     PageResult<ErpShipment> queryPageList(ErpShipment shipping, PageQuery pageQuery);
     ErpShipment queryDetailById(Long id);
-//    ResultVo<Integer> handShip(ErpOrderShipping shipping);
+    ResultVo<Integer> handShip(SupplierAgentShipmentRequest shipping);
 }

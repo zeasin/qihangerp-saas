@@ -158,7 +158,7 @@ public class ErpShipment {
     /**
      * 
      */
-    private Date updateBy;
+    private String updateBy;
 
     @TableField(exist = false)
     private List<ErpShipmentItem> itemList;

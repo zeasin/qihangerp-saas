@@ -224,6 +224,12 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         return ResultVo.success();
     }
 
+    /**
+     * 分配供应商发货
+     * @param shipBo
+     * @param createBy
+     * @return
+     */
     @Override
     public ResultVo<Integer> allocateShipmentOrder(ErpOrderShipBo shipBo, String createBy) {
         if (StringUtils.isEmpty(shipBo.getId()) || shipBo.getId().equals("0"))
@@ -378,7 +384,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         // 更新状态、发货方式
         ErpOrder update = new ErpOrder();
         update.setId(erpOrder.getId());
-        update.setShipStatus(1);
+//        update.setShipStatus(1);
         update.setShipType(2);
         update.setUpdateTime(new Date());
         update.setUpdateBy("分配供应商发货");

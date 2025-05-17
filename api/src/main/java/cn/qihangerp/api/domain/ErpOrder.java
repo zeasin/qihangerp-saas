@@ -115,7 +115,7 @@ public class ErpOrder implements Serializable {
     private Date orderTime;
 
     /**
-     * 发货状态 0 待发货 1 已分配供应商发货 2已发货
+     * 发货状态 0 待发货 1 部分发货 2全部发货
      */
     private Integer shipStatus;
     //发货方式 0 自己发货1联合发货2供应商发货

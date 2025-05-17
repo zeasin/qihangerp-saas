@@ -239,17 +239,17 @@
           </el-date-picker>
         </el-form-item>
 
-        <el-form-item label="商品总价" prop="goodsAmount">
-          <el-input type="number" v-model.number="form.goodsAmount"  placeholder="请输入商品总价" />
-        </el-form-item>
+<!--        <el-form-item label="商品总价" prop="goodsAmount">-->
+<!--          <el-input type="number" v-model.number="form.goodsAmount"  placeholder="请输入商品总价" />-->
+<!--        </el-form-item>-->
 <!--        <el-form-item label="商品数量" prop="quantity">-->
 <!--          <el-input v-model="form.quantity" placeholder="请输入商品数量" />-->
 <!--        </el-form-item>-->
 
-        <el-form-item label="物流公司" prop="shipCompany">
+        <el-form-item label="物流公司" prop="shipCompanyId">
 <!--          <el-input v-model="form.shipCompany" placeholder="请输入物流公司" />-->
-          <el-select v-model="form.shipCompany" filterable r placeholder="选择快递公司" >
-            <el-option v-for="item in logisticsList" :key="item.id" :label="item.name" :value="item.name">
+          <el-select v-model="form.shipCompanyId" filterable r placeholder="选择快递公司" >
+            <el-option v-for="item in logisticsList" :key="item.id" :label="item.name" :value="item.id">
               <span style="float: left">{{ item.name }}</span>
               <span style="float: right; color: #8492a6; font-size: 13px" >{{item.number}}</span>
             </el-option>
@@ -289,7 +289,7 @@
 import { listSupplier} from "@/api/scm/supplier";
 import { listShop } from "@/api/shop/shop";
 import {listLogistics, listLogisticsStatus} from "@/api/api/logistics";
-import {listShippingSupplier,getShippingDetail} from "@/api/wms/shipping";
+import {listShippingSupplier, getShippingDetail, supplierAgentShipment} from "@/api/wms/shipping";
 export default {
   name: "supplierShipOrder",
   data() {
@@ -329,7 +329,7 @@ export default {
       // 表单校验
       rules: {
         goodsAmount: [{ required: true, message: '不能为空' }],
-        shipCompany: [{ required: true, message: '不能为空' }],
+        shipCompanyId: [{ required: true, message: '不能为空' }],
         shipNo: [{ required: true, message: '不能为空' }],
         shipCost: [{ required: true, message: '不能为空' }],
         shipTime: [{ required: true, message: '不能为空' }],
@@ -380,33 +380,14 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        id: null,
-        shopId: null,
-        shopType: null,
-        supplierId: null,
-        orderNum: null,
-        orderItemId: null,
-        orderDate: null,
-        goodsId: null,
-        specId: null,
-        goodsTitle: null,
-        goodsImg: null,
-        goodsNum: null,
-        goodsSpec: null,
-        specNum: null,
-        goodsAmount: null,
-        quantity: null,
-        remark: null,
-        shipCompany: null,
+        shipmentId:null,
+        orderNum:null,
+        orderTime:null,
+        goodsAmount:0.00,
+        shipCompanyId: null,
         shipNo: null,
-        shipCost: null,
+        shipCost: 0.00,
         shipTime: null,
-        status: null,
-        itemAmount: null,
-        createTime: null,
-        createBy: null,
-        updateBy: null,
-        updateTime: null
       };
       this.resetForm("form");
     },
@@ -437,7 +418,11 @@ export default {
       this.reset();
       const id = row.id || this.ids
       getShippingDetail(id).then(response => {
-        this.form = response.data;
+        // this.form = response.data;
+        this.form.shipmentId=response.data.id
+        this.form.orderNum=response.data.orderNum
+        this.form.orderTime=response.data.orderTime
+        this.form.goodsAmount=response.data.goodsAmount
         listLogisticsStatus({}).then(resp=>{
           this.logisticsList = resp.rows
           this.open = true;
@@ -450,7 +435,7 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-            updateAgentShipping(this.form).then(response => {
+          supplierAgentShipment(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
