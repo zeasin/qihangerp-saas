@@ -10,17 +10,58 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 商品库存表
- * @TableName o_goods_inventory
+ * 商品库存批次
+ * @TableName o_goods_inventory_batch
  */
-@TableName(value ="erp_goods_inventory")
+@TableName(value ="erp_goods_inventory_batch")
 @Data
-public class OGoodsInventory implements Serializable {
+public class ErpGoodsInventoryBatch implements Serializable {
     /**
      * 主键ID
      */
     @TableId(type = IdType.AUTO)
-    private String id;
+    private Long id;
+    private Long inventoryId;
+
+    /**
+     * 批次号
+     */
+    private String batchNum;
+
+    /**
+     * 初始数量
+     */
+    private Integer originQty;
+
+    /**
+     * 当前数量
+     */
+    private Integer currentQty;
+
+    /**
+     * 采购价
+     */
+    private Double purPrice;
+
+    /**
+     * 采购单id
+     */
+    private Long purId;
+
+    /**
+     * 采购单itemId
+     */
+    private Long purItemId;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
+    /**
+     * 规格id
+     */
+    private String skuId;
 
     /**
      * 商品id
@@ -28,44 +69,24 @@ public class OGoodsInventory implements Serializable {
     private String goodsId;
 
     /**
-     * 商品编码
-     */
-    private String goodsNum;
-
-    /**
-     * 商品规格id
-     */
-    private String skuId;
-
-    /**
-     * 规格编码（唯一）
+     * sku编码
      */
     private String skuCode;
 
     /**
-     * 商品名
+     * 仓库id
      */
-    private String goodsName;
+    private Long warehouseId;
 
     /**
-     * 商品图片
+     * 仓位id
      */
-    private String goodsImg;
+    private Long positionId;
 
     /**
-     * SKU名
+     * 仓位编码
      */
-    private String skuName;
-
-    /**
-     * 当前库存
-     */
-    private Integer quantity;
-
-    /**
-     * 0正常  1删除
-     */
-    private Integer isDelete;
+    private String positionNum;
 
     /**
      * 创建时间

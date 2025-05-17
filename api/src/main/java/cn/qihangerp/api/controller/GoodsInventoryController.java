@@ -1,11 +1,11 @@
 package cn.qihangerp.api.controller;
 
 import cn.qihangerp.api.common.*;
-import cn.qihangerp.api.domain.OGoodsInventory;
-import cn.qihangerp.api.domain.OGoodsInventoryBatch;
+import cn.qihangerp.api.domain.ErpGoodsInventory;
+import cn.qihangerp.api.domain.ErpGoodsInventoryBatch;
 import cn.qihangerp.api.request.GoodsSkuInventoryVo;
-import cn.qihangerp.api.service.OGoodsInventoryBatchService;
-import cn.qihangerp.api.service.OGoodsInventoryService;
+import cn.qihangerp.api.service.ErpGoodsInventoryBatchService;
+import cn.qihangerp.api.service.ErpGoodsInventoryService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,22 +19,23 @@ import java.util.List;
 @RestController
 @RequestMapping("/goodsInventory")
 public class GoodsInventoryController extends BaseController {
-    private final OGoodsInventoryService goodsInventoryService;
-    private final OGoodsInventoryBatchService inventoryBatchService;
+    private final ErpGoodsInventoryService goodsInventoryService;
+    private final ErpGoodsInventoryBatchService inventoryBatchService;
 
     @GetMapping("/list")
-    public TableDataInfo list(OGoodsInventory bo, PageQuery pageQuery)
+    public TableDataInfo list(ErpGoodsInventory bo, PageQuery pageQuery)
     {
-        PageResult<OGoodsInventory> pageResult = goodsInventoryService.queryPageList(bo, pageQuery);
+        bo.setTenantId(getUserId());
+        PageResult<ErpGoodsInventory> pageResult = goodsInventoryService.queryPageList(bo, pageQuery);
         return getDataTable(pageResult);
     }
 
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
-        OGoodsInventory goodsInventory = goodsInventoryService.getById(id);
+        ErpGoodsInventory goodsInventory = goodsInventoryService.getById(id);
         if(goodsInventory!=null) {
-            List<OGoodsInventoryBatch> list = inventoryBatchService.list(new LambdaQueryWrapper<OGoodsInventoryBatch>().eq(OGoodsInventoryBatch::getSkuId, goodsInventory.getSkuId()));
+            List<ErpGoodsInventoryBatch> list = inventoryBatchService.list(new LambdaQueryWrapper<ErpGoodsInventoryBatch>().eq(ErpGoodsInventoryBatch::getSkuId, goodsInventory.getSkuId()));
             return AjaxResult.success(list);
         }
         return success();

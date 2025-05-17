@@ -37,8 +37,8 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
     implements WmsStockInService {
     private final WmsStockInMapper mapper;
     private final WmsStockInItemService inItemService;
-    private final OGoodsInventoryBatchService inventoryBatchService;
-    private final OGoodsInventoryService inventoryService;
+    private final ErpGoodsInventoryBatchService inventoryBatchService;
+    private final ErpGoodsInventoryService inventoryService;
     private final ErpGoodsSkuService skuService;
     private final ErpGoodsService goodsService;
     @Override
@@ -152,10 +152,10 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
 
             String goodsInventoryId;
             // 增加商品库存表
-            List<OGoodsInventory> inventoryList = inventoryService.list(new LambdaQueryWrapper<OGoodsInventory>().eq(OGoodsInventory::getSkuId, stockInItem.getSkuId()));
+            List<ErpGoodsInventory> inventoryList = inventoryService.list(new LambdaQueryWrapper<ErpGoodsInventory>().eq(ErpGoodsInventory::getSkuId, stockInItem.getSkuId()));
             if (inventoryList.isEmpty()) {
                 // 新增
-                OGoodsInventory inventory = new OGoodsInventory();
+                ErpGoodsInventory inventory = new ErpGoodsInventory();
                 inventory.setGoodsId(stockInItem.getGoodsId());
                 inventory.setGoodsNum(stockInItem.getGoodsNum());
                 inventory.setSkuId(stockInItem.getSkuId());
@@ -171,7 +171,7 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
                 goodsInventoryId = inventory.getId();
             } else {
                 //修改
-                OGoodsInventory update = new OGoodsInventory();
+                ErpGoodsInventory update = new ErpGoodsInventory();
                 update.setId(inventoryList.get(0).getId());
                 update.setUpdateBy(userName);
                 update.setUpdateTime(new Date());
@@ -181,7 +181,7 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
             }
 
             // 增加商品库存批次表
-            OGoodsInventoryBatch inventoryBatch = new OGoodsInventoryBatch();
+            ErpGoodsInventoryBatch inventoryBatch = new ErpGoodsInventoryBatch();
             inventoryBatch.setInventoryId(Long.parseLong(goodsInventoryId));
             inventoryBatch.setBatchNum(DateUtils.parseDateToStr("yyyyMMddHHmmss", new Date()));
             inventoryBatch.setOriginQty(item.getIntoQuantity());

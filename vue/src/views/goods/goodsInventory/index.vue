@@ -58,21 +58,21 @@
 <!--      <el-table-column type="selection" width="55" align="center" />-->
 <!--      <el-table-column label="主键ID" align="center" prop="id" />-->
       <el-table-column label="商品ID" align="center" prop="goodsId" />
-      <el-table-column label="商品编码" align="center" prop="goodsNumber" />
-      <el-table-column label="规格ID" align="center" prop="specId" />
-      <el-table-column label="规格编码" align="center" prop="specNumber" />
-      <el-table-column label="当前库存" align="center" prop="currentQty" />
+      <el-table-column label="商品编码" align="center" prop="goodsNum" />
+      <el-table-column label="规格ID" align="center" prop="skuId" />
+      <el-table-column label="规格编码" align="center" prop="skuCode" />
+      <el-table-column label="当前库存" align="center" prop="quantity" />
       <el-table-column label="锁定库存" align="center" prop="lockedQty" />
 <!--      <el-table-column label="0正常  1删除" align="center" prop="isDelete" />-->
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建人" align="center" prop="createBy" />
       <el-table-column label="更新时间" align="center" prop="updateTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="更新人" align="center" prop="updateBy" />

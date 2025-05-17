@@ -1,6 +1,6 @@
 package cn.qihangerp.api.mapper;
 
-import cn.qihangerp.api.domain.OGoodsInventory;
+import cn.qihangerp.api.domain.ErpGoodsInventory;
 import cn.qihangerp.api.request.GoodsSkuInventoryVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -12,7 +12,7 @@ import java.util.List;
 * @createDate 2024-09-23 22:39:50
 * @Entity cn.qihangerp.module.goods.domain.OGoodsInventory
 */
-public interface OGoodsInventoryMapper extends BaseMapper<OGoodsInventory> {
+public interface ErpGoodsInventoryMapper extends BaseMapper<ErpGoodsInventory> {
     long getAllInventoryQuantity();
     List<GoodsSkuInventoryVo> searchSkuInventoryBatch(String keyword);
 }

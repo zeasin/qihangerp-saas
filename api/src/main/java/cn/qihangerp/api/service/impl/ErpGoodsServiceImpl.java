@@ -34,6 +34,8 @@ public class ErpGoodsServiceImpl extends ServiceImpl<ErpGoodsMapper, ErpGoods>
     private final ErpGoodsSkuAttrMapper skuAttrMapper;
     private final ErpGoodsCategoryAttributeValueMapper attributeValueMapper;
     private final ErpGoodsCategoryAttributeMapper attributeMapper;
+    private final ErpGoodsInventoryMapper inventoryMapper;
+
     @Override
     public PageResult<ErpGoods> queryPageList(ErpGoods bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ErpGoods> queryWrapper = new LambdaQueryWrapper<>();
@@ -100,6 +102,22 @@ public class ErpGoodsServiceImpl extends ServiceImpl<ErpGoodsMapper, ErpGoods>
             spec.setStatus(1);
             spec.setDisable(0);
             skuMapper.insert(spec);
+
+            // 初始化商品库存
+            ErpGoodsInventory inventory = new ErpGoodsInventory();
+            inventory.setTenantId(goods.getTenantId());
+            inventory.setGoodsId(goods.getId());
+            inventory.setGoodsNum(goods.getNumber());
+            inventory.setGoodsName(goods.getName());
+            inventory.setGoodsImg(goods.getImage());
+            inventory.setSkuId(spec.getId());
+            inventory.setSkuCode(spec.getSpecNum());
+            inventory.setSkuName(spec.getSpecName());
+            inventory.setQuantity(0);
+            inventory.setIsDelete(0);
+            inventory.setCreateTime(new Date());
+            inventory.setCreateBy("手动添加商品初始化商品 sku 库存");
+            inventoryMapper.insert(inventory);
         }
 
         // 3、添加规格属性表erp_goods_spec_attr

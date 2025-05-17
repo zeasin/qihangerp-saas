@@ -6,9 +6,7 @@ import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.utils.StringUtils;
 import cn.qihangerp.api.domain.*;
-import cn.qihangerp.api.mapper.ErpGoodsMapper;
-import cn.qihangerp.api.mapper.ErpGoodsSkuMapper;
-import cn.qihangerp.api.mapper.ShopGoodsSkuMapper;
+import cn.qihangerp.api.mapper.*;
 import cn.qihangerp.api.service.ShopService;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
@@ -16,7 +14,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.qihangerp.api.service.ShopGoodsService;
-import cn.qihangerp.api.mapper.ShopGoodsMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +36,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
     private final ErpGoodsSkuMapper goodsSkuMapper;
     private final ErpGoodsMapper goodsMapper;
     private final ShopService shopService;
+    private final ErpGoodsInventoryMapper inventoryMapper;
 
     @Override
     public PageResult<ShopGoods> queryPageList(ShopGoods bo, PageQuery pageQuery) {
@@ -225,6 +223,22 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
             erpGoodsSku.setStatus(1);
             goodsSkuMapper.insert(erpGoodsSku);
 
+            // 初始化商品库存
+            ErpGoodsInventory inventory = new ErpGoodsInventory();
+            inventory.setTenantId(erpGoods.getTenantId());
+            inventory.setGoodsId(erpGoods.getId());
+            inventory.setGoodsNum(erpGoods.getNumber());
+            inventory.setGoodsName(erpGoods.getName());
+            inventory.setGoodsImg(erpGoods.getImage());
+            inventory.setSkuId(erpGoodsSku.getId());
+            inventory.setSkuCode(erpGoodsSku.getSpecNum());
+            inventory.setSkuName(erpGoodsSku.getSpecName());
+            inventory.setQuantity(0);
+            inventory.setIsDelete(0);
+            inventory.setCreateTime(new Date());
+            inventory.setCreateBy("同步店铺商品初始化商品 sku 库存");
+            inventoryMapper.insert(inventory);
+            
             //更新ShopGoodsSku
             ShopGoodsSku shopGoodsSkuUpdate = new ShopGoodsSku();
             shopGoodsSkuUpdate.setId(sku.getId());

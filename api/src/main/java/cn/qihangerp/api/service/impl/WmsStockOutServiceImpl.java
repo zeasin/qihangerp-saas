@@ -5,16 +5,16 @@ import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.utils.DateUtils;
-import cn.qihangerp.api.domain.OGoodsInventory;
-import cn.qihangerp.api.domain.OGoodsInventoryBatch;
+import cn.qihangerp.api.domain.ErpGoodsInventory;
+import cn.qihangerp.api.domain.ErpGoodsInventoryBatch;
 import cn.qihangerp.api.domain.WmsStockOut;
 import cn.qihangerp.api.domain.WmsStockOutItem;
 import cn.qihangerp.api.mapper.WmsStockOutMapper;
 import cn.qihangerp.api.request.GoodsSkuInventoryVo;
 import cn.qihangerp.api.request.StockOutCreateRequest;
 import cn.qihangerp.api.request.StockOutItemRequest;
-import cn.qihangerp.api.service.OGoodsInventoryBatchService;
-import cn.qihangerp.api.service.OGoodsInventoryService;
+import cn.qihangerp.api.service.ErpGoodsInventoryBatchService;
+import cn.qihangerp.api.service.ErpGoodsInventoryService;
 import cn.qihangerp.api.service.WmsStockOutItemService;
 import cn.qihangerp.api.service.WmsStockOutService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -42,8 +42,8 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
     implements WmsStockOutService {
     private final WmsStockOutMapper outMapper;
     private final WmsStockOutItemService outItemService;
-    private final OGoodsInventoryBatchService goodsInventoryBatchService;
-    private final OGoodsInventoryService goodsInventoryService;
+    private final ErpGoodsInventoryBatchService goodsInventoryBatchService;
+    private final ErpGoodsInventoryService goodsInventoryService;
 
     @Override
     public PageResult<WmsStockOut> queryPageList(WmsStockOut bo, PageQuery pageQuery) {
@@ -103,7 +103,7 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
         List<WmsStockOutItem> itemList = new ArrayList<>();
         for(GoodsSkuInventoryVo item: request.getItemList()){
             if(org.springframework.util.StringUtils.hasText(item.getBatchId())) {
-                OGoodsInventoryBatch batch = goodsInventoryBatchService.getById(item.getBatchId());
+                ErpGoodsInventoryBatch batch = goodsInventoryBatchService.getById(item.getBatchId());
                 if(batch!=null) {
 
                     WmsStockOutItem inItem = new WmsStockOutItem();
@@ -155,14 +155,14 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
         WmsStockOutItem outItem = outItemService.getById(request.getEntryItemId());
         if(outItem == null) return ResultVo.error(1500,"出库数据错误");
         // 判断库存够不够扣减的
-        OGoodsInventoryBatch batch = goodsInventoryBatchService.getById(outItem.getBatchId());
+        ErpGoodsInventoryBatch batch = goodsInventoryBatchService.getById(outItem.getBatchId());
         if(batch == null) return ResultVo.error(1500,"库存数据不存在");
         if(batch.getCurrentQty().longValue()< request.getOutQty().longValue())
             return ResultVo.error(1500,"库存不足");
         if(StringUtils.isEmpty(batch.getRemark())) batch.setRemark("");
         // 扣减库存
         // 1扣减批次库存
-        OGoodsInventoryBatch updateBatch = new OGoodsInventoryBatch();
+        ErpGoodsInventoryBatch updateBatch = new ErpGoodsInventoryBatch();
         updateBatch.setCurrentQty(batch.getCurrentQty() - request.getOutQty());
         updateBatch.setUpdateBy(userName);
         updateBatch.setUpdateTime(new Date());
@@ -170,8 +170,8 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
         updateBatch.setId(batch.getId());
         goodsInventoryBatchService.updateById(updateBatch);
         // 2扣减总库存
-        OGoodsInventory goodsInventory = goodsInventoryService.getById(batch.getInventoryId());
-        OGoodsInventory updateInventory = new OGoodsInventory();
+        ErpGoodsInventory goodsInventory = goodsInventoryService.getById(batch.getInventoryId());
+        ErpGoodsInventory updateInventory = new ErpGoodsInventory();
         updateInventory.setId(goodsInventory.getId());
         updateInventory.setQuantity(goodsInventory.getQuantity() - request.getOutQty());
         updateInventory.setUpdateBy(userName);

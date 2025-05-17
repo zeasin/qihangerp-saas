@@ -1,6 +1,6 @@
 package cn.qihangerp.api.mapper;
 
-import cn.qihangerp.api.domain.OGoodsInventoryBatch;
+import cn.qihangerp.api.domain.ErpGoodsInventoryBatch;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2025-02-16 08:26:56
 * @Entity cn.qihangerp.module.goods.domain.OGoodsInventoryBatch
 */
-public interface OGoodsInventoryBatchMapper extends BaseMapper<OGoodsInventoryBatch> {
+public interface ErpGoodsInventoryBatchMapper extends BaseMapper<ErpGoodsInventoryBatch> {
 
 }
 
