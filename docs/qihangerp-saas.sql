@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 18/05/2025 18:46:06
+ Date: 18/05/2025 19:19:39
 */
 
 SET NAMES utf8mb4;
@@ -418,6 +418,7 @@ INSERT INTO `erp_goods_inventory_batch` VALUES (3, 24, '20250518144311', 12, 10,
 DROP TABLE IF EXISTS `erp_goods_inventory_operation`;
 CREATE TABLE `erp_goods_inventory_operation`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `tenant_id` bigint NOT NULL COMMENT '租户 id',
   `goods_id` bigint NOT NULL COMMENT '商品id',
   `goods_num` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品编码',
   `sku_id` bigint NOT NULL COMMENT '商品规格id',
@@ -425,18 +426,19 @@ CREATE TABLE `erp_goods_inventory_operation`  (
   `batch_id` bigint NOT NULL COMMENT '库存批次id',
   `batch_num` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '库存批次号',
   `type` int NOT NULL COMMENT '库存类型（1增加库存2减少库存3锁定库存）',
-  `inventory_detail_id` bigint NOT NULL COMMENT '商品库存id（本表id减库存的时候关联）',
+  `inventory_id` bigint NOT NULL COMMENT '商品库存id（本表id减库存的时候关联）',
   `quantity` int NOT NULL DEFAULT 0 COMMENT '操作库存数量',
-  `locked_quantity` int NOT NULL COMMENT '锁定库存数量（status变成已结算时把该字段值更新到quantity）',
+  `locked_quantity` int NOT NULL DEFAULT 0 COMMENT '锁定库存数量（status变成已结算时把该字段值更新到quantity）',
   `price` double NULL DEFAULT 0 COMMENT '价格（type=1采购价格；type=2出库时的价格）',
-  `biz_type` int NOT NULL COMMENT '业务类型（10采购入库20采购退货30退货入库40订单出库）',
+  `biz_type` int NOT NULL COMMENT '业务类型（101采购入库102销售退货入库201采购退货出库202订单发货出库203订单补发出库211盘点出库212报损出库999其他出库）',
   `biz_id` bigint NOT NULL COMMENT '业务单id',
   `biz_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '业务单号',
   `biz_item_id` bigint NOT NULL COMMENT '业务单itemId',
-  `status` int NOT NULL COMMENT '状态（0待结算1已结算）',
-  `remark` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   `warehouse_id` bigint NOT NULL COMMENT '仓库id',
   `position_id` bigint NOT NULL COMMENT '仓位id',
+  `position_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '仓位',
+  `remark` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `status` int NOT NULL COMMENT '状态（0待结算1已结算）',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',

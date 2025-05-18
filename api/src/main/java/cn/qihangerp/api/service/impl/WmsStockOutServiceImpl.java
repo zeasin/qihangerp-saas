@@ -6,6 +6,7 @@ import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.utils.DateUtils;
 import cn.qihangerp.api.domain.*;
+import cn.qihangerp.api.mapper.ErpGoodsInventoryOperationMapper;
 import cn.qihangerp.api.mapper.WmsStockOutItemPositionMapper;
 import cn.qihangerp.api.mapper.WmsStockOutMapper;
 import cn.qihangerp.api.request.GoodsSkuInventoryVo;
@@ -42,6 +43,7 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
     private final WmsStockOutItemService outItemService;
     private final ErpGoodsInventoryBatchService goodsInventoryBatchService;
     private final ErpGoodsInventoryService goodsInventoryService;
+    private final ErpGoodsInventoryOperationMapper inventoryOperationMapper;
     private final WmsStockOutItemPositionMapper outItemPositionMapper;
 
     @Override
@@ -199,6 +201,41 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
         outItemPosition.setPositionId(batch.getPositionId());
         outItemPosition.setPositionNum(batch.getPositionNum());
         outItemPositionMapper.insert(outItemPosition);
+
+        // 添加库存明细
+        ErpGoodsInventoryOperation operation = new ErpGoodsInventoryOperation();
+        operation.setTenantId(outItem.getTenantId());
+        operation.setGoodsId(outItem.getGoodsId());
+        operation.setGoodsNum(outItem.getGoodsNum());
+        operation.setSkuId(outItem.getSkuId());
+        operation.setSkuCode(outItem.getSkuCode());
+        operation.setBatchId(batch.getId());
+        operation.setBatchNum(batch.getBatchNum());
+        operation.setType(2);//库存类型（1增加库存2减少库存3锁定库存）
+        operation.setInventoryId(batch.getInventoryId());
+        operation.setQuantity(request.getOutQty());
+        operation.setLockedQuantity(0);
+        operation.setPrice(batch.getPurPrice());
+        // 出库类型1订单拣货出库2采购退货出库3盘点出库4报损出库
+        if(outItem.getType().intValue()==1){
+            operation.setBizType(202);//业务类型（101采购入库102销售退货入库201采购退货出库202订单发货出库203订单补发出库211盘点出库212报损出库999其他出库）
+        }else  if(outItem.getType().intValue()==2){
+            operation.setBizType(201);
+        }else  if(outItem.getType().intValue()==3){
+            operation.setBizType(211);
+        }else  if(outItem.getType().intValue()==4){
+            operation.setBizType(212);
+        }
+        operation.setBizId(outItemPosition.getId());
+        operation.setBizNum("");
+        operation.setBizItemId(0L);
+        operation.setWarehouseId(batch.getWarehouseId());
+        operation.setPositionId(batch.getPositionId());
+        operation.setPositionNum(batch.getPositionNum());
+        operation.setStatus(0);
+        operation.setCreateTime(new Date());
+        operation.setUpdateTime(new Date());
+        inventoryOperationMapper.insert(operation);
 
         // 更新自己的状态
         WmsStockOutItem outItemUpdate = new WmsStockOutItem();

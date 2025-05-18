@@ -6,6 +6,7 @@ import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.utils.DateUtils;
 import cn.qihangerp.api.domain.*;
+import cn.qihangerp.api.mapper.ErpGoodsInventoryOperationMapper;
 import cn.qihangerp.api.mapper.WmsStockInItemPositionMapper;
 import cn.qihangerp.api.mapper.WmsStockInMapper;
 import cn.qihangerp.api.mapper.WmsWarehousePositionMapper;
@@ -43,6 +44,7 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
     private final WmsStockInItemPositionMapper inItemPositionMapper;
     private final WmsWarehousePositionMapper warehousePositionMapper;
     private final ErpGoodsInventoryBatchService inventoryBatchService;
+    private final ErpGoodsInventoryOperationMapper inventoryOperationMapper;
     private final ErpGoodsInventoryService inventoryService;
     private final ErpGoodsSkuService skuService;
     private final ErpGoodsService goodsService;
@@ -218,6 +220,8 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
             inventoryBatch.setCreateBy(userName);
             inventoryBatchService.save(inventoryBatch);
 
+
+
             // 添加itemPosition
             WmsStockInItemPosition stockInItemPosition = new WmsStockInItemPosition();
             stockInItemPosition.setTenantId(tenantId);
@@ -233,6 +237,38 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
             stockInItemPosition.setPositionId(warehousePosition.getId());
             stockInItemPosition.setPositionNum(warehousePosition.getNumber());
             inItemPositionMapper.insert(stockInItemPosition);
+
+            // 添加库存明细
+            ErpGoodsInventoryOperation operation = new ErpGoodsInventoryOperation();
+            operation.setTenantId(tenantId);
+            operation.setGoodsId(stockInItem.getGoodsId());
+            operation.setGoodsNum(stockInItem.getGoodsNum());
+            operation.setSkuId(stockInItem.getSkuId());
+            operation.setSkuCode(stockInItem.getSkuCode());
+            operation.setBatchId(inventoryBatch.getId());
+            operation.setBatchNum(inventoryBatch.getBatchNum());
+            operation.setType(1);//库存类型（1增加库存2减少库存3锁定库存）
+            operation.setInventoryId(inventoryBatch.getInventoryId());
+            operation.setQuantity(item.getQty());
+            operation.setLockedQuantity(0);
+            operation.setPrice(inventoryBatch.getPurPrice());
+            // 来源类型（1采购订单2退货订单）
+            if(wmsStockIn.getStockInType().intValue()==1){
+                operation.setBizType(101);//业务类型（101采购入库102销售退货入库201采购退货出库202订单发货出库203订单补发出库999其他出库）
+            }else  if(wmsStockIn.getStockInType().intValue()==2){
+                operation.setBizType(102);
+            }
+            operation.setBizId(stockInItemPosition.getId());
+            operation.setBizNum("");
+            operation.setBizItemId(0L);
+            operation.setWarehouseId(inventoryBatch.getWarehouseId());
+            operation.setPositionId(inventoryBatch.getPositionId());
+            operation.setPositionNum(inventoryBatch.getPositionNum());
+            operation.setStatus(0);
+            operation.setCreateTime(new Date());
+            operation.setUpdateTime(new Date());
+            inventoryOperationMapper.insert(operation);
+
             // 回写状态
             WmsStockInItem update = new WmsStockInItem();
             update.setId(stockInItem.getId());
