@@ -40,7 +40,7 @@ public class StockOutController extends BaseController {
         return success(entry);
     }
     @PostMapping("/out")
-    public AjaxResult in(@RequestBody StockOutItemRequest request)
+    public AjaxResult out(@RequestBody StockOutItemRequest request)
     {
         ResultVo<Long> resultVo = stockOutService.stockOut(getUserId(), getUsername(), request);
         if(resultVo.getCode()==0)

@@ -49,6 +49,15 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+        >新建商品出库单</el-button>
+      </el-col>
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
 <!--          type="warning"-->
@@ -222,7 +231,7 @@
 </template>
 
 <script>
-import { listStockOutEntry, getStockOutEntry, delStockOutEntry, addStockOutEntry, stockOut } from "@/api/wms/stockOutEntry";
+import { listStockOutEntry, getStockOutEntry, stockOut } from "@/api/wms/stockOut";
 
 export default {
   name: "StockOutEntry",
@@ -283,6 +292,9 @@ export default {
     this.getList();
   },
   methods: {
+    handleAdd(){
+      this.$router.push({path:"/stock/stock_out/create"})
+    },
     /** 查询出库单列表 */
     getList() {
       this.loading = true;

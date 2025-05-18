@@ -26,3 +26,11 @@ export function stockOut(data) {
   })
 }
 
+// 创建出库单
+export function stockOutCreate(data) {
+  return request({
+    url: '/stockOut/create',
+    method: 'post',
+    data: data
+  })
+}

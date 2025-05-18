@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 18/05/2025 17:40:52
+ Date: 18/05/2025 18:04:39
 */
 
 SET NAMES utf8mb4;
@@ -1795,8 +1795,9 @@ INSERT INTO `sys_menu` VALUES (2086, '分类属性值', 8, 91, 'category_attr_va
 INSERT INTO `sys_menu` VALUES (2088, '手动添加订单', 3, 9, 'create', 'order/create', NULL, 1, 0, 'C', '1', '1', '', 'form', 'admin', '2025-04-19 10:57:29', 'admin', '2025-05-16 08:56:15', '');
 INSERT INTO `sys_menu` VALUES (2089, '手动添加店铺订单', 3, 11, 'shop_order_create', 'shop/order/create', NULL, 1, 0, 'C', '1', '0', '', 'clipboard', 'admin', '2025-04-26 10:02:11', 'admin', '2025-04-26 10:02:59', '');
 INSERT INTO `sys_menu` VALUES (2090, '发货设置', 4, 105, 'setting', 'shipping/set/index', NULL, 1, 0, 'C', '0', '0', NULL, 'dict', 'admin', '2025-04-26 18:48:29', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2091, '新增入库单', 6, 0, 'stock_in/create', 'wms/stockIn/create', NULL, 1, 0, 'C', '1', '0', NULL, 'edit', 'admin', '2025-05-18 11:59:31', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2091, '新增入库单', 6, 11, 'stock_in/create', 'wms/stockIn/create', NULL, 1, 0, 'C', '1', '0', '', 'edit', 'admin', '2025-05-18 11:59:31', 'admin', '2025-05-18 18:03:17', '');
 INSERT INTO `sys_menu` VALUES (2092, '仓位管理', 6, 69, 'position', 'wms/location/position', NULL, 1, 0, 'C', '1', '0', NULL, 'bug', 'admin', '2025-05-18 13:17:46', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2093, '新建出库单', 6, 26, 'stock_out/create', 'wms/stockOut/create', NULL, 1, 0, 'C', '1', '0', NULL, '#', 'admin', '2025-05-18 18:04:06', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -2077,7 +2078,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$MkBdzADGzLxAqopkmh3vDu0oA5bxgHWcg173AVni9Rr9MFQtnjplK', '0', '2025-04-01', '0', '127.0.0.1', '2025-05-18 15:45:39', 'admin', '2023-08-07 19:31:37', '', '2025-05-18 15:45:39', '管理员', NULL);
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$MkBdzADGzLxAqopkmh3vDu0oA5bxgHWcg173AVni9Rr9MFQtnjplK', '0', '2025-04-01', '0', '127.0.0.1', '2025-05-18 18:02:48', 'admin', '2023-08-07 19:31:37', '', '2025-05-18 18:02:48', '管理员', NULL);
 INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-05-18 16:35:20', 'admin', '2024-04-21 10:36:49', 'admin', '2025-05-18 16:35:20', NULL, NULL);
 INSERT INTO `sys_user` VALUES (101, NULL, '15818590119', '试用会员0119', '00', '', '', '0', '', '$2a$10$yMgN6PZKiuafBVHaEHhk3OoSQ5o98xVG8RHEs2sg5.Yv/TEQuR/86', '0', '2025-05-17', '0', '113.118.102.209', '2025-04-17 21:13:06', '主动注册', '2025-04-17 13:13:04', '', '2025-04-17 13:13:05', NULL, NULL);
 INSERT INTO `sys_user` VALUES (102, NULL, '15286902105', '试用会员2105', '00', '', '', '0', '', '$2a$10$nbDujbCk2SrdamYRHr217ORRipaa5p5lVMVFctBU6fPt/rd3k.5E.', '0', '2025-05-17', '0', '114.86.55.0', '2025-04-17 21:16:37', '主动注册', '2025-04-17 13:16:36', '', '2025-04-17 13:16:37', NULL, NULL);
