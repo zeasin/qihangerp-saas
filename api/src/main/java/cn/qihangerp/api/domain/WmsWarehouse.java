@@ -17,7 +17,8 @@ public class WmsWarehouse implements Serializable {
      * 
      */
     @TableId(value = "id",type = IdType.AUTO)
-    private Integer id;
+    private Long id;
+    private Long tenantId;
 
     /**
      * 仓库编号

@@ -88,8 +88,23 @@
       <el-table-column label="一级类目id" align="center" prop="parentId1" />
       <el-table-column label="二级类目id" align="center" prop="parentId2" />
       <el-table-column label="地址" align="center" prop="address" />
+      <el-table-column label="仓位" align="center" prop="remark" >
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-info"
+            @click="handlePostion(scope.row)"
+          >查看仓位详情</el-button>
+        </template>
+      </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="0正常  1删除" align="center" prop="isDelete" />
+      <el-table-column label="状态" align="center" prop="status" >
+        <template slot-scope="scope">
+          <el-tag size="small" v-if="scope.row.status === 0">禁用</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 1">启用</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -319,6 +334,9 @@ export default {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
+    },
+    handlePostion(row) {
+      this.$router.push({path:"/stock/position",query:{warehouseId:row.id}})
     },
     /** 导出按钮操作 */
     handleExport() {

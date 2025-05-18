@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 18/05/2025 12:03:00
+ Date: 18/05/2025 13:37:14
 */
 
 SET NAMES utf8mb4;
@@ -921,7 +921,7 @@ INSERT INTO `erp_shipment_item` VALUES (2, 100, 1, 1, '测试供应商', 2, 5, 6
 DROP TABLE IF EXISTS `erp_shop`;
 CREATE TABLE `erp_shop`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户id',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '店铺名',
   `type` int NOT NULL COMMENT '对应第三方平台Id',
   `url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '店铺url',
@@ -1778,7 +1778,7 @@ INSERT INTO `sys_menu` VALUES (2051, '发货记录', 4, 104, 'logs', 'shipping/l
 INSERT INTO `sys_menu` VALUES (2054, '售后处理', 5, 1, 'refund_list', 'refund/index', NULL, 1, 0, 'C', '1', '0', '', 'size', 'admin', '2024-01-03 14:24:36', 'admin', '2025-04-17 12:17:13', '');
 INSERT INTO `sys_menu` VALUES (2059, '备货中', 4, 101, 'stock_up', 'shipping/stock_up', '', 1, 0, 'C', '0', '0', '', 'component', 'admin', '2024-01-09 11:51:52', 'admin', '2025-05-17 10:30:27', '');
 INSERT INTO `sys_menu` VALUES (2060, '拣货出库', 4, 102, 'stockout', 'wms/orderShipping/stockOut', NULL, 1, 0, 'C', '0', '1', '', 'bug', 'admin', '2024-01-09 13:39:00', 'admin', '2025-05-17 13:42:01', '');
-INSERT INTO `sys_menu` VALUES (2061, '仓位管理', 6, 69, 'stock_location', 'wms/location', NULL, 1, 0, 'C', '0', '0', '', 'education', 'admin', '2024-01-09 13:54:30', 'admin', '2025-05-17 15:42:20', '');
+INSERT INTO `sys_menu` VALUES (2061, '仓库仓位管理', 6, 69, 'stock_location', 'wms/location', NULL, 1, 0, 'C', '0', '0', '', 'education', 'admin', '2024-01-09 13:54:30', 'admin', '2025-05-18 13:16:57', '');
 INSERT INTO `sys_menu` VALUES (2062, '代发账单管理', 9, 4, 'agent_ship_bill', 'shipping/agent/shipBill', NULL, 1, 0, 'C', '0', '0', '', 'money', 'admin', '2024-01-12 18:35:02', 'admin', '2025-04-17 12:23:33', '');
 INSERT INTO `sys_menu` VALUES (2063, '物流费用', 9, 100, 'shipFee', 'fms/payable/shipFee', NULL, 1, 0, 'C', '0', '0', '', 'guide', 'admin', '2024-01-12 18:35:31', 'admin', '2025-04-17 12:23:45', '');
 INSERT INTO `sys_menu` VALUES (2066, '添加商品', 8, 2, 'create', 'goods/create', NULL, 1, 0, 'C', '1', '0', '', 'component', 'admin', '2024-01-14 19:42:11', 'admin', '2024-04-10 11:33:33', '');
@@ -1794,6 +1794,7 @@ INSERT INTO `sys_menu` VALUES (2088, '手动添加订单', 3, 9, 'create', 'orde
 INSERT INTO `sys_menu` VALUES (2089, '手动添加店铺订单', 3, 11, 'shop_order_create', 'shop/order/create', NULL, 1, 0, 'C', '1', '0', '', 'clipboard', 'admin', '2025-04-26 10:02:11', 'admin', '2025-04-26 10:02:59', '');
 INSERT INTO `sys_menu` VALUES (2090, '发货设置', 4, 105, 'setting', 'shipping/set/index', NULL, 1, 0, 'C', '0', '0', NULL, 'dict', 'admin', '2025-04-26 18:48:29', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2091, '新增入库单', 6, 0, 'stock_in/create', 'wms/stockIn/create', NULL, 1, 0, 'C', '1', '0', NULL, 'edit', 'admin', '2025-05-18 11:59:31', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2092, '仓位管理', 6, 69, 'position', 'wms/location/position', NULL, 1, 0, 'C', '1', '0', NULL, 'bug', 'admin', '2025-05-18 13:17:46', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -2074,7 +2075,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$MkBdzADGzLxAqopkmh3vDu0oA5bxgHWcg173AVni9Rr9MFQtnjplK', '0', '2025-04-01', '0', '127.0.0.1', '2025-05-18 11:57:44', 'admin', '2023-08-07 19:31:37', '', '2025-05-18 11:57:44', '管理员', NULL);
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$MkBdzADGzLxAqopkmh3vDu0oA5bxgHWcg173AVni9Rr9MFQtnjplK', '0', '2025-04-01', '0', '127.0.0.1', '2025-05-18 13:16:13', 'admin', '2023-08-07 19:31:37', '', '2025-05-18 13:16:12', '管理员', NULL);
 INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-05-18 11:39:38', 'admin', '2024-04-21 10:36:49', 'admin', '2025-05-18 11:39:38', NULL, NULL);
 INSERT INTO `sys_user` VALUES (101, NULL, '15818590119', '试用会员0119', '00', '', '', '0', '', '$2a$10$yMgN6PZKiuafBVHaEHhk3OoSQ5o98xVG8RHEs2sg5.Yv/TEQuR/86', '0', '2025-05-17', '0', '113.118.102.209', '2025-04-17 21:13:06', '主动注册', '2025-04-17 13:13:04', '', '2025-04-17 13:13:05', NULL, NULL);
 INSERT INTO `sys_user` VALUES (102, NULL, '15286902105', '试用会员2105', '00', '', '', '0', '', '$2a$10$nbDujbCk2SrdamYRHr217ORRipaa5p5lVMVFctBU6fPt/rd3k.5E.', '0', '2025-05-17', '0', '114.86.55.0', '2025-04-17 21:16:37', '主动注册', '2025-04-17 13:16:36', '', '2025-04-17 13:16:37', NULL, NULL);
@@ -2214,6 +2215,7 @@ CREATE TABLE `wms_stock_in`  (
 -- ----------------------------
 -- Records of wms_stock_in
 -- ----------------------------
+INSERT INTO `wms_stock_in` VALUES (2, '1747542266769393', 1, 'a', NULL, 1, 12, 1, NULL, 100, 'q', NULL, 0, 'qihang', '2025-05-18 12:26:44', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for wms_stock_in_item
@@ -2252,6 +2254,7 @@ CREATE TABLE `wms_stock_in_item`  (
 -- ----------------------------
 -- Records of wms_stock_in_item
 -- ----------------------------
+INSERT INTO `wms_stock_in_item` VALUES (1, 2, 1, 'a', 0, 0, 2, '10000226806665', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 7, 'A00112', '黑色 M ', 12, 0.00, 0, '', 0, 'qihang', '2025-05-18 12:26:44', NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for wms_stock_out
@@ -2373,13 +2376,14 @@ CREATE TABLE `wms_warehouse`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '仓库表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_warehouse
 -- ----------------------------
-INSERT INTO `wms_warehouse` VALUES (1, 'SHENZHEN', '深圳仓库', '广东省', '深圳市', '宝安区', '福永街道', NULL, '自营仓库', 1, 'admin', '2022-03-07 20:06:10', 'qihang', '2025-05-06 12:16:21');
+INSERT INTO `wms_warehouse` VALUES (1, 'SHENZHEN', '深圳仓库', '广东省', '深圳市', '宝安区', '福永街道', NULL, '自营仓库', 1, 'admin', '2022-03-07 20:06:10', 'qihang', '2025-05-06 12:16:21', 100);
 
 -- ----------------------------
 -- Table structure for wms_warehouse_position
@@ -2401,31 +2405,32 @@ CREATE TABLE `wms_warehouse_position`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '仓库仓位表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_warehouse_position
 -- ----------------------------
-INSERT INTO `wms_warehouse_position` VALUES (1, 1, '001', '深圳虚拟仓库', 0, 1, 0, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:10', NULL, '2022-03-07 20:06:10');
-INSERT INTO `wms_warehouse_position` VALUES (2, 1, 'A', 'A区', 1, 2, 1, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:24', NULL, '2022-03-07 20:06:24');
-INSERT INTO `wms_warehouse_position` VALUES (3, 1, 'B', 'B区', 1, 2, 1, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:38', NULL, '2022-03-07 20:06:38');
-INSERT INTO `wms_warehouse_position` VALUES (4, 1, 'C', 'C区', 1, 2, 1, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:47', NULL, '2022-03-07 20:06:47');
-INSERT INTO `wms_warehouse_position` VALUES (5, 1, 'A01-1-01', 'A01-1-01', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (6, 1, 'A01-1-02', 'A01-1-02', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (7, 1, 'A01-1-03', 'A01-1-03', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (8, 1, 'A01-1-04', 'A01-1-04', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (9, 1, 'A01-1-05', 'A01-1-05', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (10, 1, 'A01-1-06', 'A01-1-06', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (11, 1, 'A01-1-07', 'A01-1-07', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (12, 1, 'A01-1-08', 'A01-1-08', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (13, 1, 'A01-1-09', 'A01-1-09', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (14, 1, 'A01-1-10', 'A01-1-10', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (15, 1, 'A01-1-11', 'A01-1-11', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (16, 1, 'A01-1-12', 'A01-1-12', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (17, 1, 'A01-1-13', 'A01-1-13', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (18, 1, 'A01-1-14', 'A01-1-14', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (19, 1, 'A01-1-15', 'A01-1-15', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
-INSERT INTO `wms_warehouse_position` VALUES (20, 1, 'A01-1-16', 'A01-1-16', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39');
+INSERT INTO `wms_warehouse_position` VALUES (1, 1, '001', '深圳虚拟仓库', 0, 1, 0, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:10', NULL, '2022-03-07 20:06:10', 100);
+INSERT INTO `wms_warehouse_position` VALUES (2, 1, 'A', 'A区', 1, 2, 1, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:24', NULL, '2022-03-07 20:06:24', 100);
+INSERT INTO `wms_warehouse_position` VALUES (3, 1, 'B', 'B区', 1, 2, 1, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:38', NULL, '2022-03-07 20:06:38', 100);
+INSERT INTO `wms_warehouse_position` VALUES (4, 1, 'C', 'C区', 1, 2, 1, 0, NULL, NULL, 0, 'admin', '2022-03-07 20:06:47', NULL, '2022-03-07 20:06:47', 100);
+INSERT INTO `wms_warehouse_position` VALUES (5, 1, 'A01-1-01', 'A01-1-01', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (6, 1, 'A01-1-02', 'A01-1-02', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (7, 1, 'A01-1-03', 'A01-1-03', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (8, 1, 'A01-1-04', 'A01-1-04', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (9, 1, 'A01-1-05', 'A01-1-05', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (10, 1, 'A01-1-06', 'A01-1-06', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (11, 1, 'A01-1-07', 'A01-1-07', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (12, 1, 'A01-1-08', 'A01-1-08', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (13, 1, 'A01-1-09', 'A01-1-09', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (14, 1, 'A01-1-10', 'A01-1-10', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (15, 1, 'A01-1-11', 'A01-1-11', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (16, 1, 'A01-1-12', 'A01-1-12', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (17, 1, 'A01-1-13', 'A01-1-13', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (18, 1, 'A01-1-14', 'A01-1-14', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (19, 1, 'A01-1-15', 'A01-1-15', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
+INSERT INTO `wms_warehouse_position` VALUES (20, 1, 'A01-1-16', 'A01-1-16', 2, 3, 1, 2, NULL, NULL, 0, 'admin', '2022-03-07 20:12:39', NULL, '2022-03-07 20:12:39', 100);
 
 SET FOREIGN_KEY_CHECKS = 1;

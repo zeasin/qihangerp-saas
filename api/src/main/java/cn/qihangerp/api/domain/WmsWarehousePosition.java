@@ -17,12 +17,13 @@ public class WmsWarehousePosition implements Serializable {
      * 
      */
     @TableId(value = "id",type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 仓库id
      */
-    private Integer warehouseId;
+    private Long warehouseId;
+    private Long tenantId;
 
     /**
      * 仓库/货架编号

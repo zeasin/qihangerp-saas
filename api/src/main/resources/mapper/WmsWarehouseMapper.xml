@@ -5,7 +5,8 @@
 <mapper namespace="cn.qihangerp.api.mapper.WmsWarehouseMapper">
 
     <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.WmsWarehouse">
-            <id property="id" column="id" jdbcType="INTEGER"/>
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <id property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
             <result property="number" column="number" jdbcType="VARCHAR"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="province" column="province" jdbcType="VARCHAR"/>
@@ -22,7 +23,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,number,name,
+        id,number,name,tenant_id,
         province,city,district,
         street,address,remark,
         status,create_by,create_time,

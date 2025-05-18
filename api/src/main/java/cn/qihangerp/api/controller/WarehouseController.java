@@ -27,6 +27,7 @@ public class WarehouseController extends BaseController {
     public TableDataInfo list(WmsWarehouse bo)
     {
         LambdaQueryWrapper<WmsWarehouse> qw = new LambdaQueryWrapper<WmsWarehouse>()
+                .eq(WmsWarehouse::getTenantId,getUserId())
                 .eq(bo.getStatus()!=null,WmsWarehouse::getStatus, bo.getStatus())
                 .like(StringUtils.hasText(bo.getNumber()),WmsWarehouse::getNumber,bo.getNumber())
                 .like(StringUtils.hasText(bo.getName()),WmsWarehouse::getName,bo.getName())
@@ -43,11 +44,13 @@ public class WarehouseController extends BaseController {
     @PostMapping
     public AjaxResult add(@RequestBody WmsWarehouse warehouse, HttpServletRequest request)
     {
+        warehouse.setTenantId(getUserId());
         warehouse.setCreateBy(getUsername());
         warehouse.setCreateTime(new Date());
         boolean save = warehouseService.save(warehouse);
         if(save){
             WmsWarehousePosition position = new WmsWarehousePosition();
+            position.setTenantId(getUserId());
             position.setWarehouseId(warehouse.getId());
             position.setParentId(0);
             position.setParentId1(0);
@@ -66,6 +69,7 @@ public class WarehouseController extends BaseController {
     @PutMapping
     public AjaxResult edit(@RequestBody WmsWarehouse warehouse, HttpServletRequest request)
     {
+        warehouse.setTenantId(null);
         warehouse.setUpdateBy(getUsername());
         warehouse.setUpdateTime(new Date());
         return toAjax(warehouseService.updateById(warehouse));
@@ -80,6 +84,7 @@ public class WarehouseController extends BaseController {
     public TableDataInfo positionList(Long warehouseId)
     {
         LambdaQueryWrapper<WmsWarehousePosition> qw = new LambdaQueryWrapper<WmsWarehousePosition>()
+                .eq(WmsWarehousePosition::getTenantId,getUserId())
                 .eq(WmsWarehousePosition::getWarehouseId,warehouseId)
                 ;
         List<WmsWarehousePosition> list = positionService.list(qw);
@@ -89,7 +94,8 @@ public class WarehouseController extends BaseController {
     public TableDataInfo searchPosition(Long warehouseId,String number)
     {
         LambdaQueryWrapper<WmsWarehousePosition> qw = new LambdaQueryWrapper<WmsWarehousePosition>()
-                .eq(WmsWarehousePosition::getWarehouseId,warehouseId)
+                .eq(WmsWarehousePosition::getTenantId,getUserId())
+                .eq(warehouseId!=null,WmsWarehousePosition::getWarehouseId,warehouseId)
                 .like(WmsWarehousePosition::getNumber,number)
                 ;
         List<WmsWarehousePosition> list = positionService.list(qw);
@@ -99,6 +105,7 @@ public class WarehouseController extends BaseController {
 
     @PostMapping("/position")
     public AjaxResult positionAdd(@RequestBody WmsWarehousePosition position, HttpServletRequest request) {
+        position.setTenantId(getUserId());
         position.setCreateBy(getUsername());
         position.setCreateTime(new Date());
         position.setParentId1(0);
@@ -117,6 +124,7 @@ public class WarehouseController extends BaseController {
     @PutMapping("/position")
     public AjaxResult positionEdit(@RequestBody WmsWarehousePosition position, HttpServletRequest request)
     {
+        position.setTenantId(getUserId());
         position.setUpdateBy(getUsername());
         position.setUpdateTime(new Date());
         return toAjax(positionService.updateById(position));
