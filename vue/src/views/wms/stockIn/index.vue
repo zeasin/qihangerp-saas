@@ -41,6 +41,15 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+        >新建商品入库单</el-button>
+      </el-col>
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
 <!--          type="warning"-->
@@ -283,6 +292,9 @@ export default {
     this.getList();
   },
   methods: {
+    handleAdd(){
+      this.$router.push({path:"/stock/stock_in/create"})
+    },
     searchLocation(query){
       this.locationLoading = true;
       const qw = {

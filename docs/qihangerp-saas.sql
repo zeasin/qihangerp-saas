@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 17/05/2025 18:40:14
+ Date: 18/05/2025 12:03:00
 */
 
 SET NAMES utf8mb4;
@@ -1762,7 +1762,7 @@ INSERT INTO `sys_menu` VALUES (2012, '采购物流管理', 2, 2, 'purchase/ship'
 INSERT INTO `sys_menu` VALUES (2019, '采购账单管理', 9, 3, 'purchase_bill', 'scm/purchase/bill', '', 1, 0, 'C', '0', '0', '', 'money', 'admin', '2023-12-29 17:09:32', 'admin', '2025-04-17 12:24:24', '');
 INSERT INTO `sys_menu` VALUES (2021, '创建采购单', 2, 101, 'purchase/order/create', 'scm/purchase/order/create', '', 1, 0, 'C', '1', '0', '', 'edit', 'admin', '2023-12-29 21:23:45', 'admin', '2024-04-21 11:44:03', '');
 INSERT INTO `sys_menu` VALUES (2025, '采购订单详情', 2, 102, 'purchase/order/detail', 'scm/purchase/order/detail', '', 1, 0, 'C', '1', '0', '', 'button', 'admin', '2023-12-30 17:08:01', 'admin', '2024-04-21 11:04:50', '');
-INSERT INTO `sys_menu` VALUES (2027, '商品入库管理', 6, 10, 'stock_in_entry/list', 'wms/stockInEntry', '', 1, 0, 'C', '0', '0', 'wms:stock_in_entry:list', 'stockin', 'admin', '2023-12-31 12:27:37', 'admin', '2025-05-17 15:43:29', '');
+INSERT INTO `sys_menu` VALUES (2027, '商品入库管理', 6, 10, 'stock_in/list', 'wms/stockIn/index', '', 1, 0, 'C', '0', '0', 'wms:stock_in_entry:list', 'stockin', 'admin', '2023-12-31 12:27:37', 'admin', '2025-05-18 12:01:01', '');
 INSERT INTO `sys_menu` VALUES (2028, '生成采购入库单', 2, 103, 'purchase/ship/create_stock_in_entry', 'scm/purchase/ship/create_stock_in_entry', '', 1, 0, 'C', '1', '0', '', 'button', 'admin', '2023-12-31 12:31:32', 'admin', '2024-04-21 11:05:53', '');
 INSERT INTO `sys_menu` VALUES (2029, '店铺售后管理', 5, 2, 'shop_refund', 'shop/refund/index', '', 1, 0, 'C', '0', '0', '', 'clipboard', 'admin', '2023-12-31 17:29:03', 'admin', '2025-04-17 12:20:16', '');
 INSERT INTO `sys_menu` VALUES (2033, '订单库', 3, 1, 'list', 'order/index', '', 1, 0, 'C', '0', '0', '', 'list', 'admin', '2023-12-31 20:05:05', 'admin', '2025-04-19 10:45:33', '');
@@ -1771,7 +1771,7 @@ INSERT INTO `sys_menu` VALUES (2036, '店铺订单管理', 3, 10, 'shop_order', 
 INSERT INTO `sys_menu` VALUES (2041, '订单补发', 5, 6, 'order_ship_again', 'afterSale/shipAgain', NULL, 1, 0, 'C', '0', '0', '', 'checkbox', 'admin', '2024-01-02 14:11:34', 'admin', '2024-04-10 11:28:26', '');
 INSERT INTO `sys_menu` VALUES (2042, '订单拦截', 5, 3, 'order_intercept', 'afterSale/intercept', NULL, 1, 0, 'C', '0', '0', '', 'edit', 'admin', '2024-01-02 14:11:56', 'admin', '2024-04-10 11:28:32', '');
 INSERT INTO `sys_menu` VALUES (2044, '订单换货', 5, 5, 'order_exchange', 'afterSale/exchange', NULL, 1, 0, 'C', '0', '0', '', 'skill', 'admin', '2024-01-03 09:18:53', 'admin', '2024-04-10 11:30:38', '');
-INSERT INTO `sys_menu` VALUES (2046, '商品出库管理', 6, 25, 'stockOut', 'wms/stockOutEntry', NULL, 1, 0, 'C', '0', '0', '', 'link', 'admin', '2024-01-03 11:00:53', 'admin', '2025-05-17 15:43:38', '');
+INSERT INTO `sys_menu` VALUES (2046, '商品出库管理', 6, 25, 'stock_out/list', 'wms/stockOut/index', NULL, 1, 0, 'C', '0', '0', '', 'link', 'admin', '2024-01-03 11:00:53', 'admin', '2025-05-18 12:02:28', '');
 INSERT INTO `sys_menu` VALUES (2047, '商品库存查询', 6, 6, 'goodsInventory', 'goods/goodsInventory', NULL, 1, 0, 'C', '0', '0', '', 'monitor', 'admin', '2024-01-03 11:01:14', 'admin', '2025-05-17 15:43:13', '');
 INSERT INTO `sys_menu` VALUES (2049, '打单&发货', 4, 10, 'ewaybillPrint', 'shipping/ewaybillPrint/index', NULL, 1, 0, 'C', '0', '0', '', 'guide', 'admin', '2024-01-03 14:09:18', 'admin', '2025-04-26 15:55:30', '');
 INSERT INTO `sys_menu` VALUES (2051, '发货记录', 4, 104, 'logs', 'shipping/logs/index', NULL, 1, 0, 'C', '0', '0', '', 'email', 'admin', '2024-01-03 14:13:12', 'admin', '2025-04-26 16:02:40', '');
@@ -1793,6 +1793,7 @@ INSERT INTO `sys_menu` VALUES (2086, '分类属性值', 8, 91, 'category_attr_va
 INSERT INTO `sys_menu` VALUES (2088, '手动添加订单', 3, 9, 'create', 'order/create', NULL, 1, 0, 'C', '1', '1', '', 'form', 'admin', '2025-04-19 10:57:29', 'admin', '2025-05-16 08:56:15', '');
 INSERT INTO `sys_menu` VALUES (2089, '手动添加店铺订单', 3, 11, 'shop_order_create', 'shop/order/create', NULL, 1, 0, 'C', '1', '0', '', 'clipboard', 'admin', '2025-04-26 10:02:11', 'admin', '2025-04-26 10:02:59', '');
 INSERT INTO `sys_menu` VALUES (2090, '发货设置', 4, 105, 'setting', 'shipping/set/index', NULL, 1, 0, 'C', '0', '0', NULL, 'dict', 'admin', '2025-04-26 18:48:29', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2091, '新增入库单', 6, 0, 'stock_in/create', 'wms/stockIn/create', NULL, 1, 0, 'C', '1', '0', NULL, 'edit', 'admin', '2025-05-18 11:59:31', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -2073,8 +2074,8 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$MkBdzADGzLxAqopkmh3vDu0oA5bxgHWcg173AVni9Rr9MFQtnjplK', '0', '2025-04-01', '0', '127.0.0.1', '2025-05-17 15:40:52', 'admin', '2023-08-07 19:31:37', '', '2025-05-17 15:40:52', '管理员', NULL);
-INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-05-17 18:35:47', 'admin', '2024-04-21 10:36:49', 'admin', '2025-05-17 18:35:46', NULL, NULL);
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$MkBdzADGzLxAqopkmh3vDu0oA5bxgHWcg173AVni9Rr9MFQtnjplK', '0', '2025-04-01', '0', '127.0.0.1', '2025-05-18 11:57:44', 'admin', '2023-08-07 19:31:37', '', '2025-05-18 11:57:44', '管理员', NULL);
+INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-05-18 11:39:38', 'admin', '2024-04-21 10:36:49', 'admin', '2025-05-18 11:39:38', NULL, NULL);
 INSERT INTO `sys_user` VALUES (101, NULL, '15818590119', '试用会员0119', '00', '', '', '0', '', '$2a$10$yMgN6PZKiuafBVHaEHhk3OoSQ5o98xVG8RHEs2sg5.Yv/TEQuR/86', '0', '2025-05-17', '0', '113.118.102.209', '2025-04-17 21:13:06', '主动注册', '2025-04-17 13:13:04', '', '2025-04-17 13:13:05', NULL, NULL);
 INSERT INTO `sys_user` VALUES (102, NULL, '15286902105', '试用会员2105', '00', '', '', '0', '', '$2a$10$nbDujbCk2SrdamYRHr217ORRipaa5p5lVMVFctBU6fPt/rd3k.5E.', '0', '2025-05-17', '0', '114.86.55.0', '2025-04-17 21:16:37', '主动注册', '2025-04-17 13:16:36', '', '2025-04-17 13:16:37', NULL, NULL);
 INSERT INTO `sys_user` VALUES (103, NULL, '13335117173', '试用会员7173', '00', '', '', '0', '', '$2a$10$oPYmtdGZ1rYNUCFpKaaIYOr1Z7mAtVAXmWrqyEj2qhAA.nqD2xjeC', '0', '2025-05-17', '0', '119.185.23.133', '2025-04-17 23:29:48', '主动注册', '2025-04-17 13:43:51', '', '2025-04-17 15:29:48', NULL, NULL);
@@ -2213,8 +2214,6 @@ CREATE TABLE `wms_stock_in`  (
 -- ----------------------------
 -- Records of wms_stock_in
 -- ----------------------------
-INSERT INTO `wms_stock_in` VALUES (1, '1739679264127199', 1, 'aaaa', NULL, 1, 14, 1, NULL, 1, 'aaa', '2025-02-16 12:15:15', 2, 'admin', '2025-02-16 12:14:37', 'admin', '2025-02-16 12:15:15');
-INSERT INTO `wms_stock_in` VALUES (2, '1739891507973458', 1, 'a', NULL, 1, 1, 1, NULL, 1, 'a', '2025-02-18 23:12:09', 2, 'admin', '2025-02-18 23:11:58', 'admin', '2025-02-18 23:12:09');
 
 -- ----------------------------
 -- Table structure for wms_stock_in_item
@@ -2253,8 +2252,6 @@ CREATE TABLE `wms_stock_in_item`  (
 -- ----------------------------
 -- Records of wms_stock_in_item
 -- ----------------------------
-INSERT INTO `wms_stock_in_item` VALUES (1, 1, 1, 'aaaa', 0, 0, 76, 'DY3640', '小众碎花连衣裙女夏高级感初恋裙子显瘦浪漫茶歇裙温柔风甜美气质', 'http://223.83.100.30:9001/omsimage/images/2024/09/07/b28f4e15-8997-418c-bd32-b4beb4966f6b.jpg', 2, 'DY36404302', '黄色 M', 14, 5.00, 14, '', 2, 'admin', '2025-02-16 12:14:38', 'admin', '2025-02-16 12:15:15', 1, 6, 'A01-1-02');
-INSERT INTO `wms_stock_in_item` VALUES (2, 2, 1, 'a', 0, 0, 76, 'DY3640', '小众碎花连衣裙女夏高级感初恋裙子显瘦浪漫茶歇裙温柔风甜美气质', 'http://223.83.100.30:9001/omsimage/images/2024/09/07/b28f4e15-8997-418c-bd32-b4beb4966f6b.jpg', 3, 'DY36404303', '黄色 L', 1, 79.22, 1, '', 2, 'admin', '2025-02-18 23:11:58', 'admin', '2025-02-18 23:12:09', 1, 6, 'A01-1-02');
 
 -- ----------------------------
 -- Table structure for wms_stock_out

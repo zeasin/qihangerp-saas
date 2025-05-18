@@ -185,7 +185,7 @@
           <el-table-column label="数量" prop="originalQuantity"></el-table-column>
           <el-table-column label="已出库数量" prop="outQuantity"></el-table-column>
 
-          <el-table-column label="出库仓位" prop="inventoryId" width="150">
+          <el-table-column label="出库仓位" prop="inventoryId" width="180">
             <template slot-scope="scope">
               <el-select v-model="scope.row.inventoryDetailId" placeholder="请选择出库仓位" v-if="scope.row.status < 2">
                 <el-option v-for="item in scope.row.inventoryDetails" :key="item.id" :label="item.locationNum" :value="item.id">
