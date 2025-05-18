@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 18/05/2025 16:11:14
+ Date: 18/05/2025 17:40:52
 */
 
 SET NAMES utf8mb4;
@@ -363,7 +363,7 @@ INSERT INTO `erp_goods_inventory` VALUES (20, 1, '10000227212454', 3, 'A20703', 
 INSERT INTO `erp_goods_inventory` VALUES (21, 1, '10000227212454', 4, 'A20704', '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 'XL', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
 INSERT INTO `erp_goods_inventory` VALUES (22, 1, '10000227212454', 5, 'A20705', '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', '2XL', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
 INSERT INTO `erp_goods_inventory` VALUES (23, 2, '10000226806665', 6, 'A00111', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑色 S', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (24, 2, '10000226806665', 7, 'A00112', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑色 M', 12, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-18 14:43:12', 'qihang', 100, 0);
+INSERT INTO `erp_goods_inventory` VALUES (24, 2, '10000226806665', 7, 'A00112', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑色 M', 11, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-18 17:39:55', 'qihang', 100, 0);
 INSERT INTO `erp_goods_inventory` VALUES (25, 2, '10000226806665', 8, 'A00113', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑色 L', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
 INSERT INTO `erp_goods_inventory` VALUES (26, 2, '10000226806665', 9, 'A00114', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑色 XL', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
 INSERT INTO `erp_goods_inventory` VALUES (27, 2, '10000226806665', 10, 'A00121', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑灰 S', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
@@ -405,12 +405,12 @@ CREATE TABLE `erp_goods_inventory_batch`  (
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
   `tenant_id` bigint NOT NULL COMMENT '租户 id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存批次' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存批次' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods_inventory_batch
 -- ----------------------------
-INSERT INTO `erp_goods_inventory_batch` VALUES (3, 24, '20250518144311', 0, 12, 0, 0, 0, NULL, 7, 2, 'A00112', 1, 11, 'A01-1-07', '2025-05-18 14:43:12', 'qihang', '2025-05-18 14:43:11', NULL, 100);
+INSERT INTO `erp_goods_inventory_batch` VALUES (3, 24, '20250518144311', 12, 11, 0, 0, 0, '出库扣减库存；', 7, 2, 'A00112', 1, 11, 'A01-1-07', '2025-05-18 14:43:12', 'qihang', '2025-05-18 17:39:55', 'qihang', 100);
 
 -- ----------------------------
 -- Table structure for erp_goods_inventory_operation
@@ -1711,7 +1711,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2091 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2093 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -2078,7 +2078,7 @@ CREATE TABLE `sys_user`  (
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$MkBdzADGzLxAqopkmh3vDu0oA5bxgHWcg173AVni9Rr9MFQtnjplK', '0', '2025-04-01', '0', '127.0.0.1', '2025-05-18 15:45:39', 'admin', '2023-08-07 19:31:37', '', '2025-05-18 15:45:39', '管理员', NULL);
-INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-05-18 15:59:00', 'admin', '2024-04-21 10:36:49', 'admin', '2025-05-18 15:59:00', NULL, NULL);
+INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-05-18 16:35:20', 'admin', '2024-04-21 10:36:49', 'admin', '2025-05-18 16:35:20', NULL, NULL);
 INSERT INTO `sys_user` VALUES (101, NULL, '15818590119', '试用会员0119', '00', '', '', '0', '', '$2a$10$yMgN6PZKiuafBVHaEHhk3OoSQ5o98xVG8RHEs2sg5.Yv/TEQuR/86', '0', '2025-05-17', '0', '113.118.102.209', '2025-04-17 21:13:06', '主动注册', '2025-04-17 13:13:04', '', '2025-04-17 13:13:05', NULL, NULL);
 INSERT INTO `sys_user` VALUES (102, NULL, '15286902105', '试用会员2105', '00', '', '', '0', '', '$2a$10$nbDujbCk2SrdamYRHr217ORRipaa5p5lVMVFctBU6fPt/rd3k.5E.', '0', '2025-05-17', '0', '114.86.55.0', '2025-04-17 21:16:37', '主动注册', '2025-04-17 13:16:36', '', '2025-04-17 13:16:37', NULL, NULL);
 INSERT INTO `sys_user` VALUES (103, NULL, '13335117173', '试用会员7173', '00', '', '', '0', '', '$2a$10$oPYmtdGZ1rYNUCFpKaaIYOr1Z7mAtVAXmWrqyEj2qhAA.nqD2xjeC', '0', '2025-05-17', '0', '119.185.23.133', '2025-04-17 23:29:48', '主动注册', '2025-04-17 13:43:51', '', '2025-04-17 15:29:48', NULL, NULL);
@@ -2253,7 +2253,7 @@ CREATE TABLE `wms_stock_in_item`  (
   `tenant_id` bigint NOT NULL COMMENT '租户 id',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `specIndex`(`sku_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '入库单明细' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '入库单明细' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_stock_in_item
@@ -2317,12 +2317,12 @@ CREATE TABLE `wms_stock_out`  (
   `update_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
   `tenant_id` bigint NOT NULL COMMENT '租户 id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_stock_out
 -- ----------------------------
-INSERT INTO `wms_stock_out` VALUES (1, '202505171838501', '', 0, 1, 0, 0, 1, 1, 1, 0, '', 0, 0, NULL, NULL, NULL, 100, 'qihang', '2025-05-17 18:39:05', 'qihang', '2025-05-17 18:39:07', NULL, 0);
+INSERT INTO `wms_stock_out` VALUES (1, '202505171838501', '', 0, 1, 0, 0, 1, 1, 1, 1, '', 2, 0, NULL, '2025-05-18 17:39:55', '2025-05-18 17:39:55', 100, 'qihang', '2025-05-17 18:39:05', 'qihang', '2025-05-18 17:39:55', 'qihang', 0);
 
 -- ----------------------------
 -- Table structure for wms_stock_out_item
@@ -2340,10 +2340,6 @@ CREATE TABLE `wms_stock_out_item`  (
   `complete_time` datetime NULL DEFAULT NULL COMMENT '完成出库时间',
   `picked_time` datetime NULL DEFAULT NULL COMMENT '完成拣货时间',
   `status` int NOT NULL DEFAULT 0 COMMENT '状态：0待出库1部分出库2全部出库',
-  `batch_id` bigint NULL DEFAULT NULL COMMENT '库存批次id',
-  `warehouse_id` bigint NOT NULL COMMENT '仓库id',
-  `position_id` bigint NOT NULL COMMENT '仓位id',
-  `position_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '仓位',
   `goods_id` bigint NOT NULL COMMENT '商品id',
   `goods_num` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品编码',
   `goods_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品名称',
@@ -2360,12 +2356,12 @@ CREATE TABLE `wms_stock_out_item`  (
   `shop_group_id` bigint NULL DEFAULT NULL COMMENT '店铺分组id',
   `tenant_id` bigint NOT NULL COMMENT '租户 id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单明细' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单明细' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_stock_out_item
 -- ----------------------------
-INSERT INTO `wms_stock_out_item` VALUES (1, 1, 1, NULL, NULL, '', 1, 0, NULL, NULL, 0, 0, 0, 0, '', 2, NULL, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 7, 'A00112', '黑色 M', '2025-05-17 18:39:13', 'qihang', '2025-05-17 18:39:13', NULL, 0.00, 0, 0, 0);
+INSERT INTO `wms_stock_out_item` VALUES (1, 1, 1, NULL, NULL, '', 1, 1, '2025-05-18 17:39:55', NULL, 2, 2, NULL, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 7, 'A00112', '黑色 M', '2025-05-17 18:39:13', 'qihang', '2025-05-18 17:39:55', 'qihang', 0.00, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for wms_stock_out_item_position
@@ -2373,16 +2369,18 @@ INSERT INTO `wms_stock_out_item` VALUES (1, 1, 1, NULL, NULL, '', 1, 0, NULL, NU
 DROP TABLE IF EXISTS `wms_stock_out_item_position`;
 CREATE TABLE `wms_stock_out_item_position`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `entry_id` bigint NOT NULL COMMENT '出库单ID',
-  `entry_item_id` bigint NOT NULL DEFAULT 0 COMMENT '出库单ItemID',
+  `out_id` bigint NOT NULL COMMENT '出库单ID',
+  `item_id` bigint NOT NULL DEFAULT 0 COMMENT '出库单ItemID',
   `goods_inventory_id` bigint NOT NULL DEFAULT 0 COMMENT '库存ID',
   `goods_inventory_batch_id` bigint NOT NULL DEFAULT 0 COMMENT '库存详情ID',
-  `quantity` bigint NOT NULL DEFAULT 0 COMMENT '出库数量',
-  `location_id` int NULL DEFAULT NULL COMMENT '出库仓位ID',
-  `operator_id` int NULL DEFAULT 0 COMMENT '出库操作人userid',
+  `quantity` int NOT NULL DEFAULT 0 COMMENT '出库数量',
+  `operator_id` bigint NULL DEFAULT 0 COMMENT '出库操作人userid',
   `operator_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '出库操作人',
   `out_time` datetime NULL DEFAULT NULL COMMENT '出库时间',
   `tenant_id` bigint NOT NULL COMMENT '租户 id',
+  `warehouse_id` bigint NOT NULL COMMENT '仓库id',
+  `position_id` bigint NOT NULL COMMENT '仓位id',
+  `position_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '仓位',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goods_stock_info_item_id_index`(`goods_inventory_batch_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库仓位详情' ROW_FORMAT = DYNAMIC;
