@@ -6,6 +6,7 @@
 
     <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.WmsStockIn">
             <id property="id" column="id" jdbcType="BIGINT"/>
+            <id property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
             <result property="stockInNum" column="stock_in_num" jdbcType="VARCHAR"/>
             <result property="stockInType" column="stock_in_type" jdbcType="INTEGER"/>
             <result property="sourceNo" column="source_no" jdbcType="VARCHAR"/>
@@ -25,7 +26,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,stock_in_num,stock_in_type,
+        id,stock_in_num,stock_in_type,tenant_id,
         source_no,source_id,source_goods_unit,
         source_spec_unit_total,source_spec_unit,remark,
         stock_in_operator_id,stock_in_operator,stock_in_time,

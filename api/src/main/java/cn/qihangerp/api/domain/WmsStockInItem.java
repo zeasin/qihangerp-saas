@@ -26,6 +26,7 @@ public class WmsStockInItem implements Serializable {
      * 入库单id
      */
     private Long stockInId;
+    private Long tenantId;
 
     /**
      * 来源类型（1采购订单2退货订单）

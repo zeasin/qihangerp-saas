@@ -25,9 +25,9 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="规格编码" prop="specNumber">
+      <el-form-item label="规格编码" prop="skuCode">
         <el-input
-          v-model="queryParams.specNumber"
+          v-model="queryParams.skuCode"
           placeholder="请输入规格编码"
           clearable
           @keyup.enter.native="handleQuery"
@@ -98,15 +98,18 @@
     />
 
     <!-- 添加或修改商品库存对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="880px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 
         <el-table :data="erpGoodsInventoryDetailList" :row-class-name="rowErpGoodsInventoryDetailIndex" ref="erpGoodsInventoryDetail">
           <el-table-column label="序号" align="center" prop="index" width="50"/>
-          <el-table-column label="入库时间" prop="createTime" width="180"></el-table-column>
-          <el-table-column label="入库数量" prop="inQty" width="80">
+          <el-table-column label="入库时间" prop="createTime" width="180">
+            <template slot-scope="scope">
+              {{parseTime(scope.row.createTime)}}
+            </template>
           </el-table-column>
-          <el-table-column label="入库仓位id" prop="inLocation" width="100"></el-table-column>
+<!--          <el-table-column label="入库数量" prop="inQty" width="80"></el-table-column>-->
+          <el-table-column label="入库仓位" prop="positionNum" width="100"></el-table-column>
           <el-table-column label="入库前数量" prop="originQty" width="100">
           </el-table-column>
           <el-table-column label="当前库存" prop="currentQty" width="100">
@@ -123,6 +126,7 @@
 
 <script>
 import { listGoodsInventory, getGoodsInventory, delGoodsInventory, addGoodsInventory, updateGoodsInventory } from "@/api/goods/goodsInventory";
+import {parseTime} from "../../../utils/zhijian";
 
 export default {
   name: "GoodsInventory",
@@ -194,6 +198,7 @@ export default {
     this.getList();
   },
   methods: {
+    parseTime,
     /** 查询商品库存列表 */
     getList() {
       this.loading = true;
@@ -244,7 +249,7 @@ export default {
       const id = row.id || this.ids
       getGoodsInventory(id).then(response => {
         this.form = response.data;
-        this.erpGoodsInventoryDetailList = response.data.erpGoodsInventoryDetailList;
+        this.erpGoodsInventoryDetailList = response.data;
         this.open = true;
         this.title = "商品库存详情";
       });

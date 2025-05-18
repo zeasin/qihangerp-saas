@@ -22,6 +22,7 @@ public class ErpGoodsInventoryBatch implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
     private Long inventoryId;
+    private Long tenantId;
 
     /**
      * 批次号

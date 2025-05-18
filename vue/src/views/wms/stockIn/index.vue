@@ -179,20 +179,20 @@
 <!--              </el-select>-->
 <!--            </template>-->
 <!--          </el-table-column>-->
-          <el-table-column label="入库数量" prop="inQuantity" width="110">
+          <el-table-column label="入库数量" prop="qty" width="110">
             <template slot-scope="scope">
               <el-input v-model.number="scope.row.qty" placeholder="入库数量" @input="qtyChange(scope.row)"/>
             </template>
           </el-table-column>
-          <el-table-column label="入库仓位编码" prop="locationId" width="150">
+          <el-table-column label="入库仓位编码" prop="positionId" width="150">
             <template slot-scope="scope">
-              <el-select v-model="scope.row.locationId" filterable remote reserve-keyword placeholder="搜索仓位编码"
+              <el-select v-model="scope.row.positionId" filterable remote reserve-keyword placeholder="搜索仓位编码"
                          :remote-method="searchLocation" :loading="locationLoading" @change="locationChanage(scope.row)">
                 <el-option v-for="item in locationList" :key="item.id"
                            :label="item.name"
                            :value="item.id">
-                  <span style="float: left">{{ item.name }}</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">{{ item.number }}</span>
+<!--                  <span style="float: left">{{ item.name }}</span>-->
+<!--                  <span style="float: right; color: #8492a6; font-size: 13px">{{ item.number }}</span>-->
                 </el-option>
               </el-select>
 <!--              <el-input v-model="scope.row.locationNum" placeholder="请输入入库仓位编码" />-->
@@ -308,9 +308,11 @@ export default {
       })
     },
     locationChanage(row){
-      const selection = this.locationList.find(x => x.id === row.locationId);
+      console.log('====a',row)
+      const selection = this.locationList.find(x => x.id === row.positionId);
       if (selection) {
-        row.locationNum = selection.number
+        row.positionNum = selection.number
+
       }
     },
     qtyChange(row) {
@@ -380,7 +382,6 @@ export default {
           // x.quantity = null
           x.totalQuantity = x.inQuantity
           x.qty = x.quantity - x.inQuantity
-          x.locationId = null
         })
         this.form.stockInTime = new Date();
         this.open = true;
@@ -391,30 +392,30 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          this.form.wmsStockInEntryItemList = this.wmsStockInEntryItemList;
+          // this.form.wmsStockInEntryItemList = this.wmsStockInEntryItemList;
+
           // 验证数据
           let isValid = false
-          for(let i = 0;i<this.form.wmsStockInEntryItemList.length;i++){
-            const x = this.form.wmsStockInEntryItemList[i]
-            if(x.quantity && !x.locationId){
+          for(let i = 0;i<this.wmsStockInEntryItemList.length;i++){
+            const x = this.wmsStockInEntryItemList[i]
+            if(x.quantity && !x.positionId){
                 isValid = false;
                 break
-            }else if(x.locationId && !x.quantity){
+            }else if(x.positionId && !x.quantity){
               isValid = false;
               break
             }else isValid = true
           }
-          // this.form.wmsStockInEntryItemList.forEach(x=>{
-          //   if(x.quantity){
-          //     if(!x.locationId){
-          //       isValid = false;
-          //       break
-          //     }
-          //   }
-          // })
+
           if(isValid){
             console.log('=======验证通过了========')
-            stockIn(this.form).then(response => {
+            const form1 = {
+              stockInId:this.form.id,
+              stockInOperator:this.form.stockInOperator,
+              stockInTime:this.form.stockInTime,
+              itemList:this.wmsStockInEntryItemList
+            }
+            stockIn(form1).then(response => {
               this.$modal.msgSuccess("入库操作成功");
               this.open = false;
               this.getList();

@@ -20,6 +20,7 @@ public class WmsStockIn implements Serializable {
      */
     @TableId(value = "id",type = IdType.AUTO)
     private Long id;
+    private Long tenantId;
 
     /**
      * 入库单据编号

@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class StockInItem {
     private Long id;
-    private Integer intoQuantity;
+    private Integer qty;
     private Long positionId;
     private String positionNum;
 }

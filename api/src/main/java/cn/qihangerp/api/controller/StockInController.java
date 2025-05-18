@@ -17,6 +17,7 @@ public class StockInController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(WmsStockIn bo, PageQuery pageQuery)
     {
+        bo.setTenantId(getUserId());
         var pageList = stockInService.queryPageList(bo,pageQuery);
         return getDataTable(pageList);
     }
