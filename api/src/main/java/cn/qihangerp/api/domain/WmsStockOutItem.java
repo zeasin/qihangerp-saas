@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -155,9 +156,9 @@ public class WmsStockOutItem implements Serializable {
     /**
      * 入库价格
      */
-    private Double purPrice;
-    private Long shopId;
-    private Long shopGroupId;
+    private BigDecimal purPrice;
+//    private Long shopId;
+//    private Long shopGroupId;
 
     @TableField(exist = false)
     private List<ErpGoodsInventoryBatch> inventoryBatchList;

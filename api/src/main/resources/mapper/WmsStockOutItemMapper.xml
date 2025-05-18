@@ -29,13 +29,11 @@
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
             <result property="purPrice" column="pur_price" jdbcType="DECIMAL"/>
-            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
-            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
-            <result property="shopGroupId" column="shop_group_id" jdbcType="BIGINT"/>
+
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,type,entry_id,shop_id,shop_group_id,tenant_id,
+        id,type,entry_id,tenant_id,
         source_order_id,source_order_item_id,source_order_num,
         original_quantity,out_quantity,complete_time,
         picked_time,status,

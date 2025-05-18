@@ -47,8 +47,7 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
     @Override
     public PageResult<WmsStockOut> queryPageList(WmsStockOut bo, PageQuery pageQuery) {
         LambdaQueryWrapper<WmsStockOut> queryWrapper = new LambdaQueryWrapper<WmsStockOut>()
-                .eq( bo.getShopId()!=null,WmsStockOut::getShopId, bo.getShopId())
-                .eq( bo.getShopGroupId()!=null,WmsStockOut::getShopGroupId, bo.getShopGroupId())
+                .eq( WmsStockOut::getTenantId, bo.getTenantId())
                 .eq( bo.getStatus()!=null,WmsStockOut::getStatus, bo.getStatus())
                 .eq( bo.getType()!=null,WmsStockOut::getType, bo.getType())
                 .eq(StringUtils.isNotBlank(bo.getOutNum()),WmsStockOut::getOutNum, bo.getOutNum())
@@ -78,10 +77,11 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
 
         //添加主表信息
         WmsStockOut insert = new WmsStockOut();
+        insert.setTenantId(userId);
         insert.setOutNum(request.getOutNum());
         insert.setType(request.getType());
-        insert.setShopId(request.getShopId());
-        insert.setShopGroupId(request.getShopGroupId());
+//        insert.setShopId(request.getShopId());
+//        insert.setShopGroupId(request.getShopGroupId());
         insert.setSourceNum(request.getSourceNo());
         insert.setSourceId(0L);
         insert.setRemark(request.getRemark());
@@ -100,36 +100,33 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
 
         //添加子表信息
         List<WmsStockOutItem> itemList = new ArrayList<>();
-        for(GoodsSkuInventoryVo item: request.getItemList()){
-            if(org.springframework.util.StringUtils.hasText(item.getBatchId())) {
-                ErpGoodsInventoryBatch batch = goodsInventoryBatchService.getById(item.getBatchId());
-                if(batch!=null) {
+        for(GoodsSkuInventoryVo item: request.getItemList()) {
 
-                    WmsStockOutItem inItem = new WmsStockOutItem();
-                    inItem.setShopId(request.getShopId());
-                    inItem.setShopGroupId(request.getShopGroupId());
-                    inItem.setEntryId(insert.getId());
-                    inItem.setType(request.getType());
-//                    inItem.setBatchId(batch.getId());
-                    inItem.setGoodsId(batch.getGoodsId());
-                    inItem.setPurPrice(batch.getPurPrice());
-                    inItem.setSkuId(batch.getSkuId());
-                    inItem.setSkuCode(batch.getSkuCode());
-                    inItem.setGoodsName(item.getGoodsName());
-                    inItem.setGoodsNum(item.getGoodsNum());
-                    inItem.setSkuName(item.getSkuName());
-                    inItem.setGoodsImage(item.getGoodsImg());
-                    inItem.setOriginalQuantity(item.getQuantity());
-                    inItem.setOutQuantity(0L);
-                    inItem.setStatus(0);
-                    inItem.setCreateBy(userName);
-                    inItem.setCreateTime(new Date());
+            WmsStockOutItem inItem = new WmsStockOutItem();
+//            inItem.setShopId(request.getShopId());
+//            inItem.setShopGroupId(request.getShopGroupId());
+            inItem.setTenantId(insert.getTenantId());
+            inItem.setEntryId(insert.getId());
+            inItem.setType(request.getType());
+            inItem.setGoodsId(item.getGoodsId());
+            inItem.setPurPrice(item.getPurPrice());
+            inItem.setSkuId(item.getSkuId());
+            inItem.setSkuCode(item.getSkuCode());
+            inItem.setGoodsName(item.getGoodsName());
+            inItem.setGoodsNum(item.getGoodsNum());
+            inItem.setSkuName(item.getSkuName());
+            inItem.setGoodsImage(item.getGoodsImg());
+            inItem.setOriginalQuantity(item.getQuantity());
+            inItem.setOutQuantity(0L);
+            inItem.setStatus(0);
+            inItem.setCreateBy(userName);
+            inItem.setCreateTime(new Date());
 //                    inItem.setWarehouseId(batch.getWarehouseId());
 //                    inItem.setPositionId(batch.getPositionId());
 //                    inItem.setPositionNum(batch.getPositionNum());
-                    itemList.add(inItem);
-                }
-            }
+            itemList.add(inItem);
+
+
         }
         outItemService.saveBatch(itemList);
         return ResultVo.success();

@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 18/05/2025 18:04:39
+ Date: 18/05/2025 18:46:06
 */
 
 SET NAMES utf8mb4;
@@ -363,7 +363,7 @@ INSERT INTO `erp_goods_inventory` VALUES (20, 1, '10000227212454', 3, 'A20703', 
 INSERT INTO `erp_goods_inventory` VALUES (21, 1, '10000227212454', 4, 'A20704', '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 'XL', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
 INSERT INTO `erp_goods_inventory` VALUES (22, 1, '10000227212454', 5, 'A20705', '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', '2XL', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
 INSERT INTO `erp_goods_inventory` VALUES (23, 2, '10000226806665', 6, 'A00111', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑色 S', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (24, 2, '10000226806665', 7, 'A00112', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑色 M', 11, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-18 17:39:55', 'qihang', 100, 0);
+INSERT INTO `erp_goods_inventory` VALUES (24, 2, '10000226806665', 7, 'A00112', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑色 M', 10, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-18 18:44:54', 'qihang', 100, 0);
 INSERT INTO `erp_goods_inventory` VALUES (25, 2, '10000226806665', 8, 'A00113', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑色 L', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
 INSERT INTO `erp_goods_inventory` VALUES (26, 2, '10000226806665', 9, 'A00114', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑色 XL', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
 INSERT INTO `erp_goods_inventory` VALUES (27, 2, '10000226806665', 10, 'A00121', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑灰 S', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
@@ -410,7 +410,7 @@ CREATE TABLE `erp_goods_inventory_batch`  (
 -- ----------------------------
 -- Records of erp_goods_inventory_batch
 -- ----------------------------
-INSERT INTO `erp_goods_inventory_batch` VALUES (3, 24, '20250518144311', 12, 11, 0, 0, 0, '出库扣减库存；', 7, 2, 'A00112', 1, 11, 'A01-1-07', '2025-05-18 14:43:12', 'qihang', '2025-05-18 17:39:55', 'qihang', 100);
+INSERT INTO `erp_goods_inventory_batch` VALUES (3, 24, '20250518144311', 12, 10, 0, 0, 0, '出库扣减库存；出库扣减库存；', 7, 2, 'A00112', 1, 11, 'A01-1-07', '2025-05-18 14:43:12', 'qihang', '2025-05-18 18:44:54', 'qihang', 100);
 
 -- ----------------------------
 -- Table structure for erp_goods_inventory_operation
@@ -2298,8 +2298,6 @@ CREATE TABLE `wms_stock_out`  (
   `source_num` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '来源单据号',
   `source_id` bigint NULL DEFAULT NULL COMMENT '来源单据Id',
   `type` int NOT NULL DEFAULT 1 COMMENT '出库类型1订单发货出库2采购退货出库3盘点出库4报损出库',
-  `shop_id` bigint NOT NULL COMMENT '店铺id',
-  `shop_group_id` bigint NULL DEFAULT NULL COMMENT '店铺分组id',
   `goods_unit` int NOT NULL COMMENT '商品数',
   `spec_unit` int NOT NULL COMMENT '商品规格数',
   `spec_unit_total` int NOT NULL COMMENT '总件数',
@@ -2323,7 +2321,8 @@ CREATE TABLE `wms_stock_out`  (
 -- ----------------------------
 -- Records of wms_stock_out
 -- ----------------------------
-INSERT INTO `wms_stock_out` VALUES (1, '202505171838501', '', 0, 1, 0, 0, 1, 1, 1, 1, '', 2, 0, NULL, '2025-05-18 17:39:55', '2025-05-18 17:39:55', 100, 'qihang', '2025-05-17 18:39:05', 'qihang', '2025-05-18 17:39:55', 'qihang', 0);
+INSERT INTO `wms_stock_out` VALUES (1, '202505171838501', '', 0, 1, 1, 1, 1, 1, '', 2, 0, NULL, '2025-05-18 17:39:55', '2025-05-18 17:39:55', 100, 'qihang', '2025-05-17 18:39:05', 'qihang', '2025-05-18 17:39:55', 'qihang', 0);
+INSERT INTO `wms_stock_out` VALUES (5, '1747564792220723', 'a', 0, 2, 1, 1, 1, 1, NULL, 2, 0, NULL, '2025-05-18 18:44:54', '2025-05-18 18:44:54', 100, 'qihang', '2025-05-18 18:43:26', 'qihang', '2025-05-18 18:44:54', 'qihang', 100);
 
 -- ----------------------------
 -- Table structure for wms_stock_out_item
@@ -2352,9 +2351,7 @@ CREATE TABLE `wms_stock_out_item`  (
   `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `pur_price` decimal(10, 2) NOT NULL COMMENT '入库价格',
-  `shop_id` bigint NOT NULL COMMENT '店铺id',
-  `shop_group_id` bigint NULL DEFAULT NULL COMMENT '店铺分组id',
+  `pur_price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '入库价格',
   `tenant_id` bigint NOT NULL COMMENT '租户 id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单明细' ROW_FORMAT = DYNAMIC;
@@ -2362,7 +2359,8 @@ CREATE TABLE `wms_stock_out_item`  (
 -- ----------------------------
 -- Records of wms_stock_out_item
 -- ----------------------------
-INSERT INTO `wms_stock_out_item` VALUES (1, 1, 1, NULL, NULL, '', 1, 1, '2025-05-18 17:39:55', NULL, 2, 2, NULL, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 7, 'A00112', '黑色 M', '2025-05-17 18:39:13', 'qihang', '2025-05-18 17:39:55', 'qihang', 0.00, 0, 0, 0);
+INSERT INTO `wms_stock_out_item` VALUES (1, 1, 1, NULL, NULL, '', 1, 1, '2025-05-18 17:39:55', NULL, 2, 2, NULL, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 7, 'A00112', '黑色 M', '2025-05-17 18:39:13', 'qihang', '2025-05-18 17:39:55', 'qihang', 0.00, 0);
+INSERT INTO `wms_stock_out_item` VALUES (2, 2, 5, NULL, NULL, '', 1, 1, '2025-05-18 18:44:54', NULL, 2, 2, '10000226806665', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 7, 'A00112', '黑色 M ', '2025-05-18 18:43:26', 'qihang', '2025-05-18 18:44:54', 'qihang', 0.00, 100);
 
 -- ----------------------------
 -- Table structure for wms_stock_out_item_position
@@ -2389,6 +2387,7 @@ CREATE TABLE `wms_stock_out_item_position`  (
 -- ----------------------------
 -- Records of wms_stock_out_item_position
 -- ----------------------------
+INSERT INTO `wms_stock_out_item_position` VALUES (1, 5, 2, 24, 3, 1, 100, 'qihang', '2025-05-18 18:44:54', 100, 1, 11, 'A01-1-07');
 
 -- ----------------------------
 -- Table structure for wms_warehouse

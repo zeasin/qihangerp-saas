@@ -43,8 +43,8 @@ public class WmsStockOut implements Serializable {
      * 出库类型1订单发货出库2采购退货出库3盘点出库4报损出库
      */
     private Integer type;
-    private Long shopId;
-    private Long shopGroupId;
+//    private Long shopId;
+//    private Long shopGroupId;
 
     /**
      * 商品数

@@ -16,35 +16,35 @@
           <el-option  label="报损出库" value="4"></el-option>
         </el-select>
         </el-form-item>
-      <el-form-item label="出库店铺" prop="shopId">
-        <el-select v-model="form.shopId" filterable r placeholder="出库店铺" clearable>
-          <el-option
-            v-for="item in shopList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id">
-            <span style="float: left">{{ item.name }}</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 500">微信小店</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 200">京东POP</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 280">京东自营</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 100">淘宝天猫</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 300">拼多多</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 400">抖店</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 999">线下渠道</span>
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="店铺分组" prop="shopGroupId">
-        <el-select v-model="form.shopGroupId" filterable r placeholder="店铺分组" clearable>
-          <el-option
-            v-for="item in shopGroupList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id">
-            <span style="float: left">{{ item.name }}</span>
-          </el-option>
-        </el-select>
-      </el-form-item>
+<!--      <el-form-item label="出库店铺" prop="shopId">-->
+<!--        <el-select v-model="form.shopId" filterable r placeholder="出库店铺" clearable>-->
+<!--          <el-option-->
+<!--            v-for="item in shopList"-->
+<!--            :key="item.id"-->
+<!--            :label="item.name"-->
+<!--            :value="item.id">-->
+<!--            <span style="float: left">{{ item.name }}</span>-->
+<!--            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 500">微信小店</span>-->
+<!--            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 200">京东POP</span>-->
+<!--            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 280">京东自营</span>-->
+<!--            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 100">淘宝天猫</span>-->
+<!--            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 300">拼多多</span>-->
+<!--            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 400">抖店</span>-->
+<!--            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 999">线下渠道</span>-->
+<!--          </el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="店铺分组" prop="shopGroupId">-->
+<!--        <el-select v-model="form.shopGroupId" filterable r placeholder="店铺分组" clearable>-->
+<!--          <el-option-->
+<!--            v-for="item in shopGroupList"-->
+<!--            :key="item.id"-->
+<!--            :label="item.name"-->
+<!--            :value="item.id">-->
+<!--            <span style="float: left">{{ item.name }}</span>-->
+<!--          </el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
         <el-form-item label="源单号" prop="sourceNo">
           <el-input v-model="form.sourceNo" style="width: 220px;" placeholder="请输入源单号" />
         </el-form-item>
@@ -64,23 +64,16 @@
         <el-table style="margin-left: 108px;margin-bottom: 20px;" :data="form.itemList" :row-class-name="rowSShopOrderItemIndex" @selection-change="handleSShopOrderItemSelectionChange" ref="sShopOrderItem">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column label="序号" align="center" prop="index" width="50"/>
-          <el-table-column label="商品" prop="batchId" width="350">
+          <el-table-column label="商品" prop="skuId" width="350">
             <template slot-scope="scope">
               <!-- <el-input v-model="scope.row.goodsTitle" placeholder="请输入商品标题" /> -->
-              <el-select v-model="scope.row.batchId" filterable remote reserve-keyword placeholder="搜索商品SKU" style="width: 330px;"
-                         :remote-method="searchSkuInventoryBatch" :loading="skuListLoading" @change="skuChanage(scope.row)">
+              <el-select v-model="scope.row.skuId" filterable remote reserve-keyword placeholder="搜索商品SKU" style="width: 330px;"
+                         :remote-method="searchSku" :loading="skuListLoading" @change="skuChanage(scope.row)">
                 <el-option v-for="item in skuList" :key="item.id"
-                           :label="item.goodsName + ' ' + item.skuName +' - ' + item.skuCode"
-                           :value="item.batchId">
+                           :label="item.name + ' ' + item.colorValue +' - ' + item.sizeValue + (item.styleValue  ?' - ' +item.styleValue: '')"
+                           :value="item.id">
                 </el-option>
               </el-select>
-<!--              <el-select v-model="scope.row.batchId" filterable remote reserve-keyword placeholder="搜索商品SKU库存" style="width: 330px;"-->
-<!--                :remote-method="searchSkuInventoryBatch" :loading="skuListLoading" @change="skuChanage(scope.row)">-->
-<!--                <el-option v-for="item in skuList" :key="item.batchId"-->
-<!--                  :label="item.goodsName + ' ' + item.skuName +' - ' + item.skuCode"-->
-<!--                  :value="item.batchId">-->
-<!--                </el-option>-->
-<!--              </el-select>-->
             </template>
           </el-table-column>
           <el-table-column label="商品图片" prop="goodsImg" width="150">
@@ -93,15 +86,10 @@
           </el-table-column>
           <el-table-column label="Sku编码" prop="skuCode" width="150">
           </el-table-column>
-          <el-table-column label="批次号" prop="batchNum" width="150">
-          </el-table-column>
-          <el-table-column label="仓库" prop="warehouseName" width="100" />
-          <el-table-column label="仓位" prop="positionNum" width="100" />
-          <el-table-column label="当前库存" prop="currentQty" width="100" />
 
           <el-table-column label="出库数量" prop="quantity" width="100">
             <template slot-scope="scope">
-              <el-input v-model.number="scope.row.quantity" placeholder="请输入商品数量" />
+              <el-input v-model.number="scope.row.quantity" placeholder="请输入出库数量" />
             </template>
           </el-table-column>
         </el-table>
@@ -123,10 +111,10 @@
 </template>
 
 <script>
-import { searchSkuInventoryBatch } from "@/api/goods/goodsInventory";
-import {stockOutCreate} from "@/api/wms/stockOut";
 
-import {searchSku} from "../../../api/goods/goods";
+import {stockOutCreate} from "@/api/wms/stockOut";
+import {searchSku} from "@/api/goods/goods";
+
 
 export default {
   name: "StockInCreate",
@@ -179,86 +167,44 @@ export default {
     //   var defaultDate = `${year}-${month}-${date}`;//
     //   return defaultDate;
     // },
-    // 搜索SKU
-    // searchSku(query) {
-    //   this.shopLoading = true;
-    //   const qw = {
-    //     keyword: query
-    //   }
-    //   searchSku(qw).then(res => {
-    //     this.skuList = res.rows;
-    //     this.skuListLoading = false;
-    //   })
-    // },
-    skuChanage(row) {
-      console.log('=====0000====',row)
-      const spec = this.skuList.find(x => x.batchId === row.batchId);
-      if (spec) {
-        console.log('=======11111==', spec)
-        row.quantity = spec.currentQty
-        row.batchId = spec.batchId
-        row.skuId = spec.skuId
-        row.goodsId = spec.goodsId
-        row.goodsName = spec.goodsName
-        row.skuName = spec.skuName
-        row.goodsImg = spec.colorImage
-        row.skuCode = spec.skuCode
-        row.batchNum = spec.batchNum
-        row.warehouseName = spec.warehouseName
-        row.positionId = spec.positionId
-        row.positionNum = spec.positionNum
-        row.currentQty = spec.currentQty
-      }
-    },
-    // 搜索SKU
-    searchSkuInventoryBatch(query) {
+    //搜索SKU
+    searchSku(query) {
       this.shopLoading = true;
       const qw = {
         keyword: query
       }
-      searchSkuInventoryBatch(qw).then(res => {
+      searchSku(qw).then(res => {
         this.skuList = res.rows;
-        console.log('=====skulist======',this.skuList)
         this.skuListLoading = false;
       })
     },
-    // skuChanage(row) {
-    //   console.log('==============aaaaaa======'.row)
-    //   const spec = this.skuList.find(x => x.id === row.batchId);
-    //   console.log('==============2222======'.spec)
-    //   if (spec) {
-    //     row.currentQty = spec.currentQty
-    //     row.quantity = spec.currentQty
-    //     row.batchId= spec.batchId
-    //     row.skuId = spec.skuId
-    //     row.goodsName = spec.goodsName
-    //     row.goodsNum = spec.goodsNum
-    //     row.skuName = spec.skuName
-    //     row.goodsImg = spec.colorImage
-    //     row.skuCode = spec.skuCode
-    //     row.batchNum = spec.batchNum
-    //     row.positionId = spec.positionId
-    //     row.warehouseName = spec.warehouseName
-    //     row.positionNum = spec.positionNum
-    //     row.goodsId = spec.goodsId
-    //     row.purPrice = spec.purPrice
-    //
-    //   }
-    // },
+    skuChanage(row) {
+      // console.log('====================',row)
+      const spec = this.skuList.find(x => x.id === row.skuId);
+      console.log('==============2222======',spec)
+      if (spec) {
+        row.quantity = 1
+        row.skuId = spec.id
+        row.skuName =  (spec.colorValue??'') + ' ' +(spec.sizeValue??'')  + ' ' + (spec.styleValue??'')
+        row.goodsName = spec.name
+        row.goodsNum = spec.number
+        row.goodsImg = spec.colorImage
+        row.skuCode = spec.specNum
+        row.goodsId = spec.goodsId
+        row.purPrice = spec.purPrice
+
+      }
+    },
     /** ${subTable.functionName}添加按钮操作 */
     handleAddSShopOrderItem() {
       let obj = {};
-      obj.batchId=null;
-      obj.positionId=0;
-      obj.skuId =0;
-      obj.goodsId = 0;
+      obj.skuId = "";
+      obj.goodsId = "";
       obj.skuCode = "";
       obj.goodsName = "";
-      obj.goodsNum = "";
       obj.goodsImg = "";
       obj.skuName = "";
-      obj.quantity = 0;
-      obj.warehouseName = null;
+      obj.quantity = "";
       this.form.itemList.push(obj);
     },
     /** ${subTable.functionName}删除按钮操作 */
@@ -287,11 +233,8 @@ export default {
         if (valid) {
           if(this.form.itemList && this.form.itemList.length >0){
             for(var i=0;i<this.form.itemList.length;i++){
-              if(!this.form.itemList[i].batchId || !this.form.itemList[i].quantity){
+              if(!this.form.itemList[i].skuId || !this.form.itemList[i].quantity){
                 this.$modal.msgError("请完善商品信息");
-                return
-              }else if(this.form.itemList[i].quantity > this.form.itemList[i].currentQty){
-                this.$modal.msgError("出库数量不能大于当前库存");
                 return
               }
             }
@@ -307,7 +250,7 @@ export default {
               this.$modal.msgSuccess("创建成功");
               // 调用全局挂载的方法,关闭当前标签页
               this.$store.dispatch("tagsView/delView", this.$route);
-              this.$router.push('/wms/stock_out');
+              this.$router.push('/stock/stock_out/list');
             });
 
         }else{

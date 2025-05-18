@@ -6,8 +6,6 @@ import java.util.List;
 
 @Data
 public class StockOutCreateRequest {
-    private Long shopId;
-    private Long shopGroupId;
     private String outNum;
     private Integer type;
     private String sourceNo;

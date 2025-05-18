@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -87,8 +88,6 @@ public class ErpShipmentItemServiceImpl extends ServiceImpl<ErpShipmentItemMappe
         stockOut.setTenantId(userId);
         stockOut.setOutNum(request.getStockOutNum());
         stockOut.setType(1);
-        stockOut.setShopId(0L);
-        stockOut.setShopGroupId(0L);
         stockOut.setSourceNum("");
         stockOut.setSourceId(0L);
         stockOut.setRemark("");
@@ -110,13 +109,11 @@ public class ErpShipmentItemServiceImpl extends ServiceImpl<ErpShipmentItemMappe
         for(ErpShipmentItem item: erpShipmentItems) {
             WmsStockOutItem inItem = new WmsStockOutItem();
             inItem.setTenantId(stockOut.getTenantId());
-            inItem.setShopId(stockOut.getShopId());
-            inItem.setShopGroupId(stockOut.getShopGroupId());
             inItem.setEntryId(stockOut.getId());
             inItem.setType(stockOut.getType());
 //            inItem.setBatchId(0L);
             inItem.setGoodsId(item.getErpGoodsId());
-            inItem.setPurPrice(0.0);
+            inItem.setPurPrice(BigDecimal.ZERO);
             inItem.setSkuId(item.getErpSkuId());
             inItem.setSkuCode(item.getSkuNum());
             inItem.setGoodsName(item.getGoodsTitle());

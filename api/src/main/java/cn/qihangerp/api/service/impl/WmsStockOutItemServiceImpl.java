@@ -49,8 +49,7 @@ public class WmsStockOutItemServiceImpl extends ServiceImpl<WmsStockOutItemMappe
         qw.ge(WmsStockOutItem::getCompleteTime, startDate + " 00:00:00");
         qw.le(WmsStockOutItem::getCompleteTime, endDate + " 23:59:59");
         qw.eq(StringUtils.isNotEmpty(request.getSkuCode()),WmsStockOutItem::getSkuCode,request.getSkuCode());
-        qw.eq(request.getShopId() != null, WmsStockOutItem::getShopId, request.getShopId());
-        qw.eq(request.getShopGroupId() != null, WmsStockOutItem::getShopGroupId, request.getShopGroupId());
+
 
 
         qw.last("order by complete_time desc,id desc");

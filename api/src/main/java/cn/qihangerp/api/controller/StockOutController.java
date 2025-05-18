@@ -17,6 +17,7 @@ public class StockOutController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(WmsStockOut bo, PageQuery pageQuery)
     {
+        bo.setTenantId(getUserId());
         var pageList = stockOutService.queryPageList(bo,pageQuery);
         return getDataTable(pageList);
     }

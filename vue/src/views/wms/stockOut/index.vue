@@ -401,7 +401,7 @@ export default {
           }
           stockOut(subForm).then(response => {
               this.$modal.msgSuccess("出库成功");
-              // this.open = false;
+              this.open = false;
               getStockOutEntry(row.id).then(response => {
                 this.form = response.data;
                 this.wmsStockOutEntryItemList = response.data.wmsStockOutEntryItemList;

@@ -27,12 +27,11 @@
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
-        <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
-        <result property="shopGroupId" column="shop_group_id" jdbcType="BIGINT"/>
+
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,out_num,source_num,shop_id,shop_group_id,
+        id,out_num,source_num,
         source_id,type,goods_unit,tenant_id,
         spec_unit,spec_unit_total,out_total,
         remark,status,print_status,
