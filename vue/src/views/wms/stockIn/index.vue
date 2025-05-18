@@ -127,10 +127,10 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px" inline>
         <el-descriptions title="表单信息">
           <el-descriptions-item label="ID">{{form.id}}</el-descriptions-item>
-          <el-descriptions-item label="入库单号">{{form.no}}</el-descriptions-item>
+          <el-descriptions-item label="入库单号">{{form.stockInNum}}</el-descriptions-item>
           <el-descriptions-item label="来源单号">{{form.sourceNo}}</el-descriptions-item>
           <el-descriptions-item label="类型">
-            <el-tag size="small" v-if="form.sourceType ===1 ">采购订单</el-tag>
+            <el-tag size="small" v-if="form.stockInType ===1 ">采购订单</el-tag>
           </el-descriptions-item>
 
           <el-descriptions-item label="备注">
@@ -143,7 +143,7 @@
           </el-descriptions-item>
 
           <el-descriptions-item label="创建时间">
-            {{ form.createTime }}
+            {{ parseTime(form.createTime) }}
           </el-descriptions-item>
         </el-descriptions>
         <el-descriptions title="商品统计">
@@ -160,17 +160,17 @@
           <el-table-column label="序号" align="center" prop="index" width="50"/>
           <el-table-column label="商品图片" width="80">
             <template slot-scope="scope">
-              <el-image style="width: 70px; height: 70px" :src="scope.row.colorImage"></el-image>
+              <el-image style="width: 70px; height: 70px" :src="scope.row.goodsImage"></el-image>
             </template>
           </el-table-column>
           <el-table-column label="商品标题" prop="goodsName" ></el-table-column>
           <el-table-column label="规格"  width="150">
             <template slot-scope="scope">
-              <el-tag size="small">{{scope.row.colorValue}} {{scope.row.sizeValue}} {{scope.row.styleValue}}</el-tag>
+              <el-tag size="small">{{scope.row.skuName}} </el-tag>
             </template>
           </el-table-column>
 <!--          <el-table-column label="sku编码" prop="specNum"></el-table-column>-->
-          <el-table-column label="数量" prop="originalQuantity"></el-table-column>
+          <el-table-column label="数量" prop="quantity"></el-table-column>
           <el-table-column label="已入库数量" prop="inQuantity"></el-table-column>
 <!--          <el-table-column label="来源类型" prop="sourceType" width="150">-->
 <!--            <template slot-scope="scope">-->
@@ -181,7 +181,7 @@
 <!--          </el-table-column>-->
           <el-table-column label="入库数量" prop="inQuantity" width="110">
             <template slot-scope="scope">
-              <el-input v-model.number="scope.row.quantity" placeholder="入库数量" @input="qtyChange(scope.row)"/>
+              <el-input v-model.number="scope.row.qty" placeholder="入库数量" @input="qtyChange(scope.row)"/>
             </template>
           </el-table-column>
           <el-table-column label="入库仓位编码" prop="locationId" width="150">
@@ -198,7 +198,7 @@
 <!--              <el-input v-model="scope.row.locationNum" placeholder="请输入入库仓位编码" />-->
             </template>
           </el-table-column>
-          <el-table-column label="总入库数量" prop="totalQuantity"></el-table-column>
+<!--          <el-table-column label="总入库数量" prop="totalQuantity"></el-table-column>-->
         </el-table>
 
 <!--        <el-form-item label="操作入库人id" prop="stockInOperatorId">-->
@@ -227,6 +227,7 @@
 <script>
 import { listWmsStockInEntry, getWmsStockInEntry, stockIn,complete } from "@/api/wms/StockIn";
 import { searchLocation } from "@/api/wms/location";
+import {parseTime} from "../../../utils/zhijian";
 
 export default {
   name: "WmsStockInEntry",
@@ -292,6 +293,7 @@ export default {
     this.getList();
   },
   methods: {
+    parseTime,
     handleAdd(){
       this.$router.push({path:"/stock/stock_in/create"})
     },
@@ -313,11 +315,11 @@ export default {
     },
     qtyChange(row) {
       console.log('======值变化=====', row)
-      if(row.quantity){
-        row.totalQuantity = parseInt(row.inQuantity) + parseInt(row.quantity)
-      }else {
-        row.totalQuantity = row.inQuantity
-      }
+      // if(row.qty){
+      //   row.qty =  parseInt(row.quantity)-parseInt(row.inQuantity)
+      // }else {
+      //   row.qty = row.quantity
+      // }
 
     },
     /** 查询入库单列表 */
@@ -373,12 +375,14 @@ export default {
       const id = row.id || this.ids
       getWmsStockInEntry(id).then(response => {
         this.form = response.data;
-        this.wmsStockInEntryItemList = response.data.wmsStockInEntryItemList;
+        this.wmsStockInEntryItemList = response.data.itemList;
         this.wmsStockInEntryItemList.forEach(x=>{
-          x.quantity = null
+          // x.quantity = null
           x.totalQuantity = x.inQuantity
+          x.qty = x.quantity - x.inQuantity
           x.locationId = null
         })
+        this.form.stockInTime = new Date();
         this.open = true;
         this.title = "入库操作";
       });

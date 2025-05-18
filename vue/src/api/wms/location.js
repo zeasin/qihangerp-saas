@@ -10,7 +10,7 @@ export function listLocation(query) {
 }
 export function searchLocation(query) {
   return request({
-    url: '/wms/location/search',
+    url: '/warehouse/position/search',
     method: 'get',
     params: query
   })

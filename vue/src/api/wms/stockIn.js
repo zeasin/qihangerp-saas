@@ -12,7 +12,7 @@ export function listWmsStockInEntry(query) {
 // 查询入库单详细
 export function getWmsStockInEntry(id) {
   return request({
-    url: '/wms/WmsStockInEntry/' + id,
+    url: '/stockIn/detail/' + id,
     method: 'get'
   })
 }
@@ -27,7 +27,7 @@ export function stockInCreate(data) {
 // 入库
 export function stockIn(data) {
   return request({
-    url: '/api/oms-api/stockIn/in',
+    url: '/stockIn/in',
     method: 'post',
     data: data
   })

@@ -39,7 +39,7 @@ public class StockInController extends BaseController {
         else return AjaxResult.error(resultVo.getMsg());
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/detail/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         WmsStockIn entry = stockInService.getDetailAndItemById(id);
