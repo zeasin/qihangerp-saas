@@ -17,10 +17,6 @@
             <result property="completeTime" column="complete_time" jdbcType="TIMESTAMP"/>
             <result property="pickedTime" column="picked_time" jdbcType="TIMESTAMP"/>
             <result property="status" column="status" jdbcType="INTEGER"/>
-            <result property="batchId" column="batch_id" jdbcType="BIGINT"/>
-            <result property="warehouseId" column="warehouse_id" jdbcType="BIGINT"/>
-            <result property="positionId" column="position_id" jdbcType="BIGINT"/>
-            <result property="positionNum" column="position_num" jdbcType="VARCHAR"/>
             <result property="goodsId" column="goods_id" jdbcType="BIGINT"/>
             <result property="goodsNum" column="goods_num" jdbcType="VARCHAR"/>
             <result property="goodsName" column="goods_name" jdbcType="VARCHAR"/>
@@ -42,8 +38,7 @@
         id,type,entry_id,shop_id,shop_group_id,tenant_id,
         source_order_id,source_order_item_id,source_order_num,
         original_quantity,out_quantity,complete_time,
-        picked_time,status,batch_id,
-        warehouse_id,position_id,position_num,
+        picked_time,status,
         goods_id,goods_num,goods_name,
         goods_image,sku_id,sku_code,
         sku_name,create_time,create_by,

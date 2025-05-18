@@ -5,10 +5,8 @@ import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.utils.DateUtils;
-import cn.qihangerp.api.domain.ErpGoodsInventory;
-import cn.qihangerp.api.domain.ErpGoodsInventoryBatch;
-import cn.qihangerp.api.domain.WmsStockOut;
-import cn.qihangerp.api.domain.WmsStockOutItem;
+import cn.qihangerp.api.domain.*;
+import cn.qihangerp.api.mapper.WmsStockOutItemPositionMapper;
 import cn.qihangerp.api.mapper.WmsStockOutMapper;
 import cn.qihangerp.api.request.GoodsSkuInventoryVo;
 import cn.qihangerp.api.request.StockOutCreateRequest;
@@ -44,6 +42,7 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
     private final WmsStockOutItemService outItemService;
     private final ErpGoodsInventoryBatchService goodsInventoryBatchService;
     private final ErpGoodsInventoryService goodsInventoryService;
+    private final WmsStockOutItemPositionMapper outItemPositionMapper;
 
     @Override
     public PageResult<WmsStockOut> queryPageList(WmsStockOut bo, PageQuery pageQuery) {
@@ -111,7 +110,7 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
                     inItem.setShopGroupId(request.getShopGroupId());
                     inItem.setEntryId(insert.getId());
                     inItem.setType(request.getType());
-                    inItem.setBatchId(batch.getId());
+//                    inItem.setBatchId(batch.getId());
                     inItem.setGoodsId(batch.getGoodsId());
                     inItem.setPurPrice(batch.getPurPrice());
                     inItem.setSkuId(batch.getSkuId());
@@ -125,10 +124,9 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
                     inItem.setStatus(0);
                     inItem.setCreateBy(userName);
                     inItem.setCreateTime(new Date());
-                    inItem.setWarehouseId(batch.getWarehouseId());
-                    inItem.setPositionId(batch.getPositionId());
-
-                    inItem.setPositionNum(batch.getPositionNum());
+//                    inItem.setWarehouseId(batch.getWarehouseId());
+//                    inItem.setPositionId(batch.getPositionId());
+//                    inItem.setPositionNum(batch.getPositionNum());
                     itemList.add(inItem);
                 }
             }
@@ -141,7 +139,17 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
     public WmsStockOut getDetailAndItemById(Long id) {
         WmsStockOut wmsStockOut = outMapper.selectById(id);
         if(wmsStockOut!=null){
-            wmsStockOut.setItemList(outItemService.list(new LambdaQueryWrapper<WmsStockOutItem>().eq(WmsStockOutItem::getEntryId,id)));
+            List<WmsStockOutItem> outItemList = outItemService.list(new LambdaQueryWrapper<WmsStockOutItem>().eq(WmsStockOutItem::getEntryId, id));
+            if(outItemList!=null && outItemList.size()>0){
+                // 查找outItem skuid相对应的库存批次list
+                for(WmsStockOutItem item: outItemList){
+                    item.setOutQty(item.getOriginalQuantity()-item.getOutQuantity());
+                    List<ErpGoodsInventoryBatch> erpGoodsInventoryBatches = goodsInventoryBatchService.querySkuBatchList(item.getSkuId());
+                    item.setInventoryBatchList(erpGoodsInventoryBatches);
+                }
+
+            }
+            wmsStockOut.setItemList(outItemList);
         }
         return wmsStockOut;
     }
@@ -155,7 +163,7 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
         WmsStockOutItem outItem = outItemService.getById(request.getEntryItemId());
         if(outItem == null) return ResultVo.error(1500,"出库数据错误");
         // 判断库存够不够扣减的
-        ErpGoodsInventoryBatch batch = goodsInventoryBatchService.getById(outItem.getBatchId());
+        ErpGoodsInventoryBatch batch = goodsInventoryBatchService.getById(request.getInventoryBatchId());
         if(batch == null) return ResultVo.error(1500,"库存数据不存在");
         if(batch.getCurrentQty().longValue()< request.getOutQty().longValue())
             return ResultVo.error(1500,"库存不足");
@@ -177,6 +185,24 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
         updateInventory.setUpdateBy(userName);
         updateInventory.setUpdateTime(new Date());
         goodsInventoryService.updateById(updateInventory);
+
+
+        // 添加item
+        WmsStockOutItemPosition outItemPosition = new WmsStockOutItemPosition();
+        outItemPosition.setTenantId(outItem.getTenantId());
+        outItemPosition.setOutId(outItem.getEntryId());
+        outItemPosition.setItemId(outItem.getId());
+        outItemPosition.setGoodsInventoryId(batch.getInventoryId());
+        outItemPosition.setGoodsInventoryBatchId(batch.getId());
+        outItemPosition.setQuantity(request.getOutQty());
+        outItemPosition.setOperatorId(userId);
+        outItemPosition.setOperatorName(userName);
+        outItemPosition.setOutTime(new Date());
+        outItemPosition.setWarehouseId(batch.getWarehouseId());
+        outItemPosition.setPositionId(batch.getPositionId());
+        outItemPosition.setPositionNum(batch.getPositionNum());
+        outItemPositionMapper.insert(outItemPosition);
+
         // 更新自己的状态
         WmsStockOutItem outItemUpdate = new WmsStockOutItem();
         outItemUpdate.setId(outItem.getId());

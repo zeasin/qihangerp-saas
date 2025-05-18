@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 出库单明细
@@ -58,6 +59,9 @@ public class WmsStockOutItem implements Serializable {
      */
     private Long outQuantity;
 
+    @TableField(exist = false)
+    private Long outQty;
+
     /**
      * 完成出库时间
      */
@@ -73,25 +77,25 @@ public class WmsStockOutItem implements Serializable {
      */
     private Integer status;
 
-    /**
-     * 库存批次id
-     */
-    private Long batchId;
-
-    /**
-     * 仓库id
-     */
-    private Long warehouseId;
-
-    /**
-     * 仓位id
-     */
-    private Long positionId;
-
-    /**
-     * 仓位
-     */
-    private String positionNum;
+//    /**
+//     * 库存批次id
+//     */
+//    private Long batchId;
+//
+//    /**
+//     * 仓库id
+//     */
+//    private Long warehouseId;
+//
+//    /**
+//     * 仓位id
+//     */
+//    private Long positionId;
+//
+//    /**
+//     * 仓位
+//     */
+//    private String positionNum;
 
     /**
      * 商品id
@@ -155,6 +159,8 @@ public class WmsStockOutItem implements Serializable {
     private Long shopId;
     private Long shopGroupId;
 
+    @TableField(exist = false)
+    private List<ErpGoodsInventoryBatch> inventoryBatchList;
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

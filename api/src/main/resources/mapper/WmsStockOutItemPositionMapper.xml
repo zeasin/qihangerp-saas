@@ -6,22 +6,25 @@
 
     <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.WmsStockOutItemPosition">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="entryId" column="entry_id" jdbcType="BIGINT"/>
-            <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
-            <result property="entryItemId" column="entry_item_id" jdbcType="BIGINT"/>
+            <result property="outId" column="out_id" jdbcType="BIGINT"/>
+            <result property="itemId" column="item_id" jdbcType="BIGINT"/>
             <result property="goodsInventoryId" column="goods_inventory_id" jdbcType="BIGINT"/>
             <result property="goodsInventoryBatchId" column="goods_inventory_batch_id" jdbcType="BIGINT"/>
-            <result property="quantity" column="quantity" jdbcType="BIGINT"/>
-            <result property="locationId" column="location_id" jdbcType="INTEGER"/>
-            <result property="operatorId" column="operator_id" jdbcType="INTEGER"/>
+            <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+            <result property="operatorId" column="operator_id" jdbcType="BIGINT"/>
             <result property="operatorName" column="operator_name" jdbcType="VARCHAR"/>
             <result property="outTime" column="out_time" jdbcType="TIMESTAMP"/>
+            <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
+            <result property="warehouseId" column="warehouse_id" jdbcType="BIGINT"/>
+            <result property="positionId" column="position_id" jdbcType="BIGINT"/>
+            <result property="positionNum" column="position_num" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,entry_id,entry_item_id,tenant_id,
+        id,out_id,item_id,
         goods_inventory_id,goods_inventory_batch_id,quantity,
-        location_id,operator_id,operator_name,
-        out_time
+        operator_id,operator_name,out_time,
+        tenant_id,warehouse_id,position_id,
+        position_num
     </sql>
 </mapper>

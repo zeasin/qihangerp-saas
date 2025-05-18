@@ -20,7 +20,7 @@ export function getStockOutEntry(id) {
 // 出库
 export function stockOut(data) {
   return request({
-    url: '/wms/stockOutEntry/stockOut',
+    url: '/stockOut/out',
     method: 'post',
     data: data
   })

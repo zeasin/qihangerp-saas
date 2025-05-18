@@ -150,12 +150,12 @@
     <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body :close-on-click-modal="false">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-descriptions title="出库单详情">
-          <el-descriptions-item label="单号">{{form.stockOutNum}}</el-descriptions-item>
+          <el-descriptions-item label="单号">{{form.outNum}}</el-descriptions-item>
           <el-descriptions-item label="来源">
-            <el-tag size="small" v-if="form.stockOutType === 1">订单拣货出库</el-tag>
-            <el-tag size="small" v-if="form.stockOutType === 2">采购退货出库</el-tag>
-            <el-tag size="small" v-if="form.stockOutType === 3">盘点出库</el-tag>
-            <el-tag size="small" v-if="form.stockOutType === 4">报损出库</el-tag>
+            <el-tag size="small" v-if="form.type === 1">订单发货出库</el-tag>
+            <el-tag size="small" v-if="form.type === 2">采购退货出库</el-tag>
+            <el-tag size="small" v-if="form.type === 3">盘点出库</el-tag>
+            <el-tag size="small" v-if="form.type === 4">报损出库</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="备注">{{form.remark}}</el-descriptions-item>
           <el-descriptions-item label="商品数">{{form.goodsUnit}}</el-descriptions-item>
@@ -185,11 +185,11 @@
           <el-table-column label="数量" prop="originalQuantity"></el-table-column>
           <el-table-column label="已出库数量" prop="outQuantity"></el-table-column>
 
-          <el-table-column label="出库仓位" prop="inventoryId" width="180">
+          <el-table-column label="出库仓位" width="180">
             <template slot-scope="scope">
-              <el-select v-model="scope.row.inventoryDetailId" placeholder="请选择出库仓位" v-if="scope.row.status < 2">
-                <el-option v-for="item in scope.row.inventoryDetails" :key="item.id" :label="item.locationNum" :value="item.id">
-                  <span style="float: left">{{ item.locationNum }}</span>
+              <el-select v-model="scope.row.inventoryBatchId" placeholder="请选择出库仓位" v-if="scope.row.status < 2">
+                <el-option v-for="item in scope.row.inventoryBatchList" :key="item.id" :label="item.positionNum" :value="item.id">
+                  <span style="float: left">{{ item.positionNum }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px"  >剩余库存：{{ item.currentQty }}</span>
 
                 </el-option>
@@ -275,7 +275,7 @@ export default {
       },
       // 表单校验
       rules: {
-        inventoryId:[{ required: true, message: '请填写收货信息' }],
+        // inventoryId:[{ required: true, message: '请填写收货信息' }],
       }
     };
   },
@@ -363,7 +363,7 @@ export default {
         this.$modal.msgError("请填写要出库的库存");
         return
       }
-      if(!row.inventoryDetailId){
+      if(!row.inventoryBatchId){
         this.$modal.msgError("请选择库存仓位");
         return
       }else{
@@ -383,8 +383,8 @@ export default {
           const subForm ={
             entryItemId:row.id,
             entryId:row.entryId,
-            specId:row.specId,
-            inventoryDetailId:row.inventoryDetailId,
+            skuId:row.skuId,
+            inventoryBatchId:row.inventoryBatchId,
             outQty:row.outQty
           }
           stockOut(subForm).then(response => {

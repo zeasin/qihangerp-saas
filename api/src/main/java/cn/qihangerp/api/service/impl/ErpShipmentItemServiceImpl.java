@@ -114,7 +114,7 @@ public class ErpShipmentItemServiceImpl extends ServiceImpl<ErpShipmentItemMappe
             inItem.setShopGroupId(stockOut.getShopGroupId());
             inItem.setEntryId(stockOut.getId());
             inItem.setType(stockOut.getType());
-            inItem.setBatchId(0L);
+//            inItem.setBatchId(0L);
             inItem.setGoodsId(item.getErpGoodsId());
             inItem.setPurPrice(0.0);
             inItem.setSkuId(item.getErpSkuId());
@@ -128,9 +128,9 @@ public class ErpShipmentItemServiceImpl extends ServiceImpl<ErpShipmentItemMappe
             inItem.setStatus(0);
             inItem.setCreateBy(createBy);
             inItem.setCreateTime(new Date());
-            inItem.setWarehouseId(0L);
-            inItem.setPositionId(0L);
-            inItem.setPositionNum("");
+//            inItem.setWarehouseId(0L);
+//            inItem.setPositionId(0L);
+//            inItem.setPositionNum("");
             outItemService.save(inItem);
 //            itemList.add(inItem);
 

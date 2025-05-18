@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 /**
 * @author qilip
 * @description 针对表【wms_stock_out_item_position(出库仓位详情)】的数据库操作Mapper
-* @createDate 2024-09-22 11:13:23
-* @Entity cn.qihangerp.wms.domain.WmsStockOutItemPosition
+* @createDate 2025-05-18 17:35:01
+* @Entity cn.qihangerp.api.domain.WmsStockOutItemPosition
 */
 public interface WmsStockOutItemPositionMapper extends BaseMapper<WmsStockOutItemPosition> {
 

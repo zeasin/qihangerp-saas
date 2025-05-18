@@ -203,7 +203,7 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
             inventoryBatch.setTenantId(tenantId);
             inventoryBatch.setInventoryId(Long.parseLong(goodsInventoryId));
             inventoryBatch.setBatchNum(DateUtils.parseDateToStr("yyyyMMddHHmmss", new Date()));
-            inventoryBatch.setOriginQty(beforQty);
+            inventoryBatch.setOriginQty(item.getQty());
             inventoryBatch.setCurrentQty(item.getQty());
             inventoryBatch.setPurPrice(stockInItem.getPurPrice());
             inventoryBatch.setPurId(0L);
