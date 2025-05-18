@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
 // 查询入库单列表
-export function listStockIn(query) {
+export function listWmsStockInEntry(query) {
   return request({
-    url: '/api/oms-api/stockIn/list',
+    url: '/stockIn/list',
     method: 'get',
     params: query
   })
@@ -12,19 +12,19 @@ export function listStockIn(query) {
 // 查询入库单详细
 export function getWmsStockInEntry(id) {
   return request({
-    url: '/api/oms-api/stockIn/' + id,
+    url: '/wms/WmsStockInEntry/' + id,
     method: 'get'
   })
 }
-
 // 新增入库单
 export function stockInCreate(data) {
   return request({
-    url: '/api/oms-api/stockIn/create',
+    url: '/stockIn/create',
     method: 'post',
     data: data
   })
 }
+// 入库
 export function stockIn(data) {
   return request({
     url: '/api/oms-api/stockIn/in',
@@ -32,6 +32,7 @@ export function stockIn(data) {
     data: data
   })
 }
+
 export function complete(id) {
   return request({
     url: '/wms/WmsStockInEntry/complete/' + id,

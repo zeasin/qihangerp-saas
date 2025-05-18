@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -108,7 +109,7 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
                     inItem.setSkuCode(item.getSkuCode());
                     inItem.setQuantity(item.getQuantity());
                     inItem.setInQuantity(0);
-                    inItem.setPurPrice(item.getPurPrice());
+                    inItem.setPurPrice(item.getPurPrice()==null? 0.0 : item.getPurPrice());
                     inItem.setStatus(0);
                     inItem.setCreateBy(userName);
                     inItem.setCreateTime(new Date());

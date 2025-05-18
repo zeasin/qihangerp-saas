@@ -15,7 +15,7 @@
         </el-select>
         </el-form-item>
         <el-form-item label="源单号" prop="sourceNo">
-          <el-input v-model="form.sourceNo" style="width: 220px;" placeholder="请输入收件人姓名" />
+          <el-input v-model="form.sourceNo" style="width: 220px;" placeholder="请输入源单号" />
         </el-form-item>
 
         <el-form-item label="入库商品">
@@ -49,7 +49,7 @@
               <el-select v-model="scope.row.skuId" filterable remote reserve-keyword placeholder="搜索商品SKU" style="width: 330px;"
                 :remote-method="searchSku" :loading="skuListLoading" @change="skuChanage(scope.row)">
                 <el-option v-for="item in skuList" :key="item.id"
-                  :label="item.goodsName + ' ' + item.skuName +' - ' + item.skuCode"
+                  :label="item.name + ' ' + item.colorValue +' - ' + item.sizeValue + (item.styleValue  ?' - ' +item.styleValue: '')"
                   :value="item.id">
                 </el-option>
               </el-select>
@@ -96,7 +96,7 @@
 
 <script>
 import { searchSku } from "@/api/goods/goods";
-import {stockInCreate} from "@/api/wms/stockIn";
+import {stockInCreate} from "@/api/wms/StockIn";
 
 export default {
   name: "StockInCreate",
@@ -113,7 +113,7 @@ export default {
       rules: {
         stockInNum: [{ required: true, message: '单号不能为空' }],
         stockInType: [{ required: true, message: '请选择入库类型' }],
-        sourceNo: [{ required: true, message: '源单号不能为空' }],
+        // sourceNo: [{ required: true, message: '源单号不能为空' }],
         stockInOperator: [{ required: true, message: '请填写操作人' }],
       },
       skuListLoading: false,
@@ -165,10 +165,11 @@ export default {
         row.skuId = spec.id
         row.goodsId = spec.goodsId
         // row.sku = spec.colorValue + ' ' + spec.sizeValue + ' ' + spec.styleValue
-        row.skuName = spec.skuName
+        row.skuName =  (spec.colorValue??'') + ' ' +(spec.sizeValue??'')  + ' ' + (spec.styleValue??'')
         row.goodsImg = spec.colorImage
-        row.skuCode = spec.skuCode
-        row.goodsName = spec.goodsName
+        row.skuCode = spec.specNum
+        row.goodsName = spec.name
+        row.goodsNum = spec.number
         row.quantity = 1
 
       }
@@ -228,7 +229,7 @@ export default {
               this.$modal.msgSuccess("订单创建成功");
               // 调用全局挂载的方法,关闭当前标签页
               this.$store.dispatch("tagsView/delView", this.$route);
-              this.$router.push('/wms/stock_in');
+              this.$router.push('/stock/stock_in/list');
             });
 
         }else{
