@@ -8,6 +8,7 @@
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="type" column="type" jdbcType="INTEGER"/>
             <result property="entryId" column="entry_id" jdbcType="BIGINT"/>
+            <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
             <result property="sourceOrderId" column="source_order_id" jdbcType="BIGINT"/>
             <result property="sourceOrderItemId" column="source_order_item_id" jdbcType="BIGINT"/>
             <result property="sourceOrderNum" column="source_order_num" jdbcType="VARCHAR"/>
@@ -38,7 +39,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,type,entry_id,shop_id,shop_group_id,
+        id,type,entry_id,shop_id,shop_group_id,tenant_id,
         source_order_id,source_order_item_id,source_order_num,
         original_quantity,out_quantity,complete_time,
         picked_time,status,batch_id,

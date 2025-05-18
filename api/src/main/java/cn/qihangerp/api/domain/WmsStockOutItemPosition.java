@@ -30,11 +30,12 @@ public class WmsStockOutItemPosition implements Serializable {
      * 库存ID
      */
     private Long goodsInventoryId;
+    private Long tenantId;
 
     /**
      * 库存详情ID
      */
-    private Long goodsInventoryDetailId;
+    private Long goodsInventoryBatchId;
 
     /**
      * 出库数量

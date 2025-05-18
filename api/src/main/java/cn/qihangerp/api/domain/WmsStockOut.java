@@ -37,6 +37,7 @@ public class WmsStockOut implements Serializable {
      * 来源单据Id
      */
     private Long sourceId;
+    private Long tenantId;
 
     /**
      * 出库类型1订单发货出库2采购退货出库3盘点出库4报损出库

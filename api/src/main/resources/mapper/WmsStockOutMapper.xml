@@ -9,6 +9,7 @@
             <result property="outNum" column="out_num" jdbcType="VARCHAR"/>
             <result property="sourceNum" column="source_num" jdbcType="VARCHAR"/>
             <result property="sourceId" column="source_id" jdbcType="BIGINT"/>
+            <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
             <result property="type" column="type" jdbcType="INTEGER"/>
             <result property="goodsUnit" column="goods_unit" jdbcType="INTEGER"/>
             <result property="specUnit" column="spec_unit" jdbcType="INTEGER"/>
@@ -32,7 +33,7 @@
 
     <sql id="Base_Column_List">
         id,out_num,source_num,shop_id,shop_group_id,
-        source_id,type,goods_unit,
+        source_id,type,goods_unit,tenant_id,
         spec_unit,spec_unit_total,out_total,
         remark,status,print_status,
         print_time,out_time,complete_time,

@@ -84,6 +84,7 @@ public class ErpShipmentItemServiceImpl extends ServiceImpl<ErpShipmentItemMappe
 
         //添加主表信息
         WmsStockOut stockOut = new WmsStockOut();
+        stockOut.setTenantId(userId);
         stockOut.setOutNum(request.getStockOutNum());
         stockOut.setType(1);
         stockOut.setShopId(0L);
@@ -108,6 +109,7 @@ public class ErpShipmentItemServiceImpl extends ServiceImpl<ErpShipmentItemMappe
 //        List<WmsStockOutItem> itemList = new ArrayList<>();
         for(ErpShipmentItem item: erpShipmentItems) {
             WmsStockOutItem inItem = new WmsStockOutItem();
+            inItem.setTenantId(stockOut.getTenantId());
             inItem.setShopId(stockOut.getShopId());
             inItem.setShopGroupId(stockOut.getShopGroupId());
             inItem.setEntryId(stockOut.getId());

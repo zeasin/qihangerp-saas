@@ -81,12 +81,12 @@
     <el-table v-loading="loading" :data="locationList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="主键ID" align="center" prop="id" />
-      <el-table-column label="货架编号" align="center" prop="number" />
-      <el-table-column label="货架名称" align="center" prop="name" />
-      <el-table-column label="上级id" align="center" prop="parentId" />
-      <el-table-column label="层级深度1级2级3级" align="center" prop="depth" />
-      <el-table-column label="一级类目id" align="center" prop="parentId1" />
-      <el-table-column label="二级类目id" align="center" prop="parentId2" />
+      <el-table-column label="仓库编号" align="center" prop="number" />
+      <el-table-column label="仓库名称" align="center" prop="name" />
+<!--      <el-table-column label="上级id" align="center" prop="parentId" />-->
+<!--      <el-table-column label="层级深度1级2级3级" align="center" prop="depth" />-->
+<!--      <el-table-column label="一级类目id" align="center" prop="parentId1" />-->
+<!--      <el-table-column label="二级类目id" align="center" prop="parentId2" />-->
       <el-table-column label="地址" align="center" prop="address" />
       <el-table-column label="仓位" align="center" prop="remark" >
         <template slot-scope="scope">

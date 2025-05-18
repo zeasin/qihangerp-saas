@@ -66,17 +66,18 @@
     <el-table v-loading="loading" :data="WmsStockInEntryList" @selection-change="handleSelectionChange">
 <!--      <el-table-column type="selection" width="55" align="center" />-->
       <el-table-column label="主键ID" align="center" prop="id" />
-      <el-table-column label="单号" align="center" prop="no" />
+      <el-table-column label="单号" align="left" prop="stockInNum" />
       <el-table-column label="来源单号" align="center" prop="sourceNo" />
-      <el-table-column label="来源单id" align="center" prop="sourceId" />
-      <el-table-column label="来源类型" align="center" prop="sourceType" >
+<!--      <el-table-column label="来源单id" align="center" prop="sourceId" />-->
+      <el-table-column label="入库类型" align="center" prop="sourceType" >
         <template slot-scope="scope">
-        <el-tag size="small" v-if="scope.row.sourceType ===1 ">采购订单</el-tag>
+        <el-tag size="small" v-if="scope.row.stockInType ===1 ">采购入库</el-tag>
+        <el-tag size="small" v-if="scope.row.stockInType ===2 ">退货入库</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="采购订单商品数" align="center" prop="sourceGoodsUnit" />
-      <el-table-column label="采购订单总件数" align="center" prop="sourceSpecUnitTotal" />
-      <el-table-column label="采购订单商品规格数" align="center" prop="sourceSpecUnit" />
+      <el-table-column label="订单商品数" align="center" prop="sourceGoodsUnit" />
+      <el-table-column label="订单总件数" align="center" prop="sourceSpecUnitTotal" />
+      <el-table-column label="订单商品规格数" align="center" prop="sourceSpecUnit" />
       <el-table-column label="备注" align="center" prop="remark" />
 <!--      <el-table-column label="操作入库人id" align="center" prop="stockInOperatorId" />-->
       <el-table-column label="操作入库人" align="center" prop="stockInOperator" />

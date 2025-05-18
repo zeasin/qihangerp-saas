@@ -31,6 +31,7 @@ public class WmsStockOutItem implements Serializable {
      * 出库单id（外键）
      */
     private Long entryId;
+    private Long tenantId;
 
     /**
      * 来源订单id
