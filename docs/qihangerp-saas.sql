@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 18/05/2025 19:19:39
+ Date: 19/05/2025 15:10:26
 */
 
 SET NAMES utf8mb4;
@@ -427,7 +427,7 @@ CREATE TABLE `erp_goods_inventory_operation`  (
   `batch_num` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '库存批次号',
   `type` int NOT NULL COMMENT '库存类型（1增加库存2减少库存3锁定库存）',
   `inventory_id` bigint NOT NULL COMMENT '商品库存id（本表id减库存的时候关联）',
-  `quantity` int NOT NULL DEFAULT 0 COMMENT '操作库存数量',
+  `quantity` int NOT NULL COMMENT '操作库存数量',
   `locked_quantity` int NOT NULL DEFAULT 0 COMMENT '锁定库存数量（status变成已结算时把该字段值更新到quantity）',
   `price` double NULL DEFAULT 0 COMMENT '价格（type=1采购价格；type=2出库时的价格）',
   `biz_type` int NOT NULL COMMENT '业务类型（101采购入库102销售退货入库201采购退货出库202订单发货出库203订单补发出库211盘点出库212报损出库999其他出库）',
@@ -1242,6 +1242,56 @@ CREATE TABLE `erp_shop_refund`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for erp_shop_task
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_shop_task`;
+CREATE TABLE `erp_shop_task`  (
+  `id` int NOT NULL,
+  `task_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `cron` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `create_time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '后台任务配置表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_shop_task
+-- ----------------------------
+INSERT INTO `erp_shop_task` VALUES (1, '拉取淘宝订单', '-', NULL, '定时更新淘宝订单', '2024-03-07 09:52:40');
+INSERT INTO `erp_shop_task` VALUES (2, '拉取京东POP订单', '-', NULL, '拉取京东POP订单', '2024-03-07 09:23:36');
+INSERT INTO `erp_shop_task` VALUES (3, '拉取拼多多订单', '-', NULL, '定时拉取拼多多订单', '2024-04-09 11:24:14');
+INSERT INTO `erp_shop_task` VALUES (4, '拉取抖店订单', '-', NULL, '定时拉取抖店订单', '2024-04-09 11:24:54');
+INSERT INTO `erp_shop_task` VALUES (5, '拉取天猫退款', '-', NULL, '定时拉取天猫退款', '2024-04-09 11:25:43');
+INSERT INTO `erp_shop_task` VALUES (6, '拉取京东售后', '-', NULL, '定时拉取京东售后', '2024-04-09 11:26:26');
+INSERT INTO `erp_shop_task` VALUES (7, '拉取拼多多退款', '-', NULL, '定时拉取拼多多退款', '2024-04-09 11:27:01');
+INSERT INTO `erp_shop_task` VALUES (8, '拉取抖店退款', '-', NULL, '定时拉取抖店退款', '2024-04-09 11:27:38');
+INSERT INTO `erp_shop_task` VALUES (11, '拉取京东自营订单', '-', NULL, '拉取京东自营订单', '2024-05-27 10:57:44');
+INSERT INTO `erp_shop_task` VALUES (12, '拉取京东自营退货', '-', NULL, '拉取京东自营退货', NULL);
+INSERT INTO `erp_shop_task` VALUES (21, '推送待发货订单到ERP', '-', NULL, '推送待发货订单到ERP', '2024-04-22 15:48:48');
+INSERT INTO `erp_shop_task` VALUES (22, '推送待处理售后到ERP', '-', NULL, '推送待处理售后到ERP', '2024-04-22 15:48:48');
+INSERT INTO `erp_shop_task` VALUES (23, '推送已取消的订单到ERP', '-', NULL, '推送已取消的订单到ERP', '2024-05-29 17:57:02');
+
+-- ----------------------------
+-- Table structure for erp_shop_task_logs
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_shop_task_logs`;
+CREATE TABLE `erp_shop_task_logs`  (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `task_id` int NULL DEFAULT NULL COMMENT '任务ID',
+  `result` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '结果',
+  `start_time` datetime NULL DEFAULT NULL COMMENT '开始运行时间',
+  `end_time` datetime NULL DEFAULT NULL COMMENT '结束时间',
+  `status` int NULL DEFAULT NULL COMMENT '状态1运行中，2已结束',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '后台任务运行日志表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of erp_shop_task_logs
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for erp_supplier
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_supplier`;
@@ -1724,8 +1774,8 @@ INSERT INTO `sys_menu` VALUES (3, '订单管理', 0, 2, 'order', '', '', 1, 0, '
 INSERT INTO `sys_menu` VALUES (4, '发货管理', 0, 3, 'ship', '', '', 1, 0, 'M', '0', '0', '', 'excel', 'admin', '2024-01-01 14:08:04', 'admin', '2024-04-10 11:10:31', '');
 INSERT INTO `sys_menu` VALUES (5, '售后处理', 0, 4, 'after_sale', NULL, NULL, 1, 0, 'M', '0', '0', '', 'clipboard', 'admin', '2024-01-03 14:23:55', 'admin', '2025-04-17 12:18:27', '');
 INSERT INTO `sys_menu` VALUES (6, '库存管理', 0, 5, 'stock', '', '', 1, 0, 'M', '0', '0', '', 'chart', 'admin', '2023-12-31 12:14:33', 'admin', '2025-05-17 15:41:10', '');
-INSERT INTO `sys_menu` VALUES (7, '店铺管理', 0, 6, 'shop', '', '', 1, 0, 'M', '0', '0', '', 'theme', 'admin', '2023-12-29 17:07:23', 'admin', '2024-04-10 10:56:43', '');
-INSERT INTO `sys_menu` VALUES (8, '商品管理', 0, 0, 'goods', '', '', 1, 0, 'M', '0', '0', '', 'theme', 'admin', '2023-12-29 13:29:44', 'admin', '2025-04-15 22:06:08', '');
+INSERT INTO `sys_menu` VALUES (7, '店铺设置', 0, 1, 'shop', '', '', 1, 0, 'M', '0', '0', '', 'theme', 'admin', '2023-12-29 17:07:23', 'admin', '2025-05-19 14:59:18', '');
+INSERT INTO `sys_menu` VALUES (8, '商品管理', 0, 6, 'goods', '', '', 1, 0, 'M', '0', '0', '', 'theme', 'admin', '2023-12-29 13:29:44', 'admin', '2025-05-19 14:59:03', '');
 INSERT INTO `sys_menu` VALUES (9, '费用管理', 0, 10, 'fms', '', '', 1, 0, 'M', '1', '0', '', 'money', 'admin', '2023-12-29 13:29:44', 'admin', '2025-04-19 10:19:58', '');
 INSERT INTO `sys_menu` VALUES (100, '用户管理', 1, 1, 'user', 'system/user/index', '', 1, 0, 'C', '0', '0', 'system:user:list', 'user', 'admin', '2023-12-27 15:00:27', '', '', '用户管理菜单');
 INSERT INTO `sys_menu` VALUES (101, '角色管理', 1, 2, 'role', 'system/role/index', '', 1, 0, 'C', '0', '0', 'system:role:list', 'peoples', 'admin', '2023-12-27 15:00:27', '', '', '角色管理菜单');
@@ -1800,6 +1850,7 @@ INSERT INTO `sys_menu` VALUES (2090, '发货设置', 4, 105, 'setting', 'shippin
 INSERT INTO `sys_menu` VALUES (2091, '新增入库单', 6, 11, 'stock_in/create', 'wms/stockIn/create', NULL, 1, 0, 'C', '1', '0', '', 'edit', 'admin', '2025-05-18 11:59:31', 'admin', '2025-05-18 18:03:17', '');
 INSERT INTO `sys_menu` VALUES (2092, '仓位管理', 6, 69, 'position', 'wms/location/position', NULL, 1, 0, 'C', '1', '0', NULL, 'bug', 'admin', '2025-05-18 13:17:46', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2093, '新建出库单', 6, 26, 'stock_out/create', 'wms/stockOut/create', NULL, 1, 0, 'C', '1', '0', NULL, '#', 'admin', '2025-05-18 18:04:06', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2094, '自动任务设置', 7, 3, 'task_list', 'system/task/index', NULL, 1, 0, 'C', '0', '0', NULL, 'bug', 'admin', '2025-05-19 15:00:33', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -2080,7 +2131,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$MkBdzADGzLxAqopkmh3vDu0oA5bxgHWcg173AVni9Rr9MFQtnjplK', '0', '2025-04-01', '0', '127.0.0.1', '2025-05-18 18:02:48', 'admin', '2023-08-07 19:31:37', '', '2025-05-18 18:02:48', '管理员', NULL);
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$MkBdzADGzLxAqopkmh3vDu0oA5bxgHWcg173AVni9Rr9MFQtnjplK', '0', '2025-04-01', '0', '127.0.0.1', '2025-05-19 14:58:49', 'admin', '2023-08-07 19:31:37', '', '2025-05-19 14:58:49', '管理员', NULL);
 INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-05-18 16:35:20', 'admin', '2024-04-21 10:36:49', 'admin', '2025-05-18 16:35:20', NULL, NULL);
 INSERT INTO `sys_user` VALUES (101, NULL, '15818590119', '试用会员0119', '00', '', '', '0', '', '$2a$10$yMgN6PZKiuafBVHaEHhk3OoSQ5o98xVG8RHEs2sg5.Yv/TEQuR/86', '0', '2025-05-17', '0', '113.118.102.209', '2025-04-17 21:13:06', '主动注册', '2025-04-17 13:13:04', '', '2025-04-17 13:13:05', NULL, NULL);
 INSERT INTO `sys_user` VALUES (102, NULL, '15286902105', '试用会员2105', '00', '', '', '0', '', '$2a$10$nbDujbCk2SrdamYRHr217ORRipaa5p5lVMVFctBU6fPt/rd3k.5E.', '0', '2025-05-17', '0', '114.86.55.0', '2025-04-17 21:16:37', '主动注册', '2025-04-17 13:16:36', '', '2025-04-17 13:16:37', NULL, NULL);
