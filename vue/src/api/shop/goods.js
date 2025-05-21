@@ -9,6 +9,14 @@ export function listGoods(query) {
   })
 }
 
+export function listGoodsSku(query) {
+  return request({
+    url: '/shop/goods/skuList',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询店铺商品详细
 export function getGoods(id) {
   return request({

@@ -47,13 +47,16 @@
       <el-table-column label="店铺名" align="center" prop="name" />
       <el-table-column label="平台" align="center" prop="type" >
         <template slot-scope="scope">
+          <el-tag v-if="scope.row.type===3">拼多多</el-tag>
           <el-tag v-if="scope.row.type===5">微店小店</el-tag>
           <el-tag v-if="scope.row.type===9">其他渠道</el-tag>
         </template>
       </el-table-column>
-       <el-table-column label="appKey" align="center" prop="appKey" />
-       <el-table-column label="appSercet" align="center" prop="appSercet" />
-       <el-table-column label="accessToken" align="center" prop="accessToken" />
+
+       <el-table-column label="店铺卖家ID" align="center" prop="sellerId" />
+       <el-table-column label="appKey" align="left" prop="appKey" />
+       <el-table-column label="appSercet" align="left" prop="appSercet" />
+<!--       <el-table-column label="accessToken" align="center" prop="accessToken" />-->
       <el-table-column label="描述" align="center" prop="remark" />
       <el-table-column label="租户" v-if="userId===1" align="center" prop="tenantId" />
       <el-table-column label="操作" v-if="userId>1" align="center" class-name="small-padding fixed-width">
@@ -95,8 +98,10 @@
         </el-form-item>
         <el-form-item label="平台" prop="type">
           <el-select v-model="form.type" placeholder="请选择平台">
+            <el-option label="微信小店" value="5"></el-option>
+            <el-option label="拼多多" value="3"></el-option>
            <el-option label="其他渠道" value="9" ></el-option>
-           <el-option label="微信小店" value="5"></el-option>
+
 
           </el-select>
         </el-form-item>
@@ -107,9 +112,9 @@
           <el-input v-model="form.appSercet" placeholder="请输入appSercet" />
         </el-form-item>
 
-<!--        <el-form-item label="卖家Id" prop="sellerId">-->
-<!--          <el-input v-model="form.sellerId" placeholder="请输入卖家Id名" />-->
-<!--        </el-form-item>-->
+        <el-form-item label="卖家店铺ID" prop="sellerId">
+          <el-input v-model="form.sellerId" placeholder="请输入卖家店铺ID" />
+        </el-form-item>
 
         <el-form-item label="描述" prop="remark">
           <el-input type="textarea" v-model="form.remark" placeholder="请输入描述" />

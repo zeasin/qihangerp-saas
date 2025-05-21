@@ -42,6 +42,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
     public PageResult<ShopGoods> queryPageList(ShopGoods bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ShopGoods> queryWrapper = new LambdaQueryWrapper<ShopGoods>()
                 .eq(bo.getShopId()!=null,ShopGoods::getShopId,bo.getShopId())
+                .eq(ShopGoods::getShopType,bo.getShopType())
                 .eq(bo.getTenantId()!=null,ShopGoods::getTenantId,bo.getTenantId());
 
         Page<ShopGoods> pages = mapper.selectPage(pageQuery.build(), queryWrapper);

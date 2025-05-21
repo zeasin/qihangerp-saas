@@ -2,8 +2,10 @@ package cn.qihangerp.api.controller.shop;
 
 import cn.qihangerp.api.common.*;
 import cn.qihangerp.api.domain.ShopGoods;
+import cn.qihangerp.api.domain.ShopGoodsSku;
 import cn.qihangerp.api.request.PushShopGoodsToErp;
 import cn.qihangerp.api.service.ShopGoodsService;
+import cn.qihangerp.api.service.ShopGoodsSkuService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,7 @@ import java.util.Map;
 public class ShopGoodsController extends BaseController {
 
     private final ShopGoodsService goodsService;
+    private final ShopGoodsSkuService goodsSkuService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public TableDataInfo goodsList(ShopGoods bo, PageQuery pageQuery) {
@@ -26,6 +29,18 @@ public class ShopGoodsController extends BaseController {
 
         return getDataTable(result);
     }
+
+
+    @RequestMapping(value = "/skuList", method = RequestMethod.GET)
+    public TableDataInfo skuList(ShopGoodsSku bo, PageQuery pageQuery) {
+        if(getUserId()!=1) {
+            bo.setTenantId(getUserId());
+        }
+        PageResult<ShopGoodsSku> result = goodsSkuService.queryPageList(bo, pageQuery);
+
+        return getDataTable(result);
+    }
+
 
     @PostMapping("/push_erp")
     @ResponseBody

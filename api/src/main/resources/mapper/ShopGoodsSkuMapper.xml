@@ -9,6 +9,7 @@
             <result property="shopGoodsId" column="shop_goods_id" jdbcType="BIGINT"/>
             <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
             <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="shopType" column="shop_type" jdbcType="INTEGER"/>
             <result property="productId" column="product_id" jdbcType="VARCHAR"/>
             <result property="skuId" column="sku_id" jdbcType="VARCHAR"/>
             <result property="outSkuId" column="out_sku_id" jdbcType="VARCHAR"/>
@@ -24,7 +25,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,shop_goods_id,tenant_id,shop_id,
+        id,shop_goods_id,tenant_id,shop_id,shop_type,
         product_id,sku_id,out_sku_id,
         thumb_img,sale_price,stock_num,
         sku_code,status,sku_attrs,

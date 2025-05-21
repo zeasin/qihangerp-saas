@@ -55,7 +55,6 @@ public class ShopController extends BaseController {
     public AjaxResult add(@RequestBody Shop shop)
     {
         shop.setTenantId(getUserId());
-        shop.setType(5);
         shop.setModifyOn(System.currentTimeMillis()/1000);
         return toAjax(shopService.save(shop));
     }

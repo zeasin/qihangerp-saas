@@ -123,7 +123,6 @@ import {listTask, updateTask, getTask,getTaskLogs} from "@/api/system/task";
 
 export default {
   name: "Notice",
-  dicts: ['sys_notice_status', 'sys_notice_type'],
   data() {
     return {
       // 遮罩层

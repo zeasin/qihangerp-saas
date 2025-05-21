@@ -30,6 +30,7 @@ public class ShopGoodsSku implements Serializable {
      */
     private Long tenantId;
     private Long shopId;
+    private int shopType;
 
     /**
      * 平台商品id

@@ -7,6 +7,7 @@
     <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.ShopGoods">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="shopType" column="shop_type" jdbcType="INTEGER"/>
             <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
             <result property="productId" column="product_id" jdbcType="VARCHAR"/>
             <result property="outProductId" column="out_product_id" jdbcType="VARCHAR"/>
@@ -26,7 +27,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,shop_id,tenant_id,
+        id,shop_id,tenant_id,shop_type,
         product_id,out_product_id,title,
         sub_title,head_imgs,head_img,
         desc_info,attrs,status,

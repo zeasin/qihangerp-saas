@@ -26,6 +26,7 @@ public class ShopGoods implements Serializable {
      * 店铺id
      */
     private Long shopId;
+    private int shopType;
 
     /**
      * 租户id

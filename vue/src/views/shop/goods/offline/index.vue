@@ -338,18 +338,8 @@ export default {
         goodsId: null,
         erpGoodsId: null,
         shopId: null,
-        shopType: null,
+        shopType: 9,
         goodsNum: null,
-        goodsName: null,
-        price: null,
-        title: null,
-        thumbUrl: null,
-        imageUrl: null,
-        isMoreSku: null,
-        isOnsale: null,
-        totalSales: null,
-        publishTime: null,
-        createTime: null
       },
       // 表单参数
       form: {},
@@ -368,14 +358,13 @@ export default {
     };
   },
   created() {
-    console.log('url参数：',this.$route.query.shopType)
-    if(this.$route.query.shopType) {
-      this.queryParams.shopType = this.$route.query.shopType
-      listShop({type:this.queryParams.shopType}).then(response => {
-        this.shopList = response.rows;
-      });
-    }
-    this.getList();
+    listShop({type:9}).then(response => {
+      this.shopList = response.rows;
+      if (this.shopList && this.shopList.length > 0) {
+        this.queryParams.shopId = this.shopList[0].id
+      }
+      this.getList();
+    });
   },
   methods: {
     /** 查询店铺商品列表 */
