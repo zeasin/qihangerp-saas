@@ -16,19 +16,23 @@
             <result property="thumbImg" column="thumb_img" jdbcType="VARCHAR"/>
             <result property="salePrice" column="sale_price" jdbcType="INTEGER"/>
             <result property="stockNum" column="stock_num" jdbcType="INTEGER"/>
+            <result property="skuName" column="sku_name" jdbcType="INTEGER"/>
             <result property="skuCode" column="sku_code" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="INTEGER"/>
             <result property="skuAttrs" column="sku_attrs" jdbcType="VARCHAR"/>
             <result property="skuDeliverInfo" column="sku_deliver_info" jdbcType="VARCHAR"/>
             <result property="erpGoodsId" column="erp_goods_id" jdbcType="BIGINT"/>
             <result property="erpGoodsSkuId" column="erp_goods_sku_id" jdbcType="BIGINT"/>
+        <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,shop_goods_id,tenant_id,shop_id,shop_type,
-        product_id,sku_id,out_sku_id,
+        product_id,sku_id,out_sku_id,sku_name,
         thumb_img,sale_price,stock_num,
-        sku_code,status,sku_attrs,
+        sku_code,status,sku_attrs,quantity,create_time,update_time,
         sku_deliver_info,erp_goods_id,erp_goods_sku_id
     </sql>
 </mapper>

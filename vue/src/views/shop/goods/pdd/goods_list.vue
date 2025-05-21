@@ -1,26 +1,26 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="108px">
-      <el-form-item label="平台SkuId" prop="skuId">
+      <el-form-item label="平台商品ID" prop="productId">
         <el-input
-          v-model="queryParams.skuId"
-          placeholder="请输入平台SkuId"
+          v-model="queryParams.productId"
+          placeholder="请输入平台商品ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="商家sku编码" prop="outerId">
+      <el-form-item label="商家编码" prop="outProductId">
         <el-input
-          v-model="queryParams.outerId"
-          placeholder="请输入商家sku编码"
+          v-model="queryParams.outProductId"
+          placeholder="请输入商家编码"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="ERP skuId" prop="erpSkuId">
+      <el-form-item label="ERP商品ID" prop="erpGoodsId">
         <el-input
-          v-model="queryParams.erpSkuId"
-          placeholder="请输入ERP skuId"
+          v-model="queryParams.erpGoodsId"
+          placeholder="请输入ERP商品ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -68,15 +68,15 @@
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
        <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="平台商品ID" align="center" prop="goodsId" />
+      <el-table-column label="平台商品ID" align="center" prop="productId" />
       <el-table-column label="图片" align="center" prop="logo" width="100">
         <template slot-scope="scope">
-          <image-preview :src="scope.row.thumbUrl" :width="50" :height="50"/>
+          <image-preview :src="scope.row.headImg" :width="50" :height="50"/>
         </template>
       </el-table-column>
-      <el-table-column label="商品名" align="left" prop="goodsName" />
-      <el-table-column label="商家编码" align="center" prop="outerGoodsId" />
-      <el-table-column label="价格" align="center" prop="formattedPrice" />
+      <el-table-column label="商品名" align="left" prop="title" />
+      <el-table-column label="商家编码" align="center" prop="outProductId" />
+
       <el-table-column label="SKU" align="center" >
         <template slot-scope="scope">
           <el-button
@@ -84,34 +84,35 @@
             type="text"
             icon="el-icon-info"
             @click="handleViewSkuList(scope.row)"
-          >{{scope.row.skuList.length +' 个SKU'}}</el-button>
+          >{{scope.row.skus.length +' 个SKU'}}</el-button>
         </template>
       </el-table-column>
 
       <el-table-column label="店铺" align="center" prop="shopId" >
         <template slot-scope="scope">
-          <el-tag size="small">{{shopList.find(x=>x.id === scope.row.shopId).name}}</el-tag>
+          <el-tag size="small">{{shopList.find(x=>x.id == scope.row.shopId).name}}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column label="ERP商品ID" align="center" prop="erpGoodsId" />
       <el-table-column label="状态" align="center" prop="isSkuOnsale" >
         <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.isSkuOnsale === 1">上架中</el-tag>
-          <el-tag size="small" v-if="scope.row.isSkuOnsale === 0">已下架</el-tag>
+          <!--是否在架上，0-下架中，1-架上-->
+          <el-tag size="small" v-if="scope.row.status === 1">上架中</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 0">下架中</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleLink(scope.row)"
-          >关联ERP</el-button>
+<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-edit"-->
+<!--            @click="handleLink(scope.row)"-->
+<!--          >关联ERP</el-button>-->
 
-        </template>
-      </el-table-column>
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
 
     <pagination
@@ -140,7 +141,7 @@
           <!--            {{getSkuProper(scope.row.propertiesName)}}-->
           <!--          </template>-->
         </el-table-column>
-        <el-table-column label="价格" align="center" prop="jdPrice" :formatter="amountFormatter"/>
+        <el-table-column label="价格" align="center" prop="jdPrice" />
         <el-table-column label="库存" align="center" prop="stockNum" />
         <el-table-column label="ERP SKU ID" align="center" prop="erpGoodsSkuId" />
         <el-table-column label="状态" align="center" prop="status" >
@@ -219,7 +220,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         name: null,
-        type:3
+        shopType:3
       },
       // 表单参数
       form: {},
@@ -289,7 +290,7 @@ export default {
     },
     /** 查看SKU List*/
     handleViewSkuList(row){
-      this.skuList = row.skuList
+      this.skuList = row.skus
       this.skuOpen = true;
 
     },
@@ -321,7 +322,7 @@ export default {
           console.log('拉取PDD商品接口返回=====',response)
           if(response.code === 1401) {
             MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', { confirmButtonText: '前往授权', cancelButtonText: '取消', type: 'warning' }).then(() => {
-              this.$router.push({path:"/shop/shop_list",query:{platform:5}})
+              this.$router.push({path:"/shop/list",query:{type:3}})
               // isRelogin.show = false;
               // store.dispatch('LogOut').then(() => {
               // location.href = response.data.tokenRequestUrl+'?shopId='+this.queryParams.shopId
@@ -351,7 +352,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.loading = true
-        pushToOms( this.ids ).then(response => {
+        pushToErp( this.ids ).then(response => {
           this.$message.success('商品同步成功')
           this.getList()
         }).finally(() => {

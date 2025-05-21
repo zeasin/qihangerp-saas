@@ -29,7 +29,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 public class RefundApiController extends BaseController {
-    private final ApiCommon apiCommon;
+    private final WeiApiCommon weiApiCommon;
     private final ShopRefundService refundService;
     private final ErpShopPullLogsService pullLogsService;
     private final ErpShopPullLasttimeService pullLasttimeService;
@@ -43,12 +43,12 @@ public class RefundApiController extends BaseController {
         Date currDateTime = new Date();
         long beginTime = System.currentTimeMillis();
 
-        var checkResult = apiCommon.checkBefore(params.getShopId());
+        var checkResult = weiApiCommon.checkBefore(params.getShopId());
         if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
             return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(),checkResult.getData());
         }
         String accessToken = checkResult.getData().getAccessToken();
-        String serverUrl = checkResult.getData().getServerUrl();
+//        String serverUrl = checkResult.getData().getServerUrl();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
         // 定义格式化器

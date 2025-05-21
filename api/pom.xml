@@ -133,9 +133,14 @@
         <dependency>
             <groupId>cn.qihangerp.open</groupId>
             <artifactId>open-sdk</artifactId>
-            <version>1.4.20</version>
+            <version>1.5</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/open-sdk-1.4.30.jar</systemPath>
+            <systemPath>${project.basedir}/libs/open-sdk-1.5.4.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.12.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

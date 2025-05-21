@@ -31,10 +31,11 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
     }
 
     @Override
-    public void updateSessionKey(Long shopId, String sessionKey) {
+    public void updateSessionKey(Long shopId, String token,String refreshToken) {
         Shop shop = new Shop();
         shop.setId(shopId.toString());
-        shop.setAccessToken(sessionKey);
+        shop.setAccessToken(token);
+        shop.setRefreshToken(refreshToken);
         mapper.updateById(shop);
     }
 

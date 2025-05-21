@@ -69,58 +69,54 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
             // 存在，更新
             goods.setShopId(shopId);
             goods.setTenantId(shop.getTenantId());
+            goods.setShopType(shop.getType());
             goods.setId(goodsList.get(0).getId());
+            goods.setUpdateTime(new Date());
             mapper.updateById(goods);
 
-            // 删除sku
-            skuMapper.delete(new LambdaQueryWrapper<ShopGoodsSku>().eq(ShopGoodsSku::getShopGoodsId,goods.getId()));
-            // 重新插入sku
-            if(goods.getSkus()!=null) {
-                for (var sku : goods.getSkus()) {
-                    sku.setShopGoodsId(Long.parseLong(goods.getId()));
-                    sku.setShopId(goods.getShopId());
-                    sku.setTenantId(goods.getTenantId());
-                    // 根据OuterId查找ERP系统中的skuid
-                    if(StringUtils.isNotEmpty(sku.getSkuCode())) {
-                        List<ErpGoodsSku> erpGoodsSkus = goodsSkuMapper.selectList(
-                                new LambdaQueryWrapper<ErpGoodsSku>()
-                                .eq(ErpGoodsSku::getSpecNum, sku.getSkuCode()));
-
-                        if(erpGoodsSkus!=null && !erpGoodsSkus.isEmpty()){
-                            sku.setErpGoodsId(erpGoodsSkus.get(0).getGoodsId());
-                            sku.setErpGoodsSkuId(erpGoodsSkus.get(0).getId());
-                        }
-                    }
-                    skuMapper.insert(sku);
-                }
-            }
-
-            return ResultVo.error(ResultVoEnum.DataExist.getIndex(),"更新成功");
         } else {
             // 不存在，新增return 0;
             // 不存在，新增
+            goods.setShopType(shop.getType());
             goods.setShopId(shopId);
             goods.setTenantId(shop.getTenantId());
+            goods.setUpdateTime(new Date());
             mapper.insert(goods);
-            // 插入sku
-            if(goods.getSkus()!=null) {
-                for (var sku : goods.getSkus()) {
-                    sku.setShopGoodsId(Long.parseLong(goods.getId()));
-                    sku.setShopId(goods.getShopId());
-                    sku.setTenantId(goods.getTenantId());
-                    // 根据OuterId查找ERP系统中的skuid
-                    if(StringUtils.isNotEmpty(sku.getSkuCode())) {
-                        List<ErpGoodsSku> erpGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<ErpGoodsSku>().eq(ErpGoodsSku::getSpecNum, sku.getSkuCode()));
-                        if(erpGoodsSkus!=null && !erpGoodsSkus.isEmpty()){
-                            sku.setErpGoodsId(erpGoodsSkus.get(0).getGoodsId());
-                            sku.setErpGoodsSkuId(erpGoodsSkus.get(0).getId());
-                        }
+        }
+
+        // 插入sku
+        if(goods.getSkus()!=null) {
+            for (var sku : goods.getSkus()) {
+                List<ShopGoodsSku> shopGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<ShopGoodsSku>().eq(ShopGoodsSku::getSkuId, sku.getSkuId()));
+                sku.setShopType(shop.getType());
+                sku.setShopGoodsId(Long.parseLong(goods.getId()));
+                sku.setShopId(goods.getShopId());
+                sku.setTenantId(goods.getTenantId());
+                // 根据OuterId查找ERP系统中的skuid
+                if(StringUtils.isNotEmpty(sku.getSkuCode())) {
+                    List<ErpGoodsSku> erpGoodsSkus = goodsSkuMapper.selectList(
+                            new LambdaQueryWrapper<ErpGoodsSku>()
+                                    .eq(ErpGoodsSku::getSpecNum, sku.getSkuCode()));
+
+                    if(erpGoodsSkus!=null && !erpGoodsSkus.isEmpty()){
+                        sku.setErpGoodsId(erpGoodsSkus.get(0).getGoodsId());
+                        sku.setErpGoodsSkuId(erpGoodsSkus.get(0).getId());
                     }
+                }
+                if(shopGoodsSkus!=null && !shopGoodsSkus.isEmpty()){
+                    // 更新
+                    sku.setUpdateTime(new Date());
+                    sku.setId(shopGoodsSkus.get(0).getId());
+                    skuMapper.updateById(sku);
+                }else {
+                    sku.setCreateTime(new Date());
                     skuMapper.insert(sku);
                 }
             }
-            return ResultVo.success();
         }
+        if (goodsList != null && goodsList.size() > 0) {
+            return ResultVo.error(ResultVoEnum.Exist);
+        }else return ResultVo.success();
     }
 
     @Transactional(rollbackFor = Exception.class)

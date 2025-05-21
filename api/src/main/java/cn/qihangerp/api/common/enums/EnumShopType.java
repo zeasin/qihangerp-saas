@@ -10,10 +10,10 @@ package cn.qihangerp.api.common.enums;
 public enum EnumShopType {
     TAO("淘宝天猫", 1),
     JD("京东", 2),
-    DOUDIAN("抖音", 3),
+    DOU("抖音", 4),
     WEI("微信视频号小店", 5),
     KWAI("快手小店", 6),
-    PDD("拼多多", 4);
+    PDD("拼多多", 3);
     private String name;
     private int index;
 

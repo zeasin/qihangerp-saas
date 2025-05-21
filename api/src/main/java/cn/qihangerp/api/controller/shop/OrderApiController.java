@@ -21,13 +21,11 @@ import cn.qihangerp.api.common.AjaxResult;
 import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.enums.EnumShopType;
 import cn.qihangerp.api.common.enums.HttpStatus;
-import cn.qihangerp.api.common.utils.StringUtils;
 import cn.qihangerp.api.domain.ShopOrder;
 import cn.qihangerp.api.domain.ShopOrderItem;
 import cn.qihangerp.api.service.ShopOrderService;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -36,7 +34,7 @@ import java.util.*;
 @RestController
 @AllArgsConstructor
 public class OrderApiController extends BaseController {
-    private final ApiCommon apiCommon;
+    private final WeiApiCommon weiApiCommon;
     private final ShopOrderService orderService;
     private final ShopOrderService weiOrderService;
     private final ErpShopPullLogsService pullLogsService;
@@ -56,12 +54,12 @@ public class OrderApiController extends BaseController {
         Date currDateTime = new Date();
         long beginTime = System.currentTimeMillis();
 
-        var checkResult = apiCommon.checkBefore(params.getShopId());
+        var checkResult = weiApiCommon.checkBefore(params.getShopId());
         if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
             return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
         }
         String accessToken = checkResult.getData().getAccessToken();
-        String serverUrl = checkResult.getData().getServerUrl();
+//        String serverUrl = checkResult.getData().getServerUrl();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
         // 定义格式化器
@@ -247,12 +245,12 @@ public class OrderApiController extends BaseController {
         Date currDateTime = new Date();
         long beginTime = System.currentTimeMillis();
 
-        var checkResult = apiCommon.checkBefore(params.getShopId());
+        var checkResult = weiApiCommon.checkBefore(params.getShopId());
         if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
             return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
         }
         String accessToken = checkResult.getData().getAccessToken();
-        String serverUrl = checkResult.getData().getServerUrl();
+//        String serverUrl = checkResult.getData().getServerUrl();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
 

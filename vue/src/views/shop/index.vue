@@ -56,6 +56,7 @@
        <el-table-column label="店铺卖家ID" align="center" prop="sellerId" />
        <el-table-column label="appKey" align="left" prop="appKey" />
        <el-table-column label="appSercet" align="left" prop="appSercet" />
+       <el-table-column label="回调URL" align="center" prop="apiCallbackUrl" />
 <!--       <el-table-column label="accessToken" align="center" prop="accessToken" />-->
       <el-table-column label="描述" align="center" prop="remark" />
       <el-table-column label="租户" v-if="userId===1" align="center" prop="tenantId" />
@@ -77,7 +78,14 @@
             v-hasPermi="['shop:shop:remove']"
           >删除</el-button>
           </el-row>
-
+          <el-button
+            v-if="scope.row.type===3"
+            type="success"
+            plain
+            icon="el-icon-refresh"
+            size="mini"
+            @click="handleUpdateToken(scope.row)"
+          >更新AccessToken</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -115,6 +123,9 @@
         <el-form-item label="卖家店铺ID" prop="sellerId">
           <el-input v-model="form.sellerId" placeholder="请输入卖家店铺ID" />
         </el-form-item>
+        <el-form-item label="回调URL" prop="apiCallbackUrl">
+          <el-input v-model="form.apiCallbackUrl" placeholder="请输入回调URL" />
+        </el-form-item>
 
         <el-form-item label="描述" prop="remark">
           <el-input type="textarea" v-model="form.remark" placeholder="请输入描述" />
@@ -127,12 +138,40 @@
       </div>
     </el-dialog>
 
+    <el-dialog :title="title" :visible.sync="authOpen" width="500px" append-to-body>
+      <el-form ref="tokenForm" :model="tokenForm"  :rules="rules" label-width="120px">
+        <el-descriptions >
+          <el-descriptions-item label="授权URL"> {{ tokenForm.url }}</el-descriptions-item>
+        </el-descriptions>
+        <el-descriptions v-if="tokenForm.shopType === 100">
+          <el-descriptions-item label="请设置淘宝开放平台回调URL"> http://127.0.0.1:8088/api/open-api/tao/code_callback</el-descriptions-item>
+        </el-descriptions>
+        <div slot="footer" class="dialog-footer">
+          请手动复制上面的URL到浏览器中访问
+        </div>
+        <el-form-item label="top_session" prop="code" v-if="tokenForm.shopType===100">
+          <el-input type="textarea" v-model="tokenForm.code" placeholder="请复制淘宝授权后跳转页面的top_session参数值到这里" />
+        </el-form-item>
+        <el-form-item label="code" prop="code" v-if="tokenForm.shopType!==100">
+          <el-input type="textarea" v-model="tokenForm.code" placeholder="请把授权后的code复制到这里" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="getTokenSubmit">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+      <!--      <div slot="footer" class="dialog-footer">-->
+      <!--        请手动复制上面的URL到浏览器中访问-->
+      <!--      </div>-->
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import { listShop,listPlatform, getShop, delShop, addShop, updateShop } from "@/api/shop/shop";
 import {getUserProfile} from "@/api/system/user";
+import {getPddOAuthUrl,getPddToken} from "@/api/pdd/shop";
 
 export default {
   name: "Shop",
@@ -170,6 +209,9 @@ export default {
       form: {
         type: '5'
       },
+      tokenForm:{
+
+      },
       // 表单校验
       rules: {
         name: [{ required: true, message: "店铺名不能为空", trigger: "blur" }],
@@ -183,6 +225,10 @@ export default {
     getUserProfile().then(resp=>{
       this.userId = resp.data.userId;
     })
+    console.log("=======",this.$route.query.type)
+    if(this.$route.query.type){
+      this.queryParams.type = this.$route.query.type
+    }
     this.getList();
   },
   methods: {
@@ -199,6 +245,7 @@ export default {
     cancel() {
       this.open = false;
       this.apiOpen = false;
+      this.authOpen = false
       this.reset();
     },
     // 表单重置
@@ -290,7 +337,34 @@ export default {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
-    }
+    },
+    handleUpdateToken(row){
+      console.log("获取token",row)
+      if(row.type ===3){
+        getPddOAuthUrl({shopId:row.id}).then(response => {
+          console.log("获取token=====pdd ",response)
+          this.authOpen = true;
+          this.title = "更新店铺授权";
+          this.tokenForm.url = response.data
+          this.tokenForm.shopId = row.id
+          this.tokenForm.shopType = row.type
+        })
+      }
+
+    },
+    getTokenSubmit(){
+      this.$refs["tokenForm"].validate(valid => {
+        if (valid) {
+          if(this.tokenForm.shopType === 3){
+            getPddToken(this.tokenForm).then(response => {
+              this.authOpen = false
+              this.$modal.msgSuccess("授权成功");
+              this.getList()
+            });
+          }
+        }
+      })
+    },
   }
 };
 </script>

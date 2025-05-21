@@ -104,6 +104,7 @@ public class Shop implements Serializable {
      * 请求url
      */
     private String apiRequestUrl;
+    private String apiCallbackUrl;
 
     private static final long serialVersionUID = 1L;
 }

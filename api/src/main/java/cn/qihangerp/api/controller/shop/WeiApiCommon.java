@@ -6,16 +6,16 @@ import cn.qihangerp.api.common.enums.HttpStatus;
 import cn.qihangerp.api.domain.Shop;
 import cn.qihangerp.api.service.ShopService;
 import cn.qihangerp.open.common.ApiResultVo;
+import cn.qihangerp.open.common.ShopApiParams;
 import cn.qihangerp.open.wei.WeiTokenApiHelper;
 import cn.qihangerp.open.wei.WeiTokenResponse;
-import cn.qihangerp.open.wei.vo.ShopApiParams;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @AllArgsConstructor
 @Component
-public class ApiCommon {
+public class WeiApiCommon {
     private final ShopService shopService;
     /**
      * 更新前的检查
@@ -46,7 +46,7 @@ public class ApiCommon {
         params.setAppKey(shop.getAppKey());
         params.setAppSecret(shop.getAppSercet());
         params.setAccessToken(shop.getAccessToken());
-        params.setServerUrl(shop.getApiRequestUrl());
+        params.setApiRequestUrl(shop.getApiRequestUrl());
         params.setSellerId(shop.getSellerId().toString());
 
 
@@ -54,7 +54,7 @@ public class ApiCommon {
             ApiResultVo<WeiTokenResponse> token1 = WeiTokenApiHelper.getToken(params.getAppKey(), params.getAppSecret());
             if(token1.getCode()==0){
                 params.setAccessToken(token1.getData().getAccess_token());
-                shopService.updateSessionKey(shopId, params.getAccessToken());
+                shopService.updateSessionKey(shopId, params.getAccessToken(),"");
                 return ResultVo.success(params);
             }else{
                 return ResultVo.error(HttpStatus.PARAMS_ERROR, token1.getMsg());
@@ -71,7 +71,7 @@ public class ApiCommon {
                 ApiResultVo<WeiTokenResponse> token2 = WeiTokenApiHelper.getToken(params.getAppKey(), params.getAppSecret());
                 if (token2.getCode() == 0) {
                     params.setAccessToken(token2.getData().getAccess_token());
-                    shopService.updateSessionKey(shopId, params.getAccessToken());
+                    shopService.updateSessionKey(shopId, params.getAccessToken(),"");
                     return ResultVo.success(params);
                 } else {
                     return ResultVo.error(HttpStatus.PARAMS_ERROR, token2.getMsg());

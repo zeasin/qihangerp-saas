@@ -1,6 +1,7 @@
 package cn.qihangerp.api.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -26,7 +27,7 @@ public class ShopGoods implements Serializable {
      * 店铺id
      */
     private Long shopId;
-    private int shopType;
+    private Integer shopType;
 
     /**
      * 租户id
@@ -103,6 +104,10 @@ public class ShopGoods implements Serializable {
      */
     private String editTime;
     private Long erpGoodsId;
+
+    private Integer quantity;
+    private Date createTime;
+    private Date updateTime;
 
     @TableField(exist = false)
     private List<ShopGoodsSku> skus;
