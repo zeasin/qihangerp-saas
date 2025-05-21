@@ -67,27 +67,28 @@
     <el-table v-loading="loading" :data="goodsList">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="商品ID" align="center" prop="goodsId" />
-      <el-table-column label="Sku Id" align="center" prop="skuId" />
-      <el-table-column label="商品名" align="center" prop="goodsName" />
-      <el-table-column label="规格" align="center" prop="spec" />
+      <el-table-column label="平台商品ID" align="center" prop="productId" />
+      <el-table-column label="平台Sku Id" align="center" prop="skuId" />
+      <el-table-column label="商品名" align="center" prop="productTitle" />
+      <el-table-column label="规格" align="center" prop="skuName" />
       <el-table-column label="图片" align="center" prop="logo" width="100">
         <template slot-scope="scope">
-          <image-preview :src="scope.row.thumbUrl" :width="50" :height="50"/>
+          <image-preview :src="scope.row.thumbImg" :width="50" :height="50"/>
         </template>
       </el-table-column>
 
       <el-table-column label="店铺" align="center" prop="shopId" >
         <template slot-scope="scope">
-          <el-tag size="small">{{shopList.find(x=>x.id === scope.row.shopId).name}}</el-tag>
+          <el-tag size="small">{{shopList.find(x=>x.id == scope.row.shopId).name}}</el-tag>
         </template>
       </el-table-column>
-       <el-table-column label="商家编码" align="center" prop="outerId" />
+       <el-table-column label="商家编码" align="center" prop="outProductId" />
+       <el-table-column label="商家SKU编码" align="center" prop="outSkuId" />
       <el-table-column label="ERP SKU ID" align="center" prop="erpGoodsSkuId" />
-      <el-table-column label="状态" align="center" prop="isSkuOnsale" >
+      <el-table-column label="状态" align="center" prop="status" >
         <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.isSkuOnsale === 1">上架中</el-tag>
-          <el-tag size="small" v-if="scope.row.isSkuOnsale === 0">已下架</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 1">销售中</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 2">已下架</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -166,7 +167,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        name: null
+        name: null,
+        shopType:3
       },
       // 表单参数
       form: {},
@@ -185,7 +187,7 @@ export default {
     };
   },
   created() {
-    listShop({type:300}).then(response => {
+    listShop({type:3}).then(response => {
       this.shopList = response.rows;
       if (this.shopList && this.shopList.length > 0) {
         this.queryParams.shopId = this.shopList[0].id

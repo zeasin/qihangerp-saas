@@ -90,7 +90,9 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
                 List<ShopGoodsSku> shopGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<ShopGoodsSku>().eq(ShopGoodsSku::getSkuId, sku.getSkuId()));
                 sku.setShopType(shop.getType());
                 sku.setShopGoodsId(Long.parseLong(goods.getId()));
+                sku.setProductTitle(goods.getTitle());
                 sku.setShopId(goods.getShopId());
+                sku.setOutProductId(goods.getOutProductId());
                 sku.setTenantId(goods.getTenantId());
                 // 根据OuterId查找ERP系统中的skuid
                 if(StringUtils.isNotEmpty(sku.getSkuCode())) {

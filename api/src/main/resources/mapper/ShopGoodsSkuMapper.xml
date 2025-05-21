@@ -10,6 +10,8 @@
             <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
             <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
             <result property="shopType" column="shop_type" jdbcType="INTEGER"/>
+            <result property="productTitle" column="product_title" jdbcType="VARCHAR"/>
+            <result property="outProductId" column="out_product_id" jdbcType="VARCHAR"/>
             <result property="productId" column="product_id" jdbcType="VARCHAR"/>
             <result property="skuId" column="sku_id" jdbcType="VARCHAR"/>
             <result property="outSkuId" column="out_sku_id" jdbcType="VARCHAR"/>
@@ -30,8 +32,8 @@
 
     <sql id="Base_Column_List">
         id,shop_goods_id,tenant_id,shop_id,shop_type,
-        product_id,sku_id,out_sku_id,sku_name,
-        thumb_img,sale_price,stock_num,
+        product_id,sku_id,out_sku_id,sku_name,product_title,
+        thumb_img,sale_price,stock_num,out_product_id,
         sku_code,status,sku_attrs,quantity,create_time,update_time,
         sku_deliver_info,erp_goods_id,erp_goods_sku_id
     </sql>

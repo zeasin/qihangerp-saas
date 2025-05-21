@@ -37,6 +37,8 @@ public class ShopGoodsSku implements Serializable {
      * 平台商品id
      */
     private String productId;
+    private String productTitle;
+    private String outProductId;
 
     /**
      * skuID
