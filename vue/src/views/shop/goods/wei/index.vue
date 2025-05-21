@@ -69,77 +69,92 @@
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
        <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="商品标题" align="left" prop="title" />
+
       <el-table-column label="平台商品ID" align="left" prop="productId" width="150px" />
-<!--      <el-table-column label="主图" align="center" prop="headImg" width="100">-->
-<!--        <template slot-scope="scope">-->
-<!--          <image-preview :src="scope.row.headImg" :width="50" :height="50"/>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column label="主图" align="center" prop="headImg" width="100">
+        <template slot-scope="scope">
+          <image-preview :src="scope.row.headImg" :width="50" :height="50"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="商品标题" align="left" prop="title" />
       <el-table-column label="店铺" align="center" prop="shopId" width="150px">
         <template slot-scope="scope">
           <el-tag size="small">{{shopList.find(x=>x.id == scope.row.shopId)?shopList.find(x=>x.id == scope.row.shopId).name:''}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="Sku明细" align="center" width="800px" >
-        <template slot="header">
-          <table>
-            <th>
-              <td width="50px">图片</td>
-              <td width="100px" align="left">平台SkuId</td>
-              <td width="100px" align="left">商品库SkuId</td>
-              <td width="100" align="left">规格</td>
-              <td width="100" align="left">Sku编码</td>
-              <td width="100" align="left">库存</td>
-              <td width="100" align="left">状态</td>
-              <td width="120" align="left">操作</td>
-            </th>
-          </table>
-        </template>
-        <template slot-scope="scope" >
-          <el-table :data="scope.row.skus" :show-header="false" :cell-style="{border:0 + 'px' }"  :row-style="{border:0 + 'px' }" >
-            <el-table-column label="图片" width="50px">
-              <template slot-scope="scope">
-                <!--                <el-image  style="width: 40px; height: 40px;" :src="scope.row.goodsImg" :preview-src-list="[scope.row.goodsImg]"></el-image>-->
-                <image-preview :src="scope.row.thumbImg" :width="40" :height="40"/>
-              </template>
-            </el-table-column>
-            <el-table-column label="SkuId" align="left" width="100px" prop="skuId" ></el-table-column>
-            <el-table-column label="SkuId" align="left" width="100px" prop="erpGoodsSkuId" ></el-table-column>
-
-            <el-table-column label="规格" align="left" prop="goodsSpec" width="100">
-              <template slot-scope="scope">
-                {{ getSkuValues(scope.row.skuAttrs)}}
-              </template>
-            </el-table-column>
-            <el-table-column label="Sku编码" align="left" prop="skuCode" width="100"/>
-            <el-table-column label="库存" align="left" prop="stockNum" width="100"/>
-            <el-table-column label="状态" align="center" prop="status" width="100">
-                <template slot-scope="scope">
-                  <el-tag size="small" v-if="scope.row.status === 5">销售中</el-tag>
-                  <el-tag size="small" v-if="scope.row.status === 6">回收站</el-tag>
-                  <el-tag size="small" v-if="scope.row.status === 9">彻底删除</el-tag>
-                  <el-tag size="small" v-if="scope.row.status === 11">自主下架</el-tag>
-                  <el-tag size="small" v-if="scope.row.status === 13">违规下架</el-tag>
-                  <el-tag size="small" v-if="scope.row.status === 14">保证金不足下架</el-tag>
-                  <el-tag size="small" v-if="scope.row.status === 15">品牌过期下架</el-tag>
-                  <el-tag size="small" v-if="scope.row.status === 20">商品被封禁</el-tag>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="120">
-              <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  type="text"
-                  icon="el-icon-edit"
-                  @click="handleLink(scope.row)"
-                >关联ERP</el-button>
-
-              </template>
-            </el-table-column>
-          </el-table>
+      <el-table-column label="SKU" align="center" >
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-info"
+            @click="handleViewSkuList(scope.row)"
+          >{{scope.row.skus.length +' 个SKU'}}</el-button>
         </template>
       </el-table-column>
+<!--      <el-table-column label="Sku明细" align="center" width="800px" >-->
+<!--        <template slot="header">-->
+<!--          <table>-->
+<!--            <th>-->
+<!--              <td width="50px">图片</td>-->
+<!--              <td width="100px" align="left">平台SkuId</td>-->
+<!--              <td width="100px" align="left">商品库SkuId</td>-->
+<!--              <td width="100" align="left">规格</td>-->
+<!--              <td width="100" align="left">Sku编码</td>-->
+<!--              <td width="100" align="left">库存</td>-->
+<!--              <td width="100" align="left">状态</td>-->
+<!--              <td width="120" align="left">操作</td>-->
+<!--            </th>-->
+<!--          </table>-->
+<!--        </template>-->
+<!--        <template slot-scope="scope" >-->
+<!--          <el-table :data="scope.row.skus" :show-header="false" :cell-style="{border:0 + 'px' }"  :row-style="{border:0 + 'px' }" >-->
+<!--            <el-table-column label="图片" width="50px">-->
+<!--              <template slot-scope="scope">-->
+<!--                &lt;!&ndash;                <el-image  style="width: 40px; height: 40px;" :src="scope.row.goodsImg" :preview-src-list="[scope.row.goodsImg]"></el-image>&ndash;&gt;-->
+<!--                <image-preview :src="scope.row.thumbImg" :width="40" :height="40"/>-->
+<!--              </template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column label="SkuId" align="left" width="100px" prop="skuId" ></el-table-column>-->
+<!--            <el-table-column label="SkuId" align="left" width="100px" prop="erpGoodsSkuId" ></el-table-column>-->
+
+<!--            <el-table-column label="规格" align="left" prop="goodsSpec" width="100">-->
+<!--              <template slot-scope="scope">-->
+<!--                {{ getSkuValues(scope.row.skuAttrs)}}-->
+<!--              </template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column label="Sku编码" align="left" prop="skuCode" width="100"/>-->
+<!--            <el-table-column label="库存" align="left" prop="stockNum" width="100"/>-->
+<!--            <el-table-column label="状态" align="center" prop="status" width="100">-->
+<!--                <template slot-scope="scope">-->
+<!--                  <el-tag size="small" v-if="scope.row.status === 5">销售中</el-tag>-->
+<!--                  <el-tag size="small" v-if="scope.row.status === 6">回收站</el-tag>-->
+<!--                  <el-tag size="small" v-if="scope.row.status === 9">彻底删除</el-tag>-->
+<!--                  <el-tag size="small" v-if="scope.row.status === 11">自主下架</el-tag>-->
+<!--                  <el-tag size="small" v-if="scope.row.status === 13">违规下架</el-tag>-->
+<!--                  <el-tag size="small" v-if="scope.row.status === 14">保证金不足下架</el-tag>-->
+<!--                  <el-tag size="small" v-if="scope.row.status === 15">品牌过期下架</el-tag>-->
+<!--                  <el-tag size="small" v-if="scope.row.status === 20">商品被封禁</el-tag>-->
+<!--                </template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="120">-->
+<!--              <template slot-scope="scope">-->
+<!--                <el-button-->
+<!--                  size="mini"-->
+<!--                  type="text"-->
+<!--                  icon="el-icon-edit"-->
+<!--                  @click="handleLink(scope.row)"-->
+<!--                >关联ERP</el-button>-->
+
+<!--              </template>-->
+<!--            </el-table-column>-->
+<!--          </el-table>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+
+
+
+
 <!--       <el-table-column label="属性" align="center" prop="attrs" >-->
 <!--         <template slot-scope="scope">-->
 <!--&lt;!&ndash;           {{scope.row.attrs}}&ndash;&gt;-->
@@ -152,6 +167,7 @@
 <!--           </el-row>-->
 <!--         </template>-->
 <!--       </el-table-column>-->
+      <el-table-column label="ERP商品ID" align="center" prop="erpGoodsId" />
       <el-table-column label="状态" align="center" prop="status" >
         <template slot-scope="scope">
           <el-tag size="small" v-if="scope.row.status === 5">销售中</el-tag>
@@ -185,7 +201,50 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-
+    <el-dialog title="Sku List" :visible.sync="skuOpen" width="1200px" append-to-body>
+      <el-table v-loading="loading" :data="skuList">
+        <!-- <el-table-column type="selection" width="55" align="center" /> -->
+        <el-table-column label="序号" align="center" prop="index" width="50"/>
+        <el-table-column label="SKU编码" align="left" prop="outSkuId" />
+        <el-table-column label="平台SkuId" align="center" prop="skuId" />
+        <!--        <el-table-column label="图片" align="center" prop="colorImage" width="100">-->
+        <!--          <template slot-scope="scope">-->
+        <!--            <image-preview :src="scope.row.colorImage" :width="50" :height="50"/>-->
+        <!--          </template>-->
+        <!--        </el-table-column>-->
+        <!--        <el-table-column label="商品名称" align="left" prop="goodsName" width="288px"/>-->
+        <el-table-column label="SKU名称" align="left" prop="skuName" width="300">
+          <!--          <template slot-scope="scope">-->
+          <!--            {{getSkuProper(scope.row.propertiesName)}}-->
+          <!--          </template>-->
+        </el-table-column>
+        <el-table-column label="价格" align="center" prop="salePrice" />
+        <el-table-column label="库存" align="center" prop="stockNum" />
+        <el-table-column label="ERP SKU ID" align="center" prop="erpGoodsSkuId" />
+        <el-table-column label="状态" align="center" prop="status" >
+          <template slot-scope="scope">
+            <el-tag size="small" v-if="scope.row.status === 5">销售中</el-tag>
+            <el-tag size="small" v-if="scope.row.status === 6">回收站</el-tag>
+            <el-tag size="small" v-if="scope.row.status === 9">彻底删除</el-tag>
+            <el-tag size="small" v-if="scope.row.status === 11">自主下架</el-tag>
+            <el-tag size="small" v-if="scope.row.status === 13">违规下架</el-tag>
+            <el-tag size="small" v-if="scope.row.status === 14">保证金不足下架</el-tag>
+            <el-tag size="small" v-if="scope.row.status === 15">品牌过期下架</el-tag>
+            <el-tag size="small" v-if="scope.row.status === 20">商品被封禁</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-share"
+              @click="handleLink(scope.row)"
+            >关联ERP</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
 
     <!-- 添加或修改商品管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
@@ -205,7 +264,7 @@
 
 <script>
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { listGoods, getGoods, delGoods, addGoods, updateGoods,pullGoodsList,pushToErp } from "@/api/shop/goods";
+import { listGoods, getGoods, getGoodsSku, addGoods, updateGoods,pullGoodsList,pushToErp,linkErpGoodsSkuId } from "@/api/shop/goods";
 import {listShop} from "@/api/shop/shop";
 import {getUserProfile} from "@/api/system/user";
 
@@ -234,6 +293,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      skuOpen: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -299,6 +359,12 @@ export default {
       });
 
     },
+    /** 查看SKU List*/
+    handleViewSkuList(row){
+      this.skuList = row.skus
+      this.skuOpen = true;
+
+    },
     // 取消按钮
     cancel() {
       this.open = false;
@@ -338,6 +404,7 @@ export default {
           linkErpGoodsSkuId(this.form).then(response => {
             this.$modal.msgSuccess("关联成功");
             this.open = false;
+            this.skuOpen = false;
             this.getList();
           });
         }
