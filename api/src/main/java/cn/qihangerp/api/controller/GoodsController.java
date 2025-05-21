@@ -68,7 +68,7 @@ public class GoodsController extends BaseController
     }
 
     /**
-     * 获取商品管理详细信息
+     * 获取商品详细信息
      */
     @PreAuthorize("@ss.hasPermi('goods:goods:query')")
     @GetMapping(value = "/detail/{id}")
@@ -76,6 +76,8 @@ public class GoodsController extends BaseController
     {
         return success(goodsService.getById(id));
     }
+
+
 //    /**
 //     * 获取商品管理详细信息
 //     */

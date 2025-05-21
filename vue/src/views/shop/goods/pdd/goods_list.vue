@@ -128,7 +128,7 @@
       <el-table v-loading="loading" :data="skuList">
         <!-- <el-table-column type="selection" width="55" align="center" /> -->
         <el-table-column label="序号" align="center" prop="index" width="50"/>
-        <el-table-column label="SKU编码" align="left" prop="outerId" />
+        <el-table-column label="SKU编码" align="left" prop="outSkuId" />
         <el-table-column label="平台SkuId" align="center" prop="skuId" />
         <!--        <el-table-column label="图片" align="center" prop="colorImage" width="100">-->
         <!--          <template slot-scope="scope">-->
@@ -141,7 +141,7 @@
           <!--            {{getSkuProper(scope.row.propertiesName)}}-->
           <!--          </template>-->
         </el-table-column>
-        <el-table-column label="价格" align="center" prop="jdPrice" />
+        <el-table-column label="价格" align="center" prop="salePrice" />
         <el-table-column label="库存" align="center" prop="stockNum" />
         <el-table-column label="ERP SKU ID" align="center" prop="erpGoodsSkuId" />
         <el-table-column label="状态" align="center" prop="status" >
@@ -183,8 +183,8 @@
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 import {listShop} from "@/api/shop/shop";
-import {getGoodsSku,linkErpGoodsSkuId,pushToOms} from "@/api/pdd/goods";
-import { listGoods, getGoods, delGoods, addGoods, updateGoods,pullGoodsList,pushToErp } from "@/api/shop/goods";
+
+import { listGoods, getGoodsSku,pullGoodsList,pushToErp,linkErpGoodsSkuId } from "@/api/shop/goods";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
 
@@ -310,6 +310,7 @@ export default {
           linkErpGoodsSkuId(this.form).then(response => {
             this.$modal.msgSuccess("关联成功");
             this.open = false;
+            this.skuOpen = false;
             this.getList();
           });
         }

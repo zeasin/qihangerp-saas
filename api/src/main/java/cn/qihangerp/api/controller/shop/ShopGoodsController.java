@@ -3,6 +3,7 @@ package cn.qihangerp.api.controller.shop;
 import cn.qihangerp.api.common.*;
 import cn.qihangerp.api.domain.ShopGoods;
 import cn.qihangerp.api.domain.ShopGoodsSku;
+import cn.qihangerp.api.request.LinkErpGoodsSkuBo;
 import cn.qihangerp.api.request.PushShopGoodsToErp;
 import cn.qihangerp.api.service.ShopGoodsService;
 import cn.qihangerp.api.service.ShopGoodsSkuService;
@@ -41,6 +42,26 @@ public class ShopGoodsController extends BaseController {
         return getDataTable(result);
     }
 
+    @GetMapping(value = "/sku/{id}")
+    public AjaxResult getSkuInfo(@PathVariable("id") Long id)
+    {
+        return success(goodsSkuService.getById(id));
+    }
+
+    @PostMapping(value = "/sku/linkErp")
+    public AjaxResult linkErp(@RequestBody LinkErpGoodsSkuBo bo)
+    {
+        if(bo.getId()==null){
+            return AjaxResult.error(500,"缺少参数Id");
+        }
+        if(org.apache.commons.lang3.StringUtils.isBlank(bo.getErpGoodsSkuId())){
+            return AjaxResult.error(500,"缺少参数oGoodsSkuId");
+        }
+        ResultVo resultVo = goodsSkuService.linkErpGoodsSku(bo);
+        if(resultVo.getCode()==0)
+            return success();
+        else return AjaxResult.error(resultVo.getMsg());
+    }
 
     @PostMapping("/push_erp")
     @ResponseBody

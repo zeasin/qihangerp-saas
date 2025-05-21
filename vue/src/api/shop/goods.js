@@ -25,6 +25,13 @@ export function getGoods(id) {
   })
 }
 
+export function getGoodsSku(id) {
+  return request({
+    url: '/shop/goods/sku/'+id,
+    method: 'get',
+  })
+}
+
 // 新增店铺商品
 export function addGoods(data) {
   return request({
@@ -62,6 +69,14 @@ export function pullGoodsList(data) {
 export function pushToErp(data) {
   return request({
     url: '/shop/goods/push_erp',
+    method: 'post',
+    data: data
+  })
+}
+
+export function linkErpGoodsSkuId(data) {
+  return request({
+    url: '/shop/goods/sku/linkErp',
     method: 'post',
     data: data
   })
