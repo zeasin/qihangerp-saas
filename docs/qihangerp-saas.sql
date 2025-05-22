@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 19/05/2025 15:10:26
+ Date: 22/05/2025 23:06:58
 */
 
 SET NAMES utf8mb4;
@@ -108,13 +108,14 @@ CREATE TABLE `erp_goods`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `number`(`number`) USING BTREE,
   INDEX `id`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品库存管理' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品库存管理' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods
 -- ----------------------------
-INSERT INTO `erp_goods` VALUES (1, 100, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', '10000227212454', '', 0, '', '店铺商品同步', 1, 0, 0, 0, 0, 0, 0, 0, 1, '0', 0.00, 0.00, 89.00, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, '店铺商品同步', '2025-05-17 16:07:03', NULL, NULL);
-INSERT INTO `erp_goods` VALUES (2, 100, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '10000226806665', '', 0, '', '店铺商品同步', 1, 0, 0, 0, 0, 0, 0, 0, 1, '0', 0.00, 0.00, 99.00, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, '店铺商品同步', '2025-05-17 16:07:03', NULL, NULL);
+INSERT INTO `erp_goods` VALUES (1, 100, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', '10000227212454', '', 2, '', '店铺商品同步', 1, 0, 0, 0, 0, 0, 0, 0, 1, '0', 0.00, 0.00, 89.00, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, '店铺商品同步', '2025-05-07 17:30:50', NULL, NULL);
+INSERT INTO `erp_goods` VALUES (2, 100, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '10000226806665', '', 3, '', '店铺商品同步', 1, 0, 0, 0, 0, 0, 0, 0, 1, '0', 0.00, 0.00, 99.00, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, '店铺商品同步', '2025-05-07 17:30:50', NULL, NULL);
+INSERT INTO `erp_goods` VALUES (3, 100, '吸顶灯中性光卧室吸顶灯led吸顶灯阳台卧室卫生间防水防潮三防', 'https://img.pddpic.com/gaudit-image/2025-05-21/59da3f18489f24524859b4f45b4ecb96.jpeg', '750805294208', '', 0, '', '店铺商品同步', 1, 0, 0, 0, 0, 0, 0, 0, 1, '0', 0.00, 0.00, 0.00, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, '店铺商品同步', '2025-05-21 19:03:09', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_goods_brand
@@ -130,12 +131,14 @@ CREATE TABLE `erp_goods_brand`  (
   `update_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `update_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods_brand
 -- ----------------------------
 INSERT INTO `erp_goods_brand` VALUES (1, '梦小妮', 1, 100, 'admin', '2023-12-29 13:44:29', 'admin', '2023-12-29 13:44:29');
+INSERT INTO `erp_goods_brand` VALUES (2, '星巴克', 1, 153, '手动添加', '2025-05-18 18:12:44', NULL, NULL);
+INSERT INTO `erp_goods_brand` VALUES (3, '仙女服装', 1, 153, '手动添加', '2025-05-18 18:13:11', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_goods_category
@@ -180,7 +183,7 @@ CREATE TABLE `erp_goods_category_attribute`  (
   `title` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '\'属性名\'',
   `code` char(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '固定值color颜色size尺码style款式',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 222 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 120 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods_category_attribute
@@ -188,9 +191,9 @@ CREATE TABLE `erp_goods_category_attribute`  (
 INSERT INTO `erp_goods_category_attribute` VALUES (114, 1, 1, '颜色', 'color');
 INSERT INTO `erp_goods_category_attribute` VALUES (115, 1, 1, '尺码', 'size');
 INSERT INTO `erp_goods_category_attribute` VALUES (116, 1, 1, '款式', 'style');
-INSERT INTO `erp_goods_category_attribute` VALUES (200, 1, 1, '颜色', 'color');
-INSERT INTO `erp_goods_category_attribute` VALUES (210, 1, 1, '尺码', 'size');
-INSERT INTO `erp_goods_category_attribute` VALUES (221, 4, 1, '123', 'color');
+INSERT INTO `erp_goods_category_attribute` VALUES (117, 1, 1, '颜色', 'color');
+INSERT INTO `erp_goods_category_attribute` VALUES (118, 1, 1, '尺码', 'size');
+INSERT INTO `erp_goods_category_attribute` VALUES (119, 4, 1, '123', 'color');
 
 -- ----------------------------
 -- Table structure for erp_goods_category_attribute_value
@@ -325,9 +328,9 @@ INSERT INTO `erp_goods_category_attribute_value` VALUES (420, 116, '单裤', 'D'
 INSERT INTO `erp_goods_category_attribute_value` VALUES (421, 116, '加绒', 'R', 0, 0);
 INSERT INTO `erp_goods_category_attribute_value` VALUES (422, 116, '长裤加绒', 'CR', 65, 0);
 INSERT INTO `erp_goods_category_attribute_value` VALUES (423, 116, '加长裤加绒', 'JCR', 67, 0);
-INSERT INTO `erp_goods_category_attribute_value` VALUES (424, 200, '红色', '00', 0, 0);
-INSERT INTO `erp_goods_category_attribute_value` VALUES (425, 221, '红色', 'XX', 0, 0);
-INSERT INTO `erp_goods_category_attribute_value` VALUES (426, 221, '白色', 'XX', 0, 0);
+INSERT INTO `erp_goods_category_attribute_value` VALUES (424, 117, '红色', '00', 0, 0);
+INSERT INTO `erp_goods_category_attribute_value` VALUES (425, 119, '红色', 'XX', 0, 0);
+INSERT INTO `erp_goods_category_attribute_value` VALUES (426, 119, '白色', 'XX', 0, 0);
 
 -- ----------------------------
 -- Table structure for erp_goods_inventory
@@ -352,32 +355,12 @@ CREATE TABLE `erp_goods_inventory`  (
   `locked_qty` int NOT NULL DEFAULT 0 COMMENT '锁定的库存（订单发货出库就锁定库存）',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `specIdIndex`(`sku_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods_inventory
 -- ----------------------------
-INSERT INTO `erp_goods_inventory` VALUES (18, 1, '10000227212454', 1, 'A20701', '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 'S', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (19, 1, '10000227212454', 2, 'A20702', '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 'M', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (20, 1, '10000227212454', 3, 'A20703', '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 'L', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (21, 1, '10000227212454', 4, 'A20704', '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 'XL', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (22, 1, '10000227212454', 5, 'A20705', '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', '2XL', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (23, 2, '10000226806665', 6, 'A00111', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑色 S', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (24, 2, '10000226806665', 7, 'A00112', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑色 M', 10, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-18 18:44:54', 'qihang', 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (25, 2, '10000226806665', 8, 'A00113', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑色 L', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (26, 2, '10000226806665', 9, 'A00114', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑色 XL', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (27, 2, '10000226806665', 10, 'A00121', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑灰 S', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (28, 2, '10000226806665', 11, 'A00122', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑灰 M', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (29, 2, '10000226806665', 12, 'A00123', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑灰 L', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (30, 2, '10000226806665', 13, 'A00124', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '黑灰 XL', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (31, 2, '10000226806665', 14, 'A00131', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '浅蓝 S', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (32, 2, '10000226806665', 15, 'A00132', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '浅蓝 M', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (33, 2, '10000226806665', 16, 'A00133', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '浅蓝 L', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (34, 2, '10000226806665', 17, 'A00134', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '浅蓝 XL', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (35, 2, '10000226806665', 18, 'A00141', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '深蓝 S', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (36, 2, '10000226806665', 19, 'A00142', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '深蓝 M', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (37, 2, '10000226806665', 20, 'A00143', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '深蓝 L', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
-INSERT INTO `erp_goods_inventory` VALUES (38, 2, '10000226806665', 21, 'A00144', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '深蓝 XL', 0, 0, '2025-05-17 16:07:03', '同步店铺商品初始化商品 sku 库存', '2025-05-17 16:07:03', NULL, 100, 0);
+INSERT INTO `erp_goods_inventory` VALUES (18, 3, '750805294208', 22, 'XDDA00101', '吸顶灯中性光卧室吸顶灯led吸顶灯阳台卧室卫生间防水防潮三防', 'https://img.pddpic.com/gaudit-image/2025-05-21/59da3f18489f24524859b4f45b4ecb96.jpeg', '默认', 0, 0, '2025-05-21 19:03:09', '同步店铺商品初始化商品 sku 库存', '2025-05-21 11:03:08', NULL, 100, 0);
 
 -- ----------------------------
 -- Table structure for erp_goods_inventory_batch
@@ -405,12 +388,11 @@ CREATE TABLE `erp_goods_inventory_batch`  (
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
   `tenant_id` bigint NOT NULL COMMENT '租户 id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存批次' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存批次' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods_inventory_batch
 -- ----------------------------
-INSERT INTO `erp_goods_inventory_batch` VALUES (3, 24, '20250518144311', 12, 10, 0, 0, 0, '出库扣减库存；出库扣减库存；', 7, 2, 'A00112', 1, 11, 'A01-1-07', '2025-05-18 14:43:12', 'qihang', '2025-05-18 18:44:54', 'qihang', 100);
 
 -- ----------------------------
 -- Table structure for erp_goods_inventory_operation
@@ -427,7 +409,7 @@ CREATE TABLE `erp_goods_inventory_operation`  (
   `batch_num` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '库存批次号',
   `type` int NOT NULL COMMENT '库存类型（1增加库存2减少库存3锁定库存）',
   `inventory_id` bigint NOT NULL COMMENT '商品库存id（本表id减库存的时候关联）',
-  `quantity` int NOT NULL COMMENT '操作库存数量',
+  `quantity` int NOT NULL DEFAULT 0 COMMENT '操作库存数量',
   `locked_quantity` int NOT NULL DEFAULT 0 COMMENT '锁定库存数量（status变成已结算时把该字段值更新到quantity）',
   `price` double NULL DEFAULT 0 COMMENT '价格（type=1采购价格；type=2出库时的价格）',
   `biz_type` int NOT NULL COMMENT '业务类型（101采购入库102销售退货入库201采购退货出库202订单发货出库203订单补发出库211盘点出库212报损出库999其他出库）',
@@ -485,7 +467,7 @@ CREATE TABLE `erp_goods_sku`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `id`(`id`) USING BTREE,
   INDEX `number`(`spec_num`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品规格' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品规格' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_goods_sku
@@ -511,6 +493,7 @@ INSERT INTO `erp_goods_sku` VALUES (18, 2, 100, '夏季韩版ins黑灰高腰小�
 INSERT INTO `erp_goods_sku` VALUES (19, 2, 100, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', '10000226806665', '深蓝 M', 'A00142', 0, '颜色', '深蓝', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEyF1uUGZf1uXwm2u-Rb2bViQ8kl7wxwPr8OMyEx6Q', 0, '尺码', 'M', 0, NULL, NULL, NULL, 0.00, 0.00, 99.00, 0.00, '', 1, 0, 0, 0);
 INSERT INTO `erp_goods_sku` VALUES (20, 2, 100, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', '10000226806665', '深蓝 L', 'A00143', 0, '颜色', '深蓝', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEyF1uUGZf1uXwm2u-Rb2bViQ8kl7wxwPr8OMyEx6Q', 0, '尺码', 'L', 0, NULL, NULL, NULL, 0.00, 0.00, 99.00, 0.00, '', 1, 0, 0, 0);
 INSERT INTO `erp_goods_sku` VALUES (21, 2, 100, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', '10000226806665', '深蓝 XL', 'A00144', 0, '颜色', '深蓝', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEyF1uUGZf1uXwm2u-Rb2bViQ8kl7wxwPr8OMyEx6Q', 0, '尺码', 'XL', 0, NULL, NULL, NULL, 0.00, 0.00, 99.00, 0.00, '', 1, 0, 0, 0);
+INSERT INTO `erp_goods_sku` VALUES (22, 3, 100, '吸顶灯中性光卧室吸顶灯led吸顶灯阳台卧室卫生间防水防潮三防', '750805294208', '默认', 'XDDA00101', 0, NULL, NULL, 'https://img.pddpic.com/gaudit-image/2025-05-21/59da3f18489f24524859b4f45b4ecb96.jpeg', 0, NULL, NULL, 0, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00, '', 1, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for erp_goods_sku_attr
@@ -547,13 +530,14 @@ CREATE TABLE `erp_logistics_company`  (
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   `status` int NULL DEFAULT NULL COMMENT '状态（1启用0禁用）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_logistics_company
 -- ----------------------------
 INSERT INTO `erp_logistics_company` VALUES (1, NULL, NULL, 100, NULL, 'SF', '顺丰', NULL, 1);
 INSERT INTO `erp_logistics_company` VALUES (2, NULL, NULL, 105, NULL, '0001', '申通', NULL, 1);
+INSERT INTO `erp_logistics_company` VALUES (3, NULL, NULL, 153, NULL, 'shunfeng', '顺丰', NULL, 1);
 
 -- ----------------------------
 -- Table structure for erp_order
@@ -590,14 +574,12 @@ CREATE TABLE `erp_order`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `order_sn_index`(`order_num`) USING BTREE,
   INDEX `shopid_index`(`shop_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_order
 -- ----------------------------
-INSERT INTO `erp_order` VALUES (1, 100, '3727945891454531072', 5, 6, NULL, NULL, NULL, NULL, 11, 11, 44.5, 44.5, '齐**', '158****0119', '****', '广东省', '深圳市', '宝安区', '2025-05-07 13:19:57', 0, 0, '2025-05-07 13:37:29', '手动确认', '2025-05-07 16:34:31', NULL, 0);
-INSERT INTO `erp_order` VALUES (2, 100, '2009300499001', 5, 6, NULL, NULL, NULL, NULL, 1, 2, 89, 89, '启航', '15818590119', '', '广东省', '深圳市', '宝安区', '2025-05-16 09:00:21', 2, 0, '2025-05-16 09:00:26', '手动确认', '2025-05-17 12:32:58', '手动填写供应商发货信息', 2);
-INSERT INTO `erp_order` VALUES (3, 100, '1009930999302', 5, 6, NULL, NULL, NULL, NULL, 1, 2, 99, 99, '启航a', '15818590111', '北京政府大楼 100 号', '北京市', '市辖区', '东城区', '2025-05-16 14:55:08', 2, 0, '2025-05-16 14:55:12', '手动确认', '2025-05-16 17:53:55', '手动发货', 0);
+INSERT INTO `erp_order` VALUES (1, 100, '3727945891454531072', 5, 6, NULL, NULL, NULL, NULL, 11, 11, 44.5, 44.5, '齐**', '158****0119', '****', '广东省', '深圳市', '宝安区', '2025-05-07 13:19:57', -1, 0, '2025-05-07 13:37:29', '手动确认', '2025-05-07 16:34:31', NULL, 0);
 
 -- ----------------------------
 -- Table structure for erp_order_item
@@ -634,14 +616,12 @@ CREATE TABLE `erp_order_item`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goodId_index`(`erp_goods_id`) USING BTREE,
   INDEX `order_id`(`order_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单明细表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单明细表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_order_item
 -- ----------------------------
 INSERT INTO `erp_order_item` VALUES (1, 100, 6, 1, '3727945891454531072', '1912512446954844164', '3387757956', 0, 0, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://wst.wxapp.tc.qq.com/161/20304/snscosdownload/SZ/reserved/681ae501000026f90b46d9131a2b5515000000a000004f50', NULL, '[{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', 'A20701', 89, 44.5, 1, NULL, 0, 1, 0, NULL, NULL, NULL, NULL, 0, 0);
-INSERT INTO `erp_order_item` VALUES (2, 100, 6, 2, '2009300499001', '1912512446954844165', '3387753301', 1, 5, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', NULL, '2XL', 'A20705', 89, 89, 1, NULL, 0, 1, 0, NULL, NULL, '2025-05-17 12:32:42', '手动填写供应商发货信息', 1, 2);
-INSERT INTO `erp_order_item` VALUES (3, 100, 6, 3, '1009930999302', '1912512446954844166', '3386353837', 2, 7, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', NULL, '黑色 M', 'A00112', 99, 99, 1, NULL, 0, 1, 0, NULL, NULL, NULL, NULL, 0, 0);
 
 -- ----------------------------
 -- Table structure for erp_purchase_order
@@ -669,14 +649,14 @@ CREATE TABLE `erp_purchase_order`  (
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1068 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '采购订单' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 469 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '采购订单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_purchase_order
 -- ----------------------------
 INSERT INTO `erp_purchase_order` VALUES (466, 0, 33, 'PUR20240116144408', '2024-01-16', 1705387448, 190.00, 0.00, NULL, 3, '启航', 1705387461, '2024-01-16 14:44:30', '2024-01-16 14:49:49', '2024-01-16 00:00:00', '2024-01-16 14:50:58', 'admin', '2024-01-16 14:44:09', 'admin', '2024-01-16 14:50:58');
-INSERT INTO `erp_purchase_order` VALUES (477, 100, 1, 'PUR20240421205746', '2024-04-21', 1713704266, 1050.00, 20.00, NULL, 2, '启航', 1713705287, '2024-04-21 21:19:07', '2024-04-21 21:19:59', '2024-04-21 08:00:00', NULL, '15818590119', '2024-04-21 20:57:46', '15818590119', '2024-04-21 21:40:14');
-INSERT INTO `erp_purchase_order` VALUES (1067, 0, 33, 'PUR20240128113656', '2024-01-28', 1706413016, 42.00, 10.00, NULL, 102, '启航', 1706413030, '2024-01-28 11:42:19', '2024-01-28 12:07:32', NULL, NULL, 'admin', '2024-01-28 11:36:56', 'admin', '2024-01-28 12:07:32');
+INSERT INTO `erp_purchase_order` VALUES (467, 0, 33, 'PUR20240128113656', '2024-01-28', 1706413016, 42.00, 10.00, NULL, 102, '启航', 1706413030, '2024-01-28 11:42:19', '2024-01-28 12:07:32', NULL, NULL, 'admin', '2024-01-28 11:36:56', 'admin', '2024-01-28 12:07:32');
+INSERT INTO `erp_purchase_order` VALUES (468, 100, 1, 'PUR20240421205746', '2024-04-21', 1713704266, 1050.00, 20.00, NULL, 2, '启航', 1713705287, '2024-04-21 21:19:07', '2024-04-21 21:19:59', '2024-04-21 08:00:00', NULL, '15818590119', '2024-04-21 20:57:46', '15818590119', '2024-04-21 21:40:14');
 
 -- ----------------------------
 -- Table structure for erp_purchase_order_item
@@ -716,14 +696,14 @@ CREATE TABLE `erp_purchase_order_item`  (
   INDEX `transType`(`trans_type`) USING BTREE,
   INDEX `iid`(`order_id`) USING BTREE,
   INDEX `id`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1964 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '采购订单明细' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1965 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '采购订单明细' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_purchase_order_item
 -- ----------------------------
-INSERT INTO `erp_purchase_order_item` VALUES (1362, 100, 1, 477, 'PUR20240421205746', 'Purchase', 1050, '2024-04-21', '', 1781988656060412000, 'NZK000232', '男士流行夏季牛仔裤黑色', 1781988656068800500, 'NZK00023200', '红色', NULL, '', '', 105.00, 0.00, 0.00, 10, 0, NULL, 0, 0);
 INSERT INTO `erp_purchase_order_item` VALUES (1962, NULL, NULL, 466, 'PUR20240116144408', 'Purchase', 190, '2024-01-16', '', 9, 'HN8026', 'HN8026牛仔短裤', 32, '2720210080260105', '黑色', 'https://cbu01.alicdn.com/img/ibank/O1CN01AfNgvA2FOyAvwXZxv_!!2208857268871-0-cib.jpg', '2XL', '', 19.00, 0.00, 0.00, 10, 0, NULL, 0, 0);
 INSERT INTO `erp_purchase_order_item` VALUES (1963, NULL, NULL, 467, 'PUR20240128113656', 'Purchase', 42, '2024-01-28', '', 29, 'HNP182', 'HNP182弹力紧身贴标牛仔短裤女ins', 438, 'HNP1825004', '浅蓝色', 'https://cbu01.alicdn.com/img/ibank/O1CN01yp4pfJ2FOyGRQhOVF_!!2208857268871-0-cib.jpg', 'XL', '', 21.00, 0.00, 0.00, 2, 0, NULL, 0, 0);
+INSERT INTO `erp_purchase_order_item` VALUES (1964, 100, 1, 468, 'PUR20240421205746', 'Purchase', 1050, '2024-04-21', '', 1781988656060412000, 'NZK000232', '男士流行夏季牛仔裤黑色', 1781988656068800500, 'NZK00023200', '红色', NULL, '', '', 105.00, 0.00, 0.00, 10, 0, NULL, 0, 0);
 
 -- ----------------------------
 -- Table structure for erp_purchase_order_payable
@@ -789,7 +769,7 @@ CREATE TABLE `erp_purchase_order_ship`  (
 -- ----------------------------
 INSERT INTO `erp_purchase_order_ship` VALUES (466, NULL, NULL, NULL, '菜鸟速递', 'CN223533300022', 0, '2024-01-16 00:00:00', '2024-01-16 00:00:00', 'admin', '2024-01-16 14:49:49', 2, NULL, 0, '2024-01-16 14:50:58', 0, 'admin', '2024-01-16 14:50:58', '2024-01-16', 'PUR20240116144408', 1, 1, 10);
 INSERT INTO `erp_purchase_order_ship` VALUES (467, NULL, NULL, NULL, '菜鸟速递', 'CN345565767', 10, '2024-01-28 00:00:00', NULL, 'admin', '2024-01-28 12:07:32', 0, NULL, 0, NULL, 0, NULL, NULL, '2024-01-28', 'PUR20240128113656', 1, 1, 2);
-INSERT INTO `erp_purchase_order_ship` VALUES (468, 100, 1, 477, '顺丰', 'SF522000', 20, '2024-04-21 08:00:00', '2024-04-21 08:00:00', '15818590119', '2024-04-21 21:19:59', 2, NULL, 0, '2024-04-21 22:21:58', 0, '15818590119', '2024-04-21 22:21:58', '2024-04-21', 'PUR20240421205746', 1, 1, 10);
+INSERT INTO `erp_purchase_order_ship` VALUES (468, 100, 1, 468, '顺丰', 'SF522000', 20, '2024-04-21 08:00:00', '2024-04-21 08:00:00', '15818590119', '2024-04-21 21:19:59', 2, NULL, 0, '2024-04-21 22:21:58', 0, '15818590119', '2024-04-21 22:21:58', '2024-04-21', 'PUR20240421205746', 1, 1, 10);
 
 -- ----------------------------
 -- Table structure for erp_refund
@@ -840,26 +820,26 @@ DROP TABLE IF EXISTS `erp_shipment`;
 CREATE TABLE `erp_shipment`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `tenant_id` bigint NOT NULL COMMENT '租户id',
-  `shop_id` bigint NOT NULL COMMENT '店铺id',
+  `shop_id` int NULL DEFAULT NULL COMMENT '店铺id',
   `shop_type` int NOT NULL COMMENT '店铺类型',
-  `order_id` bigint NOT NULL COMMENT 'o_order表id',
-  `order_num` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '订单编号',
+  `order_id` bigint NULL DEFAULT NULL COMMENT 'o_order表id',
+  `order_num` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单编号',
   `order_time` datetime NULL DEFAULT NULL COMMENT '订单时间',
   `shipper` int NOT NULL DEFAULT 0 COMMENT '发货方 0 仓库发货 1 供应商发货',
   `supplier_id` bigint NOT NULL DEFAULT 0 COMMENT '供应商ID',
   `supplier` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '供应商',
-  `ship_type` int NOT NULL COMMENT '发货类型（1订单发货2商品补发3商品换货）',
-  `ship_company` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '物流公司',
+  `ship_type` int NULL DEFAULT NULL COMMENT '发货类型（1订单发货2商品补发3商品换货）',
+  `ship_company` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '物流公司',
   `ship_company_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '物流公司code',
-  `ship_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '物流单号',
+  `ship_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '物流单号',
   `ship_fee` decimal(6, 0) NOT NULL DEFAULT 0 COMMENT '物流费用',
   `ship_time` datetime NULL DEFAULT NULL COMMENT '发货时间',
   `ship_operator` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发货操作人',
-  `ship_status` int NOT NULL COMMENT '物流状态（0 待发货1已发货2已完成）',
-  `package_weight` float NOT NULL COMMENT '包裹重量',
-  `package_length` float NOT NULL COMMENT '包裹长度',
-  `package_width` float NOT NULL COMMENT '包裹宽度',
-  `package_height` float NOT NULL COMMENT '包裹高度',
+  `ship_status` int NULL DEFAULT NULL COMMENT '物流状态（0 待发货1已发货2已完成）',
+  `package_weight` float NULL DEFAULT NULL COMMENT '包裹重量',
+  `package_length` float NULL DEFAULT NULL COMMENT '包裹长度',
+  `package_width` float NULL DEFAULT NULL COMMENT '包裹宽度',
+  `package_height` float NULL DEFAULT NULL COMMENT '包裹高度',
   `packsge_operator` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '打包操作人',
   `packsge_time` datetime NULL DEFAULT NULL COMMENT '打包时间',
   `packages` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '包裹内容JSON',
@@ -869,13 +849,11 @@ CREATE TABLE `erp_shipment`  (
   `update_time` datetime NULL DEFAULT NULL,
   `update_by` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '发货记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '发货记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_shipment
 -- ----------------------------
-INSERT INTO `erp_shipment` VALUES (1, 100, 6, 5, 3, '1009930999302', '2025-05-16 14:55:08', 0, 0, NULL, 1, '顺丰', 'SF', 'sf1209930009', 0, '2025-05-16 17:53:55', 'a', 1, 0, 0, 0, 0, 'a', NULL, NULL, NULL, '2025-05-16 17:53:55', 'qihang', NULL, NULL);
-INSERT INTO `erp_shipment` VALUES (2, 100, 6, 5, 2, '2009300499001', '2025-05-16 09:00:21', 1, 1, '测试供应商', 1, '顺丰', 'SF', 'SF12333112', 0, '2025-05-17 12:32:23', NULL, 1, 0, 0, 0, 0, '', NULL, NULL, '', '2025-05-16 22:33:03', 'qihang', '2025-05-17 12:32:49', '手动填写供应商发货信息');
 
 -- ----------------------------
 -- Table structure for erp_shipment_item
@@ -884,10 +862,10 @@ DROP TABLE IF EXISTS `erp_shipment_item`;
 CREATE TABLE `erp_shipment_item`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id，自增',
   `tenant_id` bigint NOT NULL COMMENT '租户id',
+  `shipment_id` bigint NOT NULL COMMENT '发货id',
   `shipper` int NOT NULL COMMENT '发货方 0 仓库发货 1 供应商发货',
   `supplier_id` bigint NOT NULL DEFAULT 0 COMMENT '供应商ID',
   `supplier` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '供应商',
-  `shipment_id` bigint NOT NULL COMMENT '发货id',
   `shop_type` int NOT NULL COMMENT '店铺类型',
   `shop_id` bigint NOT NULL COMMENT '店铺id',
   `order_id` bigint NOT NULL COMMENT '订单 id',
@@ -911,13 +889,11 @@ CREATE TABLE `erp_shipment_item`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goodId_index`(`erp_goods_id`) USING BTREE,
   INDEX `order_id`(`order_item_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '发货明细表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '发货明细表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_shipment_item
 -- ----------------------------
-INSERT INTO `erp_shipment_item` VALUES (1, 100, 0, 0, NULL, 1, 5, 6, 3, '1009930999302', '2025-05-16 14:55:08', 3, 2, 7, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', NULL, '黑色 M', 'A00112', 1, NULL, 1, '2025-05-16 17:53:55', 'qihang', '2025-05-17 18:39:16', '确认出库');
-INSERT INTO `erp_shipment_item` VALUES (2, 100, 1, 1, '测试供应商', 2, 5, 6, 2, '2009300499001', '2025-05-16 09:00:21', 2, 1, 5, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', NULL, '2XL', 'A20705', 1, NULL, 2, '2025-05-16 22:33:03', 'qihang', '2025-05-17 12:32:40', '手动填写供应商发货信息');
 
 -- ----------------------------
 -- Table structure for erp_shop
@@ -925,7 +901,7 @@ INSERT INTO `erp_shipment_item` VALUES (2, 100, 1, 1, '测试供应商', 2, 5, 6
 DROP TABLE IF EXISTS `erp_shop`;
 CREATE TABLE `erp_shop`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `tenant_id` bigint NOT NULL COMMENT '租户id',
+  `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户id',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '店铺名',
   `type` int NOT NULL COMMENT '对应第三方平台Id',
   `url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '店铺url',
@@ -942,17 +918,25 @@ CREATE TABLE `erp_shop`  (
   `refresh_token` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '刷新token',
   `refresh_token_timeout` bigint NULL DEFAULT NULL COMMENT '刷新token过期时间',
   `api_request_url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '请求url',
+  `api_callback_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '回调url',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据中心-店铺' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据中心-店铺' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_shop
 -- ----------------------------
-INSERT INTO `erp_shop` VALUES (6, 100, '启航电商的小店', 5, NULL, 9, 0, 1746583567, '个人店铺', 0, 'wx82dd65f284dd6ee3', 'a6054ccf2694e8dc51d2616e634cad39', '92_7jp6yAXxM8jfJ6ZFlpbSvOT5ndyIi9cAkllyPU0cFRHW6kSOeYueFsDLQEspaFBkrMDsnuyeIqrCfEpbehrwbgP_goZgbFY7I_GeRm46Fg9r6iDvIpvq7GLOllMNYJaAAAITE', NULL, NULL, NULL, NULL, 'https://api.weixin.qq.com');
-INSERT INTO `erp_shop` VALUES (7, 105, '微信小店', 5, NULL, 9, 0, 1744900783, NULL, 0, '77777777', '445245', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `erp_shop` VALUES (8, 110, 'store01', 5, NULL, 9, 0, 1745033126, 'test', 0, 'store01id', 'sc555', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `erp_shop` VALUES (9, 110, '22', 5, NULL, 9, 0, 1745033150, '222', 0, '22', '222', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `erp_shop` VALUES (10, 115, 'a', 5, NULL, 9, 0, 1745397127, 'a', 0, 'a', 'a', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop` VALUES (6, 100, '启航电商的小店', 5, NULL, 9, 0, 1746583567, '个人店铺', 0, 'wx82dd65f284dd6ee3', 'a6054ccf2694e8dc51d2616e634cad39', '92_7jp6yAXxM8jfJ6ZFlpbSvOT5ndyIi9cAkllyPU0cFRHW6kSOeYueFsDLQEspaFBkrMDsnuyeIqrCfEpbehrwbgP_goZgbFY7I_GeRm46Fg9r6iDvIpvq7GLOllMNYJaAAAITE', NULL, NULL, NULL, NULL, 'https://api.weixin.qq.com', NULL);
+INSERT INTO `erp_shop` VALUES (7, 105, '微信小店', 5, NULL, 9, 0, 1744900783, NULL, 0, '77777777', '445245', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop` VALUES (8, 110, 'store01', 5, NULL, 9, 0, 1745033126, 'test', 0, 'store01id', 'sc555', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop` VALUES (9, 110, '22', 5, NULL, 9, 0, 1745033150, '222', 0, '22', '222', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop` VALUES (10, 115, 'a', 5, NULL, 9, 0, 1745397127, 'a', 0, 'a', 'a', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop` VALUES (11, 148, '33', 5, NULL, 9, 0, 1747419790, '33', 0, '超出', '22', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop` VALUES (12, 153, '瑞星', 5, NULL, 9, 0, 1747561185, NULL, 0, '123456', '123456', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop` VALUES (13, 153, '仙女服装', 5, NULL, 9, 0, 1747563240, NULL, 0, '1', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop` VALUES (14, 153, '鞋子电铺', 5, NULL, 9, 0, 1747563292, NULL, 0, '123', '123', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop` VALUES (15, 100, '爱顾家的小店', 3, NULL, 9, 0, 1747825350, NULL, 745839216, 'dc953bcf16d24b27abf3e64a59e1ecd1', '89c639b1ceaf8e5260acc73b2bdbb5c529cf23a4', '43b6e75e507c4312a85bb9d273ead3dcee43f13b', NULL, NULL, 'a439d80c61e64bf9a27106c559a756a4af0a79ab', NULL, NULL, 'http://qihangerp.cn');
+INSERT INTO `erp_shop` VALUES (16, 162, '12121', 9, NULL, 9, 0, 1747878705, NULL, 0, '1212', '121212', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop` VALUES (17, 166, '我认为吃', 5, NULL, 9, 0, 1747899670, NULL, 0, '12313213', '123131233213', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_shop_goods
@@ -961,6 +945,7 @@ DROP TABLE IF EXISTS `erp_shop_goods`;
 CREATE TABLE `erp_shop_goods`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `shop_id` bigint NULL DEFAULT NULL COMMENT '店铺id',
+  `shop_type` int NOT NULL COMMENT '店铺类型',
   `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户id',
   `product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台商品id',
   `out_product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商家编码id',
@@ -977,14 +962,18 @@ CREATE TABLE `erp_shop_goods`  (
   `product_type` int NULL DEFAULT NULL COMMENT '商品类型。1: 小店普通自营商品；2: 福袋抽奖商品；3: 直播间闪电购商品。注意: 福袋抽奖、直播间闪电购类型的商品为只读数据，不支持编辑、上架操作，不支持用data_type=2的参数获取。',
   `edit_time` int NULL DEFAULT NULL COMMENT '商品草稿最近一次修改时间',
   `erp_goods_id` bigint NOT NULL DEFAULT 0 COMMENT '商品库商品id',
+  `quantity` int NOT NULL DEFAULT 0 COMMENT '商品数量',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_shop_goods
 -- ----------------------------
-INSERT INTO `erp_shop_goods` VALUES (1, 6, 100, '10000226806665', '', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', '', '[\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HLSG8lDS5e-iniBAqfLe65XkNJrJ9PepNI-Vwe1HDg\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEYO93L-Yvp1XhgN4kJipQ2bTuCY7fioB8vqVZHZcg\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HPjWLGJF5gQ_g-G9KMTvMIvwncK1_9XhjQzG-ZOMog\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HDCe9nlQzyWIozKFVuceo5dfy--6wXqvABX7vwlPpw\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HFAEfaFTGS299EbPH7nfGvdLRkEWu6LPSW8H0kogiw\"]', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '{\"imgs\":[\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HKz3Geo5LgRBiMKuhEDgwQueqwL1roQ8UAATwcXWmg\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HLbV13GzXxE0JCUH07Nw4lPdLfqWXG91_jTgKQWesw\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HDgXv_uxU0l_H7mFMQnuG3zt7cedSofDEWVpcOEjNA\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HGKn464RK93iYYt8Vvr7VSsbodgbfzYXmiJiPjfXbw\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HF0-YsfdMWgPUE1AzMZg268nu8yUJ2CgjGNAd1TNPQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HGKbGduUar8JGqygnt8QOZDC5RE5DWA8zMlO7JPL8g\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HP-z9fTJc0SGVurqHsGMylb7G2TbqwiBlgm43VRunQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HFtrpgIOCVWsDG2we7QGj60ZOpPLNffW-w8bvX8kIA\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HOxMbc2e4fS5iTdge52kPYiDv4h2LRy_E6YMv0qxww\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBwvCLpdttkZ0OxSaBlTgebXTpJ8IlAc8Rc85wPnUQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HN92eUd4vZg9lzMhcc2BhHqgBF00NZwyClKoiXSsEA\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HF2RXTJxt3lUI8d5mmi3MhmHYgcVy9mkPDElmKU_lw\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HPblH3kXsKC2Nj_vAPfBVdML_4GJXPNKkhbm_cC6bw\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HIlBO82le2x0EUskMgV-iY6bQuzIjDJ6eaAW78rkTA\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HHeduzQuXcv_k-8Zvqyi8p1luNSvRrpLwOV_uBIzWQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HJX8i_bYiCMxYfGKG9kdh3Mxq6-XC2s8da0SleSnyg\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HJzpXP6kzmYqUyLNELYPVKKmxeFtON1nmPjc5mlZ5g\"],\"desc\":\"\"}', '[{\"attr_key\":\"面料材质\",\"attr_value\":\"聚酯纤维（涤纶）\"}]', 5, NULL, 9900, '', 1, 0, 2);
-INSERT INTO `erp_shop_goods` VALUES (2, 6, 100, '10000227212454', '', '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', '', '[\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HHigSEPtjoyz1dqKoPmZTGse3T6kL5CDMIQ_C6Wtzg\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HIvoI5H9sxwoJJMB8lUgK44UdPXiHYhWwVoQcITAi0E\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HFQneFzkUSPeC5u31OKHhWkOjgz4duZhZpcsGe-Eew0\"]', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', '{\"imgs\":[\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HITwxBQVQwnGwxiOqP3KqPwycbD2CUZeSypH6DmoMQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HJesY68fe9LErU9n9YXfLsvX1QoYhvQm9hs63YIek8U\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HPDGEUtxgMrb2yRCWhTutKLTmH2nf8OkwPBq5C8Yvw\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HJgzSAqt7Z7doY5ENdGAkRTeduCDQ3Fy34l_2KCJvw\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HB99itoZbJc6PdhSYweD2IWQ-kMqi4uD5bsYuKNlxA\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HMUUVdfsP6E4cyzQoMiQ7VtsHR9smh32bnZL9H9GoQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HAZMYUfLuASSuayVBrbKV-mU99JIRXQc5mVjD88WlQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HFVjKQnJ_KOSBnEw31d4mPxLXcazBE_vGsiwQ9vHjg\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEjH9P2eKWMAZloOz0oGKTWr_NoH0OgzqvssM8CTXQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HLhq8Fi3U8DpTgilWVCJ4DGRa1i9B_EgVvU_gFGJqg\"],\"desc\":\"\"}', '[{\"attr_key\":\"面料材质成分含量（%）\",\"attr_value\":\"50 %\"},{\"attr_key\":\"面料材质\",\"attr_value\":\"醋酯纤维\"}]', 5, NULL, 8900, '', 1, 0, 1);
+INSERT INTO `erp_shop_goods` VALUES (1, 6, 5, 100, '10000226806665', '', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', '', '[\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HLSG8lDS5e-iniBAqfLe65XkNJrJ9PepNI-Vwe1HDg\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEYO93L-Yvp1XhgN4kJipQ2bTuCY7fioB8vqVZHZcg\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HPjWLGJF5gQ_g-G9KMTvMIvwncK1_9XhjQzG-ZOMog\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HDCe9nlQzyWIozKFVuceo5dfy--6wXqvABX7vwlPpw\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HFAEfaFTGS299EbPH7nfGvdLRkEWu6LPSW8H0kogiw\"]', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HC7tyxMJYp0ui4hs75bVPBTLOpMsBKTzU9qH9lUl5Q', '{\"imgs\":[\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HKz3Geo5LgRBiMKuhEDgwQueqwL1roQ8UAATwcXWmg\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HLbV13GzXxE0JCUH07Nw4lPdLfqWXG91_jTgKQWesw\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HDgXv_uxU0l_H7mFMQnuG3zt7cedSofDEWVpcOEjNA\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HGKn464RK93iYYt8Vvr7VSsbodgbfzYXmiJiPjfXbw\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HF0-YsfdMWgPUE1AzMZg268nu8yUJ2CgjGNAd1TNPQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HGKbGduUar8JGqygnt8QOZDC5RE5DWA8zMlO7JPL8g\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HP-z9fTJc0SGVurqHsGMylb7G2TbqwiBlgm43VRunQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HFtrpgIOCVWsDG2we7QGj60ZOpPLNffW-w8bvX8kIA\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HOxMbc2e4fS5iTdge52kPYiDv4h2LRy_E6YMv0qxww\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBwvCLpdttkZ0OxSaBlTgebXTpJ8IlAc8Rc85wPnUQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HN92eUd4vZg9lzMhcc2BhHqgBF00NZwyClKoiXSsEA\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HF2RXTJxt3lUI8d5mmi3MhmHYgcVy9mkPDElmKU_lw\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HPblH3kXsKC2Nj_vAPfBVdML_4GJXPNKkhbm_cC6bw\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HIlBO82le2x0EUskMgV-iY6bQuzIjDJ6eaAW78rkTA\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HHeduzQuXcv_k-8Zvqyi8p1luNSvRrpLwOV_uBIzWQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HJX8i_bYiCMxYfGKG9kdh3Mxq6-XC2s8da0SleSnyg\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HJzpXP6kzmYqUyLNELYPVKKmxeFtON1nmPjc5mlZ5g\"],\"desc\":\"\"}', '[{\"attr_key\":\"面料材质\",\"attr_value\":\"聚酯纤维（涤纶）\"}]', 5, NULL, 9900, '', 1, 0, 2, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods` VALUES (2, 6, 5, 100, '10000227212454', '', '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', '', '[\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HHigSEPtjoyz1dqKoPmZTGse3T6kL5CDMIQ_C6Wtzg\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HIvoI5H9sxwoJJMB8lUgK44UdPXiHYhWwVoQcITAi0E\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HFQneFzkUSPeC5u31OKHhWkOjgz4duZhZpcsGe-Eew0\"]', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', '{\"imgs\":[\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HITwxBQVQwnGwxiOqP3KqPwycbD2CUZeSypH6DmoMQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HJesY68fe9LErU9n9YXfLsvX1QoYhvQm9hs63YIek8U\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HPDGEUtxgMrb2yRCWhTutKLTmH2nf8OkwPBq5C8Yvw\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HJgzSAqt7Z7doY5ENdGAkRTeduCDQ3Fy34l_2KCJvw\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HB99itoZbJc6PdhSYweD2IWQ-kMqi4uD5bsYuKNlxA\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HMUUVdfsP6E4cyzQoMiQ7VtsHR9smh32bnZL9H9GoQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HAZMYUfLuASSuayVBrbKV-mU99JIRXQc5mVjD88WlQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HFVjKQnJ_KOSBnEw31d4mPxLXcazBE_vGsiwQ9vHjg\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEjH9P2eKWMAZloOz0oGKTWr_NoH0OgzqvssM8CTXQ\",\"https://mmecimage.cn/p/wx82dd65f284dd6ee3/HLhq8Fi3U8DpTgilWVCJ4DGRa1i9B_EgVvU_gFGJqg\"],\"desc\":\"\"}', '[{\"attr_key\":\"面料材质成分含量（%）\",\"attr_value\":\"50 %\"},{\"attr_key\":\"面料材质\",\"attr_value\":\"醋酯纤维\"}]', 5, NULL, 8900, '', 1, 0, 1, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods` VALUES (3, 15, 3, 100, '750805294208', '', '吸顶灯中性光卧室吸顶灯led吸顶灯阳台卧室卫生间防水防潮三防', '', '', 'https://img.pddpic.com/gaudit-image/2025-05-21/59da3f18489f24524859b4f45b4ecb96.jpeg', '', '', 1, 0, 0, '', 1, 1747807113, 3, 0, NULL, '2025-05-21 19:02:51');
 
 -- ----------------------------
 -- Table structure for erp_shop_goods_sku
@@ -995,45 +984,53 @@ CREATE TABLE `erp_shop_goods_sku`  (
   `shop_goods_id` bigint NOT NULL COMMENT '外键id',
   `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户id',
   `shop_id` bigint NOT NULL COMMENT '店铺id',
+  `shop_type` int NOT NULL COMMENT '店铺类型',
   `product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台商品id',
+  `product_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品名',
+  `out_product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商家商品编码',
   `sku_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'skuID',
   `out_sku_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商家自定义skuID。如果添加时没录入，回包可能不包含该字段',
   `thumb_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku小图',
   `sale_price` int NULL DEFAULT NULL COMMENT '售卖价格，以分为单位',
   `stock_num` int NULL DEFAULT NULL COMMENT 'sku库存',
   `sku_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku编码',
+  `sku_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku名',
   `status` int NULL DEFAULT NULL COMMENT 'sku状态',
   `sku_attrs` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku_attrs',
   `sku_deliver_info` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku_deliver_info',
   `erp_goods_id` bigint NOT NULL DEFAULT 0 COMMENT 'erp系统商品id',
   `erp_goods_sku_id` bigint NOT NULL DEFAULT 0 COMMENT 'erp系统商品skuid',
+  `quantity` int NOT NULL DEFAULT 0 COMMENT '商品数量',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_shop_goods_sku
 -- ----------------------------
-INSERT INTO `erp_shop_goods_sku` VALUES (1, 2, 100, 6, '10000227212454', '3387757956', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 8900, 10, 'A20701', 5, '[{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 1, 1);
-INSERT INTO `erp_shop_goods_sku` VALUES (2, 2, 100, 6, '10000227212454', '3387796494', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 8900, 10, 'A20702', 5, '[{\"attr_key\":\"尺码\",\"attr_value\":\"M\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 1, 2);
-INSERT INTO `erp_shop_goods_sku` VALUES (3, 2, 100, 6, '10000227212454', '3387719364', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 8900, 10, 'A20703', 5, '[{\"attr_key\":\"尺码\",\"attr_value\":\"L\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 1, 3);
-INSERT INTO `erp_shop_goods_sku` VALUES (4, 2, 100, 6, '10000227212454', '3387885524', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 8900, 10, 'A20704', 5, '[{\"attr_key\":\"尺码\",\"attr_value\":\"XL\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 1, 4);
-INSERT INTO `erp_shop_goods_sku` VALUES (5, 2, 100, 6, '10000227212454', '3387753301', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 8900, 10, 'A20705', 5, '[{\"attr_key\":\"尺码\",\"attr_value\":\"2XL\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 1, 5);
-INSERT INTO `erp_shop_goods_sku` VALUES (6, 1, 100, 6, '10000226806665', '3386273694', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 9900, 9, 'A00111', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑色\"},{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 6);
-INSERT INTO `erp_shop_goods_sku` VALUES (7, 1, 100, 6, '10000226806665', '3386353837', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 9900, 9, 'A00112', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑色\"},{\"attr_key\":\"尺码\",\"attr_value\":\"M\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 7);
-INSERT INTO `erp_shop_goods_sku` VALUES (8, 1, 100, 6, '10000226806665', '3386254387', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 9900, 9, 'A00113', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑色\"},{\"attr_key\":\"尺码\",\"attr_value\":\"L\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 8);
-INSERT INTO `erp_shop_goods_sku` VALUES (9, 1, 100, 6, '10000226806665', '3386346869', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 9900, 9, 'A00114', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑色\"},{\"attr_key\":\"尺码\",\"attr_value\":\"XL\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 9);
-INSERT INTO `erp_shop_goods_sku` VALUES (10, 1, 100, 6, '10000226806665', '3386289149', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEHGX3o_N2LjMf2Een41P9r3AR2d0eTtyi9F9CDLpA', 9900, 9, 'A00121', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑灰\"},{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 10);
-INSERT INTO `erp_shop_goods_sku` VALUES (11, 1, 100, 6, '10000226806665', '3386355827', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEHGX3o_N2LjMf2Een41P9r3AR2d0eTtyi9F9CDLpA', 9900, 9, 'A00122', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑灰\"},{\"attr_key\":\"尺码\",\"attr_value\":\"M\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 11);
-INSERT INTO `erp_shop_goods_sku` VALUES (12, 1, 100, 6, '10000226806665', '3386307232', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEHGX3o_N2LjMf2Een41P9r3AR2d0eTtyi9F9CDLpA', 9900, 9, 'A00123', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑灰\"},{\"attr_key\":\"尺码\",\"attr_value\":\"L\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 12);
-INSERT INTO `erp_shop_goods_sku` VALUES (13, 1, 100, 6, '10000226806665', '3386283916', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEHGX3o_N2LjMf2Een41P9r3AR2d0eTtyi9F9CDLpA', 9900, 9, 'A00124', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑灰\"},{\"attr_key\":\"尺码\",\"attr_value\":\"XL\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 13);
-INSERT INTO `erp_shop_goods_sku` VALUES (14, 1, 100, 6, '10000226806665', '3386440065', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HIYiX-phXBu7QyEA3kYEXvMR67rApf_led1cIzWXfQ', 9900, 9, 'A00131', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"浅蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 14);
-INSERT INTO `erp_shop_goods_sku` VALUES (15, 1, 100, 6, '10000226806665', '3386484403', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HIYiX-phXBu7QyEA3kYEXvMR67rApf_led1cIzWXfQ', 9900, 9, 'A00132', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"浅蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"M\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 15);
-INSERT INTO `erp_shop_goods_sku` VALUES (16, 1, 100, 6, '10000226806665', '3386302555', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HIYiX-phXBu7QyEA3kYEXvMR67rApf_led1cIzWXfQ', 9900, 9, 'A00133', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"浅蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"L\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 16);
-INSERT INTO `erp_shop_goods_sku` VALUES (17, 1, 100, 6, '10000226806665', '3386484402', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HIYiX-phXBu7QyEA3kYEXvMR67rApf_led1cIzWXfQ', 9900, 9, 'A00134', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"浅蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"XL\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 17);
-INSERT INTO `erp_shop_goods_sku` VALUES (18, 1, 100, 6, '10000226806665', '3386365666', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEyF1uUGZf1uXwm2u-Rb2bViQ8kl7wxwPr8OMyEx6Q', 9900, 9, 'A00141', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"深蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 18);
-INSERT INTO `erp_shop_goods_sku` VALUES (19, 1, 100, 6, '10000226806665', '3386365667', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEyF1uUGZf1uXwm2u-Rb2bViQ8kl7wxwPr8OMyEx6Q', 9900, 9, 'A00142', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"深蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"M\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 19);
-INSERT INTO `erp_shop_goods_sku` VALUES (20, 1, 100, 6, '10000226806665', '3386437870', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEyF1uUGZf1uXwm2u-Rb2bViQ8kl7wxwPr8OMyEx6Q', 9900, 9, 'A00143', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"深蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"L\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 20);
-INSERT INTO `erp_shop_goods_sku` VALUES (21, 1, 100, 6, '10000226806665', '3386302556', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEyF1uUGZf1uXwm2u-Rb2bViQ8kl7wxwPr8OMyEx6Q', 9900, 9, 'A00144', 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"深蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"XL\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 21);
+INSERT INTO `erp_shop_goods_sku` VALUES (1, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386273694', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 9900, 9, 'A00111', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑色\"},{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 6, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (2, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386353837', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 9900, 9, 'A00112', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑色\"},{\"attr_key\":\"尺码\",\"attr_value\":\"M\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 7, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (3, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386254387', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 9900, 9, 'A00113', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑色\"},{\"attr_key\":\"尺码\",\"attr_value\":\"L\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 8, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (4, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386346869', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 9900, 9, 'A00114', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑色\"},{\"attr_key\":\"尺码\",\"attr_value\":\"XL\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 9, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (5, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386289149', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEHGX3o_N2LjMf2Een41P9r3AR2d0eTtyi9F9CDLpA', 9900, 9, 'A00121', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑灰\"},{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 10, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (6, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386355827', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEHGX3o_N2LjMf2Een41P9r3AR2d0eTtyi9F9CDLpA', 9900, 9, 'A00122', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑灰\"},{\"attr_key\":\"尺码\",\"attr_value\":\"M\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 11, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (7, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386307232', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEHGX3o_N2LjMf2Een41P9r3AR2d0eTtyi9F9CDLpA', 9900, 9, 'A00123', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑灰\"},{\"attr_key\":\"尺码\",\"attr_value\":\"L\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 12, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (8, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386283916', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEHGX3o_N2LjMf2Een41P9r3AR2d0eTtyi9F9CDLpA', 9900, 9, 'A00124', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"黑灰\"},{\"attr_key\":\"尺码\",\"attr_value\":\"XL\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 13, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (9, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386440065', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HIYiX-phXBu7QyEA3kYEXvMR67rApf_led1cIzWXfQ', 9900, 9, 'A00131', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"浅蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 14, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (10, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386484403', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HIYiX-phXBu7QyEA3kYEXvMR67rApf_led1cIzWXfQ', 9900, 9, 'A00132', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"浅蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"M\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 15, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (11, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386302555', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HIYiX-phXBu7QyEA3kYEXvMR67rApf_led1cIzWXfQ', 9900, 9, 'A00133', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"浅蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"L\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 16, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (12, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386484402', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HIYiX-phXBu7QyEA3kYEXvMR67rApf_led1cIzWXfQ', 9900, 9, 'A00134', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"浅蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"XL\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 17, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (13, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386365666', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEyF1uUGZf1uXwm2u-Rb2bViQ8kl7wxwPr8OMyEx6Q', 9900, 9, 'A00141', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"深蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 18, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (14, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386365667', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEyF1uUGZf1uXwm2u-Rb2bViQ8kl7wxwPr8OMyEx6Q', 9900, 9, 'A00142', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"深蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"M\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 19, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (15, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386437870', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEyF1uUGZf1uXwm2u-Rb2bViQ8kl7wxwPr8OMyEx6Q', 9900, 9, 'A00143', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"深蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"L\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 20, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (16, 1, 100, 6, 5, '10000226806665', NULL, NULL, '3386302556', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HEyF1uUGZf1uXwm2u-Rb2bViQ8kl7wxwPr8OMyEx6Q', 9900, 9, 'A00144', NULL, 5, '[{\"attr_key\":\"颜色\",\"attr_value\":\"深蓝\"},{\"attr_key\":\"尺码\",\"attr_value\":\"XL\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 2, 21, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (17, 2, 100, 6, 5, '10000227212454', NULL, NULL, '3387757956', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 8900, 10, 'A20701', NULL, 5, '[{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 1, 1, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (18, 2, 100, 6, 5, '10000227212454', NULL, NULL, '3387796494', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 8900, 10, 'A20702', NULL, 5, '[{\"attr_key\":\"尺码\",\"attr_value\":\"M\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 1, 2, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (19, 2, 100, 6, 5, '10000227212454', NULL, NULL, '3387719364', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 8900, 10, 'A20703', NULL, 5, '[{\"attr_key\":\"尺码\",\"attr_value\":\"L\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 1, 3, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (20, 2, 100, 6, 5, '10000227212454', NULL, NULL, '3387885524', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 8900, 10, 'A20704', NULL, 5, '[{\"attr_key\":\"尺码\",\"attr_value\":\"XL\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 1, 4, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (21, 2, 100, 6, 5, '10000227212454', NULL, NULL, '3387753301', '', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 8900, 10, 'A20705', NULL, 5, '[{\"attr_key\":\"尺码\",\"attr_value\":\"2XL\"}]', '{\"stock_type\":0,\"full_payment_presale_delivery_type\":0,\"presale_begin_time\":0,\"presale_end_time\":0,\"full_payment_presale_delivery_time\":0}', 1, 5, 0, NULL, NULL);
+INSERT INTO `erp_shop_goods_sku` VALUES (22, 3, 100, 15, 3, '750805294208', NULL, NULL, '1737906457824', 'XDDA00101', 'https://img.pddpic.com/gaudit-image/2025-05-21/59da3f18489f24524859b4f45b4ecb96.jpeg', 0, 100, 'XDDA00101', '18W-25CM（白边框）', 1, '[{\"parent_name\":\"款式\",\"parent_id\":1218,\"spec_id\":24411532460,\"spec_name\":\"18W-25CM（白边框）\"}]', '', 3, 22, 100, '2025-05-21 19:02:51', NULL);
 
 -- ----------------------------
 -- Table structure for erp_shop_order
@@ -1043,6 +1040,7 @@ CREATE TABLE `erp_shop_order`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `tenant_id` bigint NOT NULL COMMENT '租户id',
   `shop_id` bigint NOT NULL COMMENT '店铺id',
+  `shop_type` int NOT NULL COMMENT '店铺类型',
   `order_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单号',
   `openid` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '买家身份标识',
   `create_time` int NULL DEFAULT NULL COMMENT '秒级时间戳',
@@ -1075,15 +1073,15 @@ CREATE TABLE `erp_shop_order`  (
   `confirm_time` datetime NULL DEFAULT NULL COMMENT '确认时间',
   `erp_send_status` int NULL DEFAULT NULL COMMENT 'erp发货状态',
   `erp_send_time` datetime NULL DEFAULT NULL COMMENT 'ERP发货时间',
+  `create_on` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_on` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_shop_order
 -- ----------------------------
-INSERT INTO `erp_shop_order` VALUES (1, 100, 6, '3727945891454531072', 'oVlvg5LH7hSceF9MjGy5GgwLS8sE', 1746595197, 1746596098, NULL, 250, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"prepay_id\":\"up_wx0713195870621235742aedee321e940000\",\"prepay_time\":1746595198}', 4450, 4450, 0, NULL, '齐**', '518101', '广东省', '深圳市', '宝安区', '****', '158****0119', '', '', 'null', 0, 'd6a28f4a7ccba1863c22668754ce8b83', '[]', 0, 'of-K9cW4L9xzEr--u7o_WMWVFqdcMgY4l7ttrFNkqs0dmBI22X9mEmsHGUvIlrz9bFCWwyD3pAfg', '{\"predict_commission_fee\":0}', 1, '2025-05-07 13:37:29', NULL, NULL);
-INSERT INTO `erp_shop_order` VALUES (2, 100, 6, '2009300499001', NULL, 1747357221, 0, NULL, 20, NULL, NULL, 8900, 8900, 0, 0, '启航', NULL, '广东省', '深圳市', '宝安区', '', '15818590119', NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, 1, '2025-05-16 09:00:26', 0, NULL);
-INSERT INTO `erp_shop_order` VALUES (3, 100, 6, '1009930999302', NULL, 1747378508, 0, NULL, 20, NULL, NULL, 9900, 9900, 0, 0, '启航a', NULL, '北京市', '市辖区', '东城区', '北京政府大楼 100 号', '15818590111', NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, 1, '2025-05-16 14:55:12', 0, NULL);
+INSERT INTO `erp_shop_order` VALUES (1, 100, 6, 5, '3727945891454531072', 'oVlvg5LH7hSceF9MjGy5GgwLS8sE', 1746595197, 1746596098, NULL, 250, '{\"aftersale_order_list\":[],\"on_aftersale_order_cnt\":0}', '{\"prepay_id\":\"up_wx0713195870621235742aedee321e940000\",\"prepay_time\":1746595198}', 4450, 4450, 0, NULL, '齐**', '518101', '广东省', '深圳市', '宝安区', '****', '158****0119', '', '', 'null', 0, 'd6a28f4a7ccba1863c22668754ce8b83', '[]', 0, 'of-K9cW4L9xzEr--u7o_WMWVFqdcMgY4l7ttrFNkqs0dmBI22X9mEmsHGUvIlrz9bFCWwyD3pAfg', '{\"predict_commission_fee\":0}', 1, '2025-05-07 13:37:29', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_shop_order_item
@@ -1093,6 +1091,7 @@ CREATE TABLE `erp_shop_order_item`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `tenant_id` bigint NOT NULL COMMENT '租户id',
   `shop_id` bigint NULL DEFAULT NULL COMMENT '店铺id',
+  `shop_type` int NOT NULL COMMENT '店铺类型',
   `shop_order_id` bigint NULL DEFAULT NULL COMMENT '外键id',
   `product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品spuid',
   `sku_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品skuid\r\n',
@@ -1120,15 +1119,17 @@ CREATE TABLE `erp_shop_order_item`  (
   `order_product_coupon_info_list` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品优惠券信息，逐步替换 order.order_detail.coupon_info',
   `erp_goods_id` bigint NOT NULL DEFAULT 0 COMMENT 'erp系统商品id',
   `erp_sku_id` bigint NOT NULL DEFAULT 0 COMMENT 'erp系统商品规格id',
+  `order_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单号',
+  `order_time` int NULL DEFAULT NULL COMMENT '下单时间',
+  `create_on` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_on` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_shop_order_item
 -- ----------------------------
-INSERT INTO `erp_shop_order_item` VALUES (2, 100, 6, 1, '10000227212454', '3387757956', 'https://wst.wxapp.tc.qq.com/161/20304/snscosdownload/SZ/reserved/681ae501000026f90b46d9131a2b5515000000a000004f50', 1, 4450, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 0, 0, 'A20701', 8900, '[{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', 4450, NULL, NULL, 'null', 4450, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":0}', 'null', NULL, '[]', 0, 0);
-INSERT INTO `erp_shop_order_item` VALUES (3, 100, 6, 2, '10000227212454', '3387753301', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBkkngG4j2Utl9HiMhfCsrBNvSN2MJFnzJR9oJH8PQ', 1, 8900, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 0, 0, 'A20705', 8900, '2XL', 8900, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 5);
-INSERT INTO `erp_shop_order_item` VALUES (4, 100, 6, 3, '10000226806665', '3386353837', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 1, 9900, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 0, 0, 'A00112', 9900, '黑色 M', 9900, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 7);
+INSERT INTO `erp_shop_order_item` VALUES (1, 100, 6, 5, 1, '10000227212454', '3387757956', 'https://wst.wxapp.tc.qq.com/161/20304/snscosdownload/SZ/reserved/681ae501000026f90b46d9131a2b5515000000a000004f50', 1, 4450, '牛仔短裤女a字裤紧身夏高腰显瘦ins辣妹风外穿包臀直筒弹力热裤子', 0, 0, 'A20701', 8900, '[{\"attr_key\":\"尺码\",\"attr_value\":\"S\"}]', 4450, NULL, NULL, 'null', 4450, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":0}', 'null', NULL, '[]', 0, 0, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_shop_platform
@@ -1143,12 +1144,14 @@ CREATE TABLE `erp_shop_platform`  (
   `redirect_uri` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台回调uri',
   `server_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接口访问地址',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_shop_platform
 -- ----------------------------
-INSERT INTO `erp_shop_platform` VALUES (5, '视频号小店', 'WEI', '', NULL, NULL, 'https://api.weixin.qq.com');
+INSERT INTO `erp_shop_platform` VALUES (3, '拼多多', 'PDD', NULL, NULL, NULL, NULL);
+INSERT INTO `erp_shop_platform` VALUES (5, '微信小店', 'WEI', '', NULL, NULL, 'https://api.weixin.qq.com');
+INSERT INTO `erp_shop_platform` VALUES (9, '其他渠道', 'QT', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_shop_pull_lasttime
@@ -1193,13 +1196,14 @@ CREATE TABLE `erp_shop_pull_logs`  (
   `pull_time` datetime NULL DEFAULT NULL COMMENT '拉取时间',
   `duration` bigint NULL DEFAULT NULL COMMENT '耗时（毫秒）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '更新日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '更新日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_shop_pull_logs
 -- ----------------------------
 INSERT INTO `erp_shop_pull_logs` VALUES (1, 6, 1, 5, 'ORDER', '主动拉取', '{startTime:2025-05-07T15:33:11,endTime:2025-05-07T18:44:50.345775861}', '{insert:0,update:0,fail:0}', '2025-05-07 18:44:50', 631);
 INSERT INTO `erp_shop_pull_logs` VALUES (2, 6, 1, 5, 'REFUND', '主动拉取', '{startTime:2025-05-06T10:47:25.707072297,endTime:2025-05-07T10:47:25.707072297}', '{insert:0,update:0,fail:0}', '2025-05-07 18:47:25', 596);
+INSERT INTO `erp_shop_pull_logs` VALUES (3, 15, 100, 3, 'GOODS', '主动拉取', '{}', '{insert:0,update:0,fail:0}', '2025-05-21 19:02:13', 3);
 
 -- ----------------------------
 -- Table structure for erp_shop_refund
@@ -1258,16 +1262,8 @@ CREATE TABLE `erp_shop_task`  (
 -- ----------------------------
 -- Records of erp_shop_task
 -- ----------------------------
-INSERT INTO `erp_shop_task` VALUES (1, '拉取淘宝订单', '-', NULL, '定时更新淘宝订单', '2024-03-07 09:52:40');
-INSERT INTO `erp_shop_task` VALUES (2, '拉取京东POP订单', '-', NULL, '拉取京东POP订单', '2024-03-07 09:23:36');
-INSERT INTO `erp_shop_task` VALUES (3, '拉取拼多多订单', '-', NULL, '定时拉取拼多多订单', '2024-04-09 11:24:14');
-INSERT INTO `erp_shop_task` VALUES (4, '拉取抖店订单', '-', NULL, '定时拉取抖店订单', '2024-04-09 11:24:54');
-INSERT INTO `erp_shop_task` VALUES (5, '拉取天猫退款', '-', NULL, '定时拉取天猫退款', '2024-04-09 11:25:43');
-INSERT INTO `erp_shop_task` VALUES (6, '拉取京东售后', '-', NULL, '定时拉取京东售后', '2024-04-09 11:26:26');
-INSERT INTO `erp_shop_task` VALUES (7, '拉取拼多多退款', '-', NULL, '定时拉取拼多多退款', '2024-04-09 11:27:01');
-INSERT INTO `erp_shop_task` VALUES (8, '拉取抖店退款', '-', NULL, '定时拉取抖店退款', '2024-04-09 11:27:38');
-INSERT INTO `erp_shop_task` VALUES (11, '拉取京东自营订单', '-', NULL, '拉取京东自营订单', '2024-05-27 10:57:44');
-INSERT INTO `erp_shop_task` VALUES (12, '拉取京东自营退货', '-', NULL, '拉取京东自营退货', NULL);
+INSERT INTO `erp_shop_task` VALUES (1, '拉取店铺订单', '-', NULL, '定拉取店铺订单-微信小店', '2024-03-07 09:52:40');
+INSERT INTO `erp_shop_task` VALUES (2, '拉取店铺退款', '-', NULL, '定拉取店铺退款-微信小店', '2024-03-07 09:23:36');
 INSERT INTO `erp_shop_task` VALUES (21, '推送待发货订单到ERP', '-', NULL, '推送待发货订单到ERP', '2024-04-22 15:48:48');
 INSERT INTO `erp_shop_task` VALUES (22, '推送待处理售后到ERP', '-', NULL, '推送待处理售后到ERP', '2024-04-22 15:48:48');
 INSERT INTO `erp_shop_task` VALUES (23, '推送已取消的订单到ERP', '-', NULL, '推送已取消的订单到ERP', '2024-05-29 17:57:02');
@@ -1763,7 +1759,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2093 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2095 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -1773,9 +1769,9 @@ INSERT INTO `sys_menu` VALUES (2, '采购管理', 0, 7, 'scm', '', '', 1, 0, 'M'
 INSERT INTO `sys_menu` VALUES (3, '订单管理', 0, 2, 'order', '', '', 1, 0, 'M', '0', '0', '', 'shopping', 'admin', '2023-12-29 16:53:03', 'admin', '2024-04-10 11:02:32', '');
 INSERT INTO `sys_menu` VALUES (4, '发货管理', 0, 3, 'ship', '', '', 1, 0, 'M', '0', '0', '', 'excel', 'admin', '2024-01-01 14:08:04', 'admin', '2024-04-10 11:10:31', '');
 INSERT INTO `sys_menu` VALUES (5, '售后处理', 0, 4, 'after_sale', NULL, NULL, 1, 0, 'M', '0', '0', '', 'clipboard', 'admin', '2024-01-03 14:23:55', 'admin', '2025-04-17 12:18:27', '');
-INSERT INTO `sys_menu` VALUES (6, '库存管理', 0, 5, 'stock', '', '', 1, 0, 'M', '0', '0', '', 'chart', 'admin', '2023-12-31 12:14:33', 'admin', '2025-05-17 15:41:10', '');
-INSERT INTO `sys_menu` VALUES (7, '店铺设置', 0, 1, 'shop', '', '', 1, 0, 'M', '0', '0', '', 'theme', 'admin', '2023-12-29 17:07:23', 'admin', '2025-05-19 14:59:18', '');
-INSERT INTO `sys_menu` VALUES (8, '商品管理', 0, 6, 'goods', '', '', 1, 0, 'M', '0', '0', '', 'theme', 'admin', '2023-12-29 13:29:44', 'admin', '2025-05-19 14:59:03', '');
+INSERT INTO `sys_menu` VALUES (6, '库存管理', 0, 5, 'stock', '', '', 1, 0, 'M', '0', '0', '', 'chart', 'admin', '2023-12-31 12:14:33', 'admin', '2025-05-17 11:44:35', '');
+INSERT INTO `sys_menu` VALUES (7, '店铺设置', 0, 1, 'shop', '', '', 1, 0, 'M', '0', '0', '', 'theme', 'admin', '2023-12-29 17:07:23', 'admin', '2025-05-19 06:55:10', '');
+INSERT INTO `sys_menu` VALUES (8, '商品库', 0, 6, 'goods', '', '', 1, 0, 'M', '0', '0', '', 'theme', 'admin', '2023-12-29 13:29:44', 'admin', '2025-05-19 07:25:51', '');
 INSERT INTO `sys_menu` VALUES (9, '费用管理', 0, 10, 'fms', '', '', 1, 0, 'M', '1', '0', '', 'money', 'admin', '2023-12-29 13:29:44', 'admin', '2025-04-19 10:19:58', '');
 INSERT INTO `sys_menu` VALUES (100, '用户管理', 1, 1, 'user', 'system/user/index', '', 1, 0, 'C', '0', '0', 'system:user:list', 'user', 'admin', '2023-12-27 15:00:27', '', '', '用户管理菜单');
 INSERT INTO `sys_menu` VALUES (101, '角色管理', 1, 2, 'role', 'system/role/index', '', 1, 0, 'C', '0', '0', 'system:role:list', 'peoples', 'admin', '2023-12-27 15:00:27', '', '', '角色管理菜单');
@@ -1816,7 +1812,7 @@ INSERT INTO `sys_menu` VALUES (2012, '采购物流管理', 2, 2, 'purchase/ship'
 INSERT INTO `sys_menu` VALUES (2019, '采购账单管理', 9, 3, 'purchase_bill', 'scm/purchase/bill', '', 1, 0, 'C', '0', '0', '', 'money', 'admin', '2023-12-29 17:09:32', 'admin', '2025-04-17 12:24:24', '');
 INSERT INTO `sys_menu` VALUES (2021, '创建采购单', 2, 101, 'purchase/order/create', 'scm/purchase/order/create', '', 1, 0, 'C', '1', '0', '', 'edit', 'admin', '2023-12-29 21:23:45', 'admin', '2024-04-21 11:44:03', '');
 INSERT INTO `sys_menu` VALUES (2025, '采购订单详情', 2, 102, 'purchase/order/detail', 'scm/purchase/order/detail', '', 1, 0, 'C', '1', '0', '', 'button', 'admin', '2023-12-30 17:08:01', 'admin', '2024-04-21 11:04:50', '');
-INSERT INTO `sys_menu` VALUES (2027, '商品入库管理', 6, 10, 'stock_in/list', 'wms/stockIn/index', '', 1, 0, 'C', '0', '0', 'wms:stock_in_entry:list', 'stockin', 'admin', '2023-12-31 12:27:37', 'admin', '2025-05-18 12:01:01', '');
+INSERT INTO `sys_menu` VALUES (2027, '商品入库管理', 6, 10, 'stock_in/list', 'wms/stockIn', '', 1, 0, 'C', '0', '0', 'wms:stock_in_entry:list', 'stockin', 'admin', '2023-12-31 12:27:37', 'admin', '2025-05-18 07:30:26', '');
 INSERT INTO `sys_menu` VALUES (2028, '生成采购入库单', 2, 103, 'purchase/ship/create_stock_in_entry', 'scm/purchase/ship/create_stock_in_entry', '', 1, 0, 'C', '1', '0', '', 'button', 'admin', '2023-12-31 12:31:32', 'admin', '2024-04-21 11:05:53', '');
 INSERT INTO `sys_menu` VALUES (2029, '店铺售后管理', 5, 2, 'shop_refund', 'shop/refund/index', '', 1, 0, 'C', '0', '0', '', 'clipboard', 'admin', '2023-12-31 17:29:03', 'admin', '2025-04-17 12:20:16', '');
 INSERT INTO `sys_menu` VALUES (2033, '订单库', 3, 1, 'list', 'order/index', '', 1, 0, 'C', '0', '0', '', 'list', 'admin', '2023-12-31 20:05:05', 'admin', '2025-04-19 10:45:33', '');
@@ -1825,32 +1821,32 @@ INSERT INTO `sys_menu` VALUES (2036, '店铺订单管理', 3, 10, 'shop_order', 
 INSERT INTO `sys_menu` VALUES (2041, '订单补发', 5, 6, 'order_ship_again', 'afterSale/shipAgain', NULL, 1, 0, 'C', '0', '0', '', 'checkbox', 'admin', '2024-01-02 14:11:34', 'admin', '2024-04-10 11:28:26', '');
 INSERT INTO `sys_menu` VALUES (2042, '订单拦截', 5, 3, 'order_intercept', 'afterSale/intercept', NULL, 1, 0, 'C', '0', '0', '', 'edit', 'admin', '2024-01-02 14:11:56', 'admin', '2024-04-10 11:28:32', '');
 INSERT INTO `sys_menu` VALUES (2044, '订单换货', 5, 5, 'order_exchange', 'afterSale/exchange', NULL, 1, 0, 'C', '0', '0', '', 'skill', 'admin', '2024-01-03 09:18:53', 'admin', '2024-04-10 11:30:38', '');
-INSERT INTO `sys_menu` VALUES (2046, '商品出库管理', 6, 25, 'stock_out/list', 'wms/stockOut/index', NULL, 1, 0, 'C', '0', '0', '', 'link', 'admin', '2024-01-03 11:00:53', 'admin', '2025-05-18 12:02:28', '');
-INSERT INTO `sys_menu` VALUES (2047, '商品库存查询', 6, 6, 'goodsInventory', 'goods/goodsInventory', NULL, 1, 0, 'C', '0', '0', '', 'monitor', 'admin', '2024-01-03 11:01:14', 'admin', '2025-05-17 15:43:13', '');
+INSERT INTO `sys_menu` VALUES (2046, '商品出库管理', 6, 25, 'stock_out/list', 'wms/stockOut', NULL, 1, 0, 'C', '0', '0', '', 'link', 'admin', '2024-01-03 11:00:53', 'admin', '2025-05-18 07:30:42', '');
+INSERT INTO `sys_menu` VALUES (2047, '商品库存查询', 6, 6, 'goodsInventory', 'goods/goodsInventory', NULL, 1, 0, 'C', '0', '0', '', 'monitor', 'admin', '2024-01-03 11:01:14', 'admin', '2025-05-17 11:45:09', '');
 INSERT INTO `sys_menu` VALUES (2049, '打单&发货', 4, 10, 'ewaybillPrint', 'shipping/ewaybillPrint/index', NULL, 1, 0, 'C', '0', '0', '', 'guide', 'admin', '2024-01-03 14:09:18', 'admin', '2025-04-26 15:55:30', '');
 INSERT INTO `sys_menu` VALUES (2051, '发货记录', 4, 104, 'logs', 'shipping/logs/index', NULL, 1, 0, 'C', '0', '0', '', 'email', 'admin', '2024-01-03 14:13:12', 'admin', '2025-04-26 16:02:40', '');
 INSERT INTO `sys_menu` VALUES (2054, '售后处理', 5, 1, 'refund_list', 'refund/index', NULL, 1, 0, 'C', '1', '0', '', 'size', 'admin', '2024-01-03 14:24:36', 'admin', '2025-04-17 12:17:13', '');
-INSERT INTO `sys_menu` VALUES (2059, '备货中', 4, 101, 'stock_up', 'shipping/stock_up', '', 1, 0, 'C', '0', '0', '', 'component', 'admin', '2024-01-09 11:51:52', 'admin', '2025-05-17 10:30:27', '');
-INSERT INTO `sys_menu` VALUES (2060, '拣货出库', 4, 102, 'stockout', 'wms/orderShipping/stockOut', NULL, 1, 0, 'C', '0', '1', '', 'bug', 'admin', '2024-01-09 13:39:00', 'admin', '2025-05-17 13:42:01', '');
-INSERT INTO `sys_menu` VALUES (2061, '仓库仓位管理', 6, 69, 'stock_location', 'wms/location', NULL, 1, 0, 'C', '0', '0', '', 'education', 'admin', '2024-01-09 13:54:30', 'admin', '2025-05-18 13:16:57', '');
+INSERT INTO `sys_menu` VALUES (2059, '备货中', 4, 101, 'stocking', 'shipping/stock_up/', '', 1, 0, 'C', '0', '0', '', 'component', 'admin', '2024-01-09 11:51:52', 'admin', '2025-05-17 04:58:59', '');
+INSERT INTO `sys_menu` VALUES (2060, '拣货出库', 4, 102, 'stockout', 'wms/orderShipping/stockOut', NULL, 1, 0, 'C', '1', '0', '', 'bug', 'admin', '2024-01-09 13:39:00', 'admin', '2025-04-26 16:03:21', '');
+INSERT INTO `sys_menu` VALUES (2061, '仓库仓位设置', 6, 99, 'stock_location', 'wms/location', NULL, 1, 0, 'C', '0', '0', '', 'education', 'admin', '2024-01-09 13:54:30', 'admin', '2025-05-18 07:55:20', '');
 INSERT INTO `sys_menu` VALUES (2062, '代发账单管理', 9, 4, 'agent_ship_bill', 'shipping/agent/shipBill', NULL, 1, 0, 'C', '0', '0', '', 'money', 'admin', '2024-01-12 18:35:02', 'admin', '2025-04-17 12:23:33', '');
 INSERT INTO `sys_menu` VALUES (2063, '物流费用', 9, 100, 'shipFee', 'fms/payable/shipFee', NULL, 1, 0, 'C', '0', '0', '', 'guide', 'admin', '2024-01-12 18:35:31', 'admin', '2025-04-17 12:23:45', '');
 INSERT INTO `sys_menu` VALUES (2066, '添加商品', 8, 2, 'create', 'goods/create', NULL, 1, 0, 'C', '1', '0', '', 'component', 'admin', '2024-01-14 19:42:11', 'admin', '2024-04-10 11:33:33', '');
 INSERT INTO `sys_menu` VALUES (2067, '商品SKU管理', 8, 3, 'sku_list', 'goods/spec', NULL, 1, 0, 'C', '1', '0', '', 'theme', 'admin', '2024-01-16 14:17:39', 'admin', '2025-04-15 22:07:31', '');
-INSERT INTO `sys_menu` VALUES (2068, '店铺商品管理', 8, 1, 'shop_goods/list', 'shop/goods', NULL, 1, 0, 'C', '0', '0', '', 'example', 'admin', '2024-01-28 11:23:36', 'admin', '2025-04-17 12:15:54', '');
+INSERT INTO `sys_menu` VALUES (2068, '店铺商品管理', 7, 10, 'shop_goods/list', 'shop/goods', NULL, 1, 0, 'C', '0', '0', '', 'example', 'admin', '2024-01-28 11:23:36', 'admin', '2025-05-19 07:26:04', '');
 INSERT INTO `sys_menu` VALUES (2072, '店铺管理', 7, 2, 'list', 'shop/index', NULL, 1, 0, 'C', '0', '0', '', 'clipboard', 'admin', '2024-01-28 11:29:21', 'admin', '2024-04-10 11:00:21', '');
 INSERT INTO `sys_menu` VALUES (2081, 'API拉取日志', 7, 999, 'pull_log', 'shop/order/pull_log', NULL, 1, 0, 'C', '0', '0', '', 'component', 'admin', '2024-04-21 11:08:55', 'admin', '2025-05-07 11:09:40', '');
 INSERT INTO `sys_menu` VALUES (2082, '售后设置', 5, 10, 'set', NULL, NULL, 1, 0, 'C', '0', '1', '', '404', 'admin', '2024-04-21 11:11:09', 'admin', '2025-04-17 12:17:53', '');
-INSERT INTO `sys_menu` VALUES (2083, '库存日志', 6, 99, 'logs', NULL, NULL, 1, 0, 'C', '0', '1', '', 'bug', 'admin', '2024-04-21 11:12:07', 'admin', '2025-05-17 15:43:01', '');
+INSERT INTO `sys_menu` VALUES (2083, '库存日志', 6, 99, 'logs', NULL, NULL, 1, 0, 'C', '0', '1', '', 'bug', 'admin', '2024-04-21 11:12:07', 'admin', '2025-05-06 04:45:39', '');
 INSERT INTO `sys_menu` VALUES (2085, '商品分类属性', 8, 90, 'category_attr', 'goods/category/categoryAttribute', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2024-04-21 14:29:04', 'admin', '2024-04-21 14:40:53', '');
 INSERT INTO `sys_menu` VALUES (2086, '分类属性值', 8, 91, 'category_attr_val', 'goods/category/categoryAttributeValue', NULL, 1, 0, 'C', '1', '0', '', 'clipboard', 'admin', '2024-04-21 15:13:03', 'admin', '2024-04-21 15:13:54', '');
-INSERT INTO `sys_menu` VALUES (2088, '手动添加订单', 3, 9, 'create', 'order/create', NULL, 1, 0, 'C', '1', '1', '', 'form', 'admin', '2025-04-19 10:57:29', 'admin', '2025-05-16 08:56:15', '');
-INSERT INTO `sys_menu` VALUES (2089, '手动添加店铺订单', 3, 11, 'shop_order_create', 'shop/order/create', NULL, 1, 0, 'C', '1', '0', '', 'clipboard', 'admin', '2025-04-26 10:02:11', 'admin', '2025-04-26 10:02:59', '');
+INSERT INTO `sys_menu` VALUES (2088, '手动添加订单', 3, 9, 'create', 'order/create', NULL, 1, 0, 'C', '1', '1', '', 'form', 'admin', '2025-04-19 10:57:29', 'admin', '2025-05-16 01:35:47', '');
+INSERT INTO `sys_menu` VALUES (2089, '手动创建订单', 3, 11, 'shop_order_create', 'shop/order/create', NULL, 1, 0, 'C', '0', '0', '', 'clipboard', 'admin', '2025-04-26 10:02:11', 'admin', '2025-05-22 15:00:44', '');
 INSERT INTO `sys_menu` VALUES (2090, '发货设置', 4, 105, 'setting', 'shipping/set/index', NULL, 1, 0, 'C', '0', '0', NULL, 'dict', 'admin', '2025-04-26 18:48:29', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2091, '新增入库单', 6, 11, 'stock_in/create', 'wms/stockIn/create', NULL, 1, 0, 'C', '1', '0', '', 'edit', 'admin', '2025-05-18 11:59:31', 'admin', '2025-05-18 18:03:17', '');
-INSERT INTO `sys_menu` VALUES (2092, '仓位管理', 6, 69, 'position', 'wms/location/position', NULL, 1, 0, 'C', '1', '0', NULL, 'bug', 'admin', '2025-05-18 13:17:46', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2093, '新建出库单', 6, 26, 'stock_out/create', 'wms/stockOut/create', NULL, 1, 0, 'C', '1', '0', NULL, '#', 'admin', '2025-05-18 18:04:06', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2094, '自动任务设置', 7, 3, 'task_list', 'system/task/index', NULL, 1, 0, 'C', '0', '0', NULL, 'bug', 'admin', '2025-05-19 15:00:33', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2091, '自动任务设置', 7, 80, 'task_set', 'system/task/index', NULL, 1, 0, 'C', '0', '0', '', 'bug', 'admin', '2025-05-08 06:04:20', 'admin', '2025-05-19 07:26:24', '');
+INSERT INTO `sys_menu` VALUES (2092, '新建入库单', 6, 11, 'stock_in/create', 'wms/stockIn/create', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2025-05-18 07:32:36', 'admin', '2025-05-18 10:54:07', '');
+INSERT INTO `sys_menu` VALUES (2093, '仓位管理', 6, 100, 'position', 'wms/location/position', NULL, 1, 0, 'C', '1', '0', NULL, '#', 'admin', '2025-05-18 08:01:47', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2094, '新建出库单', 6, 26, 'stock_out/create', 'wms/stockOut/create', NULL, 1, 0, 'C', '1', '0', NULL, '#', 'admin', '2025-05-18 10:53:35', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -2126,46 +2122,13 @@ CREATE TABLE `sys_user`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   `wx_open_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '登陆微信openid',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 134 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 168 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$MkBdzADGzLxAqopkmh3vDu0oA5bxgHWcg173AVni9Rr9MFQtnjplK', '0', '2025-04-01', '0', '127.0.0.1', '2025-05-19 14:58:49', 'admin', '2023-08-07 19:31:37', '', '2025-05-19 14:58:49', '管理员', NULL);
-INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-05-18 16:35:20', 'admin', '2024-04-21 10:36:49', 'admin', '2025-05-18 16:35:20', NULL, NULL);
-INSERT INTO `sys_user` VALUES (101, NULL, '15818590119', '试用会员0119', '00', '', '', '0', '', '$2a$10$yMgN6PZKiuafBVHaEHhk3OoSQ5o98xVG8RHEs2sg5.Yv/TEQuR/86', '0', '2025-05-17', '0', '113.118.102.209', '2025-04-17 21:13:06', '主动注册', '2025-04-17 13:13:04', '', '2025-04-17 13:13:05', NULL, NULL);
-INSERT INTO `sys_user` VALUES (102, NULL, '15286902105', '试用会员2105', '00', '', '', '0', '', '$2a$10$nbDujbCk2SrdamYRHr217ORRipaa5p5lVMVFctBU6fPt/rd3k.5E.', '0', '2025-05-17', '0', '114.86.55.0', '2025-04-17 21:16:37', '主动注册', '2025-04-17 13:16:36', '', '2025-04-17 13:16:37', NULL, NULL);
-INSERT INTO `sys_user` VALUES (103, NULL, '13335117173', '试用会员7173', '00', '', '', '0', '', '$2a$10$oPYmtdGZ1rYNUCFpKaaIYOr1Z7mAtVAXmWrqyEj2qhAA.nqD2xjeC', '0', '2025-05-17', '0', '119.185.23.133', '2025-04-17 23:29:48', '主动注册', '2025-04-17 13:43:51', '', '2025-04-17 15:29:48', NULL, NULL);
-INSERT INTO `sys_user` VALUES (104, NULL, '18300003743', '试用会员3743', '00', '', '', '0', '', '$2a$10$yFjV6iFRMAwc2CzV5C9uoOnK2QDCe5wWxtoajlps5ojbLcPpEYpOa', '0', '2025-05-17', '0', '113.89.149.8', '2025-05-07 11:18:08', '主动注册', '2025-04-17 14:14:38', '', '2025-05-07 03:18:08', NULL, NULL);
-INSERT INTO `sys_user` VALUES (105, NULL, '15305871631', '试用会员1631', '00', '', '', '0', '', '$2a$10$gYDhJNlPlEVORzmOW2lLwOM/TmtowLR6DCZGFe9r2ckHfPT9wFi0y', '0', '2025-05-17', '0', '220.190.47.229', '2025-04-25 06:38:00', '主动注册', '2025-04-17 14:28:08', '', '2025-04-24 22:37:59', NULL, NULL);
-INSERT INTO `sys_user` VALUES (106, NULL, '18937638598', '试用会员8598', '00', '', '', '0', '', '$2a$10$xBP3XJMZ1fCraIls7kTJg.O7i2JxVKNFacgviEjPwm.eT1jPYG632', '0', '2025-05-18', '0', '219.157.244.44', '2025-04-18 09:02:07', '主动注册', '2025-04-18 01:02:06', '', '2025-04-18 01:02:06', NULL, NULL);
-INSERT INTO `sys_user` VALUES (107, NULL, '15819801110', '试用会员1110', '00', '', '', '0', '', '$2a$10$u.nYY54x/mZ1majhnM8D6.fXgK7u1tE70zWk830GFhiXv7.NUcl5e', '0', '2025-05-18', '0', '113.84.160.75', '2025-04-18 09:16:45', '主动注册', '2025-04-18 01:16:44', '', '2025-04-18 01:16:45', NULL, NULL);
-INSERT INTO `sys_user` VALUES (108, NULL, '15727783004', '试用会员3004', '00', '', '', '0', '', '$2a$10$Y1q6g1dxUhb0lI/roPPaXu7cRFkecErzoFgGMpotYvc4y0pJ7jU2G', '0', '2025-05-18', '0', '182.98.51.20', '2025-04-18 14:24:36', '主动注册', '2025-04-18 02:16:46', '', '2025-04-18 06:24:36', NULL, NULL);
-INSERT INTO `sys_user` VALUES (109, NULL, '13519172625', '试用会员2625', '00', '', '', '0', '', '$2a$10$uka7jZ2HxFjnSn/tp1wSd.j3q2Y/zHSou985Iy0zzOUQkYNNTSbqS', '0', '2025-05-18', '0', '1.83.163.132', '2025-04-18 16:40:34', '主动注册', '2025-04-18 06:03:57', '', '2025-04-18 08:40:34', NULL, NULL);
-INSERT INTO `sys_user` VALUES (110, NULL, '18620057602', '试用会员7602', '00', '', '', '0', '', '$2a$10$/Vc3F5C3xIv6sRX21lu5U.HZX7HrHKdBx2kJiJc/OUkYc.7AK8qUi', '0', '2025-05-19', '0', '14.19.153.73', '2025-04-19 11:24:01', '主动注册', '2025-04-19 03:23:59', '', '2025-04-19 03:24:00', NULL, NULL);
-INSERT INTO `sys_user` VALUES (111, NULL, '13168958901', '试用会员8901', '00', '', '', '0', '', '$2a$10$w18kdW8Uv/IuWqD0Z.EEh.nuuXcaQNy2VC4Z3A1f9j59YGapYX01G', '0', '2025-05-21', '0', '113.77.105.207', '2025-04-21 18:24:41', '主动注册', '2025-04-21 10:24:40', '', '2025-04-21 10:24:40', NULL, NULL);
-INSERT INTO `sys_user` VALUES (112, NULL, '15080888666', '试用会员8666', '00', '', '', '0', '', '$2a$10$1pLlarRrg5/dr2NZb09VJ.wyHzyOzEE5a3rhJZ2/.vW81JreEAYvG', '0', '2025-05-22', '0', '120.36.152.6', '2025-04-22 11:28:41', '主动注册', '2025-04-22 03:28:01', '', '2025-04-22 03:28:40', NULL, NULL);
-INSERT INTO `sys_user` VALUES (113, NULL, '17662054245', '试用会员4245', '00', '', '', '0', '', '$2a$10$rYkYUeExAwYFpUZ9C6LxleWZgB9Tlaaoqb7jAvtUpD5fkoEbLK7l.', '0', '2025-05-22', '0', '120.224.34.115', '2025-04-22 15:15:05', '主动注册', '2025-04-22 07:15:04', '', '2025-04-22 07:15:04', NULL, NULL);
-INSERT INTO `sys_user` VALUES (114, NULL, '18869942679', '试用会员2679', '00', '', '', '0', '', '$2a$10$T0ea40Kqb49ykzLk8CbT1uyRXGyDHWaKV...NM/GOg63U9AoV7hqy', '0', '2025-05-23', '0', '183.147.111.124', '2025-04-23 12:45:43', '主动注册', '2025-04-23 04:45:42', '', '2025-04-23 04:45:43', NULL, NULL);
-INSERT INTO `sys_user` VALUES (115, NULL, '13523523345', '试用会员3345', '00', '', '', '0', '', '$2a$10$HW6N6nJ1g6DiyNxu2oWJXO8HZketH/DjhPfD26RTG2vHDd1Hkypz2', '0', '2025-05-23', '0', '223.104.41.14', '2025-04-23 16:27:04', '主动注册', '2025-04-23 08:26:58', '', '2025-04-23 08:27:04', NULL, NULL);
-INSERT INTO `sys_user` VALUES (116, NULL, '18768983782', '试用会员3782', '00', '', '', '0', '', '$2a$10$RgsPnMPj1HvYbqEPHtOxBuIg2GZj/ENE8V5cDkG3TAYA50/w7G9OO', '0', '2025-05-24', '0', '113.116.16.8', '2025-04-24 15:14:36', '主动注册', '2025-04-24 07:14:34', '', '2025-04-24 07:14:35', NULL, NULL);
-INSERT INTO `sys_user` VALUES (117, NULL, 'qi', '微信公众号扫码登录用户', '00', '', '', '0', '', '$2a$10$rYujjrj.ZHCXDANtdYnHXeE2fNus9n49OGjFo4cvEZTvXQ7BcNC4O', '0', '2025-05-28', '0', '121.34.200.232', '2025-04-28 09:02:46', '微信公众号扫码登录', '2025-04-28 00:59:06', '', '2025-04-28 01:02:46', NULL, NULL);
-INSERT INTO `sys_user` VALUES (118, NULL, 'user20250428011043174', '微信公众号扫码登录用户', '00', '', '', '0', '', '$2a$10$WOvLWru9OXee8LdvPYhNoul9/.xXwqkapF.UQlnhshEbtAm1F2tJ.', '0', '2025-05-28', '0', '', NULL, '微信公众号扫码登录', '2025-04-28 01:10:43', '', NULL, NULL, NULL);
-INSERT INTO `sys_user` VALUES (119, NULL, '16630602542', '试用会员2542', '00', '', '', '0', '', '$2a$10$Ibd7eyEprMRf7GqMVFmAf.gp0iFVP2/L3c9zMA5DHdLDJBCfiwWoa', '0', '2025-05-28', '0', '27.222.208.225', '2025-04-29 01:09:43', '主动注册', '2025-04-28 17:09:41', '', '2025-04-28 17:09:42', NULL, NULL);
-INSERT INTO `sys_user` VALUES (120, NULL, '18213075634', '试用会员5634', '00', '', '', '0', '', '$2a$10$lf1s961Wb7hx1qDRvJd6i./gm294edUQngZJBjPjiH0ZEbQ/5LCki', '0', '2025-05-29', '0', '183.225.26.25', '2025-04-29 11:59:49', '主动注册', '2025-04-29 03:59:48', '', '2025-04-29 03:59:49', NULL, NULL);
-INSERT INTO `sys_user` VALUES (121, NULL, '18219352013', '试用会员2013', '00', '', '', '0', '', '$2a$10$W6v1m7jtV5q9TF/EBD/tDeQ6VBleR45YxaYkmT/koq8.rcm/Bboaa', '0', '2025-05-29', '0', '119.123.55.188', '2025-04-29 16:36:10', '主动注册', '2025-04-29 08:36:09', '', '2025-04-29 08:36:10', NULL, NULL);
-INSERT INTO `sys_user` VALUES (122, NULL, '15994800846', '试用会员0846', '00', '', '', '0', '', '$2a$10$RTlD9ZHK4r29veljrFhC9OCtSi9Na6PwlsxZqQSp1t3s5SS0Sq51C', '0', '2025-05-30', '0', '119.123.0.29', '2025-04-30 13:38:20', '主动注册', '2025-04-30 03:11:37', '', '2025-04-30 05:38:19', NULL, NULL);
-INSERT INTO `sys_user` VALUES (123, NULL, '18194334633', '试用会员4633', '00', '', '', '0', '', '$2a$10$X9GMUKNfyBsZJoat43k3IeDo9P029.fvwdB4pwLedmnEVhktdEhRW', '0', '2025-06-05', '0', '124.90.166.57', '2025-05-05 19:04:57', '主动注册', '2025-05-05 11:03:11', '', '2025-05-05 11:04:57', NULL, NULL);
-INSERT INTO `sys_user` VALUES (124, NULL, 'user20250505110433029', '微信公众号扫码登录用户', '00', '', '', '0', '', '$2a$10$WARV7E3H.boQpss7GCdldOdcoFtLo0HSD/zX2CTw5Yiw.NUfgoYH6', '0', '2025-06-05', '0', '', NULL, '微信公众号扫码登录', '2025-05-05 11:04:33', '', NULL, NULL, NULL);
-INSERT INTO `sys_user` VALUES (125, NULL, '15099999999', '试用会员9999', '00', '', '', '0', '', '$2a$10$FHiGSHGIUI8rjc21ge9FPeVzxH0JY7bBJWI.VGf7ZygNmF8DAxh2O', '0', '2025-06-06', '0', '183.226.184.23', '2025-05-06 10:39:40', '主动注册', '2025-05-06 02:39:38', '', '2025-05-06 02:39:39', NULL, NULL);
-INSERT INTO `sys_user` VALUES (126, NULL, '18025168556', '试用会员8556', '00', '', '', '0', '', '$2a$10$Z0Ghvqpqm0D1Nua/wmMeVuAzEPRyd9UxA2/THZFzmYBpVAsjjQbJO', '0', '2025-06-06', '0', '116.18.90.243', '2025-05-06 11:20:54', '主动注册', '2025-05-06 03:20:53', '', '2025-05-06 03:20:54', NULL, NULL);
-INSERT INTO `sys_user` VALUES (127, NULL, '15251918207', '试用会员8207', '00', '', '', '0', '', '$2a$10$KpbrpVFy6T.knJRJ31vfx.BkexJsPmyqqP9/Af12XZhQZodFnThoi', '0', '2025-06-06', '0', '111.121.44.63', '2025-05-06 12:42:42', '主动注册', '2025-05-06 04:42:41', '', '2025-05-06 04:42:42', NULL, NULL);
-INSERT INTO `sys_user` VALUES (128, NULL, '18681457229', '试用会员7229', '00', '', '', '0', '', '$2a$10$BhQ9qaYrLEiinWQ6BsxNlOdR4L5k/v9yQLvUJGX8IDVU5GQjPLxyS', '0', '2025-06-06', '0', '116.25.95.207', '2025-05-06 18:30:20', '主动注册', '2025-05-06 10:30:19', '', '2025-05-06 10:30:20', NULL, NULL);
-INSERT INTO `sys_user` VALUES (129, NULL, '18217781090', '试用会员1090', '00', '', '', '0', '', '$2a$10$bUv8JWymv9vaQNDZzBWKDuGRjKlrFgtQ5/2HDGesLOXcg9MagspYO', '0', '2025-06-06', '0', '185.97.114.120', '2025-05-06 20:27:11', '主动注册', '2025-05-06 12:27:09', '', '2025-05-06 12:27:10', NULL, NULL);
-INSERT INTO `sys_user` VALUES (130, NULL, '13718612885', '试用会员2885', '00', '', '', '0', '', '$2a$10$scDWHmG1ks05tYY/ExqOsu1/2W8ny7AjuOzutjWWXpEn0sfWIU.s2', '0', '2025-06-06', '0', '111.202.148.159', '2025-05-06 22:17:21', '主动注册', '2025-05-06 14:17:20', '', '2025-05-06 14:17:21', NULL, NULL);
-INSERT INTO `sys_user` VALUES (131, NULL, '18666140014', '试用会员0014', '00', '', '', '0', '', '$2a$10$BrJd/yt0W30plZMwUuuw7e3.lKnS1nmdmqT5TaO6hoyYmDPmtSdaa', '0', '2025-06-07', '0', '125.89.64.58', '2025-05-07 10:11:47', '主动注册', '2025-05-07 02:11:46', '', '2025-05-07 02:11:47', NULL, NULL);
-INSERT INTO `sys_user` VALUES (132, NULL, '15999999999', '试用会员9999', '00', '', '', '0', '', '$2a$10$XeB73vRwlS4yzPhDXc6z.eKIqQCQ8gf5ktsn3vg6Pr1o0PEfhayzG', '0', '2025-06-07', '0', '183.226.184.23', '2025-05-07 12:13:55', '主动注册', '2025-05-07 04:13:54', '', '2025-05-07 04:13:55', NULL, NULL);
-INSERT INTO `sys_user` VALUES (133, NULL, '13276775800', '试用会员5800', '00', '', '', '0', '', '$2a$10$hUj4XZFksRU7aVzBqLsZhOtHgnqsIerrTiuP3eIScQvE2lq5EcyFi', '0', '2025-06-07', '0', '111.1.209.210', '2025-05-07 16:19:43', '主动注册', '2025-05-07 08:19:42', '', '2025-05-07 08:19:42', NULL, NULL);
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '启航', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$MkBdzADGzLxAqopkmh3vDu0oA5bxgHWcg173AVni9Rr9MFQtnjplK', '0', '2025-04-01', '0', '127.0.0.1', '2025-05-22 23:06:29', 'admin', '2023-08-07 19:31:37', '', '2025-05-22 23:06:29', '管理员', NULL);
+INSERT INTO `sys_user` VALUES (100, NULL, 'qihang', 'BUZD', '00', '2855@qq.com', '15658900660', '2', '', '$2a$10$OW1WgE6qn46P35UpwyFSGupKCP6Jl9wScJkWMvbZ5MKQ6NsxsSrC2', '0', '2025-10-31', '0', '127.0.0.1', '2025-05-22 23:06:14', 'admin', '2024-04-21 10:36:49', 'admin', '2025-05-22 23:06:14', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -2307,7 +2270,7 @@ CREATE TABLE `wms_stock_in_item`  (
   `tenant_id` bigint NOT NULL COMMENT '租户 id',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `specIndex`(`sku_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '入库单明细' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '入库单明细' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_stock_in_item
@@ -2334,7 +2297,7 @@ CREATE TABLE `wms_stock_in_item_position`  (
   `tenant_id` bigint NOT NULL COMMENT '租户 id',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goods_stock_info_item_id_index`(`goods_inventory_batch_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库仓位详情' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库仓位详情' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wms_stock_in_item_position
@@ -2374,8 +2337,7 @@ CREATE TABLE `wms_stock_out`  (
 -- ----------------------------
 -- Records of wms_stock_out
 -- ----------------------------
-INSERT INTO `wms_stock_out` VALUES (1, '202505171838501', '', 0, 1, 1, 1, 1, 1, '', 2, 0, NULL, '2025-05-18 17:39:55', '2025-05-18 17:39:55', 100, 'qihang', '2025-05-17 18:39:05', 'qihang', '2025-05-18 17:39:55', 'qihang', 0);
-INSERT INTO `wms_stock_out` VALUES (5, '1747564792220723', 'a', 0, 2, 1, 1, 1, 1, NULL, 2, 0, NULL, '2025-05-18 18:44:54', '2025-05-18 18:44:54', 100, 'qihang', '2025-05-18 18:43:26', 'qihang', '2025-05-18 18:44:54', 'qihang', 100);
+INSERT INTO `wms_stock_out` VALUES (1, '202505171838501', '', 0, 1, 1, 1, 1, 0, '', 0, 0, NULL, NULL, NULL, 100, 'qihang', '2025-05-17 18:39:05', 'qihang', '2025-05-17 18:39:07', NULL, 0);
 
 -- ----------------------------
 -- Table structure for wms_stock_out_item
@@ -2412,8 +2374,7 @@ CREATE TABLE `wms_stock_out_item`  (
 -- ----------------------------
 -- Records of wms_stock_out_item
 -- ----------------------------
-INSERT INTO `wms_stock_out_item` VALUES (1, 1, 1, NULL, NULL, '', 1, 1, '2025-05-18 17:39:55', NULL, 2, 2, NULL, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 7, 'A00112', '黑色 M', '2025-05-17 18:39:13', 'qihang', '2025-05-18 17:39:55', 'qihang', 0.00, 0);
-INSERT INTO `wms_stock_out_item` VALUES (2, 2, 5, NULL, NULL, '', 1, 1, '2025-05-18 18:44:54', NULL, 2, 2, '10000226806665', '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 7, 'A00112', '黑色 M ', '2025-05-18 18:43:26', 'qihang', '2025-05-18 18:44:54', 'qihang', 0.00, 100);
+INSERT INTO `wms_stock_out_item` VALUES (1, 1, 1, NULL, NULL, '', 1, 0, NULL, NULL, 0, 2, NULL, '夏季韩版ins黑灰高腰小个子牛仔半身裙女百搭显瘦包臀a字短裙子潮', 'https://mmecimage.cn/p/wx82dd65f284dd6ee3/HBviRG_AELkO2KG1mE7Yy6nq6h9mhp51zPAKIU34tQ', 7, 'A00112', '黑色 M', '2025-05-17 18:39:13', 'qihang', '2025-05-17 18:39:13', NULL, 0.00, 0);
 
 -- ----------------------------
 -- Table structure for wms_stock_out_item_position
@@ -2440,7 +2401,6 @@ CREATE TABLE `wms_stock_out_item_position`  (
 -- ----------------------------
 -- Records of wms_stock_out_item_position
 -- ----------------------------
-INSERT INTO `wms_stock_out_item_position` VALUES (1, 5, 2, 24, 3, 1, 100, 'qihang', '2025-05-18 18:44:54', 100, 1, 11, 'A01-1-07');
 
 -- ----------------------------
 -- Table structure for wms_warehouse
@@ -2461,7 +2421,7 @@ CREATE TABLE `wms_warehouse`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `tenant_id` bigint NOT NULL COMMENT '租户id',
+  `tenant_id` bigint NOT NULL COMMENT '租户 id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '仓库表' ROW_FORMAT = DYNAMIC;
 
@@ -2490,7 +2450,7 @@ CREATE TABLE `wms_warehouse_position`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `tenant_id` bigint NOT NULL COMMENT '租户id',
+  `tenant_id` bigint NOT NULL COMMENT '租户 id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '仓库仓位表' ROW_FORMAT = DYNAMIC;
 
