@@ -94,46 +94,55 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
         try {
             List<ShopOrder> orders = mapper.selectList(new LambdaQueryWrapper<ShopOrder>().eq(ShopOrder::getOrderId, order.getOrderId()));
             if (orders != null && orders.size() > 0) {
-                // 存在，修改
-                ShopOrder update = new ShopOrder();
-                update.setShopId(shopId);
-                update.setTenantId(shop.getTenantId());
-                update.setId(orders.get(0).getId());
-                update.setStatus(order.getStatus());
-                update.setUpdateTime(order.getUpdateTime());
-                update.setPayInfo(order.getPayInfo());
-                update.setAftersaleDetail(order.getAftersaleDetail());
-                update.setDeliveryProductInfo(order.getDeliveryProductInfo());
-
-                mapper.updateById(update);
-                // 更新item
-                for (var item : order.getItems()) {
-                    List<ShopOrderItem> taoOrderItems = itemMapper.selectList(new LambdaQueryWrapper<ShopOrderItem>().eq(ShopOrderItem::getSkuId, item.getSkuId()));
-                    if (taoOrderItems != null && taoOrderItems.size() > 0) {
-                        // 不处理
-                        item.setId(taoOrderItems.get(0).getId());
-                        item.setShopId(shopId);
-                        item.setTenantId(shop.getTenantId());
-                        itemMapper.updateById(item);
-                    } else {
-                        // 新增
-                        item.setShopId(shopId);
-                        item.setTenantId(shop.getTenantId());
-                        item.setShopOrderId(update.getId());
-                        itemMapper.insert(item);
+                    // 存在，修改
+                    ShopOrder update = new ShopOrder();
+                    update.setShopId(shopId);
+                    update.setTenantId(shop.getTenantId());
+                    update.setShopType(shop.getType());
+                    update.setId(orders.get(0).getId());
+                    update.setStatus(order.getStatus());
+                    update.setUpdateTime(order.getUpdateTime());
+                    update.setPayInfo(order.getPayInfo());
+                    update.setAftersaleDetail(order.getAftersaleDetail());
+                    update.setDeliveryProductInfo(order.getDeliveryProductInfo());
+                    update.setUpdateOn(new Date());
+                    mapper.updateById(update);
+                    // 更新item
+                    for (var item : order.getItems()) {
+                        List<ShopOrderItem> taoOrderItems = itemMapper.selectList(new LambdaQueryWrapper<ShopOrderItem>().eq(ShopOrderItem::getSkuId, item.getSkuId()));
+                        if (taoOrderItems != null && taoOrderItems.size() > 0) {
+                            // 不处理
+                            item.setId(taoOrderItems.get(0).getId());
+                            item.setShopId(shopId);
+                            item.setShopType(shop.getType());
+                            item.setTenantId(shop.getTenantId());
+                            item.setUpdateOn(new Date());
+                            itemMapper.updateById(item);
+                        } else {
+                            // 新增
+                            item.setShopId(shopId);
+                            item.setShopType(shop.getType());
+                            item.setTenantId(shop.getTenantId());
+                            item.setShopOrderId(update.getId());
+                            item.setCreateOn(new Date());
+                            itemMapper.insert(item);
+                        }
                     }
-                }
-                return ResultVo.error(ResultVoEnum.DataExist.getIndex(), "订单已经存在，更新成功",Long.parseLong(update.getId()));
+                    return ResultVo.error(ResultVoEnum.DataExist.getIndex(), "订单已经存在，更新成功",Long.parseLong(update.getId()));
             } else {
                 // 不存在，新增
                 order.setShopId(shopId);
+                order.setShopType(shop.getType());
                 order.setTenantId(shop.getTenantId());
+                order.setCreateOn(new Date());
                 mapper.insert(order);
                 // 添加item
                 for (var item : order.getItems()) {
                     item.setShopId(shopId);
+                    item.setShopType(shop.getType());
                     item.setTenantId(shop.getTenantId());
                     item.setShopOrderId(order.getId());
+                    item.setCreateOn(new Date());
                     itemMapper.insert(item);
                 }
                 return ResultVo.success(Long.parseLong(order.getId()));

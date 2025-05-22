@@ -1,6 +1,7 @@
 package cn.qihangerp.api.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -26,6 +27,7 @@ public class ShopOrderItem implements Serializable {
     private String shopOrderId;
     private Long tenantId;
     private Long shopId;
+    private Integer shopType;
 
     /**
      * 商品spuid
@@ -158,6 +160,9 @@ public class ShopOrderItem implements Serializable {
      * erp系统商品规格id
      */
     private Long erpSkuId;
+
+    private Date createOn;
+    private Date updateOn;
 
     private static final long serialVersionUID = 1L;
 }

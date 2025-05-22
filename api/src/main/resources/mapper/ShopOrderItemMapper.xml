@@ -6,6 +6,9 @@
 
     <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.ShopOrderItem">
             <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+        <result property="shopType" column="shop_type" jdbcType="INTEGER"/>
+        <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
             <result property="shopOrderId" column="shop_order_id" jdbcType="BIGINT"/>
             <result property="productId" column="product_id" jdbcType="VARCHAR"/>
             <result property="skuId" column="sku_id" jdbcType="VARCHAR"/>
@@ -33,10 +36,12 @@
             <result property="orderProductCouponInfoList" column="order_product_coupon_info_list" jdbcType="VARCHAR"/>
             <result property="erpGoodsId" column="erp_goods_id" jdbcType="BIGINT"/>
             <result property="erpSkuId" column="erp_sku_id" jdbcType="BIGINT"/>
+        <result property="createOn" column="create_on" jdbcType="TIMESTAMP"/>
+        <result property="createOn" column="update_on" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,shop_order_id,product_id,
+        id,shop_order_id,product_id,shop_id,shop_type,tenant_id,
         sku_id,thumb_img,sku_cnt,
         sale_price,title,on_aftersale_sku_cnt,
         finish_aftersale_sku_cnt,sku_code,market_price,
@@ -44,6 +49,6 @@
         out_sku_id,is_discounted,estimate_price,
         is_change_price,change_price,out_warehouse_id,
         sku_deliver_info,extra_service,use_deduction,
-        deduction_price,order_product_coupon_info_list,erp_goods_id,erp_sku_id
+        deduction_price,order_product_coupon_info_list,erp_goods_id,erp_sku_id,create_on,update_on
     </sql>
 </mapper>

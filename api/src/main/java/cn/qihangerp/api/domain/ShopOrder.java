@@ -27,6 +27,7 @@ public class ShopOrder implements Serializable {
      * 店铺id
      */
     private Long shopId;
+    private Integer shopType;
     private Long tenantId;
 
     /**
@@ -175,6 +176,8 @@ public class ShopOrder implements Serializable {
     private Date confirmTime;
     private Integer erpSendStatus;
     private Date erpSendTime;
+    private Date createOn;
+    private Date updateOn;
 
     @TableField(exist = false)
     private List<ShopOrderItem> items;

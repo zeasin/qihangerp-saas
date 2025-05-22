@@ -226,7 +226,7 @@
 </template>
 
 <script>
-import { listWmsStockInEntry, getWmsStockInEntry, stockIn,complete } from "@/api/wms/StockIn";
+import { listWmsStockInEntry, getWmsStockInEntry, stockIn,complete } from "@/api/wms/stockIn";
 import { searchLocation } from "@/api/wms/location";
 import {parseTime} from "../../../utils/zhijian";
 

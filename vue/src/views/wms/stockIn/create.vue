@@ -96,7 +96,7 @@
 
 <script>
 import { searchSku } from "@/api/goods/goods";
-import {stockInCreate} from "@/api/wms/StockIn";
+import {stockInCreate} from "@/api/wms/stockIn";
 
 export default {
   name: "StockInCreate",

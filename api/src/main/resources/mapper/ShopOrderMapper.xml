@@ -7,6 +7,7 @@
     <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.ShopOrder">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="shopType" column="shop_type" jdbcType="INTEGER"/>
             <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
             <result property="orderId" column="order_id" jdbcType="VARCHAR"/>
             <result property="openid" column="openid" jdbcType="VARCHAR"/>
@@ -36,10 +37,12 @@
             <result property="shipDoneTime" column="ship_done_time" jdbcType="INTEGER"/>
             <result property="ewaybillOrderCode" column="ewaybill_order_code" jdbcType="VARCHAR"/>
             <result property="settleInfo" column="settle_info" jdbcType="VARCHAR"/>
+            <result property="createOn" column="create_on" jdbcType="TIMESTAMP"/>
+            <result property="createOn" column="update_on" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,shop_id,order_id,tenant_id,
+        id,shop_id,order_id,tenant_id,shop_type,
         openid,create_time,update_time,
         unionid,status,aftersale_detail,
         pay_info,product_price,order_price,
@@ -48,6 +51,6 @@
         county_name,detail_info,tel_number,
         house_number,virtual_order_tel_number,tel_number_ext_info,
         use_tel_number,hash_code,delivery_product_info,
-        ship_done_time,ewaybill_order_code,settle_info
+        ship_done_time,ewaybill_order_code,settle_info,create_on,update_on
     </sql>
 </mapper>
