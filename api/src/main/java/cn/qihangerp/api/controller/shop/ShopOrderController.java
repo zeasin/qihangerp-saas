@@ -40,8 +40,8 @@ public class ShopOrderController extends BaseController {
     public AjaxResult add(@RequestBody ShopOrderCreateBo order)
     {
         if(order.getGoodsAmount()==null)return new AjaxResult(1503,"请填写商品价格！");
-        order.setTenantId(getUserId());
-        var result = orderService.insertOrder(order,getUsername());
+
+        var result = orderService.insertOrder(getUserId(),order,getUsername());
         if(result.getCode()==0) return AjaxResult.success();
         else return AjaxResult.error(result.getMsg());
     }

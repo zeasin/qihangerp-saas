@@ -36,13 +36,15 @@
             <result property="orderProductCouponInfoList" column="order_product_coupon_info_list" jdbcType="VARCHAR"/>
             <result property="erpGoodsId" column="erp_goods_id" jdbcType="BIGINT"/>
             <result property="erpSkuId" column="erp_sku_id" jdbcType="BIGINT"/>
+            <result property="orderId" column="order_id" jdbcType="VARCHAR"/>
+            <result property="orderTime" column="order_time" jdbcType="BIGINT"/>
         <result property="createOn" column="create_on" jdbcType="TIMESTAMP"/>
         <result property="createOn" column="update_on" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,shop_order_id,product_id,shop_id,shop_type,tenant_id,
-        sku_id,thumb_img,sku_cnt,
+        sku_id,thumb_img,sku_cnt,order_time,order_id,
         sale_price,title,on_aftersale_sku_cnt,
         finish_aftersale_sku_cnt,sku_code,market_price,
         sku_attrs,real_price,out_product_id,

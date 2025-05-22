@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="form" :rules="rules" label-width="108px">
-        <el-form-item label="订单号" prop="orderId">
+        <el-form-item label="订单号" prop="orderNum">
           <el-col :span="24">
-            <el-input v-model="form.orderId" style="width:220px" placeholder="请输入订单编号" />
+            <el-input v-model="form.orderNum" style="width:220px" placeholder="请输入订单编号" />
           </el-col>
 
         </el-form-item>
@@ -205,7 +205,7 @@ export default {
       pcaTextArr,
       // 表单校验
       rules: {
-        orderId: [{ required: true, message: '订单编码不能为空' }],
+        orderNum: [{ required: true, message: '订单编码不能为空' }],
         shopId: [{ required: true, message: '请选择店铺' }],
         receiverName: [{ required: true, message: '请填写收件人信息' }],
         receiverPhone: [{ required: true, message: '请填写收件人信息' }],

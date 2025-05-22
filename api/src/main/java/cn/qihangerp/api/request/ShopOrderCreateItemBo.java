@@ -15,7 +15,6 @@ public class ShopOrderCreateItemBo {
     private String goodsNum;
     private String skuName;
     private String goodsImg;
-    private String outerErpSkuId;
     private BigDecimal goodsPrice;
     private BigDecimal itemAmount;
     private Integer quantity;

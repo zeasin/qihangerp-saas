@@ -69,15 +69,15 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-        >手动创建订单</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="success"-->
+<!--          plain-->
+<!--          icon="el-icon-plus"-->
+<!--          size="mini"-->
+<!--          @click="handleAdd"-->
+<!--        >手动创建订单</el-button>-->
+<!--      </el-col>-->
       <el-col :span="1.5">
         <el-button
           type="primary"
@@ -105,55 +105,43 @@
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="订单ID" align="center" prop="id" />-->
 <!--      <el-table-column label="订单号" align="center" prop="orderNum" />-->
-      <el-table-column label="订单号" align="left" prop="orderNum" width="200px">
+      <el-table-column label="订单号" align="left" prop="orderId" width="200px">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-view"
             @click="handleDetail(scope.row)"
-          >{{scope.row.orderNum}} </el-button>
-          <i class="el-icon-copy-document tag-copy" :data-clipboard-text="scope.row.orderNum" @click="copyActiveCode($event,scope.row.orderNum)" ></i>
+          >{{scope.row.orderId}} </el-button>
+          <i class="el-icon-copy-document tag-copy" :data-clipboard-text="scope.row.orderId" @click="copyActiveCode($event,scope.row.orderId)" ></i>
           <br/>
-          <el-tag type="info">{{ shopList.find(x=>x.id === scope.row.shopId) ? shopList.find(x=>x.id === scope.row.shopId).name : '' }}</el-tag>
-        </template>
+          <el-tag type="info">{{ shopList.find(x=>x.id == scope.row.shopId) ? shopList.find(x=>x.id == scope.row.shopId).name : '' }}</el-tag>
+        </template>>
       </el-table-column>
 <!--      <el-table-column label="店铺" align="center" prop="shopId" >-->
 <!--        <template slot-scope="scope">-->
 <!--          <span>{{ shopList.find(x=>x.id === scope.row.shopId).name  }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="商品明细" align="center" width="750px" >
-        <template slot="header">
-          <table>
-            <th>
-              <td width="50px">图片</td>
-              <td width="250px" align="left">标题</td>
-              <td width="150" align="left">SKU名</td>
-              <td width="200" align="left">Sku编码</td>
-<!--              <td width="150" align="left">平台SkuId</td>-->
-              <td width="50" align="left">数量</td>
-            </th>
-          </table>
-        </template>
-        <template slot-scope="scope" >
-          <el-table :data="scope.row.itemList" :show-header="false" :cell-style="{border:0 + 'px' }"  :row-style="{border:0 + 'px' }" >
-            <el-table-column label="商品图片" width="50px">
-              <template slot-scope="scope">
-<!--                <el-image  style="width: 40px; height: 40px;" :src="scope.row.goodsImg" :preview-src-list="[scope.row.goodsImg]"></el-image>-->
-                <image-preview :src="scope.row.goodsImg" :width="40" :height="40"/>
-              </template>
-            </el-table-column>
-            <el-table-column label="商品名" align="left" width="250px" prop="goodsTitle" />
-            <el-table-column label="SKU名" align="left" prop="goodsSpec" width="150"  :show-overflow-tooltip="true"/>
-            <el-table-column label="Sku编码" align="left" prop="skuNum" width="200"/>
-<!--            <el-table-column label="平台SkuId" align="left" prop="skuId" width="150"/>-->
-            <el-table-column label="商品数量" align="center" prop="quantity" width="50px">
-              <template slot-scope="scope">
-                <el-tag size="small" type="danger">{{scope.row.quantity}}</el-tag>
-              </template>
-            </el-table-column>
-          </el-table>
+      <el-table-column label="商品" width="350">
+        <template slot-scope="scope">
+          <el-row v-for="item in scope.row.items" :key="item.id" :gutter="20">
+
+            <div style="float: left;display: flex;align-items: center;" >
+              <el-image  style="width: 50px; height: 50px;" :src="item.thumbImg"></el-image>
+              <div style="margin-left:10px">
+                <p>{{item.title}}</p>
+                <p>
+                  <span>规格： </span>
+                  <el-tag size="small">{{ getSkuValues(item.skuAttrs)}}</el-tag>
+                  &nbsp;
+                  <span>数量： </span>
+                  <el-tag size="small" type="danger">{{item.skuCnt}}</el-tag>
+                </p>
+
+              </div>
+            </div>
+          </el-row>
         </template>
       </el-table-column>
 <!--      <el-table-column label="商品" width="350">-->
@@ -172,36 +160,35 @@
 <!--            </el-row>-->
 <!--          </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="订单金额" align="center" prop="amount" :formatter="amountFormatter" >
+      <el-table-column label="订单金额" align="center" prop="orderPrice" :formatter="amountFormatter">
         <template slot-scope="scope">
-<!--          <p>商品总额：{{amountFormatter(null,null,scope.row.goodsAmount)}}</p>-->
-          <div>
-<!--            <span style="font-size: 10px">实付：</span>-->
-            <span>{{amountFormatter(null,null,scope.row.payment)}}</span>
-          </div>
-<!--          <div><span style="font-size: 10px">平台优惠：</span>-->
-<!--            <span>{{amountFormatter(null,null,scope.row.platformDiscount)}}</span>-->
-<!--          </div>-->
-<!--          <div><span style="font-size: 10px">商家优惠：</span>-->
-<!--            <span>{{amountFormatter(null,null,scope.row.sellerDiscount)}}</span>-->
-<!--          </div>-->
+          <span>
+          {{ amountFormatter(null,null,scope.row.orderPrice/100,0) }}
+          </span>
         </template>
       </el-table-column>
-<!--      <el-table-column label="实付金额" align="center" prop="payment" :formatter="amountFormatter" />-->
-<!--      <el-table-column label="订单备注" align="center" prop="remark" :show-overflow-tooltip="true">-->
-<!--        <template slot-scope="scope">-->
-<!--          {{scope.row.buyerMemo}}<br />-->
-<!--          {{scope.row.sellerMemo}}-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-
-
-      <el-table-column label="收件信息" prop="receiverName" >
+      <el-table-column label="订单创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
-          {{scope.row.receiverName}}&nbsp;
-          {{scope.row.receiverMobile}} <br />
-          {{scope.row.province}} {{scope.row.city}} {{scope.row.town}} <br />
-
+          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{m}:{s}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="收件人" align="center" prop="userName" />
+      <el-table-column label="省市区" align="center" >
+        <template slot-scope="scope">
+          <el-tag size="small">{{scope.row.provinceName}}</el-tag>
+          <el-tag size="small">{{scope.row.cityName}}</el-tag>
+          <el-tag size="small">{{scope.row.countyName}}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="订单状态" align="center" prop="status" >
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status === 10 " size="small">待付款</el-tag>
+          <el-tag v-if="scope.row.status === 20 " size="small">待发货</el-tag>
+          <el-tag v-if="scope.row.status === 30 " size="small">待收货</el-tag>
+          <el-tag v-if="scope.row.status === 100 " size="small">完成</el-tag>
+          <el-tag v-if="scope.row.status === 250 " size="small">未付款超时取消</el-tag>
+          <br/>
+          <!--          <el-tag style="margin-top: 5px" type="warning" v-if="scope.row.confirmStatus === 0 " size="small">待确认</el-tag>-->
         </template>
       </el-table-column>
       <el-table-column label="发货单号" prop="shippingNumber" >
@@ -460,6 +447,17 @@ export default {
 
   },
   methods: {
+    getSkuValues(spec){
+      try {
+        // 解析 JSON，返回一个数组
+        const parsedSpec = JSON.parse(spec) || [];
+
+        // 使用 map 提取所有 value，使用 join() 用逗号连接
+        return parsedSpec.map(item => item.attr_value || item.value).join(', ') || '';
+      } catch (error) {
+        return spec; // 如果 JSON 解析出错，返回空字符串
+      }
+    },
     copyActiveCode(event,queryParams) {
       console.log(queryParams)
       const clipboard = new Clipboard(".tag-copy")
@@ -480,7 +478,7 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.$router.push('/order/offline_order_create');
+      this.$router.push('/order/shop_order/offline_order_create');
     },
     /** 查询店铺订单列表 */
     getList() {

@@ -17,5 +17,5 @@ public interface ShopOrderService extends IService<ShopOrder> {
     PageResult<ShopOrder> queryPageList(ShopOrderSearchRequest bo, PageQuery pageQuery);
     ResultVo<Long> saveOrder(Long shopId, ShopOrder order);
     ResultVo<Integer> orderConfirm(String[] ids);
-    ResultVo insertOrder(ShopOrderCreateBo shopOrderCreateBo, String createBy);
+    ResultVo insertOrder(Long tenantId,ShopOrderCreateBo shopOrderCreateBo, String createBy);
 }

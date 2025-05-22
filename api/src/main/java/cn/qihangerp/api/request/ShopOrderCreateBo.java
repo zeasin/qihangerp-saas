@@ -2,6 +2,7 @@ package cn.qihangerp.api.request;
 
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,11 +18,11 @@ public class ShopOrderCreateBo
 
 
     /** 订单编号 */
-    private String orderId;
+    private String orderNum;
 
     /** 店铺ID */
     private Long shopId;
-    private Long tenantId;
+//    private Long tenantId;
 
     /** 买家留言信息 */
     private String buyerMemo;
@@ -30,7 +31,8 @@ public class ShopOrderCreateBo
     private String remark;
 
     // 下单时间
-    private String orderTime;
+    private Date orderTime;
+    private String orderDate;
     // 订单状态
     private Integer status;
 

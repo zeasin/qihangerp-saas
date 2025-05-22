@@ -232,7 +232,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         shopId: null,
-        tid: null,
+        shopType: 3,
         status: null
       },
       // 表单参数

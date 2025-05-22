@@ -169,7 +169,7 @@
 <!--          <el-tag style="margin-top: 5px" type="warning" v-if="scope.row.confirmStatus === 0 " size="small">待确认</el-tag>-->
         </template>
       </el-table-column>
-      <el-table-column label="tenant" align="center" prop="tenantId" v-if="isAdmin"/>
+<!--      <el-table-column label="tenant" align="center" prop="tenantId" v-if="isAdmin"/>-->
 <!--      <el-table-column label="快递单号" align="center" prop="logisticsCode" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -232,7 +232,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         shopId: null,
-        tid: null,
+        shopType: 5,
         status: null
       },
       // 表单参数

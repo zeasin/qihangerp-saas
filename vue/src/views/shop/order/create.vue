@@ -12,6 +12,9 @@
           <el-select v-model="form.shopId" filterable r placeholder="搜索店铺" >
           <el-option v-for="item in shopList" :key="item.id" :label="item.name" :value="item.id">
              <span style="float: left">{{ item.name }}</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 5">微信小店</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 3">拼多多</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 9">线下渠道</span>
           </el-option>
         </el-select>
         </el-form-item>
@@ -74,7 +77,7 @@
               <el-select v-model="scope.row.skuId" filterable remote reserve-keyword placeholder="搜索商品SKU" style="width: 330px;"
                 :remote-method="searchSku" :loading="skuListLoading" @change="skuChanage(scope.row)">
                 <el-option v-for="item in skuList" :key="item.id"
-                  :label="item.goodsName + ' ' + item.skuName +' - ' + item.skuCode"
+                  :label="item.name + ' ' + (item.colorValue?item.colorValue:'') + ' ' + (item.sizeValue?item.sizeValue:'') + ' ' + (item.styleValue?item.styleValue:'')"
                   :value="item.id">
                 </el-option>
               </el-select>
@@ -96,15 +99,15 @@
               <el-input v-model="scope.row.skuCode" disabled placeholder="请输入商品规格编码" />
             </template>
           </el-table-column>
-          <el-table-column label="外部编码" prop="outerErpSkuId" width="150">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.outerErpSkuId" disabled placeholder="请输入商品编码" />
-            </template>
-          </el-table-column>
+<!--          <el-table-column label="外部编码" prop="outerErpSkuId" width="150">-->
+<!--            <template slot-scope="scope">-->
+<!--              <el-input v-model="scope.row.outerErpSkuId" disabled placeholder="请输入商品编码" />-->
+<!--            </template>-->
+<!--          </el-table-column>-->
 
           <el-table-column label="商品单价" prop="salePrice" width="150">
             <template slot-scope="scope">
-              <el-input type="number" v-model.number="scope.row.salePrice"  placeholder="请输入商品单价" @input="qtyChange(scope.row)"/>
+              <el-input type="number" v-model.number="scope.row.goodsPrice"  placeholder="请输入商品单价" @input="qtyChange(scope.row)"/>
             </template>
           </el-table-column>
           <el-table-column label="商品数量" prop="quantity" width="150">
@@ -112,9 +115,9 @@
               <el-input v-model.number="scope.row.quantity" placeholder="请输入商品数量" @input="qtyChange(scope.row)"/>
             </template>
           </el-table-column>
-          <el-table-column label="金额" prop="itemAmount" width="150">
+          <el-table-column label="商品金额" prop="itemAmount" width="150">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.itemAmount" disabled placeholder="请输入子订单金额" />
+              <el-input v-model="scope.row.itemAmount" placeholder="请输入子订单商品金额" />
             </template>
           </el-table-column>
 
@@ -153,7 +156,21 @@
         <el-form-item label="订单备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
-
+      <el-form-item label="下单时间" prop="orderTime">
+        <el-date-picker clearable v-model="form.orderTime" type="datetime" style="width: 220px;" value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择下单时间">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="订单状态" prop="status">
+        <el-select v-model="form.status" placeholder="请选择状态" >
+          <el-option label="待付款" value="10" ></el-option>
+          <el-option label="待发货" value="20"></el-option>
+          <el-option label="部分发货" value="21"> </el-option>
+          <el-option label="待收货" value="30"></el-option>
+          <el-option label="完成" value="100"></el-option>
+          <el-option label="售后之后订单取消" value="200"></el-option>
+          <el-option label="未付款订单取消" value="250"></el-option>
+        </el-select>
+      </el-form-item>
 <!--        <el-form-item label="标签" prop="tag">-->
 <!--          <el-input v-model="form.tag" placeholder="请输入标签" style="width: 220px;" />-->
 <!--        </el-form-item>-->
@@ -166,8 +183,8 @@
 </template>
 
 <script>
-// import { searchSku } from "@/api/offline/goodsSku";
-// import { addOrder } from "@/api/offline/order";
+import { searchSku } from "@/api/goods/goods";
+import { addOrder } from "@/api/shop/shop_order";
 import { listShop } from "@/api/shop/shop";
 import {
   provinceAndCityData,
@@ -207,7 +224,9 @@ export default {
         address: [{ required: true, message: '请填写收货信息' }],
         goodsAmount: [{ required: true, message: '请填写商品价格' }],
         postage: [{ required: true, message: '请填写运费' }],
-        discountAmount: [{ required: true, message: '请填写折扣金额' }]
+        sellerDiscount: [{ required: true, message: '请填写折扣金额' }],
+        orderTime: [{ required: true, message: '请选择下单时间' }],
+        status: [{ required: true, message: '请选择订单状态' }],
       },
       shopLoading: false,
       shopList: [],
@@ -220,7 +239,9 @@ export default {
   },
   created() {
     this.form.orderDate = this.getDate()
-    listShop({type: 999}).then(response => {
+    this.form.orderTime = new Date();
+    this.form.status = '20'
+    listShop().then(response => {
         this.shopList = response.rows;
       });
   },
@@ -340,21 +361,22 @@ export default {
       if (spec) {
         console.log('=======11111==', spec)
         row.skuId = spec.id
-        row.salePrice = spec.salePrice
+        row.goodsId = spec.goodsId
+        row.goodsPrice = spec.goodsPrice
         // row.sku = spec.colorValue + ' ' + spec.sizeValue + ' ' + spec.styleValue
-        row.skuName = spec.skuName
+        row.skuName =  (spec.colorValue?spec.colorValue:'') + ' ' + (spec.sizeValue?spec.sizeValue:'') + ' ' + (spec.styleValue?spec.styleValue:'')
         row.goodsImg = spec.colorImage
-        row.skuCode = spec.skuCode
-        row.goodsName = spec.goodsName
-        row.outerErpSkuId = spec.outerErpSkuId
+        row.skuCode = spec.specNum
+        row.goodsName = spec.name
+
         row.isGift = '0'
         row.quantity = 1
-        row.itemAmount = row.salePrice * row.quantity
+        row.itemAmount = row.goodsPrice * row.quantity
 
         // 计算总金额
-        let goodsAmount = this.form.goodsAmount ? this.form.goodsAmount:0.0
-        goodsAmount += row.itemAmount
-        this.form.goodsAmount = goodsAmount
+        // let goodsAmount = this.form.goodsAmount ? this.form.goodsAmount:0.0
+        // goodsAmount += row.itemAmount
+        // this.form.goodsAmount = goodsAmount
 
 
       //   this.goodsForm.id = spec.id
@@ -368,6 +390,12 @@ export default {
       //   this.goodsForm.specNum = spec.specNum
       //   this.goodsForm.styleValue = spec.styleValue
       }
+      // 计算总金额
+      let goodsAmountNew =0.0
+      this.form.itemList.forEach(x=>{
+        goodsAmountNew+= row.itemAmount
+      })
+      this.form.goodsAmount = goodsAmountNew
     },
     qtyChange(row) {
       console.log('======值变化=====', row)
@@ -443,7 +471,7 @@ export default {
 
           this.form.province = this.form.provinces[0]
           this.form.city = this.form.provinces[1]
-          this.form.town = this.form.provinces[2]
+          this.form.county = this.form.provinces[2]
 
           if(this.form.itemList && this.form.itemList.length >0){
             for(var i=0;i<this.form.itemList.length;i++){

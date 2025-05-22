@@ -28,6 +28,8 @@ public class ShopOrderItem implements Serializable {
     private Long tenantId;
     private Long shopId;
     private Integer shopType;
+    private String orderId;
+    private Integer orderTime;
 
     /**
      * 商品spuid

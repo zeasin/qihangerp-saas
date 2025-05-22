@@ -18,6 +18,7 @@ import java.util.List;
 public class ShopOrderSearchRequest implements Serializable {
 
     private Long shopId;
+    private Integer shopType;
     private Long tenantId;
     /**
      * 订单号
