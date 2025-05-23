@@ -74,7 +74,7 @@ public class SysLoginController
             ajax.put(Constants.TOKEN, token);
             return ajax;
         } catch (Exception e) {
-            return AjaxResult.error(1500, e.getMessage());
+            return AjaxResult.error(e.getMessage());
         }
     }
 

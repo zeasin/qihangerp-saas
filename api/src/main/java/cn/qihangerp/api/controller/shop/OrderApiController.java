@@ -15,6 +15,7 @@ import cn.qihangerp.open.wei.model.OrderDetailDeliverInfoAddress;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -77,6 +78,8 @@ public class OrderApiController extends BaseController {
                 endTime = LocalDateTime.now(zoneId);
             }
         }
+        String pullParams = "{startTime:"+startTime.format(formatter)+",endTime:"+endTime.format(formatter)+"}";
+
         log.info("拉取订单,开始时间：{}====结束时间：{}", startTime.format(formatter), endTime.format(formatter));
         int insertSuccess = 0;//新增成功的订单
         int totalError = 0;
@@ -96,7 +99,19 @@ public class OrderApiController extends BaseController {
 
 
             ApiResultVo<Order> orderApiResultVo = WeiOrderApiHelper.pullOrderList(startTime, endTime, accessToken);
-
+            if (orderApiResultVo.getCode() != 0){
+                ErpShopPullLogs logs = new ErpShopPullLogs();
+                logs.setTenantId(shop.getTenantId());
+                logs.setShopType(shop.getType());
+                logs.setShopId(Long.parseLong(shop.getId()));
+                logs.setPullType("ORDER");
+                logs.setPullWay("主动拉取");
+                logs.setPullParams(pullParams);
+                logs.setPullResult(orderApiResultVo.getMsg());
+                logs.setPullTime(currDateTime);
+                logs.setDuration(System.currentTimeMillis() - beginTime);
+                pullLogsService.save(logs);
+            }
 
 
             if (orderApiResultVo.getCode() == 0) {
@@ -105,9 +120,10 @@ public class OrderApiController extends BaseController {
                     for (var orderInfo : orderApiResultVo.getList()) {
 
                         ShopOrder order = new ShopOrder();
-                        order.setTenantId(getUserId());
+                        order.setTenantId(shop.getTenantId());
                         order.setOrderId(orderInfo.getOrder_id());
                         order.setShopId(params.getShopId());
+                        order.setShopType(shop.getType());
                         order.setOpenid(orderInfo.getOpenid());
                         order.setCreateTime(orderInfo.getCreate_time());
                         order.setUpdateTime(orderInfo.getUpdate_time());
@@ -146,7 +162,8 @@ public class OrderApiController extends BaseController {
                             ShopOrderItem oi = new ShopOrderItem();
                             oi.setTenantId(order.getTenantId());
                             oi.setShopOrderId(order.getOrderId());
-                            oi.setShopId(params.getShopId());
+                            oi.setShopId(Long.parseLong(shop.getId()));
+                            oi.setShopType(shop.getType());
                             oi.setProductId(item.getProduct_id());
                             oi.setSkuId(item.getSku_id());
                             oi.setThumbImg(item.getThumb_img());
@@ -198,17 +215,17 @@ public class OrderApiController extends BaseController {
             if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
 //            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
                 ErpShopPullLogs logs = new ErpShopPullLogs();
-                logs.setTenantId(getUserId());
-                logs.setShopType(EnumShopType.PDD.getIndex());
-                logs.setShopId(params.getShopId());
-                logs.setPullType("GOODS");
+                logs.setTenantId(shop.getTenantId());
+                logs.setShopType(shop.getType());
+                logs.setShopId(Long.parseLong(shop.getId()));
+                logs.setPullType("ORDER");
                 logs.setPullWay("主动拉取");
-                logs.setPullParams("{}");
-                logs.setPullResult("{insert:0,update:0,fail:0}");
+                logs.setPullParams(pullParams);
+                logs.setPullResult(checkResult.getMsg());
                 logs.setPullTime(currDateTime);
                 logs.setDuration(System.currentTimeMillis() - beginTime);
                 pullLogsService.save(logs);
-                return AjaxResult.error(1401,checkResult.getMsg());
+                return AjaxResult.error(500, checkResult.getMsg());
             }
             String accessToken = checkResult.getData().getAccessToken();
 //        String serverUrl = checkResult.getData().getServerUrl();
@@ -218,7 +235,57 @@ public class OrderApiController extends BaseController {
             Long endTimestamp = endTime.toEpochSecond(ZoneOffset.ofHours(8));
 
             ApiResultVo<OrderListResultVo> upResult = PddOrderApiHelper.pullOrderList(appKey, appSecret, accessToken, startTimestamp.intValue(), endTimestamp.intValue(), 1, 20);
-            if (upResult.getCode() != 0) return AjaxResult.error(upResult.getCode(), upResult.getMsg());
+            if (upResult.getCode() == 10019) return AjaxResult.error(1401, upResult.getMsg());
+            else if (upResult.getCode() != 0) return AjaxResult.error(upResult.getCode(), upResult.getMsg());
+            if (upResult.getCode() != 0){
+                ErpShopPullLogs logs = new ErpShopPullLogs();
+                logs.setTenantId(shop.getTenantId());
+                logs.setShopType(shop.getType());
+                logs.setShopId(Long.parseLong(shop.getId()));
+                logs.setPullType("ORDER");
+                logs.setPullWay("主动拉取");
+                logs.setPullParams(pullParams);
+                logs.setPullResult(upResult.getMsg());
+                logs.setPullTime(currDateTime);
+                logs.setDuration(System.currentTimeMillis() - beginTime);
+                pullLogsService.save(logs);
+            }else {
+                // 拉取成功
+                //循环插入订单数据到数据库
+                for (var trade : upResult.getData().getOrderList()) {
+                    ShopOrder order = new ShopOrder();
+                    order.setTenantId(shop.getTenantId());
+                    order.setShopId(params.getShopId());
+                    order.setShopType(shop.getType());
+//                    order.setOrderId(orderInfo.getOrder_id());
+//                    PddOrder pddOrder = new PddOrder();
+//                    BeanUtils.copyProperties(trade,pddOrder);
+//                    List<PddOrderItem> items = new ArrayList<>();
+//                    for (var it:trade.getItemList()) {
+//                        PddOrderItem item = new PddOrderItem();
+//                        BeanUtils.copyProperties(it,item);
+//                        items.add(item);
+//                    }
+//                    pddOrder.setItems(items);
+//                    //插入订单数据
+//                    var result = orderService.saveOrder(req.getShopId(), pddOrder);
+//                    if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
+//                        //已经存在
+//                        log.info("/**************主动更新pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "存在、更新************开始通知****/");
+//                        mqUtils.sendApiMessage(MqMessage.build(EnumShopType.PDD, MqType.ORDER_MESSAGE,pddOrder.getOrderSn()));
+//                        hasExistOrder++;
+//                    } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
+//                        log.info("/**************主动更新pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "不存在、新增************开始通知****/");
+//                        mqUtils.sendApiMessage(MqMessage.build(EnumShopType.PDD,MqType.ORDER_MESSAGE,pddOrder.getOrderSn()));
+//                        insertSuccess++;
+//                    } else {
+//                        log.info("/**************主动更新pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "报错****************/");
+//                        totalError++;
+//                    }
+                }
+            }
+
+
         }else {
             return AjaxResult.error("不支持的店铺类型！");
         }

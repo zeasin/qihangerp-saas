@@ -5,11 +5,11 @@
       <div class="bgRight"></div>
       <h3 class="title">启航电商ERP系统-SAAS版</h3>
       <div class="login-form">
-        <div class="zhuce"  v-if="n !==3"></div>
-        <div class="tabs" v-if="n !==3">
-          <div class="item" :class="n==1?'on':''" @click="onPassLogin()">密码登录</div>
-          <div class="item" :class="n==2?'on':''" @click="onScanLogin()">扫码登陆</div>
-        </div>
+        <div class="zhuce"  v-if="n !==3">登录</div>
+<!--        <div class="tabs" v-if="n !==3">-->
+<!--          <div class="item" :class="n==1?'on':''" @click="onPassLogin()">密码登录</div>-->
+<!--          <div class="item" :class="n==2?'on':''" @click="onScanLogin()">扫码登陆</div>-->
+<!--        </div>-->
         <div class="zhuce" v-else>注册</div>
         <!--star 密码登录-->
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" v-if="n==1">
@@ -501,8 +501,11 @@ export default {
             Cookies.remove('rememberMe');
           }
           this.$store.dispatch("Login", this.loginForm).then(() => {
+            console.log('===登陆结果====')
+            this.loading = true;
             this.$router.push({ path: this.redirect || "/" }).catch(()=>{});
           }).catch(() => {
+            console.log('===登陆失败====')
             this.loading = false;
             if (this.captchaEnabled) {
               this.getCode();
