@@ -73,15 +73,7 @@
           @click="handlePull"
         >API拉取订单</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-refresh"
-          size="mini"
-          @click="handleCreate"
-        >手动创建订单</el-button>
-      </el-col>
+
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
 <!--          type="primary"-->
@@ -332,9 +324,7 @@ export default {
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
-    handleCreate(){
-      this.$router.push("/order/shop_order_create")
-    },
+
     handlePull() {
       if(this.queryParams.shopId){
         this.pullLoading = true

@@ -31,8 +31,8 @@ public class ShopOrderCreateBo
     private String remark;
 
     // 下单时间
-    private Date orderTime;
-    private String orderDate;
+    private String orderTime;
+
     // 订单状态
     private Integer status;
 

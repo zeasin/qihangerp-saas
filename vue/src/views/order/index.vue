@@ -17,11 +17,11 @@
             :label="item.name"
             :value="item.id">
             <span style="float: left">{{ item.name }}</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 1">淘宝天猫</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 2">京东</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 3">抖店</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 4">拼多多</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 5">视频号小店</span>
+
+
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 9">线下渠道</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 3">拼多多</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 5">微信小店</span>
           </el-option>
         </el-select>
       </el-form-item>
@@ -165,7 +165,7 @@
       </el-table-column>
       <el-table-column label="下单时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.orderTime, '{y}-{m}-{d} {h}:{m}:{s}') }}</span>
+          <span>{{ parseTime(scope.row.orderTime) }}</span>
         </template>
       </el-table-column>
 <!--      <el-table-column label="发货信息" align="center" prop="shippingNumber" >-->

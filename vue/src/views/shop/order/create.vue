@@ -208,6 +208,8 @@ export default {
         receiverPhone:'',
         receiverName:'',
         buyerMemo:null,
+        orderTime:null,
+        status:null,
         itemList:[],
         provinces: []
       },
@@ -238,8 +240,7 @@ export default {
     };
   },
   created() {
-    this.form.orderDate = this.getDate()
-    this.form.orderTime = new Date();
+    this.form.orderTime =this.getDate(null,'datetime')
     this.form.status = '20'
     listShop().then(response => {
         this.shopList = response.rows;
@@ -332,17 +333,27 @@ export default {
       this.form.orderNum = orderNum;
       console.log("======生成订单号=======",orderNum)
     },
-    getDate() {
-      var now = new Date();
-      var year = now.getFullYear(); //得到年份
-      var month = now.getMonth(); //得到月份
-      var date = now.getDate(); //得到日期
+    getDate(time,type) {
+       if(!time) time=new Date();
+      // var now = new Date();
+      var year = time.getFullYear(); //得到年份
+      var month = time.getMonth(); //得到月份
+      var date = time.getDate(); //得到日期
       var hour = " 00:00:00"; //默认时分秒 如果传给后台的格式为年月日时分秒，就需要加这个，如若不需要，此行可忽略
       month = month + 1;
       month = month.toString().padStart(2, "0");
       date = date.toString().padStart(2, "0");
-      var defaultDate = `${year}-${month}-${date}`;//
-      return defaultDate;
+      if(!type){
+        var defaultDate = `${year}-${month}-${date}`;//
+        return defaultDate;
+      }else if(type=='datetime') {
+        var hour = time.getHours()
+        var min = time.getMinutes()
+        var se = time.getMilliseconds()
+        var defaultDate = `${year}-${month}-${date} ${hour}:${min}:${se}`;//
+        return defaultDate;
+      }
+
     },
     // 搜索SKU
     searchSku(query) {
@@ -468,7 +479,7 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-
+          // this.form.orderTime =this.getDate(this.form.orderTime,'datetime')
           this.form.province = this.form.provinces[0]
           this.form.city = this.form.provinces[1]
           this.form.county = this.form.provinces[2]
@@ -492,7 +503,7 @@ export default {
               this.$modal.msgSuccess("订单创建成功");
               // 调用全局挂载的方法,关闭当前标签页
               this.$store.dispatch("tagsView/delView", this.$route);
-              this.$router.push('/offline/order');
+              this.$router.push('/order/shop_order');
             });
 
         }else{

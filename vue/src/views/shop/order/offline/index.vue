@@ -169,7 +169,7 @@
       </el-table-column>
       <el-table-column label="订单创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{m}:{s}') }}</span>
+          <span>{{ parseTime(scope.row.createTime*1000) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="收件人" align="center" prop="userName" />
@@ -189,41 +189,6 @@
           <el-tag v-if="scope.row.status === 250 " size="small">未付款超时取消</el-tag>
           <br/>
           <!--          <el-tag style="margin-top: 5px" type="warning" v-if="scope.row.confirmStatus === 0 " size="small">待确认</el-tag>-->
-        </template>
-      </el-table-column>
-      <el-table-column label="发货单号" prop="shippingNumber" >
-      </el-table-column>
-<!--      <el-table-column label="发货信息" align="center" prop="shippingNumber" >-->
-<!--        <template slot-scope="scope">-->
-<!--          {{scope.row.shippingNumber}}&nbsp; {{scope.row.shippingCompany}}<br />-->
-<!--          {{ parseTime(scope.row.shippingTime, '{y}-{m}-{d} {h}:{m}:{s}') }}-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-      <el-table-column label="下单时间" align="center" prop="orderTime" >
-        <template slot-scope="scope">
-          {{ parseTime(scope.row.orderTime) }}
-        </template>
-      </el-table-column>
-      <el-table-column label="状态" align="center" prop="orderStatus" >
-        <template slot-scope="scope">
-          <el-tag v-if="scope.row.orderStatus === 0" style="margin-bottom: 6px;">新订单</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 1" style="margin-bottom: 6px;">待发货</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 2" style="margin-bottom: 6px;">已发货</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 3" style="margin-bottom: 6px;">已完成</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 21" style="margin-bottom: 6px;">待付款</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 22" style="margin-bottom: 6px;">锁定</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 29" style="margin-bottom: 6px;">删除</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 11" style="margin-bottom: 6px;">已取消</el-tag>
-          <!--          <br />-->
-          <!--          <el-tag style="margin-bottom: 6px;" v-if="scope.row.omsPushStatus === 0">待推送</el-tag>-->
-          <!--          <el-tag style="margin-bottom: 6px;" v-if="scope.row.omsPushStatus === 1">已推送</el-tag>-->
-
-          <!--          <br />-->
-          <!--           &lt;!&ndash; 1：无售后或售后关闭，2：售后处理中，3：退款中，4： 退款成功 &ndash;&gt;-->
-          <!--           <el-tag v-if="scope.row.refundStatus === 1">无售后或售后关闭</el-tag>-->
-          <!--           <el-tag v-if="scope.row.refundStatus === 2">售后处理中</el-tag>-->
-          <!--           <el-tag v-if="scope.row.refundStatus === 3">退款中</el-tag>-->
-          <!--           <el-tag v-if="scope.row.refundStatus === 4">退款成功</el-tag>-->
         </template>
       </el-table-column>
 <!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->

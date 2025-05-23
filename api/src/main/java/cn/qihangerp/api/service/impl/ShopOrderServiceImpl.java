@@ -291,12 +291,12 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
         if(!StringUtils.hasText(bo.getOrderNum())) return ResultVo.error("请输入订单号");
         if(bo.getShopId()==null) return ResultVo.error("请选择店铺");
         if(bo.getGoodsAmount()==null) return ResultVo.error("商品金额不能为空");
-        if(bo.getOrderTime()==null) return ResultVo.error("请选择下单时间");
+        if(StringUtils.isEmpty(bo.getOrderTime()==null)) return ResultVo.error("请选择下单时间");
         if(bo.getStatus()==null) return ResultVo.error("请选择订单状态");
         if(bo.getItemList()==null || bo.getItemList().isEmpty()) return ResultVo.error("请添加商品");
 
-//        Matcher matcher = DATE_FORMAT.matcher(bo.getOrderTime());
-//        if(matcher.find()) return ResultVo.error("下单时间格式不正确");
+        Matcher matcher = DATE_FORMAT.matcher(bo.getOrderTime());
+        if(matcher.find()) return ResultVo.error("下单时间格式不正确");
 
         Shop shop = shopService.getById(bo.getShopId());
         if(shop==null) return ResultVo.error("店铺不存在");
@@ -317,7 +317,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
         shopOrder.setShopType(shop.getType());
         shopOrder.setOrderId(bo.getOrderNum());
         shopOrder.setTenantId(tenantId);
-        shopOrder.setCreateTime(Integer.parseInt(bo.getOrderTime().getTime()/1000+""));
+        shopOrder.setCreateTime(Integer.parseInt(DateUtils.parseDate(bo.getOrderTime()).getTime()/1000+""));
         shopOrder.setUpdateTime(0);
         shopOrder.setStatus(bo.getStatus());
         shopOrder.setProductPrice(BigDecimal.valueOf(bo.getGoodsAmount()*100).intValue());
@@ -334,6 +334,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
         shopOrder.setShipDoneTime(0);
         shopOrder.setConfirmStatus(0);
         shopOrder.setErpSendStatus(0);
+        shopOrder.setCreateOn(new Date());
         mapper.insert(shopOrder);
 
         //添加item
@@ -363,6 +364,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             shopOrderItem.setSkuAttrs(item.getSkuName());
             shopOrderItem.setErpGoodsId(Long.parseLong(item.getGoodsId()));
             shopOrderItem.setErpSkuId(Long.parseLong(item.getSkuId()));
+            shopOrderItem.setCreateOn(new Date());
             itemMapper.insert(shopOrderItem);
         }
         String[] ids = new String[]{shopOrder.getId()};
