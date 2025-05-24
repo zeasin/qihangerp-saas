@@ -89,7 +89,7 @@
     </el-row>
 
     <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange" >
-      <el-table-column type="selection" width="55" align="center" :selectable="isRowSelectable" />
+      <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="订单号" align="left" prop="orderId" width="200px">
         <template slot-scope="scope">
           <el-button
@@ -161,7 +161,7 @@
 <!--          <el-tag style="margin-top: 5px" type="warning" v-if="scope.row.confirmStatus === 0 " size="small">待确认</el-tag>-->
         </template>
       </el-table-column>
-      <el-table-column label="tenant" align="center" prop="tenantId" v-if="isAdmin"/>
+<!--      <el-table-column label="tenant" align="center" prop="tenantId" v-if="isAdmin"/>-->
 <!--      <el-table-column label="快递单号" align="center" prop="logisticsCode" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -318,9 +318,7 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    isRowSelectable(row, index) {
-      return !row.confirmStatus || row.confirmStatus === 0 ;
-    },
+
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)

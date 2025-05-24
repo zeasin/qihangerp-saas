@@ -705,6 +705,13 @@ export default {
       }
       return uuid.join('');
     },
+
+    handleShipSend(){
+      pushShipSend({shopId: this.queryParams.shopId, ids: this.ids}).then(response => {
+        this.$modal.msgSuccess("发货成功！");
+        this.getList()
+      })
+    },
     // 分配给供应商发货
     allocateShipmentToSupplier(row){
       this.reset();
@@ -716,12 +723,7 @@ export default {
         // this.detailTitle = "订单详情";
       });
     },
-    handleShipSend(){
-      pushShipSend({shopId: this.queryParams.shopId, ids: this.ids}).then(response => {
-        this.$modal.msgSuccess("发货成功！");
-        this.getList()
-      })
-    },
+    // 手动发货按钮
     handleShip(row){
       this.reset();
       const id = row.id || this.ids
@@ -740,7 +742,7 @@ export default {
         // this.detailTitle = "订单详情";
       });
     },
-    // 手动发货
+    // 手动发货表单
     submitShipForm(){
       this.$refs["form"].validate(valid => {
         if (valid) {

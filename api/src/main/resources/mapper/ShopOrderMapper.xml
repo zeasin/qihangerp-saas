@@ -21,6 +21,8 @@
             <result property="orderPrice" column="order_price" jdbcType="INTEGER"/>
             <result property="freight" column="freight" jdbcType="INTEGER"/>
             <result property="discountedPrice" column="discounted_price" jdbcType="INTEGER"/>
+            <result property="platformDiscount" column="platform_discount" jdbcType="INTEGER"/>
+            <result property="sellerDiscount" column="seller_discount" jdbcType="INTEGER"/>
             <result property="userName" column="user_name" jdbcType="VARCHAR"/>
             <result property="postalCode" column="postal_code" jdbcType="VARCHAR"/>
             <result property="provinceName" column="province_name" jdbcType="VARCHAR"/>
@@ -45,7 +47,7 @@
         id,shop_id,order_id,tenant_id,shop_type,
         openid,create_time,update_time,
         unionid,status,aftersale_detail,
-        pay_info,product_price,order_price,
+        pay_info,product_price,order_price,seller_discount,platform_discount,
         freight,discounted_price,user_name,
         postal_code,province_name,city_name,
         county_name,detail_info,tel_number,

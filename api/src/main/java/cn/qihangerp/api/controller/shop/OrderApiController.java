@@ -2,6 +2,7 @@ package cn.qihangerp.api.controller.shop;
 
 import cn.qihangerp.api.common.BaseController;
 import cn.qihangerp.api.common.ResultVo;
+import cn.qihangerp.api.common.utils.DateUtils;
 import cn.qihangerp.api.domain.*;
 import cn.qihangerp.api.service.ErpShopPullLasttimeService;
 import cn.qihangerp.api.service.ErpShopPullLogsService;
@@ -25,6 +26,8 @@ import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.enums.EnumShopType;
 import cn.qihangerp.api.common.enums.HttpStatus;
 import cn.qihangerp.api.service.ShopOrderService;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -161,7 +164,7 @@ public class OrderApiController extends BaseController {
                         for (var item : orderInfo.getOrder_detail().getProduct_infos()) {
                             ShopOrderItem oi = new ShopOrderItem();
                             oi.setTenantId(order.getTenantId());
-                            oi.setShopOrderId(order.getOrderId());
+                            oi.setOrderId(order.getOrderId());
                             oi.setShopId(Long.parseLong(shop.getId()));
                             oi.setShopType(shop.getType());
                             oi.setProductId(item.getProduct_id());
@@ -257,31 +260,87 @@ public class OrderApiController extends BaseController {
                     order.setTenantId(shop.getTenantId());
                     order.setShopId(params.getShopId());
                     order.setShopType(shop.getType());
-//                    order.setOrderId(orderInfo.getOrder_id());
-//                    PddOrder pddOrder = new PddOrder();
-//                    BeanUtils.copyProperties(trade,pddOrder);
-//                    List<PddOrderItem> items = new ArrayList<>();
-//                    for (var it:trade.getItemList()) {
-//                        PddOrderItem item = new PddOrderItem();
-//                        BeanUtils.copyProperties(it,item);
-//                        items.add(item);
-//                    }
-//                    pddOrder.setItems(items);
-//                    //插入订单数据
-//                    var result = orderService.saveOrder(req.getShopId(), pddOrder);
-//                    if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
-//                        //已经存在
-//                        log.info("/**************主动更新pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "存在、更新************开始通知****/");
-//                        mqUtils.sendApiMessage(MqMessage.build(EnumShopType.PDD, MqType.ORDER_MESSAGE,pddOrder.getOrderSn()));
-//                        hasExistOrder++;
-//                    } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
-//                        log.info("/**************主动更新pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "不存在、新增************开始通知****/");
-//                        mqUtils.sendApiMessage(MqMessage.build(EnumShopType.PDD,MqType.ORDER_MESSAGE,pddOrder.getOrderSn()));
-//                        insertSuccess++;
-//                    } else {
-//                        log.info("/**************主动更新pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "报错****************/");
-//                        totalError++;
-//                    }
+                    order.setOrderId(trade.getOrderSn());
+                    order.setOpenid(trade.getOpen_address_id());
+                    Long orderTime = DateUtils.parseDate(trade.getCreatedTime()).getTime()/1000;
+                    Long orderUpdateTime = DateUtils.parseDate(trade.getUpdatedAt()).getTime()/1000;
+                    order.setCreateTime(orderTime.intValue());
+                    order.setUpdateTime(orderUpdateTime.intValue());
+                    //状态10	待付款；20	待发货；21	部分发货；30	待收货；100	完成；200	全部商品售后之后，订单取消；250	未付款用户主动取消或超时未付款订单自动取消；
+                    //发货状态，枚举值：1：待发货，2：已发货待签收，3：已签收
+                    if(trade.getOrderStatus()==1){
+                        order.setStatus(20);
+                    }else if(trade.getOrderStatus()==2){
+                        order.setStatus(30);
+                    } else if (trade.getOrderStatus()==3) {
+                        order.setStatus(100);
+                    }
+                    //退款状态，枚举值：1：无售后或售后关闭，2：售后处理中，3：退款中，4： 退款成功
+                    if(trade.getRefundStatus()!=1){
+                        order.setStatus(200);
+                    }
+                    order.setProductPrice(BigDecimal.valueOf(trade.getGoodsAmount()*100).intValue());
+                    order.setOrderPrice(BigDecimal.valueOf(trade.getPayAmount()*100).intValue());
+                    order.setFreight(BigDecimal.valueOf(trade.getPostage()*100).intValue());
+                    //优惠金额
+                    order.setDiscountedPrice(BigDecimal.valueOf(trade.getDiscountAmount()*100).intValue());
+                    order.setPlatformDiscount(BigDecimal.valueOf(trade.getPlatformDiscount()*100).intValue());
+                    order.setSellerDiscount(BigDecimal.valueOf(trade.getSellerDiscount()*100).intValue());
+
+                    order.setUserName(trade.getReceiverNameMask());
+                    order.setTelNumber(trade.getReceiverPhoneMask());
+                    order.setProvinceName(trade.getProvince());
+                    order.setCityName(trade.getCity());
+                    order.setCountyName(trade.getTown());
+                    order.setDetailInfo(trade.getAddressMask());
+                    order.setConfirmStatus(1);
+                    order.setConfirmTime(DateUtils.parseDate(trade.getConfirmTime()));
+                    order.setErpSendStatus(0);
+                    order.setCreateOn(new Date());
+
+                    List<ShopOrderItem> itemList = new ArrayList<>();
+                    for (var item:trade.getItemList()) {
+                        ShopOrderItem oi = new ShopOrderItem();
+                        oi.setTenantId(order.getTenantId());
+                        oi.setOrderId(order.getOrderId());
+                        oi.setShopId(Long.parseLong(shop.getId()));
+                        oi.setShopType(shop.getType());
+                        oi.setProductId(item.getGoodsId()+"");
+                        oi.setSkuId(item.getSkuId()+"");
+                        oi.setThumbImg(item.getGoodsImg());
+                        oi.setSkuCnt(item.getGoodsCount());
+                        oi.setSalePrice(BigDecimal.valueOf(item.getGoodsPrice()*100).intValue());
+                        oi.setTitle(item.getGoods_name());
+                        oi.setOnAftersaleSkuCnt(0);
+                        oi.setFinishAftersaleSkuCnt(0);
+                        oi.setSkuCode(item.getOuterId());
+                        oi.setOutSkuId(item.getOuterId());
+                        oi.setOutProductId(item.getOuterGoodsId());
+                        oi.setMarketPrice(BigDecimal.valueOf(item.getGoodsPrice()*100).intValue());
+                        oi.setRealPrice(BigDecimal.valueOf(item.getGoodsPrice()*100).intValue());
+                        oi.setIsDiscounted("false");
+                        oi.setEstimatePrice(BigDecimal.valueOf(item.getGoodsPrice()*100).intValue());
+                        oi.setIsChangePrice("false");
+                        oi.setChangePrice(BigDecimal.valueOf(item.getGoodsPrice()*100).intValue());
+
+                        itemList.add(oi);
+                    }
+                    order.setItems(itemList);
+                    var result = weiOrderService.saveOrder(params.getShopId(), order);
+                    if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
+                        //已经存在
+                        hasExistOrder++;
+                        String[] ids = new String[]{result.getData().toString()};
+                        ResultVo<Integer> resultVo = orderService.orderConfirm(ids);
+                        log.info("======店铺订单同步更新OMS订单库====={}", JSONObject.toJSONString(resultVo));
+                    } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
+                        insertSuccess++;
+                        String[] ids = new String[]{result.getData().toString()};
+                        ResultVo<Integer> resultVo = orderService.orderConfirm(ids);
+                        log.info("======店铺订单新增到OMS订单库====={}", JSONObject.toJSONString(resultVo));
+                    } else {
+                        totalError++;
+                    }
                 }
             }
 

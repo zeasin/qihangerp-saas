@@ -113,6 +113,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                         List<ShopOrderItem> taoOrderItems = itemMapper.selectList(new LambdaQueryWrapper<ShopOrderItem>().eq(ShopOrderItem::getSkuId, item.getSkuId()));
                         if (taoOrderItems != null && taoOrderItems.size() > 0) {
                             // 更新
+                            item.setShopOrderId(update.getId());
                             item.setOrderId(order.getOrderId());
                             item.setOrderTime(order.getCreateTime());
                             item.setId(taoOrderItems.get(0).getId());
@@ -147,6 +148,8 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                     item.setShopType(shop.getType());
                     item.setTenantId(shop.getTenantId());
                     item.setShopOrderId(order.getId());
+                    item.setOrderId(order.getOrderId());
+                    item.setOrderTime(order.getCreateTime());
                     item.setCreateOn(new Date());
                     itemMapper.insert(item);
                 }

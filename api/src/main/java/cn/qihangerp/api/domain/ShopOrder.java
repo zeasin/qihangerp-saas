@@ -90,6 +90,11 @@ public class ShopOrder implements Serializable {
      */
     private Integer discountedPrice;
 
+    //平台优惠金额，单位：分
+    private Integer platformDiscount;
+    //商家优惠金额，单位：分
+    private Integer sellerDiscount;
+
     /**
      * 收货人姓名
      */
