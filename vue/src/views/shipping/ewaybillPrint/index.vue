@@ -122,7 +122,7 @@
               <td width="250px" align="left">标题</td>
               <td width="150" align="left">SKU名</td>
               <td width="200" align="left">Sku编码</td>
-              <!--              <td width="150" align="left">平台SkuId</td>-->
+              <td width="150" align="left">系统SkuId</td>
               <td width="50" align="left">数量</td>
             </th>
           </table>
@@ -151,7 +151,7 @@
               </template>
             </el-table-column>
             <el-table-column label="Sku编码" align="left" prop="skuNum" width="200"/>
-            <!--            <el-table-column label="平台SkuId" align="left" prop="skuId" width="150"/>-->
+            <el-table-column label="系统SkuId" align="left" prop="erpSkuId" width="150"/>
             <el-table-column label="商品数量" align="center" prop="quantity" width="50px">
               <template slot-scope="scope">
                 <el-tag size="small" type="danger">{{scope.row.quantity}}</el-tag>

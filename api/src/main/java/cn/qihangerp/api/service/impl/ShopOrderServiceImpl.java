@@ -110,6 +110,11 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                     mapper.updateById(update);
                     // 更新item
                     for (var item : order.getItems()) {
+                        List<ShopGoodsSku> shopGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<ShopGoodsSku>().eq(ShopGoodsSku::getSkuId, item.getSkuId()));
+                        if(shopGoodsSkus!=null && shopGoodsSkus.size()>0){
+                            item.setErpGoodsId(shopGoodsSkus.get(0).getErpGoodsId());
+                            item.setErpSkuId(shopGoodsSkus.get(0).getErpGoodsSkuId());
+                        }
                         List<ShopOrderItem> taoOrderItems = itemMapper.selectList(new LambdaQueryWrapper<ShopOrderItem>().eq(ShopOrderItem::getSkuId, item.getSkuId()));
                         if (taoOrderItems != null && taoOrderItems.size() > 0) {
                             // 更新
@@ -144,6 +149,11 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                 mapper.insert(order);
                 // 添加item
                 for (var item : order.getItems()) {
+                    List<ShopGoodsSku> shopGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<ShopGoodsSku>().eq(ShopGoodsSku::getSkuId, item.getSkuId()));
+                    if(shopGoodsSkus!=null && shopGoodsSkus.size()>0){
+                        item.setErpGoodsId(shopGoodsSkus.get(0).getErpGoodsId());
+                        item.setErpSkuId(shopGoodsSkus.get(0).getErpGoodsSkuId());
+                    }
                     item.setShopId(shopId);
                     item.setShopType(shop.getType());
                     item.setTenantId(shop.getTenantId());
@@ -164,26 +174,27 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
     @Transactional
     @Override
     public ResultVo<Integer> orderConfirm(String[] ids) {
-        if(ids!=null && ids.length >0) {
-            Integer success =0;
-            for(var id : ids){
-                if(StringUtils.hasText(id)) {
+        if (ids != null && ids.length > 0) {
+            Integer success = 0;
+            for (var id : ids) {
+                if (StringUtils.hasText(id)) {
                     // 查询订单
                     ShopOrder weiOrder = mapper.selectById(id);
-                    if(weiOrder!=null){
+                    if (weiOrder != null) {
                         // 查询是否确认过
 //                        if(weiOrder.getConfirmStatus() == null || weiOrder.getConfirmStatus() == 0){
-                            // 确认状态是null或者0
-                            List<ErpOrder> erpOrders = erpOrderMapper.selectList(new LambdaQueryWrapper<ErpOrder>()
-                                    .eq(ErpOrder::getOrderNum, weiOrder.getOrderId())
-                                    .eq(ErpOrder::getShopId, weiOrder.getShopId()));
-                            //订单状态转换
+                        String shopOrderId = "";
+                        // 确认状态是null或者0
+                        List<ErpOrder> erpOrders = erpOrderMapper.selectList(new LambdaQueryWrapper<ErpOrder>()
+                                .eq(ErpOrder::getOrderNum, weiOrder.getOrderId())
+                                .eq(ErpOrder::getShopId, weiOrder.getShopId()));
+                        //订单状态转换
                         // 状态 订单状态0：新订单，1：待发货，2：已发货，3：已完成，11已取消；12退款中；21待付款；22锁定，29删除，101部分发货
                         Integer orderStatus = null;
                         Integer refundStatus = null;
                         Integer originOrderStatus = weiOrder.getStatus();
                         //状态 10	待付款；20	待发货；21	部分发货；30	待收货；100	完成；200	全部商品售后之后，订单取消；250	未付款用户主动取消或超时未付款订单自动取消；
-                        if(originOrderStatus == 10||originOrderStatus == 12){
+                        if (originOrderStatus == 10 || originOrderStatus == 12) {
                             orderStatus = 21;
                             refundStatus = 1;
                         } else if (originOrderStatus == 20 || originOrderStatus == 21) {
@@ -195,94 +206,112 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                         } else if (originOrderStatus == 100) {
                             orderStatus = 3;
                             refundStatus = 1;
-                        }else if (originOrderStatus == 200) {
+                        } else if (originOrderStatus == 200) {
                             orderStatus = 11;
                             refundStatus = 4;
-                        }else if ( originOrderStatus == 250) {
+                        } else if (originOrderStatus == 250) {
                             orderStatus = 11;
                             refundStatus = 11;
                         }
-                            if(erpOrders==null||erpOrders.size()==0){
-                                // 没有数据，开始插入订单数据
-                                ErpOrder insert = new ErpOrder();
-                                insert.setTenantId(weiOrder.getTenantId());
-                                insert.setOrderNum(weiOrder.getOrderId());
-                                insert.setShopType(EnumShopType.WEI.getIndex());
-                                insert.setShopId(weiOrder.getShopId());
-                                insert.setRefundStatus(refundStatus);
-                                insert.setOrderStatus(orderStatus);
+                        if (erpOrders == null || erpOrders.size() == 0) {
+                            // 没有数据，开始插入订单数据
+                            ErpOrder insert = new ErpOrder();
+                            insert.setTenantId(weiOrder.getTenantId());
+                            insert.setOrderNum(weiOrder.getOrderId());
+                            insert.setShopType(weiOrder.getShopType());
+                            insert.setShopId(weiOrder.getShopId());
+                            insert.setRefundStatus(refundStatus);
+                            insert.setOrderStatus(orderStatus);
 
-                                insert.setGoodsAmount(weiOrder.getProductPrice().doubleValue()/100);
-                                insert.setAmount(weiOrder.getOrderPrice().doubleValue()/100);
-                                insert.setReceiverName(weiOrder.getUserName());
-                                insert.setReceiverMobile(weiOrder.getTelNumber());
-                                insert.setProvince(weiOrder.getProvinceName());
-                                insert.setCity(weiOrder.getCityName());
-                                insert.setTown(weiOrder.getCountyName());
-                                insert.setAddress(weiOrder.getDetailInfo());
-                                insert.setShipStatus(0);
-                                Long orderTime =weiOrder.getCreateTime().longValue();
-                                insert.setOrderTime(new Date(orderTime*1000));
+                            insert.setGoodsAmount(weiOrder.getProductPrice().doubleValue() / 100);
+                            insert.setAmount(weiOrder.getOrderPrice().doubleValue() / 100);
+                            insert.setReceiverName(weiOrder.getUserName());
+                            insert.setReceiverMobile(weiOrder.getTelNumber());
+                            insert.setProvince(weiOrder.getProvinceName());
+                            insert.setCity(weiOrder.getCityName());
+                            insert.setTown(weiOrder.getCountyName());
+                            insert.setAddress(weiOrder.getDetailInfo());
+                            insert.setShipStatus(0);
+                            Long orderTime = weiOrder.getCreateTime().longValue();
+                            insert.setOrderTime(new Date(orderTime * 1000));
 
-                                insert.setCreateTime(new Date());
-                                insert.setCreateBy("手动确认");
-                                erpOrderMapper.insert(insert);
+                            insert.setCreateTime(new Date());
+                            insert.setCreateBy("手动确认");
+                            erpOrderMapper.insert(insert);
+                            shopOrderId = insert.getId();
 
-                                // 插入order_item
-                                List<ShopOrderItem> weiOrderItems = itemMapper.selectList(new LambdaQueryWrapper<ShopOrderItem>().eq(ShopOrderItem::getShopOrderId, weiOrder.getId()));
-                                for(var item :weiOrderItems) {
-                                    ErpOrderItem itemInsert = new ErpOrderItem();
-                                    itemInsert.setTenantId(weiOrder.getTenantId());
-                                    itemInsert.setShopId(weiOrder.getShopId());
-                                    itemInsert.setOrderId(insert.getId());
-                                    itemInsert.setOrderNum(weiOrder.getOrderId());
-                                    itemInsert.setSubOrderNum(item.getId()+"");
-                                    itemInsert.setSkuId(item.getSkuId());
-                                    // TODO:skuId需要查询erp系统的
-                                    itemInsert.setErpGoodsId(item.getErpGoodsId());
-                                    itemInsert.setErpSkuId(item.getErpSkuId());
-                                    itemInsert.setGoodsTitle(item.getTitle());
-                                    itemInsert.setGoodsImg(item.getThumbImg());
-                                    itemInsert.setGoodsNum(item.getOutProductId());
-                                    itemInsert.setSkuNum(item.getSkuCode());
-                                    itemInsert.setGoodsSpec(item.getSkuAttrs());
-                                    if(item.getMarketPrice()!=null) {
-                                        itemInsert.setGoodsPrice(item.getMarketPrice().doubleValue() / 100);
-                                    }
-                                    if(item.getRealPrice()!=null){
-                                        itemInsert.setItemAmount(item.getRealPrice().doubleValue()/100);
-                                    }
-                                    itemInsert.setQuantity(item.getSkuCnt());
-                                    itemInsert.setRefundCount(0);
-                                    itemInsert.setRefundStatus(1);
-                                    erpOrderItemMapper.insert(itemInsert);
-                                }
-                                // 更新wei_order确认状态
-                                ShopOrder update = new ShopOrder();
-                                update.setId(weiOrder.getId());
-                                update.setConfirmStatus(1);
-                                update.setConfirmTime(new Date());
-                                mapper.updateById(update);
-                                success++;
-                            }else{
-                                // 更新订单状态
-                                ErpOrder update = new ErpOrder();
-                                update.setShopId(weiOrder.getShopId());
-                                update.setTenantId(weiOrder.getTenantId());
-                                update.setId(erpOrders.get(0).getId());
-                                update.setRefundStatus(refundStatus);
-                                update.setOrderStatus(orderStatus);
-                                update.setUpdateTime(new Date());
-                                Long orderTime =weiOrder.getCreateTime().longValue();
-                                update.setOrderTime(new Date(orderTime*1000));
-                                erpOrderMapper.updateById(update);
-                            }
+                            // 更新wei_order确认状态
+                            ShopOrder update = new ShopOrder();
+                            update.setId(weiOrder.getId());
+                            update.setConfirmStatus(1);
+                            update.setConfirmTime(new Date());
+                            mapper.updateById(update);
+                            success++;
+                        } else {
+                            // 更新订单状态
+                            ErpOrder update = new ErpOrder();
+                            update.setShopId(weiOrder.getShopId());
+                            update.setTenantId(weiOrder.getTenantId());
+                            update.setId(erpOrders.get(0).getId());
+                            update.setRefundStatus(refundStatus);
+                            update.setOrderStatus(orderStatus);
+                            update.setUpdateTime(new Date());
+                            Long orderTime = weiOrder.getCreateTime().longValue();
+                            update.setOrderTime(new Date(orderTime * 1000));
+                            erpOrderMapper.updateById(update);
+                            shopOrderId = update.getId();
+                        }
 //                        }
+                        // 插入order_item
+                        List<ShopOrderItem> weiOrderItems = itemMapper.selectList(new LambdaQueryWrapper<ShopOrderItem>().eq(ShopOrderItem::getShopOrderId, weiOrder.getId()));
+                        for (var item : weiOrderItems) {
+
+                            ErpOrderItem itemInsert = new ErpOrderItem();
+                            itemInsert.setTenantId(weiOrder.getTenantId());
+                            itemInsert.setShopId(weiOrder.getShopId());
+                            itemInsert.setOrderId(shopOrderId);
+                            itemInsert.setOrderNum(weiOrder.getOrderId());
+                            itemInsert.setSubOrderNum(item.getId() + "");
+                            itemInsert.setSkuId(item.getSkuId());
+                            // TODO:skuId需要查询erp系统的
+                            itemInsert.setErpGoodsId(item.getErpGoodsId());
+                            itemInsert.setErpSkuId(item.getErpSkuId());
+                            itemInsert.setGoodsTitle(item.getTitle());
+                            itemInsert.setGoodsImg(item.getThumbImg());
+                            itemInsert.setGoodsNum(item.getOutProductId());
+                            itemInsert.setSkuNum(item.getSkuCode());
+                            itemInsert.setGoodsSpec(item.getSkuAttrs());
+                            if (item.getMarketPrice() != null) {
+                                itemInsert.setGoodsPrice(item.getMarketPrice().doubleValue() / 100);
+                            }
+                            if (item.getRealPrice() != null) {
+                                itemInsert.setItemAmount(item.getRealPrice().doubleValue() / 100);
+                            }
+                            itemInsert.setQuantity(item.getSkuCnt());
+                            itemInsert.setRefundCount(0);
+                            itemInsert.setRefundStatus(1);
+
+                            List<ErpOrderItem> erpOrderItems = erpOrderItemMapper.selectList(
+                                    new LambdaQueryWrapper<ErpOrderItem>()
+                                            .eq(ErpOrderItem::getOrderId, item.getId())
+                                            .eq(ErpOrderItem::getSkuId, item.getSkuId()));
+                            if(erpOrderItems != null && erpOrderItems.size() > 0) {
+                                // 更新
+                                itemInsert.setId(erpOrderItems.get(0).getId());
+                                itemInsert.setUpdateBy("更新订单");
+                                itemInsert.setUpdateTime(new Date());
+                                erpOrderItemMapper.updateById(itemInsert);
+                            }else {
+                                itemInsert.setCreateBy("同步订单");
+                                itemInsert.setCreateTime(new Date());
+                                erpOrderItemMapper.insert(itemInsert);
+                            }
+                        }
                     }
                 }
             }
             return ResultVo.success(success);
-        }else {
+        } else {
             return ResultVo.error(ResultVoEnum.ParamsError, "没有订单ID：");
         }
     }

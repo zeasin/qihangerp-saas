@@ -73,7 +73,16 @@
           @click="handlePull"
         >API拉取订单</el-button>
       </el-col>
-
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-refresh"
+          size="mini"
+          :disabled="multiple"
+          @click="handleConfirm"
+        >重新推送选中订单到订单库</el-button>
+      </el-col>
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
 <!--          type="primary"-->
@@ -123,6 +132,8 @@
                 &nbsp;
                 <span>数量： </span>
                 <el-tag size="small" type="danger">{{item.skuCnt}}</el-tag>
+                <span>SkuId：{{item.erpSkuId}} </span>
+
               </p>
 
               </div>
@@ -373,11 +384,11 @@ export default {
     handleConfirm(row) {
       const ids = row.id || this.ids;
       console.log('批量确认订单:',ids)
-      this.$modal.confirm('是否批量确认订单？').then(function() {
+      this.$modal.confirm('是否重新推送订单到订单库？').then(function() {
         return orderConfirm({ids:ids});
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("确认成功");
+        this.$modal.msgSuccess("推送成功");
       }).catch(() => {});
     },
   }

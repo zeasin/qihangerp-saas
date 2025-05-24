@@ -406,6 +406,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
 //                shipmentItemMapper.insert(erpShipmentItem);
                 // 添加备货清单item
                 ErpOrderShipListItem listItem=new ErpOrderShipListItem();
+                listItem.setTenantId(shipList.getTenantId());
                 listItem.setShopId(erpOrder.getShopId());
                 listItem.setShopType(erpOrder.getShopType());
                 listItem.setListId(shipList.getId());
@@ -474,7 +475,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         ErpOrder update = new ErpOrder();
         update.setId(erpOrder.getId());
 //        update.setShipStatus(1);
-        update.setShipType(1);//发货方式 0 自己发货1供应商发货2联合发货
+        update.setShipType(2);//发发货方式 0 自己发货1联合发货2供应商发货
         update.setUpdateTime(new Date());
         update.setUpdateBy("分配供应商发货");
         mapper.updateById(update);

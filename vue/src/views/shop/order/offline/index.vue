@@ -482,7 +482,7 @@ export default {
     handlePushOms(row) {
       const ids = row.orderNum || this.ids;
       this.$modal.confirm('是否手动推送到系统？').then(function() {
-         pushOms({ids:ids}).then(resp=>{
+        orderConfirm({ids:ids}).then(resp=>{
            this.getList()
          });
       }).then(() => {
