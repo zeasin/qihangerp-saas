@@ -1,7 +1,7 @@
 package cn.qihangerp.api.controller;
 
 import cn.qihangerp.api.common.*;
-import cn.qihangerp.api.domain.WmsStockOut;
+import cn.qihangerp.api.domain.ErpStockOut;
 import cn.qihangerp.api.request.StockOutCreateRequest;
 import cn.qihangerp.api.request.StockOutItemRequest;
 import cn.qihangerp.api.service.WmsStockOutService;
@@ -15,7 +15,7 @@ public class StockOutController extends BaseController {
     private final WmsStockOutService stockOutService;
 
     @GetMapping("/list")
-    public TableDataInfo list(WmsStockOut bo, PageQuery pageQuery)
+    public TableDataInfo list(ErpStockOut bo, PageQuery pageQuery)
     {
         bo.setTenantId(getUserId());
         var pageList = stockOutService.queryPageList(bo,pageQuery);
@@ -37,7 +37,7 @@ public class StockOutController extends BaseController {
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
 //        WmsStockIn entry = stockInService.getDetailAndItemById(id);
-        WmsStockOut entry = stockOutService.getDetailAndItemById(id);
+        ErpStockOut entry = stockOutService.getDetailAndItemById(id);
         return success(entry);
     }
     @PostMapping("/out")

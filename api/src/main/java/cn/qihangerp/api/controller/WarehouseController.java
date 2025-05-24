@@ -3,8 +3,8 @@ package cn.qihangerp.api.controller;
 import cn.qihangerp.api.common.AjaxResult;
 import cn.qihangerp.api.common.BaseController;
 import cn.qihangerp.api.common.TableDataInfo;
-import cn.qihangerp.api.domain.WmsWarehouse;
-import cn.qihangerp.api.domain.WmsWarehousePosition;
+import cn.qihangerp.api.domain.ErpWarehouse;
+import cn.qihangerp.api.domain.ErpWarehousePosition;
 import cn.qihangerp.api.service.WmsWarehousePositionService;
 import cn.qihangerp.api.service.WmsWarehouseService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -24,16 +24,16 @@ public class WarehouseController extends BaseController {
     private final WmsWarehouseService warehouseService;
     private final WmsWarehousePositionService positionService;
     @GetMapping("/list")
-    public TableDataInfo list(WmsWarehouse bo)
+    public TableDataInfo list(ErpWarehouse bo)
     {
-        LambdaQueryWrapper<WmsWarehouse> qw = new LambdaQueryWrapper<WmsWarehouse>()
-                .eq(WmsWarehouse::getTenantId,getUserId())
-                .eq(bo.getStatus()!=null,WmsWarehouse::getStatus, bo.getStatus())
-                .like(StringUtils.hasText(bo.getNumber()),WmsWarehouse::getNumber,bo.getNumber())
-                .like(StringUtils.hasText(bo.getName()),WmsWarehouse::getName,bo.getName())
+        LambdaQueryWrapper<ErpWarehouse> qw = new LambdaQueryWrapper<ErpWarehouse>()
+                .eq(ErpWarehouse::getTenantId,getUserId())
+                .eq(bo.getStatus()!=null, ErpWarehouse::getStatus, bo.getStatus())
+                .like(StringUtils.hasText(bo.getNumber()), ErpWarehouse::getNumber,bo.getNumber())
+                .like(StringUtils.hasText(bo.getName()), ErpWarehouse::getName,bo.getName())
                 ;
-        List<WmsWarehouse> wmsWarehouses = warehouseService.list(qw);
-        return getDataTable(wmsWarehouses);
+        List<ErpWarehouse> erpWarehouses = warehouseService.list(qw);
+        return getDataTable(erpWarehouses);
     }
 
     @GetMapping(value = "/{id}")
@@ -42,14 +42,14 @@ public class WarehouseController extends BaseController {
         return success(warehouseService.getById(id));
     }
     @PostMapping
-    public AjaxResult add(@RequestBody WmsWarehouse warehouse, HttpServletRequest request)
+    public AjaxResult add(@RequestBody ErpWarehouse warehouse, HttpServletRequest request)
     {
         warehouse.setTenantId(getUserId());
         warehouse.setCreateBy(getUsername());
         warehouse.setCreateTime(new Date());
         boolean save = warehouseService.save(warehouse);
         if(save){
-            WmsWarehousePosition position = new WmsWarehousePosition();
+            ErpWarehousePosition position = new ErpWarehousePosition();
             position.setTenantId(getUserId());
             position.setWarehouseId(warehouse.getId());
             position.setParentId(0);
@@ -67,7 +67,7 @@ public class WarehouseController extends BaseController {
         return AjaxResult.success();
     }
     @PutMapping
-    public AjaxResult edit(@RequestBody WmsWarehouse warehouse, HttpServletRequest request)
+    public AjaxResult edit(@RequestBody ErpWarehouse warehouse, HttpServletRequest request)
     {
         warehouse.setTenantId(null);
         warehouse.setUpdateBy(getUsername());
@@ -83,28 +83,28 @@ public class WarehouseController extends BaseController {
     @GetMapping("/position/list")
     public TableDataInfo positionList(Long warehouseId)
     {
-        LambdaQueryWrapper<WmsWarehousePosition> qw = new LambdaQueryWrapper<WmsWarehousePosition>()
-                .eq(WmsWarehousePosition::getTenantId,getUserId())
-                .eq(WmsWarehousePosition::getWarehouseId,warehouseId)
+        LambdaQueryWrapper<ErpWarehousePosition> qw = new LambdaQueryWrapper<ErpWarehousePosition>()
+                .eq(ErpWarehousePosition::getTenantId,getUserId())
+                .eq(ErpWarehousePosition::getWarehouseId,warehouseId)
                 ;
-        List<WmsWarehousePosition> list = positionService.list(qw);
+        List<ErpWarehousePosition> list = positionService.list(qw);
         return getDataTable(list);
     }
     @GetMapping("/position/search")
     public TableDataInfo searchPosition(Long warehouseId,String number)
     {
-        LambdaQueryWrapper<WmsWarehousePosition> qw = new LambdaQueryWrapper<WmsWarehousePosition>()
-                .eq(WmsWarehousePosition::getTenantId,getUserId())
-                .eq(warehouseId!=null,WmsWarehousePosition::getWarehouseId,warehouseId)
-                .like(WmsWarehousePosition::getNumber,number)
+        LambdaQueryWrapper<ErpWarehousePosition> qw = new LambdaQueryWrapper<ErpWarehousePosition>()
+                .eq(ErpWarehousePosition::getTenantId,getUserId())
+                .eq(warehouseId!=null, ErpWarehousePosition::getWarehouseId,warehouseId)
+                .like(ErpWarehousePosition::getNumber,number)
                 ;
-        List<WmsWarehousePosition> list = positionService.list(qw);
+        List<ErpWarehousePosition> list = positionService.list(qw);
         return getDataTable(list);
     }
 
 
     @PostMapping("/position")
-    public AjaxResult positionAdd(@RequestBody WmsWarehousePosition position, HttpServletRequest request) {
+    public AjaxResult positionAdd(@RequestBody ErpWarehousePosition position, HttpServletRequest request) {
         position.setTenantId(getUserId());
         position.setCreateBy(getUsername());
         position.setCreateTime(new Date());
@@ -122,7 +122,7 @@ public class WarehouseController extends BaseController {
     }
 
     @PutMapping("/position")
-    public AjaxResult positionEdit(@RequestBody WmsWarehousePosition position, HttpServletRequest request)
+    public AjaxResult positionEdit(@RequestBody ErpWarehousePosition position, HttpServletRequest request)
     {
         position.setTenantId(getUserId());
         position.setUpdateBy(getUsername());

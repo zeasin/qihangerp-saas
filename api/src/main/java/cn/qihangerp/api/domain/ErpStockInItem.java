@@ -15,7 +15,7 @@ import java.util.Date;
  */
 @TableName(value ="wms_stock_in_item")
 @Data
-public class WmsStockInItem implements Serializable {
+public class ErpStockInItem implements Serializable {
     /**
      * 
      */

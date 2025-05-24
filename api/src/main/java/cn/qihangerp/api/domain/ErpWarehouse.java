@@ -8,52 +8,47 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 仓库仓位表
- * @TableName wms_warehouse_position
+ * 仓库表
+ * @TableName wms_warehouse
  */
 @Data
-public class WmsWarehousePosition implements Serializable {
+public class ErpWarehouse implements Serializable {
     /**
      * 
      */
     @TableId(value = "id",type = IdType.AUTO)
     private Long id;
-
-    /**
-     * 仓库id
-     */
-    private Long warehouseId;
     private Long tenantId;
 
     /**
-     * 仓库/货架编号
+     * 仓库编号
      */
     private String number;
 
     /**
-     * 仓位/货架名称
+     * 仓库名称
      */
     private String name;
 
     /**
-     * 上级id
+     * 省
      */
-    private Integer parentId;
+    private String province;
 
     /**
-     * 层级深度1级2级3级
+     * 市
      */
-    private Integer depth;
+    private String city;
 
     /**
-     * 一级类目id
+     * 区
      */
-    private Integer parentId1;
+    private String district;
 
     /**
-     * 二级类目id
+     * 街道
      */
-    private Integer parentId2;
+    private String street;
 
     /**
      * 地址
@@ -66,9 +61,9 @@ public class WmsWarehousePosition implements Serializable {
     private String remark;
 
     /**
-     * 0正常  1删除
+     * 状态0禁用  1正常
      */
-    private Integer isDelete;
+    private Integer status;
 
     /**
      * 创建人

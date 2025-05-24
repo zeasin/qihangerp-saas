@@ -17,7 +17,7 @@ import java.util.List;
  */
 @TableName(value ="wms_stock_out_item")
 @Data
-public class WmsStockOutItem implements Serializable {
+public class ErpStockOutItem implements Serializable {
     /**
      * 主键ID
      */

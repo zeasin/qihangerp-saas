@@ -23,7 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +36,7 @@ import java.util.stream.Collectors;
 */
 @AllArgsConstructor
 @Service
-public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStockIn>
+public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, ErpStockIn>
     implements WmsStockInService {
     private final WmsStockInMapper mapper;
     private final WmsStockInItemService inItemService;
@@ -49,17 +48,17 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
     private final ErpGoodsSkuService skuService;
     private final ErpGoodsService goodsService;
     @Override
-    public PageResult<WmsStockIn> queryPageList(WmsStockIn bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<WmsStockIn> queryWrapper = new LambdaQueryWrapper<WmsStockIn>()
-                .eq(WmsStockIn::getTenantId,bo.getTenantId())
-                .eq( bo.getStatus()!=null,WmsStockIn::getStatus, bo.getStatus())
-                .eq( bo.getStockInType()!=null,WmsStockIn::getStockInType, bo.getStockInType())
-                .eq(StringUtils.isNotBlank(bo.getStockInNum()),WmsStockIn::getStockInNum, bo.getStockInNum())
-                .eq(StringUtils.isNotBlank(bo.getSourceNo()),WmsStockIn::getSourceNo, bo.getSourceNo())
-                .eq(bo.getSourceId()!=null,WmsStockIn::getSourceId, bo.getSourceId())
+    public PageResult<ErpStockIn> queryPageList(ErpStockIn bo, PageQuery pageQuery) {
+        LambdaQueryWrapper<ErpStockIn> queryWrapper = new LambdaQueryWrapper<ErpStockIn>()
+                .eq(ErpStockIn::getTenantId,bo.getTenantId())
+                .eq( bo.getStatus()!=null, ErpStockIn::getStatus, bo.getStatus())
+                .eq( bo.getStockInType()!=null, ErpStockIn::getStockInType, bo.getStockInType())
+                .eq(StringUtils.isNotBlank(bo.getStockInNum()), ErpStockIn::getStockInNum, bo.getStockInNum())
+                .eq(StringUtils.isNotBlank(bo.getSourceNo()), ErpStockIn::getSourceNo, bo.getSourceNo())
+                .eq(bo.getSourceId()!=null, ErpStockIn::getSourceId, bo.getSourceId())
             ;
 
-        Page<WmsStockIn> pages = mapper.selectPage(pageQuery.build(), queryWrapper);
+        Page<ErpStockIn> pages = mapper.selectPage(pageQuery.build(), queryWrapper);
         return PageResult.build(pages);
     }
 
@@ -78,7 +77,7 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
         Map<String, List<StockInCreateItem>> goodsGroup = request.getItemList().stream().collect(Collectors.groupingBy(x -> x.getGoodsId()));
         Long total = request.getItemList().stream().mapToLong(StockInCreateItem::getQuantity).sum();
         //添加主表信息
-        WmsStockIn insert = new WmsStockIn();
+        ErpStockIn insert = new ErpStockIn();
         insert.setTenantId(userId);
         insert.setStockInNum(request.getStockInNum());
         insert.setStockInType(request.getStockInType());
@@ -96,13 +95,13 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
         mapper.insert(insert);
 
         //添加子表信息
-        List<WmsStockInItem> itemList = new ArrayList<>();
+        List<ErpStockInItem> itemList = new ArrayList<>();
         for(StockInCreateItem item: request.getItemList()){
             if(item.getSkuId()!=null) {
                 ErpGoodsSku goodsSku = skuService.getById(item.getSkuId());
                 if(goodsSku!=null) {
                     ErpGoods goods = goodsService.getById(goodsSku.getGoodsId());
-                    WmsStockInItem inItem = new WmsStockInItem();
+                    ErpStockInItem inItem = new ErpStockInItem();
                     inItem.setTenantId(inItem.getTenantId());
                     inItem.setStockInId(insert.getId());
                     inItem.setStockInType(insert.getStockInType());
@@ -137,9 +136,9 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
 //        if (request.getWarehouseId() == null) return ResultVo.error(ResultVoEnum.ParamsError, "缺少参数warehouseId");
         if (request.getItemList().isEmpty()) return ResultVo.error(ResultVoEnum.ParamsError, "缺少入库数据");
 
-        WmsStockIn wmsStockIn = mapper.selectById(request.getStockInId());
-        if (wmsStockIn == null) return ResultVo.error(ResultVoEnum.NotFound, "没有找到入库单");
-        else if (wmsStockIn.getStatus() == 2) {
+        ErpStockIn erpStockIn = mapper.selectById(request.getStockInId());
+        if (erpStockIn == null) return ResultVo.error(ResultVoEnum.NotFound, "没有找到入库单");
+        else if (erpStockIn.getStatus() == 2) {
             return ResultVo.error(ResultVoEnum.SystemException, "入库单状态不能入库");
         }
 
@@ -154,12 +153,12 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
         // 开始入库
         for (StockInItem item : waitList) {
             // 查询明细
-            WmsStockInItem stockInItem = inItemService.getById(item.getId());
+            ErpStockInItem stockInItem = inItemService.getById(item.getId());
             if (stockInItem == null) {
                 return ResultVo.error(ResultVoEnum.DataError, "数据错误！没有找到入库单明细");
             }
             // 查询仓位
-            WmsWarehousePosition warehousePosition = warehousePositionMapper.selectById(item.getPositionId());
+            ErpWarehousePosition warehousePosition = warehousePositionMapper.selectById(item.getPositionId());
             if (warehousePosition == null) {
                 return ResultVo.error("仓库仓位不存在！");
             }
@@ -223,9 +222,9 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
 
 
             // 添加itemPosition
-            WmsStockInItemPosition stockInItemPosition = new WmsStockInItemPosition();
+            ErpStockInItemPosition stockInItemPosition = new ErpStockInItemPosition();
             stockInItemPosition.setTenantId(tenantId);
-            stockInItemPosition.setInId(wmsStockIn.getId());
+            stockInItemPosition.setInId(erpStockIn.getId());
             stockInItemPosition.setItemId(item.getId());
             stockInItemPosition.setGoodsInventoryId(Long.parseLong(goodsInventoryId));
             stockInItemPosition.setGoodsInventoryBatchId(inventoryBatch.getId());
@@ -253,9 +252,9 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
             operation.setLockedQuantity(0);
             operation.setPrice(inventoryBatch.getPurPrice());
             // 来源类型（1采购订单2退货订单）
-            if(wmsStockIn.getStockInType().intValue()==1){
+            if(erpStockIn.getStockInType().intValue()==1){
                 operation.setBizType(101);//业务类型（101采购入库102销售退货入库201采购退货出库202订单发货出库203订单补发出库999其他出库）
-            }else  if(wmsStockIn.getStockInType().intValue()==2){
+            }else  if(erpStockIn.getStockInType().intValue()==2){
                 operation.setBizType(102);
             }
             operation.setBizId(stockInItemPosition.getId());
@@ -270,7 +269,7 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
             inventoryOperationMapper.insert(operation);
 
             // 回写状态
-            WmsStockInItem update = new WmsStockInItem();
+            ErpStockInItem update = new ErpStockInItem();
             update.setId(stockInItem.getId());
             update.setInQuantity(stockInItem.getInQuantity() + item.getQty());
             update.setStatus(2);
@@ -283,8 +282,8 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
         }
 
         // 查询入库表单是否入库完成
-        List<WmsStockInItem> itemList = inItemService.list(new LambdaQueryWrapper<WmsStockInItem>().eq(WmsStockInItem::getStockInId,wmsStockIn.getId()).ne(WmsStockInItem::getStatus, 2));
-        WmsStockIn sUpdate = new WmsStockIn();
+        List<ErpStockInItem> itemList = inItemService.list(new LambdaQueryWrapper<ErpStockInItem>().eq(ErpStockInItem::getStockInId, erpStockIn.getId()).ne(ErpStockInItem::getStatus, 2));
+        ErpStockIn sUpdate = new ErpStockIn();
         if (itemList.isEmpty()) {
             // 全部入库完成了
             sUpdate.setStatus(2);
@@ -292,7 +291,7 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
             // 部分入库
             sUpdate.setStatus(1);
         }
-        sUpdate.setId(wmsStockIn.getId());
+        sUpdate.setId(erpStockIn.getId());
         sUpdate.setStockInOperatorId(tenantId.toString());
         sUpdate.setStockInOperator(request.getStockInOperator());
         sUpdate.setStockInTime(new Date());
@@ -305,11 +304,11 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
     }
 
     @Override
-    public WmsStockIn getDetailAndItemById(Long id) {
-        WmsStockIn wmsStockIn = mapper.selectById(id);
-        if(wmsStockIn!=null){
-            wmsStockIn.setItemList(inItemService.list(new LambdaQueryWrapper<WmsStockInItem>().eq(WmsStockInItem::getStockInId,id)));
-            return wmsStockIn;
+    public ErpStockIn getDetailAndItemById(Long id) {
+        ErpStockIn erpStockIn = mapper.selectById(id);
+        if(erpStockIn !=null){
+            erpStockIn.setItemList(inItemService.list(new LambdaQueryWrapper<ErpStockInItem>().eq(ErpStockInItem::getStockInId,id)));
+            return erpStockIn;
         }else
             return null;
     }

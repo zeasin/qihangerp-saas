@@ -6,7 +6,6 @@ import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.common.utils.DateUtils;
 import cn.qihangerp.api.domain.*;
 import cn.qihangerp.api.mapper.WmsStockOutMapper;
-import cn.qihangerp.api.request.GoodsSkuInventoryVo;
 import cn.qihangerp.api.request.StockShipmentStockOutRequest;
 import cn.qihangerp.api.service.WmsStockOutItemService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -84,7 +83,7 @@ public class ErpShipmentItemServiceImpl extends ServiceImpl<ErpShipmentItemMappe
         Long total = erpShipmentItems.stream().mapToLong(ErpShipmentItem::getQuantity).sum();
 
         //添加主表信息
-        WmsStockOut stockOut = new WmsStockOut();
+        ErpStockOut stockOut = new ErpStockOut();
         stockOut.setTenantId(userId);
         stockOut.setOutNum(request.getStockOutNum());
         stockOut.setType(1);
@@ -107,7 +106,7 @@ public class ErpShipmentItemServiceImpl extends ServiceImpl<ErpShipmentItemMappe
         //添加子表信息
 //        List<WmsStockOutItem> itemList = new ArrayList<>();
         for(ErpShipmentItem item: erpShipmentItems) {
-            WmsStockOutItem inItem = new WmsStockOutItem();
+            ErpStockOutItem inItem = new ErpStockOutItem();
             inItem.setTenantId(stockOut.getTenantId());
             inItem.setEntryId(stockOut.getId());
             inItem.setType(stockOut.getType());

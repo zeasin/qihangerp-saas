@@ -14,7 +14,7 @@ import java.util.List;
  * @TableName wms_stock_in
  */
 @Data
-public class WmsStockIn implements Serializable {
+public class ErpStockIn implements Serializable {
     /**
      * 主键ID
      */
@@ -103,7 +103,7 @@ public class WmsStockIn implements Serializable {
     private Date updateTime;
 
     @TableField(exist = false)
-    private List<WmsStockInItem> itemList;
+    private List<ErpStockInItem> itemList;
 
     private static final long serialVersionUID = 1L;
 }

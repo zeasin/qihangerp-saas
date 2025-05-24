@@ -1,6 +1,6 @@
 package cn.qihangerp.api.service;
 
-import cn.qihangerp.api.domain.WmsWarehouse;
+import cn.qihangerp.api.domain.ErpWarehouse;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -8,6 +8,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @description 针对表【wms_warehouse(仓库表)】的数据库操作Service
 * @createDate 2024-09-22 11:13:23
 */
-public interface WmsWarehouseService extends IService<WmsWarehouse> {
+public interface WmsWarehouseService extends IService<ErpWarehouse> {
 
 }

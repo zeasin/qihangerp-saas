@@ -1,6 +1,6 @@
 package cn.qihangerp.api.service.impl;
 
-import cn.qihangerp.api.domain.WmsWarehouse;
+import cn.qihangerp.api.domain.ErpWarehouse;
 import cn.qihangerp.api.mapper.WmsWarehouseMapper;
 import cn.qihangerp.api.service.WmsWarehouseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 * @createDate 2024-09-22 11:13:23
 */
 @Service
-public class WmsWarehouseServiceImpl extends ServiceImpl<WmsWarehouseMapper, WmsWarehouse>
+public class WmsWarehouseServiceImpl extends ServiceImpl<WmsWarehouseMapper, ErpWarehouse>
     implements WmsWarehouseService {
 
 }

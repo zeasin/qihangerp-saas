@@ -1,7 +1,7 @@
 package cn.qihangerp.api.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.qihangerp.api.domain.WmsStockOutItemPosition;
+import cn.qihangerp.api.domain.ErpStockOutItemPosition;
 import cn.qihangerp.api.service.WmsStockOutItemPositionService;
 import cn.qihangerp.api.mapper.WmsStockOutItemPositionMapper;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 * @createDate 2025-05-18 17:35:01
 */
 @Service
-public class WmsStockOutItemPositionServiceImpl extends ServiceImpl<WmsStockOutItemPositionMapper, WmsStockOutItemPosition>
+public class WmsStockOutItemPositionServiceImpl extends ServiceImpl<WmsStockOutItemPositionMapper, ErpStockOutItemPosition>
     implements WmsStockOutItemPositionService{
 
 }

@@ -1,6 +1,6 @@
 package cn.qihangerp.api.mapper;
 
-import cn.qihangerp.api.domain.WmsWarehouse;
+import cn.qihangerp.api.domain.ErpWarehouse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2024-09-22 11:13:23
 * @Entity cn.qihangerp.wms.domain.WmsWarehouse
 */
-public interface WmsWarehouseMapper extends BaseMapper<WmsWarehouse> {
+public interface WmsWarehouseMapper extends BaseMapper<ErpWarehouse> {
 
 }
 

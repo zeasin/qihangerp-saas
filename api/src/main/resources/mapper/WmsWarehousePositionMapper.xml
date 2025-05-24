@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.qihangerp.api.mapper.WmsWarehousePositionMapper">
 
-    <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.WmsWarehousePosition">
+    <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.ErpWarehousePosition">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="warehouseId" column="warehouse_id" jdbcType="BIGINT"/>
             <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>

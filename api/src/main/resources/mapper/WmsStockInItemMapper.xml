@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.qihangerp.api.mapper.WmsStockInItemMapper">
 
-    <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.WmsStockInItem">
+    <resultMap id="BaseResultMap" type="cn.qihangerp.api.domain.ErpStockInItem">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <id property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
             <result property="stockInId" column="stock_in_id" jdbcType="BIGINT"/>

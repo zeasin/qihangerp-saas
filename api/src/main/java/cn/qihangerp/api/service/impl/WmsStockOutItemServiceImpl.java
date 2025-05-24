@@ -1,7 +1,7 @@
 package cn.qihangerp.api.service.impl;
 
 import cn.qihangerp.api.common.utils.StringUtils;
-import cn.qihangerp.api.domain.WmsStockOutItem;
+import cn.qihangerp.api.domain.ErpStockOutItem;
 import cn.qihangerp.api.mapper.WmsStockOutItemMapper;
 import cn.qihangerp.api.request.ShopDailyRequest;
 import cn.qihangerp.api.service.WmsStockOutItemService;
@@ -21,13 +21,13 @@ import java.util.List;
 */
 @AllArgsConstructor
 @Service
-public class WmsStockOutItemServiceImpl extends ServiceImpl<WmsStockOutItemMapper, WmsStockOutItem>
+public class WmsStockOutItemServiceImpl extends ServiceImpl<WmsStockOutItemMapper, ErpStockOutItem>
     implements WmsStockOutItemService {
     private final WmsStockOutItemMapper outItemMapper;
 
 
     @Override
-    public List<WmsStockOutItem> searchList(ShopDailyRequest request) {
+    public List<ErpStockOutItem> searchList(ShopDailyRequest request) {
         // 定义日期格式
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String startDate = LocalDate.now().minusDays(1).format(formatter);
@@ -45,15 +45,15 @@ public class WmsStockOutItemServiceImpl extends ServiceImpl<WmsStockOutItemMappe
         }
 
 
-        LambdaQueryWrapper<WmsStockOutItem> qw = new LambdaQueryWrapper<>();
-        qw.ge(WmsStockOutItem::getCompleteTime, startDate + " 00:00:00");
-        qw.le(WmsStockOutItem::getCompleteTime, endDate + " 23:59:59");
-        qw.eq(StringUtils.isNotEmpty(request.getSkuCode()),WmsStockOutItem::getSkuCode,request.getSkuCode());
+        LambdaQueryWrapper<ErpStockOutItem> qw = new LambdaQueryWrapper<>();
+        qw.ge(ErpStockOutItem::getCompleteTime, startDate + " 00:00:00");
+        qw.le(ErpStockOutItem::getCompleteTime, endDate + " 23:59:59");
+        qw.eq(StringUtils.isNotEmpty(request.getSkuCode()), ErpStockOutItem::getSkuCode,request.getSkuCode());
 
 
 
         qw.last("order by complete_time desc,id desc");
-        List<WmsStockOutItem> list = outItemMapper.selectList(qw);
+        List<ErpStockOutItem> list = outItemMapper.selectList(qw);
         return list;
     }
 

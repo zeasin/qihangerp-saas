@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 */
 @AllArgsConstructor
 @Service
-public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsStockOut>
+public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, ErpStockOut>
     implements WmsStockOutService {
     private final WmsStockOutMapper outMapper;
     private final WmsStockOutItemService outItemService;
@@ -47,17 +47,17 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
     private final WmsStockOutItemPositionMapper outItemPositionMapper;
 
     @Override
-    public PageResult<WmsStockOut> queryPageList(WmsStockOut bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<WmsStockOut> queryWrapper = new LambdaQueryWrapper<WmsStockOut>()
-                .eq( WmsStockOut::getTenantId, bo.getTenantId())
-                .eq( bo.getStatus()!=null,WmsStockOut::getStatus, bo.getStatus())
-                .eq( bo.getType()!=null,WmsStockOut::getType, bo.getType())
-                .eq(StringUtils.isNotBlank(bo.getOutNum()),WmsStockOut::getOutNum, bo.getOutNum())
-                .eq(StringUtils.isNotBlank(bo.getSourceNum()),WmsStockOut::getSourceNum, bo.getSourceNum())
-                .eq(bo.getSourceId()!=null,WmsStockOut::getSourceId, bo.getSourceId())
+    public PageResult<ErpStockOut> queryPageList(ErpStockOut bo, PageQuery pageQuery) {
+        LambdaQueryWrapper<ErpStockOut> queryWrapper = new LambdaQueryWrapper<ErpStockOut>()
+                .eq( ErpStockOut::getTenantId, bo.getTenantId())
+                .eq( bo.getStatus()!=null, ErpStockOut::getStatus, bo.getStatus())
+                .eq( bo.getType()!=null, ErpStockOut::getType, bo.getType())
+                .eq(StringUtils.isNotBlank(bo.getOutNum()), ErpStockOut::getOutNum, bo.getOutNum())
+                .eq(StringUtils.isNotBlank(bo.getSourceNum()), ErpStockOut::getSourceNum, bo.getSourceNum())
+                .eq(bo.getSourceId()!=null, ErpStockOut::getSourceId, bo.getSourceId())
                 ;
 
-        Page<WmsStockOut> pages = outMapper.selectPage(pageQuery.build(), queryWrapper);
+        Page<ErpStockOut> pages = outMapper.selectPage(pageQuery.build(), queryWrapper);
         return PageResult.build(pages);
     }
 
@@ -78,7 +78,7 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
         Long total = request.getItemList().stream().mapToLong(GoodsSkuInventoryVo::getQuantity).sum();
 
         //添加主表信息
-        WmsStockOut insert = new WmsStockOut();
+        ErpStockOut insert = new ErpStockOut();
         insert.setTenantId(userId);
         insert.setOutNum(request.getOutNum());
         insert.setType(request.getType());
@@ -101,10 +101,10 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
         outMapper.insert(insert);
 
         //添加子表信息
-        List<WmsStockOutItem> itemList = new ArrayList<>();
+        List<ErpStockOutItem> itemList = new ArrayList<>();
         for(GoodsSkuInventoryVo item: request.getItemList()) {
 
-            WmsStockOutItem inItem = new WmsStockOutItem();
+            ErpStockOutItem inItem = new ErpStockOutItem();
 //            inItem.setShopId(request.getShopId());
 //            inItem.setShopGroupId(request.getShopGroupId());
             inItem.setTenantId(insert.getTenantId());
@@ -135,22 +135,22 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
     }
 
     @Override
-    public WmsStockOut getDetailAndItemById(Long id) {
-        WmsStockOut wmsStockOut = outMapper.selectById(id);
-        if(wmsStockOut!=null){
-            List<WmsStockOutItem> outItemList = outItemService.list(new LambdaQueryWrapper<WmsStockOutItem>().eq(WmsStockOutItem::getEntryId, id));
+    public ErpStockOut getDetailAndItemById(Long id) {
+        ErpStockOut erpStockOut = outMapper.selectById(id);
+        if(erpStockOut !=null){
+            List<ErpStockOutItem> outItemList = outItemService.list(new LambdaQueryWrapper<ErpStockOutItem>().eq(ErpStockOutItem::getEntryId, id));
             if(outItemList!=null && outItemList.size()>0){
                 // 查找outItem skuid相对应的库存批次list
-                for(WmsStockOutItem item: outItemList){
+                for(ErpStockOutItem item: outItemList){
                     item.setOutQty(item.getOriginalQuantity()-item.getOutQuantity());
                     List<ErpGoodsInventoryBatch> erpGoodsInventoryBatches = goodsInventoryBatchService.querySkuBatchList(item.getSkuId());
                     item.setInventoryBatchList(erpGoodsInventoryBatches);
                 }
 
             }
-            wmsStockOut.setItemList(outItemList);
+            erpStockOut.setItemList(outItemList);
         }
-        return wmsStockOut;
+        return erpStockOut;
     }
 
     @Transactional
@@ -159,7 +159,7 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
         if(request.getEntryItemId() == null) return ResultVo.error(1500,"缺少参数：outItemId");
         if(request.getOutQty()==null || request.getOutQty().longValue()<=0) return ResultVo.error(1500,"缺少参数：出库数量");
 
-        WmsStockOutItem outItem = outItemService.getById(request.getEntryItemId());
+        ErpStockOutItem outItem = outItemService.getById(request.getEntryItemId());
         if(outItem == null) return ResultVo.error(1500,"出库数据错误");
         // 判断库存够不够扣减的
         ErpGoodsInventoryBatch batch = goodsInventoryBatchService.getById(request.getInventoryBatchId());
@@ -187,7 +187,7 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
 
 
         // 添加item
-        WmsStockOutItemPosition outItemPosition = new WmsStockOutItemPosition();
+        ErpStockOutItemPosition outItemPosition = new ErpStockOutItemPosition();
         outItemPosition.setTenantId(outItem.getTenantId());
         outItemPosition.setOutId(outItem.getEntryId());
         outItemPosition.setItemId(outItem.getId());
@@ -238,7 +238,7 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
         inventoryOperationMapper.insert(operation);
 
         // 更新自己的状态
-        WmsStockOutItem outItemUpdate = new WmsStockOutItem();
+        ErpStockOutItem outItemUpdate = new ErpStockOutItem();
         outItemUpdate.setId(outItem.getId());
         outItemUpdate.setStatus(2);
         outItemUpdate.setCompleteTime(new Date());
@@ -248,11 +248,11 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
         outItemService.updateById(outItemUpdate);
 
         // 更新主表单数据
-        WmsStockOut wmsStockOut = outMapper.selectById(outItem.getEntryId());
-        if(wmsStockOut.getOutTotal()==null)wmsStockOut.setOutTotal(0);
+        ErpStockOut erpStockOut = outMapper.selectById(outItem.getEntryId());
+        if(erpStockOut.getOutTotal()==null) erpStockOut.setOutTotal(0);
         // 查询入库表单是否入库完成
-        List<WmsStockOutItem> itemList = outItemService.list(new LambdaQueryWrapper<WmsStockOutItem>().eq(WmsStockOutItem::getEntryId,outItem.getEntryId()).ne(WmsStockOutItem::getStatus, 2));
-        WmsStockOut sUpdate = new WmsStockOut();
+        List<ErpStockOutItem> itemList = outItemService.list(new LambdaQueryWrapper<ErpStockOutItem>().eq(ErpStockOutItem::getEntryId,outItem.getEntryId()).ne(ErpStockOutItem::getStatus, 2));
+        ErpStockOut sUpdate = new ErpStockOut();
         if (itemList.isEmpty()) {
             // 全部入库完成了
             sUpdate.setStatus(2);
@@ -266,7 +266,7 @@ public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, WmsSt
         sUpdate.setOperatorId(userId.toString());
         sUpdate.setOperatorName(userName);
         sUpdate.setOutTime(new Date());
-        sUpdate.setOutTotal(wmsStockOut.getOutTotal()+request.getOutQty().intValue());
+        sUpdate.setOutTotal(erpStockOut.getOutTotal()+request.getOutQty().intValue());
         sUpdate.setUpdateBy(userName);
         sUpdate.setUpdateTime(new Date());
         outMapper.updateById(sUpdate);

@@ -14,7 +14,7 @@ import lombok.Data;
  */
 @TableName(value ="wms_stock_in_item_position")
 @Data
-public class WmsStockInItemPosition implements Serializable {
+public class ErpStockInItemPosition implements Serializable {
     /**
      * 主键ID
      */

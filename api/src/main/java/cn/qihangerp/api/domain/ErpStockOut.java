@@ -16,7 +16,7 @@ import java.util.List;
  */
 @TableName(value ="wms_stock_out")
 @Data
-public class WmsStockOut implements Serializable {
+public class ErpStockOut implements Serializable {
     /**
      * 
      */
@@ -127,7 +127,7 @@ public class WmsStockOut implements Serializable {
     private String updateBy;
 
     @TableField(exist = false)
-    private List<WmsStockOutItem> itemList;
+    private List<ErpStockOutItem> itemList;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

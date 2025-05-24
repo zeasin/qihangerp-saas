@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 24/05/2025 18:26:44
+ Date: 24/05/2025 18:48:26
 */
 
 SET NAMES utf8mb4;
@@ -986,6 +986,215 @@ CREATE TABLE `erp_shop_task_logs`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '后台任务运行日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Table structure for erp_stock_goods_bad_stock
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_stock_goods_bad_stock`;
+CREATE TABLE `erp_stock_goods_bad_stock`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `goodsId` int NOT NULL COMMENT '商品id',
+  `specId` int NOT NULL COMMENT '商品规格id',
+  `specNumber` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '规格编码（唯一）',
+  `sourceId` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '来源ID（type==1时 order_send_return主键id）',
+  `type` int NOT NULL COMMENT '类型（1退货报损3待退还供应商）',
+  `locationId` int NOT NULL DEFAULT 0 COMMENT '仓位',
+  `quantity` int NOT NULL DEFAULT 0 COMMENT '数量',
+  `lossAmount` double NOT NULL DEFAULT 0 COMMENT '损失金额（最大成本）',
+  `isDelete` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0正常  1删除',
+  `result` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '处理结果',
+  `resultTime` datetime NULL DEFAULT NULL COMMENT '处理时间',
+  `reason` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '理由',
+  `status` tinyint NOT NULL DEFAULT 0 COMMENT '是否处理0未处理1已处理',
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `modifyTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '不良品库存' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for erp_stock_goods_bad_stock_log
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_stock_goods_bad_stock_log`;
+CREATE TABLE `erp_stock_goods_bad_stock_log`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `stockId` bigint NOT NULL COMMENT '商品id',
+  `specId` int NOT NULL COMMENT '商品规格id',
+  `locationId` int NOT NULL COMMENT '所在仓位',
+  `type` int NOT NULL COMMENT '类型1入库2出库',
+  `quantity` bigint NOT NULL DEFAULT 0 COMMENT '数量',
+  `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '不良品库存日志' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for erp_stock_in
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_stock_in`;
+CREATE TABLE `erp_stock_in`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `stock_in_num` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '入库单据编号',
+  `stock_in_type` int NOT NULL COMMENT '来源类型（1采购订单2退货订单）',
+  `source_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '来源单号',
+  `source_id` bigint NULL DEFAULT NULL COMMENT '来源单id',
+  `source_goods_unit` int NULL DEFAULT NULL COMMENT '采购订单商品数',
+  `source_spec_unit_total` int NULL DEFAULT NULL COMMENT '采购订单总件数',
+  `source_spec_unit` int NULL DEFAULT NULL COMMENT '采购订单商品规格数',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `stock_in_operator_id` bigint NULL DEFAULT NULL COMMENT '操作入库人id',
+  `stock_in_operator` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作入库人',
+  `stock_in_time` datetime NULL DEFAULT NULL COMMENT '入库时间',
+  `status` int NOT NULL DEFAULT 0 COMMENT '状态（0待入库1部分入库2全部入库）',
+  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `tenant_id` bigint NOT NULL COMMENT '租户 id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '入库单' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for erp_stock_in_item
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_stock_in_item`;
+CREATE TABLE `erp_stock_in_item`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `stock_in_id` bigint NOT NULL COMMENT '入库单id',
+  `stock_in_type` int NULL DEFAULT NULL COMMENT '来源类型（1采购订单2退货订单）',
+  `source_no` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '来源单号',
+  `source_id` bigint NULL DEFAULT NULL COMMENT '来源单id',
+  `source_item_id` bigint NOT NULL COMMENT '来源单itemId',
+  `goods_id` bigint NOT NULL COMMENT '商品id',
+  `goods_num` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品编码',
+  `goods_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品名称',
+  `goods_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品图片',
+  `sku_id` bigint NOT NULL COMMENT '商品规格id',
+  `sku_code` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品规格编码',
+  `sku_name` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '颜色',
+  `quantity` int NOT NULL COMMENT '原始数量',
+  `pur_price` decimal(10, 2) NOT NULL COMMENT '入库价格',
+  `in_quantity` int NOT NULL DEFAULT 0 COMMENT '入库数量',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注',
+  `status` int NULL DEFAULT 0 COMMENT '状态（0待入库2已入库）',
+  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `warehouse_id` bigint NULL DEFAULT NULL COMMENT '仓库id',
+  `position_id` bigint NULL DEFAULT NULL COMMENT '仓位id',
+  `position_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '仓位编码',
+  `tenant_id` bigint NOT NULL COMMENT '租户 id',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `specIndex`(`sku_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '入库单明细' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for erp_stock_in_item_position
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_stock_in_item_position`;
+CREATE TABLE `erp_stock_in_item_position`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `in_id` bigint NOT NULL COMMENT '入库单ID',
+  `item_id` bigint NOT NULL DEFAULT 0 COMMENT '入库单ItemID',
+  `goods_inventory_id` bigint NOT NULL DEFAULT 0 COMMENT '库存ID',
+  `goods_inventory_batch_id` bigint NOT NULL DEFAULT 0 COMMENT '库存批次ID',
+  `quantity` int NOT NULL DEFAULT 0 COMMENT '入库数量',
+  `operator_id` bigint NOT NULL DEFAULT 0 COMMENT '入库操作人userid',
+  `operator_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '入库操作人',
+  `create_time` datetime NOT NULL COMMENT '入库时间',
+  `warehouse_id` bigint NOT NULL COMMENT '仓库id',
+  `position_id` bigint NOT NULL COMMENT '仓位id',
+  `position_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '仓位编码',
+  `tenant_id` bigint NOT NULL COMMENT '租户 id',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `goods_stock_info_item_id_index`(`goods_inventory_batch_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库仓位详情' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for erp_stock_out
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_stock_out`;
+CREATE TABLE `erp_stock_out`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `out_num` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '出库单编号',
+  `source_num` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '来源单据号',
+  `source_id` bigint NULL DEFAULT NULL COMMENT '来源单据Id',
+  `type` int NOT NULL DEFAULT 1 COMMENT '出库类型1订单发货出库2采购退货出库3盘点出库4报损出库',
+  `goods_unit` int NOT NULL COMMENT '商品数',
+  `spec_unit` int NOT NULL COMMENT '商品规格数',
+  `spec_unit_total` int NOT NULL COMMENT '总件数',
+  `out_total` int NULL DEFAULT NULL COMMENT '已出库数量',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `status` int NOT NULL COMMENT '状态：0待出库1部分出库2全部出库',
+  `print_status` int NOT NULL COMMENT '打印状态：是否打印1已打印0未打印',
+  `print_time` datetime NULL DEFAULT NULL COMMENT '打印时间',
+  `out_time` datetime NULL DEFAULT NULL COMMENT '出库时间',
+  `complete_time` datetime NULL DEFAULT NULL COMMENT '完成出库时间',
+  `operator_id` bigint NULL DEFAULT 0 COMMENT '出库操作人userid',
+  `operator_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '出库操作人',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+  `create_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `update_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `tenant_id` bigint NOT NULL COMMENT '租户 id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for erp_stock_out_item
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_stock_out_item`;
+CREATE TABLE `erp_stock_out_item`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `type` int NOT NULL COMMENT '出库类型1订单拣货出库2采购退货出库3盘点出库4报损出库',
+  `entry_id` bigint NOT NULL COMMENT '出库单id（外键）',
+  `source_order_id` bigint NULL DEFAULT NULL COMMENT '来源订单id',
+  `source_order_item_id` bigint NULL DEFAULT NULL COMMENT '来源订单itemId出库对应的itemId，如：order_item表id、invoice_info表id',
+  `source_order_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '来源订单号',
+  `original_quantity` bigint NOT NULL COMMENT '总数量',
+  `out_quantity` bigint NOT NULL DEFAULT 0 COMMENT '已出库数量',
+  `complete_time` datetime NULL DEFAULT NULL COMMENT '完成出库时间',
+  `picked_time` datetime NULL DEFAULT NULL COMMENT '完成拣货时间',
+  `status` int NOT NULL DEFAULT 0 COMMENT '状态：0待出库1部分出库2全部出库',
+  `goods_id` bigint NOT NULL COMMENT '商品id',
+  `goods_num` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品编码',
+  `goods_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品名称',
+  `goods_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品图片',
+  `sku_id` bigint NOT NULL COMMENT '商品规格id',
+  `sku_code` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品规格编码',
+  `sku_name` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '颜色',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `pur_price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '入库价格',
+  `tenant_id` bigint NOT NULL COMMENT '租户 id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单明细' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for erp_stock_out_item_position
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_stock_out_item_position`;
+CREATE TABLE `erp_stock_out_item_position`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `out_id` bigint NOT NULL COMMENT '出库单ID',
+  `item_id` bigint NOT NULL DEFAULT 0 COMMENT '出库单ItemID',
+  `goods_inventory_id` bigint NOT NULL DEFAULT 0 COMMENT '库存ID',
+  `goods_inventory_batch_id` bigint NOT NULL DEFAULT 0 COMMENT '库存详情ID',
+  `quantity` int NOT NULL DEFAULT 0 COMMENT '出库数量',
+  `operator_id` bigint NULL DEFAULT 0 COMMENT '出库操作人userid',
+  `operator_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '出库操作人',
+  `out_time` datetime NULL DEFAULT NULL COMMENT '出库时间',
+  `tenant_id` bigint NOT NULL COMMENT '租户 id',
+  `warehouse_id` bigint NOT NULL COMMENT '仓库id',
+  `position_id` bigint NOT NULL COMMENT '仓位id',
+  `position_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '仓位',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `goods_stock_info_item_id_index`(`goods_inventory_batch_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库仓位详情' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
 -- Table structure for erp_supplier
 -- ----------------------------
 DROP TABLE IF EXISTS `erp_supplier`;
@@ -1054,6 +1263,53 @@ CREATE TABLE `erp_supplier_agent_shipping`  (
   `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '供应商代发货表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for erp_warehouse
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_warehouse`;
+CREATE TABLE `erp_warehouse`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `number` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '仓库编号',
+  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '仓库名称',
+  `province` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '省',
+  `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '市',
+  `district` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '区',
+  `street` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '街道',
+  `address` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '地址',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `status` int NOT NULL DEFAULT 0 COMMENT '状态0禁用  1正常',
+  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `tenant_id` bigint NOT NULL COMMENT '租户 id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '仓库表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for erp_warehouse_position
+-- ----------------------------
+DROP TABLE IF EXISTS `erp_warehouse_position`;
+CREATE TABLE `erp_warehouse_position`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `warehouse_id` bigint NOT NULL COMMENT '仓库id',
+  `number` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '仓库/货架编号',
+  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '仓位/货架名称',
+  `parent_id` int NOT NULL COMMENT '上级id',
+  `depth` int NULL DEFAULT 1 COMMENT '层级深度1级2级3级',
+  `parent_id1` int NOT NULL COMMENT '一级类目id',
+  `parent_id2` int NOT NULL COMMENT '二级类目id',
+  `address` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '地址',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `is_delete` int NOT NULL DEFAULT 0 COMMENT '0正常  1删除',
+  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `tenant_id` bigint NOT NULL COMMENT '租户 id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '仓库仓位表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for fms_payable_agent_ship
@@ -1170,261 +1426,5 @@ CREATE TABLE `scm_purchase_contract`  (
   `tenant_id` bigint NOT NULL COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '采购单' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for wms_goods_bad_stock
--- ----------------------------
-DROP TABLE IF EXISTS `wms_goods_bad_stock`;
-CREATE TABLE `wms_goods_bad_stock`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `goodsId` int NOT NULL COMMENT '商品id',
-  `specId` int NOT NULL COMMENT '商品规格id',
-  `specNumber` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '规格编码（唯一）',
-  `sourceId` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '来源ID（type==1时 order_send_return主键id）',
-  `type` int NOT NULL COMMENT '类型（1退货报损3待退还供应商）',
-  `locationId` int NOT NULL DEFAULT 0 COMMENT '仓位',
-  `quantity` int NOT NULL DEFAULT 0 COMMENT '数量',
-  `lossAmount` double NOT NULL DEFAULT 0 COMMENT '损失金额（最大成本）',
-  `isDelete` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0正常  1删除',
-  `result` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '处理结果',
-  `resultTime` datetime NULL DEFAULT NULL COMMENT '处理时间',
-  `reason` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '理由',
-  `status` tinyint NOT NULL DEFAULT 0 COMMENT '是否处理0未处理1已处理',
-  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `modifyTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `tenant_id` bigint NOT NULL COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '不良品库存' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for wms_goods_bad_stock_log
--- ----------------------------
-DROP TABLE IF EXISTS `wms_goods_bad_stock_log`;
-CREATE TABLE `wms_goods_bad_stock_log`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `stockId` bigint NOT NULL COMMENT '商品id',
-  `specId` int NOT NULL COMMENT '商品规格id',
-  `locationId` int NOT NULL COMMENT '所在仓位',
-  `type` int NOT NULL COMMENT '类型1入库2出库',
-  `quantity` bigint NOT NULL DEFAULT 0 COMMENT '数量',
-  `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `tenant_id` bigint NOT NULL COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '不良品库存日志' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for wms_stock_in
--- ----------------------------
-DROP TABLE IF EXISTS `wms_stock_in`;
-CREATE TABLE `wms_stock_in`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `stock_in_num` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '入库单据编号',
-  `stock_in_type` int NOT NULL COMMENT '来源类型（1采购订单2退货订单）',
-  `source_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '来源单号',
-  `source_id` bigint NULL DEFAULT NULL COMMENT '来源单id',
-  `source_goods_unit` int NULL DEFAULT NULL COMMENT '采购订单商品数',
-  `source_spec_unit_total` int NULL DEFAULT NULL COMMENT '采购订单总件数',
-  `source_spec_unit` int NULL DEFAULT NULL COMMENT '采购订单商品规格数',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `stock_in_operator_id` bigint NULL DEFAULT NULL COMMENT '操作入库人id',
-  `stock_in_operator` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作入库人',
-  `stock_in_time` datetime NULL DEFAULT NULL COMMENT '入库时间',
-  `status` int NOT NULL DEFAULT 0 COMMENT '状态（0待入库1部分入库2全部入库）',
-  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `tenant_id` bigint NOT NULL COMMENT '租户 id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '入库单' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for wms_stock_in_item
--- ----------------------------
-DROP TABLE IF EXISTS `wms_stock_in_item`;
-CREATE TABLE `wms_stock_in_item`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `stock_in_id` bigint NOT NULL COMMENT '入库单id',
-  `stock_in_type` int NULL DEFAULT NULL COMMENT '来源类型（1采购订单2退货订单）',
-  `source_no` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '来源单号',
-  `source_id` bigint NULL DEFAULT NULL COMMENT '来源单id',
-  `source_item_id` bigint NOT NULL COMMENT '来源单itemId',
-  `goods_id` bigint NOT NULL COMMENT '商品id',
-  `goods_num` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品编码',
-  `goods_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品名称',
-  `goods_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品图片',
-  `sku_id` bigint NOT NULL COMMENT '商品规格id',
-  `sku_code` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品规格编码',
-  `sku_name` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '颜色',
-  `quantity` int NOT NULL COMMENT '原始数量',
-  `pur_price` decimal(10, 2) NOT NULL COMMENT '入库价格',
-  `in_quantity` int NOT NULL DEFAULT 0 COMMENT '入库数量',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注',
-  `status` int NULL DEFAULT 0 COMMENT '状态（0待入库2已入库）',
-  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `warehouse_id` bigint NULL DEFAULT NULL COMMENT '仓库id',
-  `position_id` bigint NULL DEFAULT NULL COMMENT '仓位id',
-  `position_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '仓位编码',
-  `tenant_id` bigint NOT NULL COMMENT '租户 id',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `specIndex`(`sku_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '入库单明细' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for wms_stock_in_item_position
--- ----------------------------
-DROP TABLE IF EXISTS `wms_stock_in_item_position`;
-CREATE TABLE `wms_stock_in_item_position`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `in_id` bigint NOT NULL COMMENT '入库单ID',
-  `item_id` bigint NOT NULL DEFAULT 0 COMMENT '入库单ItemID',
-  `goods_inventory_id` bigint NOT NULL DEFAULT 0 COMMENT '库存ID',
-  `goods_inventory_batch_id` bigint NOT NULL DEFAULT 0 COMMENT '库存批次ID',
-  `quantity` int NOT NULL DEFAULT 0 COMMENT '入库数量',
-  `operator_id` bigint NOT NULL DEFAULT 0 COMMENT '入库操作人userid',
-  `operator_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '入库操作人',
-  `create_time` datetime NOT NULL COMMENT '入库时间',
-  `warehouse_id` bigint NOT NULL COMMENT '仓库id',
-  `position_id` bigint NOT NULL COMMENT '仓位id',
-  `position_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '仓位编码',
-  `tenant_id` bigint NOT NULL COMMENT '租户 id',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `goods_stock_info_item_id_index`(`goods_inventory_batch_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库仓位详情' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for wms_stock_out
--- ----------------------------
-DROP TABLE IF EXISTS `wms_stock_out`;
-CREATE TABLE `wms_stock_out`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `out_num` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '出库单编号',
-  `source_num` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '来源单据号',
-  `source_id` bigint NULL DEFAULT NULL COMMENT '来源单据Id',
-  `type` int NOT NULL DEFAULT 1 COMMENT '出库类型1订单发货出库2采购退货出库3盘点出库4报损出库',
-  `goods_unit` int NOT NULL COMMENT '商品数',
-  `spec_unit` int NOT NULL COMMENT '商品规格数',
-  `spec_unit_total` int NOT NULL COMMENT '总件数',
-  `out_total` int NULL DEFAULT NULL COMMENT '已出库数量',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `status` int NOT NULL COMMENT '状态：0待出库1部分出库2全部出库',
-  `print_status` int NOT NULL COMMENT '打印状态：是否打印1已打印0未打印',
-  `print_time` datetime NULL DEFAULT NULL COMMENT '打印时间',
-  `out_time` datetime NULL DEFAULT NULL COMMENT '出库时间',
-  `complete_time` datetime NULL DEFAULT NULL COMMENT '完成出库时间',
-  `operator_id` bigint NULL DEFAULT 0 COMMENT '出库操作人userid',
-  `operator_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '出库操作人',
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
-  `create_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `update_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `tenant_id` bigint NOT NULL COMMENT '租户 id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for wms_stock_out_item
--- ----------------------------
-DROP TABLE IF EXISTS `wms_stock_out_item`;
-CREATE TABLE `wms_stock_out_item`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `type` int NOT NULL COMMENT '出库类型1订单拣货出库2采购退货出库3盘点出库4报损出库',
-  `entry_id` bigint NOT NULL COMMENT '出库单id（外键）',
-  `source_order_id` bigint NULL DEFAULT NULL COMMENT '来源订单id',
-  `source_order_item_id` bigint NULL DEFAULT NULL COMMENT '来源订单itemId出库对应的itemId，如：order_item表id、invoice_info表id',
-  `source_order_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '来源订单号',
-  `original_quantity` bigint NOT NULL COMMENT '总数量',
-  `out_quantity` bigint NOT NULL DEFAULT 0 COMMENT '已出库数量',
-  `complete_time` datetime NULL DEFAULT NULL COMMENT '完成出库时间',
-  `picked_time` datetime NULL DEFAULT NULL COMMENT '完成拣货时间',
-  `status` int NOT NULL DEFAULT 0 COMMENT '状态：0待出库1部分出库2全部出库',
-  `goods_id` bigint NOT NULL COMMENT '商品id',
-  `goods_num` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品编码',
-  `goods_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品名称',
-  `goods_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品图片',
-  `sku_id` bigint NOT NULL COMMENT '商品规格id',
-  `sku_code` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品规格编码',
-  `sku_name` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '颜色',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `pur_price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '入库价格',
-  `tenant_id` bigint NOT NULL COMMENT '租户 id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单明细' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for wms_stock_out_item_position
--- ----------------------------
-DROP TABLE IF EXISTS `wms_stock_out_item_position`;
-CREATE TABLE `wms_stock_out_item_position`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `out_id` bigint NOT NULL COMMENT '出库单ID',
-  `item_id` bigint NOT NULL DEFAULT 0 COMMENT '出库单ItemID',
-  `goods_inventory_id` bigint NOT NULL DEFAULT 0 COMMENT '库存ID',
-  `goods_inventory_batch_id` bigint NOT NULL DEFAULT 0 COMMENT '库存详情ID',
-  `quantity` int NOT NULL DEFAULT 0 COMMENT '出库数量',
-  `operator_id` bigint NULL DEFAULT 0 COMMENT '出库操作人userid',
-  `operator_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '出库操作人',
-  `out_time` datetime NULL DEFAULT NULL COMMENT '出库时间',
-  `tenant_id` bigint NOT NULL COMMENT '租户 id',
-  `warehouse_id` bigint NOT NULL COMMENT '仓库id',
-  `position_id` bigint NOT NULL COMMENT '仓位id',
-  `position_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '仓位',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `goods_stock_info_item_id_index`(`goods_inventory_batch_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库仓位详情' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for wms_warehouse
--- ----------------------------
-DROP TABLE IF EXISTS `wms_warehouse`;
-CREATE TABLE `wms_warehouse`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `number` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '仓库编号',
-  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '仓库名称',
-  `province` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '省',
-  `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '市',
-  `district` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '区',
-  `street` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '街道',
-  `address` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '地址',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `status` int NOT NULL DEFAULT 0 COMMENT '状态0禁用  1正常',
-  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `tenant_id` bigint NOT NULL COMMENT '租户 id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '仓库表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for wms_warehouse_position
--- ----------------------------
-DROP TABLE IF EXISTS `wms_warehouse_position`;
-CREATE TABLE `wms_warehouse_position`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `warehouse_id` bigint NOT NULL COMMENT '仓库id',
-  `number` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '仓库/货架编号',
-  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '仓位/货架名称',
-  `parent_id` int NOT NULL COMMENT '上级id',
-  `depth` int NULL DEFAULT 1 COMMENT '层级深度1级2级3级',
-  `parent_id1` int NOT NULL COMMENT '一级类目id',
-  `parent_id2` int NOT NULL COMMENT '二级类目id',
-  `address` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '地址',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `is_delete` int NOT NULL DEFAULT 0 COMMENT '0正常  1删除',
-  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `tenant_id` bigint NOT NULL COMMENT '租户 id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '仓库仓位表' ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;

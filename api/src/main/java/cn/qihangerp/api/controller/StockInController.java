@@ -1,7 +1,7 @@
 package cn.qihangerp.api.controller;
 
 import cn.qihangerp.api.common.*;
-import cn.qihangerp.api.domain.WmsStockIn;
+import cn.qihangerp.api.domain.ErpStockIn;
 import cn.qihangerp.api.request.StockInCreateRequest;
 import cn.qihangerp.api.request.StockInRequest;
 import cn.qihangerp.api.service.WmsStockInService;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class StockInController extends BaseController {
     private final WmsStockInService stockInService;
     @GetMapping("/list")
-    public TableDataInfo list(WmsStockIn bo, PageQuery pageQuery)
+    public TableDataInfo list(ErpStockIn bo, PageQuery pageQuery)
     {
         bo.setTenantId(getUserId());
         var pageList = stockInService.queryPageList(bo,pageQuery);
@@ -43,7 +43,7 @@ public class StockInController extends BaseController {
     @GetMapping(value = "/detail/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
-        WmsStockIn entry = stockInService.getDetailAndItemById(id);
+        ErpStockIn entry = stockInService.getDetailAndItemById(id);
 
         return success(entry);
     }
