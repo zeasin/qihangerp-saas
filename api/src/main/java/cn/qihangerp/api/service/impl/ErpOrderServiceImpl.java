@@ -328,63 +328,106 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
             List<ErpOrderItem> orderItemList = entry.getValue();  // 获取值（List<ErpOrderItem>）
 
             // 添加分配发货
-            ErpShipment erpShipment = new ErpShipment();
-            erpShipment.setShipper(1);//发货方 0 仓库发货 1 供应商发货】
-            erpShipment.setSupplierId(supplierId);
-            erpShipment.setSupplier(supplierList.get(supplierId)!=null?supplierList.get(supplierId).getName():"");
-            erpShipment.setTenantId(erpOrder.getTenantId());
-            erpShipment.setShopId(erpOrder.getShopId());
-            erpShipment.setShopType(erpOrder.getShopType());
-            erpShipment.setOrderId(erpOrder.getId());
-            erpShipment.setOrderNum(erpOrder.getOrderNum());
-            erpShipment.setOrderTime(erpOrder.getOrderTime());
-            erpShipment.setShipType(1);//发货类型（1订单发货2商品补发3商品换货）
-            erpShipment.setShipCompany("");
-            erpShipment.setShipCompanyCode("");
-            erpShipment.setShipCode("");
-            erpShipment.setShipFee(BigDecimal.ZERO);
-            erpShipment.setShipStatus(0);//物流状态（0 待发货1已发货2已完成）
+//            ErpShipment erpShipment = new ErpShipment();
+//            erpShipment.setShipper(1);//发货方 0 仓库发货 1 供应商发货】
+//            erpShipment.setSupplierId(supplierId);
+//            erpShipment.setSupplier(supplierList.get(supplierId)!=null?supplierList.get(supplierId).getName():"");
+//            erpShipment.setTenantId(erpOrder.getTenantId());
+//            erpShipment.setShopId(erpOrder.getShopId());
+//            erpShipment.setShopType(erpOrder.getShopType());
+//            erpShipment.setOrderId(erpOrder.getId());
+//            erpShipment.setOrderNum(erpOrder.getOrderNum());
+//            erpShipment.setOrderTime(erpOrder.getOrderTime());
+//            erpShipment.setShipType(1);//发货类型（1订单发货2商品补发3商品换货）
+//            erpShipment.setShipCompany("");
+//            erpShipment.setShipCompanyCode("");
+//            erpShipment.setShipCode("");
+//            erpShipment.setShipFee(BigDecimal.ZERO);
+//            erpShipment.setShipStatus(0);//物流状态（0 待发货1已发货2已完成）
+//
+//            erpShipment.setPackageHeight(0.0);
+//            erpShipment.setPackageWeight(0.0);
+//            erpShipment.setPackageLength(0.0);
+//            erpShipment.setPackageWidth(0.0);
+//            erpShipment.setPacksgeOperator("");
+////        erpShipment.setPackages(JSONObject.toJSONString(oOrderItems));
+//            erpShipment.setRemark("");
+//            erpShipment.setCreateBy(createBy);
+//            erpShipment.setCreateTime(new Date());
+//
+//            shipmentMapper.insert(erpShipment);
 
-            erpShipment.setPackageHeight(0.0);
-            erpShipment.setPackageWeight(0.0);
-            erpShipment.setPackageLength(0.0);
-            erpShipment.setPackageWidth(0.0);
-            erpShipment.setPacksgeOperator("");
-//        erpShipment.setPackages(JSONObject.toJSONString(oOrderItems));
-            erpShipment.setRemark("");
-            erpShipment.setCreateBy(createBy);
-            erpShipment.setCreateTime(new Date());
-
-            shipmentMapper.insert(erpShipment);
+            // 添加分配发货
+            ErpOrderShipList shipList = new ErpOrderShipList();
+            shipList.setTenantId(erpOrder.getTenantId());
+            shipList.setShopId(erpOrder.getShopId());
+            shipList.setShopType(erpOrder.getShopType());
+            shipList.setShipper(1);
+            shipList.setShipSupplierId(supplierId);
+            shipList.setShipSupplier(supplierList.get(supplierId)!=null?supplierList.get(supplierId).getName():"");
+            shipList.setOrderId(Long.parseLong(erpOrder.getId()));
+            shipList.setOrderNum(erpOrder.getOrderNum());
+            shipList.setStatus(0);
+            shipList.setShipLogisticsCompany("");
+            shipList.setShipLogisticsCompanyCode("");
+            shipList.setShipLogisticsCode("");
+            shipList.setShipStatus(1);
+            shipList.setCreateTime(new Date());
+            shipList.setCreateBy("分配供应商发货");
+            orderShipListMapper.insert(shipList);
 
             // 遍历 List<ErpOrderItem>
             for (ErpOrderItem item : orderItemList) {
                 // 打印 List 中的每个 ErpOrderItem 对象
-                ErpShipmentItem erpShipmentItem = new ErpShipmentItem();
-                erpShipmentItem.setSupplierId(erpShipment.getSupplierId());
-                erpShipmentItem.setSupplier(erpShipment.getSupplier());
-                erpShipmentItem.setShipper(erpShipment.getShipper());
-                erpShipmentItem.setTenantId(erpShipment.getTenantId());
-                erpShipmentItem.setShopId(erpShipment.getShopId());
-                erpShipmentItem.setShopType(erpShipment.getShopType());
-                erpShipmentItem.setShipmentId(erpShipment.getId());
-                erpShipmentItem.setOrderId(erpShipment.getOrderId());
-                erpShipmentItem.setOrderNum(erpShipment.getOrderNum());
-                erpShipmentItem.setOrderTime(erpShipment.getOrderTime());
-                erpShipmentItem.setOrderItemId(item.getId());
-                erpShipmentItem.setErpGoodsId(item.getErpGoodsId());
-                erpShipmentItem.setErpSkuId(item.getErpSkuId());
-                erpShipmentItem.setGoodsTitle(item.getGoodsTitle());
-                erpShipmentItem.setGoodsNum(item.getGoodsNum());
-                erpShipmentItem.setGoodsImg(item.getGoodsImg());
-                erpShipmentItem.setGoodsSpec(item.getGoodsSpec());
-                erpShipmentItem.setSkuNum(item.getSkuNum());
-                erpShipmentItem.setQuantity(item.getQuantity());
-                erpShipmentItem.setRemark(item.getRemark());
-                erpShipmentItem.setStockStatus(0);
-                erpShipmentItem.setCreateBy(createBy);
-                erpShipmentItem.setCreateTime(new Date());
-                shipmentItemMapper.insert(erpShipmentItem);
+//                ErpShipmentItem erpShipmentItem = new ErpShipmentItem();
+//                erpShipmentItem.setSupplierId(erpShipment.getSupplierId());
+//                erpShipmentItem.setSupplier(erpShipment.getSupplier());
+//                erpShipmentItem.setShipper(erpShipment.getShipper());
+//                erpShipmentItem.setTenantId(erpShipment.getTenantId());
+//                erpShipmentItem.setShopId(erpShipment.getShopId());
+//                erpShipmentItem.setShopType(erpShipment.getShopType());
+//                erpShipmentItem.setShipmentId(erpShipment.getId());
+//                erpShipmentItem.setOrderId(erpShipment.getOrderId());
+//                erpShipmentItem.setOrderNum(erpShipment.getOrderNum());
+//                erpShipmentItem.setOrderTime(erpShipment.getOrderTime());
+//                erpShipmentItem.setOrderItemId(item.getId());
+//                erpShipmentItem.setErpGoodsId(item.getErpGoodsId());
+//                erpShipmentItem.setErpSkuId(item.getErpSkuId());
+//                erpShipmentItem.setGoodsTitle(item.getGoodsTitle());
+//                erpShipmentItem.setGoodsNum(item.getGoodsNum());
+//                erpShipmentItem.setGoodsImg(item.getGoodsImg());
+//                erpShipmentItem.setGoodsSpec(item.getGoodsSpec());
+//                erpShipmentItem.setSkuNum(item.getSkuNum());
+//                erpShipmentItem.setQuantity(item.getQuantity());
+//                erpShipmentItem.setRemark(item.getRemark());
+//                erpShipmentItem.setStockStatus(0);
+//                erpShipmentItem.setCreateBy(createBy);
+//                erpShipmentItem.setCreateTime(new Date());
+//                shipmentItemMapper.insert(erpShipmentItem);
+                // 添加备货清单item
+                ErpOrderShipListItem listItem=new ErpOrderShipListItem();
+                listItem.setShopId(erpOrder.getShopId());
+                listItem.setShopType(erpOrder.getShopType());
+                listItem.setListId(shipList.getId());
+                listItem.setShipper(shipList.getShipper());
+                listItem.setShipSupplier(shipList.getShipSupplier());
+                listItem.setShipSupplierId(shipList.getShipSupplierId());
+                listItem.setOrderId(Long.parseLong(item.getOrderId()));
+                listItem.setOrderItemId(item.getId());
+                listItem.setOrderNum(item.getOrderNum());
+                listItem.setOriginalSkuId(item.getSkuId());
+                listItem.setGoodsId(item.getErpGoodsId());
+                listItem.setSkuId(item.getErpSkuId());
+                listItem.setGoodsTitle(item.getGoodsTitle());
+                listItem.setGoodsImg(item.getGoodsImg());
+                listItem.setGoodsNum(item.getGoodsNum());
+                listItem.setSkuName(item.getGoodsSpec());
+                listItem.setSkuNum(item.getSkuNum());
+                listItem.setQuantity(item.getQuantity());
+                listItem.setStatus(0);//状态0待备货1备货中2备货完成3已发货
+                listItem.setCreateBy("分配供应商发货");
+                listItem.setCreateTime(new Date());
+                orderShipListItemMapper.insert(listItem);
 
                 // 更新订单item发货状态
                 ErpOrderItem orderItemUpdate = new ErpOrderItem();
@@ -392,7 +435,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
                 orderItemUpdate.setUpdateBy("分配供应商发货");
                 orderItemUpdate.setUpdateTime(new Date());
                 orderItemUpdate.setShipStatus(0);//发货状态 0 待发货 1 已发货
-                orderItemUpdate.setShipType(2);//发货方式 0 自己发货 2供应商发货
+                orderItemUpdate.setShipType(1);//发货方式 0 自己发货1供应商发货2联合发货
                 orderItemMapper.updateById(orderItemUpdate);
             }
         }
@@ -431,7 +474,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         ErpOrder update = new ErpOrder();
         update.setId(erpOrder.getId());
 //        update.setShipStatus(1);
-        update.setShipType(2);
+        update.setShipType(1);//发货方式 0 自己发货1供应商发货2联合发货
         update.setUpdateTime(new Date());
         update.setUpdateBy("分配供应商发货");
         mapper.updateById(update);

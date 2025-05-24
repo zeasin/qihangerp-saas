@@ -22,6 +22,10 @@ public class ErpOrderShipList implements Serializable {
     private Long id;
 
     /**
+     * 租户id
+     */
+    private Long tenantId;
+    /**
      * 店铺id
      */
     private Long shopId;
