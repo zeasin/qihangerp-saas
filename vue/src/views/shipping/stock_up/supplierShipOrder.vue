@@ -117,7 +117,7 @@
       <!-- <el-table-column label="主键ID" align="center" prop="id" /> -->
       <el-table-column label="供应商" align="center" prop="shopId" >
         <template slot-scope="scope">
-          <el-tag>{{scope.row.supplier}}</el-tag>
+          <el-tag>{{scope.row.shipSupplier}}</el-tag>
 <!--          <span>{{ shopList.find(x=>x.id === scope.row.shopId)?shopList.find(x=>x.id === scope.row.shopId).name:''  }}</span>-->
         </template>
       </el-table-column>
@@ -150,7 +150,7 @@
           </table>
         </template>
         <template slot-scope="scope" >
-          <el-table :data="scope.row.itemList" :show-header="false" :cell-style="{border:0 + 'px' }"  :row-style="{border:0 + 'px' }" >
+          <el-table :data="scope.row.items" :show-header="false" :cell-style="{border:0 + 'px' }"  :row-style="{border:0 + 'px' }" >
             <el-table-column label="商品图片" width="50px">
               <template slot-scope="scope">
                 <!--                <el-image  style="width: 40px; height: 40px;" :src="scope.row.goodsImg" :preview-src-list="[scope.row.goodsImg]"></el-image>-->
@@ -195,7 +195,7 @@
       <el-table-column label="操作" align="center" >
         <template slot-scope="scope">
           <el-button
-            v-if="scope.row.shipStatus === 0"
+            v-if="scope.row.shipStatus === 1"
             size="mini"
             type="primary"
             icon="el-icon-edit"
@@ -289,7 +289,7 @@
 import { listSupplier} from "@/api/scm/supplier";
 import { listShop } from "@/api/shop/shop";
 import {listLogistics, listLogisticsStatus} from "@/api/api/logistics";
-import {listShippingSupplier, getShippingDetail, supplierAgentShipment} from "@/api/wms/shipping";
+import {listShippingSupplier, getShippingDetail, supplierAgentShipment} from "@/api/wms/order_ship";
 export default {
   name: "supplierShipOrder",
   data() {

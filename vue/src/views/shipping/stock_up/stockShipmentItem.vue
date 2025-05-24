@@ -214,7 +214,7 @@
 </template>
 
 <script>
-import { listShippingStock, getShippingDetail, stockOutConfirm } from "@/api/wms/shipping";
+import { listShippingStock, stockOutConfirm } from "@/api/wms/order_ship";
 import { listShop } from "@/api/shop/shop";
 import {querySkuInventory} from "@/api/goods/goodsInventory";
 export default {

@@ -1,6 +1,9 @@
 package cn.qihangerp.api.service;
 
+import cn.qihangerp.api.common.PageQuery;
+import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.domain.ErpOrderShipList;
+import cn.qihangerp.api.domain.ErpShipment;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,5 +12,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-05-24 18:52:58
 */
 public interface ErpOrderShipListService extends IService<ErpOrderShipList> {
-
+    PageResult<ErpOrderShipList> queryPageList(ErpOrderShipList shipping, PageQuery pageQuery);
+    ErpOrderShipList queryDetailById(Long id);
 }
