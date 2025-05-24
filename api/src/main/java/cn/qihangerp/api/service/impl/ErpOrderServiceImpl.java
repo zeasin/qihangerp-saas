@@ -40,6 +40,8 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
     private final ErpGoodsSkuMapper erpGoodsSkuMapper;
     private final ErpGoodsMapper erpGoodsMapper;
     private final ErpSupplierMapper erpSupplierMapper;
+    private final ErpOrderShipListMapper orderShipListMapper;
+    private final ErpOrderShipListItemMapper orderShipListItemMapper;
 
     private final String DATE_PATTERN =
             "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
@@ -147,6 +149,25 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
                         .eq(ErpOrderItem::getShipType,0)
         );
         if(oOrderItems==null) return ResultVo.error("订单 item 数据错误，无法发货！");
+
+        // 添加到备货单
+        ErpOrderShipList shipList = new ErpOrderShipList();
+        shipList.setShopId(erpOrder.getShopId());
+        shipList.setShopType(erpOrder.getShopType());
+        shipList.setShipper(0);
+        shipList.setShipSupplierId(0L);
+        shipList.setShipSupplier("自由仓库发货");
+        shipList.setOrderId(Long.parseLong(erpOrder.getId()));
+        shipList.setOrderNum(erpOrder.getOrderNum());
+        shipList.setStatus(0);
+        shipList.setShipLogisticsCompany(erpLogisticsCompany.getName());
+        shipList.setShipLogisticsCompanyCode(erpLogisticsCompany.getCode());
+        shipList.setShipLogisticsCode(shipBo.getShippingNumber());
+        shipList.setShipStatus(2);
+        shipList.setCreateTime(new Date());
+        shipList.setCreateBy("手动发货");
+        orderShipListMapper.insert(shipList);
+
         // 添加发货记录
         ErpShipment erpShipment = new ErpShipment();
         erpShipment.setShipper(0);//发货方 0 仓库发货 1 供应商发货】
@@ -178,6 +199,31 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         shipmentMapper.insert(erpShipment);
 
         for(ErpOrderItem orderItem:oOrderItems){
+            // 添加备货清单item
+            ErpOrderShipListItem listItem=new ErpOrderShipListItem();
+            listItem.setShopId(erpOrder.getShopId());
+            listItem.setShopType(erpOrder.getShopType());
+            listItem.setListId(shipList.getId());
+            listItem.setShipper(shipList.getShipper());
+            listItem.setShipSupplier(shipList.getShipSupplier());
+            listItem.setShipSupplierId(shipList.getShipSupplierId());
+            listItem.setOrderId(Long.parseLong(orderItem.getOrderId()));
+            listItem.setOrderItemId(orderItem.getId());
+            listItem.setOrderNum(orderItem.getOrderNum());
+            listItem.setOriginalSkuId(orderItem.getSkuId());
+            listItem.setGoodsId(orderItem.getErpGoodsId());
+            listItem.setSkuId(orderItem.getErpSkuId());
+            listItem.setGoodsTitle(orderItem.getGoodsTitle());
+            listItem.setGoodsImg(orderItem.getGoodsImg());
+            listItem.setGoodsNum(orderItem.getGoodsNum());
+            listItem.setSkuName(orderItem.getGoodsSpec());
+            listItem.setSkuNum(orderItem.getSkuNum());
+            listItem.setQuantity(orderItem.getQuantity());
+            listItem.setStatus(0);//状态0待备货1备货中2备货完成3已发货
+            listItem.setCreateBy("手动发货");
+            listItem.setCreateTime(new Date());
+            orderShipListItemMapper.insert(listItem);
+            // 添加发货明细
             ErpShipmentItem erpShipmentItem = new ErpShipmentItem();
             erpShipmentItem.setShipper(erpShipment.getShipper());
             erpShipmentItem.setTenantId(erpShipment.getTenantId());
