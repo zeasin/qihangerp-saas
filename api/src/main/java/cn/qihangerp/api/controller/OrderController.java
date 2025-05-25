@@ -1,5 +1,6 @@
 package cn.qihangerp.api.controller;
 
+import cn.qihangerp.api.common.bo.ErpOrderAllocateShipBo;
 import cn.qihangerp.api.request.OrderSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -81,7 +82,7 @@ public class OrderController extends BaseController
      * @return
      */
     @PostMapping("/allocateShipmentOrder")
-    public AjaxResult allocateShipmentOrder(@RequestBody ErpOrderShipBo shipBo)
+    public AjaxResult allocateShipmentOrder(@RequestBody ErpOrderAllocateShipBo shipBo)
     {
         var result = orderService.allocateShipmentOrder(shipBo,getUsername());
         if(result.getCode() == 0) return AjaxResult.success();

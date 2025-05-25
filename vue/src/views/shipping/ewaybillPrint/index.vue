@@ -338,8 +338,8 @@
           <el-descriptions-item label="买家留言">
             {{form.buyerMemo}}
           </el-descriptions-item>
-          <el-descriptions-item label="备注">
-            {{form.remark}}
+          <el-descriptions-item label="卖家留言">
+            {{form.sellerMemo}}
           </el-descriptions-item>
           <el-descriptions-item label="创建时间">
             {{ parseTime(form.createTime) }}
@@ -372,7 +372,21 @@
           <el-table-column label="数量" prop="quantity"></el-table-column>
           <!-- <el-table-column label="商品金额" prop="itemAmount"></el-table-column> -->
         </el-table>
-
+        <el-form-item label="收件人" prop="receiverName">
+          <el-input v-model="form.receiverName" placeholder="请输入收件人" style="width:300px" />
+        </el-form-item>
+        <el-form-item label="手机号" prop="receiverMobile">
+          <el-input type="number" v-model.number="form.receiverMobile" placeholder="请输入收件人" style="width:300px" />
+        </el-form-item>
+        <el-form-item label="详细地址" prop="address">
+          <el-input v-model="form.address" placeholder="请输入详细地址" style="width:300px" />
+        </el-form-item>
+        <el-form-item label="买家留言" prop="buyerMemo">
+          <el-input type="textarea" v-model="form.buyerMemo" placeholder="请输入买家留言" style="width:300px" />
+        </el-form-item>
+        <el-form-item label="卖家留言" prop="sellerMemo">
+          <el-input type="textarea" v-model="form.sellerMemo" placeholder="请输入卖家留言" style="width:300px" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitAllocateShipmentForm">分配给供应商发货</el-button>
@@ -450,6 +464,9 @@ export default {
         shippingCompany: [{ required: true, message: '不能为空' }],
         shippingCost: [{ required: true, message: '不能为空' }],
         // shippingMan: [{ required: true, message: '不能为空' }],
+        receiverName: [{ required: true, message: '不能为空' }],
+        receiverMobile: [{ required: true, message: '不能为空' }],
+        address: [{ required: true, message: '不能为空' }],
       }
     };
   },

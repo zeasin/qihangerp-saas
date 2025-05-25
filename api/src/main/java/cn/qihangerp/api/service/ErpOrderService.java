@@ -3,6 +3,7 @@ package cn.qihangerp.api.service;
 import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.common.ResultVo;
+import cn.qihangerp.api.common.bo.ErpOrderAllocateShipBo;
 import cn.qihangerp.api.common.bo.ErpOrderShipBo;
 import cn.qihangerp.api.domain.ErpOrder;
 import cn.qihangerp.api.domain.vo.SalesDailyVo;
@@ -41,7 +42,7 @@ public interface ErpOrderService extends IService<ErpOrder> {
      * @param createBy
      * @return
      */
-    ResultVo<Integer> allocateShipmentOrder(ErpOrderShipBo shipBo,String createBy);
+    ResultVo<Integer> allocateShipmentOrder(ErpOrderAllocateShipBo shipBo, String createBy);
 
     List<SalesDailyVo> salesDaily(Long tenantId);
     SalesDailyVo getTodaySalesDaily(Long tenantId);

@@ -1,5 +1,6 @@
 package cn.qihangerp.api.service.impl;
 
+import cn.qihangerp.api.common.bo.ErpOrderAllocateShipBo;
 import cn.qihangerp.api.domain.*;
 import cn.qihangerp.api.domain.vo.SalesDailyVo;
 import cn.qihangerp.api.mapper.*;
@@ -277,7 +278,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
      * @return
      */
     @Override
-    public ResultVo<Integer> allocateShipmentOrder(ErpOrderShipBo shipBo, String createBy) {
+    public ResultVo<Integer> allocateShipmentOrder(ErpOrderAllocateShipBo shipBo, String createBy) {
         if (StringUtils.isEmpty(shipBo.getId()) || shipBo.getId().equals("0"))
             return ResultVo.error(ResultVoEnum.ParamsError, "缺少参数：id");
 
@@ -372,6 +373,14 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
             shipList.setShipLogisticsCompanyCode("");
             shipList.setShipLogisticsCode("");
             shipList.setShipStatus(1);
+            shipList.setReceiverName(shipBo.getReceiverName());
+            shipList.setReceiverMobile(shipBo.getReceiverMobile());
+            shipList.setProvince(erpOrder.getProvince());
+            shipList.setCity(erpOrder.getCity());
+            shipList.setTown(erpOrder.getTown());
+            shipList.setAddress(shipBo.getAddress());
+            shipList.setSellerMemo(shipBo.getSellerMemo());
+            shipList.setBuyerMemo(shipBo.getBuyerMemo());
             shipList.setCreateTime(new Date());
             shipList.setCreateBy("分配供应商发货");
             orderShipListMapper.insert(shipList);

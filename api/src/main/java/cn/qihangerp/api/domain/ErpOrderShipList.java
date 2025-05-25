@@ -24,10 +24,6 @@ public class ErpOrderShipList implements Serializable {
     private Long id;
 
     /**
-     * 租户id
-     */
-    private Long tenantId;
-    /**
      * 店铺id
      */
     private Long shopId;
@@ -106,9 +102,58 @@ public class ErpOrderShipList implements Serializable {
      * 更新人
      */
     private String updateBy;
+
+    /**
+     * 租户id
+     */
+    private Long tenantId;
+
+    /**
+     * 收件人姓名
+     */
+    private String receiverName;
+
+    /**
+     * 收件人手机号
+     */
+    private String receiverMobile;
+
+    /**
+     * 收件人地址
+     */
+    private String address;
+
+    /**
+     * 省
+     */
+    private String province;
+
+    /**
+     * 市
+     */
+    private String city;
+
+    /**
+     * 区
+     */
+    private String town;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
+    /**
+     * 买家留言信息
+     */
+    private String buyerMemo;
+
+    /**
+     * 卖家留言信息
+     */
+    private String sellerMemo;
     @TableField(exist = false)
     private List<ErpOrderShipListItem> items;
-
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

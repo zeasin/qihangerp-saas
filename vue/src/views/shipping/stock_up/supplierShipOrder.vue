@@ -131,12 +131,12 @@
       </el-table-column> -->
 
 <!--      <el-table-column label="子订单编号" align="center" prop="subOrderNum" />-->
-      <el-table-column label="下单日期" align="center" prop="orderDate" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.orderTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="商品明细" align="center" width="900px" >
+<!--      <el-table-column label="下单日期" align="center" prop="orderTime" width="180">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{scope.row.orderTime}}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+      <el-table-column label="商品明细" align="center" width="750px" >
         <template slot="header">
           <table>
             <th>
@@ -182,16 +182,20 @@
           </el-table>
         </template>
       </el-table-column>
-<!--      <el-table-column label="商品" >-->
-<!--        <template slot-scope="scope">-->
-<!--          <el-image  style="width: 70px; height: 70px;" :src="scope.row.goodsImg"></el-image>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--      <el-table-column label="商品标题" align="center" prop="goodsTitle" />-->
-<!--      <el-table-column label="商品SKU" align="center" prop="goodsSpec" />-->
-<!--      <el-table-column label="数量" align="center" prop="quantity" />-->
-
-<!--      <el-table-column label="SKU编码" align="center" prop="skuNum" />-->
+      <el-table-column label="收件人" align="center" prop="userName" >
+        <template slot-scope="scope">
+          {{scope.row.receiverName}}<br/>
+          {{scope.row.receiverMobile}}
+        </template>
+      </el-table-column>
+      <el-table-column label="地址" align="left" >
+        <template slot-scope="scope">
+        {{scope.row.province}}
+         {{scope.row.city}}
+         {{scope.row.town}}<br/>
+         {{scope.row.address}}
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" >
         <template slot-scope="scope">
           <el-button

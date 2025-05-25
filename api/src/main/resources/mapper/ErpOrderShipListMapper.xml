@@ -22,6 +22,16 @@
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
+            <result property="receiverName" column="receiver_name" jdbcType="VARCHAR"/>
+            <result property="receiverMobile" column="receiver_mobile" jdbcType="VARCHAR"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="province" column="province" jdbcType="VARCHAR"/>
+            <result property="city" column="city" jdbcType="VARCHAR"/>
+            <result property="town" column="town" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="buyerMemo" column="buyer_memo" jdbcType="VARCHAR"/>
+            <result property="sellerMemo" column="seller_memo" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -30,6 +40,9 @@
         order_id,order_num,ship_logistics_company,
         ship_logistics_company_code,ship_logistics_code,ship_status,
         status,create_time,create_by,
-        update_time,update_by
+        update_time,update_by,tenant_id,
+        receiver_name,receiver_mobile,address,
+        province,city,town,
+        remark,buyer_memo,seller_memo
     </sql>
 </mapper>
