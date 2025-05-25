@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class ErpShipment {
     /**
      * 订单时间
      */
-    private Date orderTime;
+    private LocalDateTime orderTime;
 
     /**
      * 发货方 0 仓库发货 1 供应商发货

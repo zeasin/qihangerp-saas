@@ -29,9 +29,7 @@ import cn.qihangerp.api.common.enums.HttpStatus;
 import cn.qihangerp.api.service.ShopOrderService;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -263,10 +261,15 @@ public class OrderApiController extends BaseController {
                     order.setShopType(shop.getType());
                     order.setOrderId(trade.getOrderSn());
                     order.setOpenid(trade.getOpen_address_id());
-                    Long orderTime = DateUtils.parseDate(trade.getCreatedTime()).getTime()/1000;
-                    Long orderUpdateTime = DateUtils.parseDate(trade.getUpdatedAt()).getTime()/1000;
-                    order.setCreateTime(orderTime.intValue());
-                    order.setUpdateTime(orderUpdateTime.intValue());
+                    // 转换时间
+                    // 将时间字符串转换为 LocalDateTime
+                    LocalDateTime orderTime = LocalDateTime.parse(trade.getCreatedTime(), formatter);
+                    // 将 LocalDateTime 转换为中国时区的 ZonedDateTime
+                    Long orderTimeSec = orderTime.atZone(ZoneId.of("Asia/Shanghai")).toInstant().getEpochSecond();
+                    LocalDateTime orderUpdateTime = LocalDateTime.parse(trade.getUpdatedAt(), formatter);
+                    Long orderUpdateTimeSec = orderUpdateTime.atZone(ZoneId.of("Asia/Shanghai")).toInstant().getEpochSecond();
+                    order.setCreateTime(orderTimeSec.intValue());
+                    order.setUpdateTime(orderUpdateTimeSec.intValue());
                     //状态10	待付款；20	待发货；21	部分发货；30	待收货；100	完成；200	全部商品售后之后，订单取消；250	未付款用户主动取消或超时未付款订单自动取消；
                     //发货状态，枚举值：1：待发货，2：已发货待签收，3：已签收
                     if(trade.getOrderStatus()==1){
@@ -548,10 +551,16 @@ public class OrderApiController extends BaseController {
                 order.setShopType(shop.getType());
                 order.setOrderId(trade.getOrderSn());
                 order.setOpenid(trade.getOpen_address_id());
-                Long orderTime = DateUtils.parseDate(trade.getCreatedTime()).getTime()/1000;
-                Long orderUpdateTime = DateUtils.parseDate(trade.getUpdatedAt()).getTime()/1000;
-                order.setCreateTime(orderTime.intValue());
-                order.setUpdateTime(orderUpdateTime.intValue());
+                // 定义格式化器
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                // 将时间字符串转换为 LocalDateTime
+                LocalDateTime orderTime = LocalDateTime.parse(trade.getCreatedTime(), formatter);
+                // 将 LocalDateTime 转换为中国时区的 ZonedDateTime
+                Long orderTimeSec = orderTime.atZone(ZoneId.of("Asia/Shanghai")).toInstant().getEpochSecond();
+                LocalDateTime orderUpdateTime = LocalDateTime.parse(trade.getUpdatedAt(), formatter);
+                Long orderUpdateTimeSec = orderUpdateTime.atZone(ZoneId.of("Asia/Shanghai")).toInstant().getEpochSecond();
+                order.setCreateTime(orderTimeSec.intValue());
+                order.setUpdateTime(orderUpdateTimeSec.intValue());
                 //状态10	待付款；20	待发货；21	部分发货；30	待收货；100	完成；200	全部商品售后之后，订单取消；250	未付款用户主动取消或超时未付款订单自动取消；
                 //发货状态，枚举值：1：待发货，2：已发货待签收，3：已签收
                 if(trade.getOrderStatus()==1){

@@ -19,6 +19,9 @@ import cn.qihangerp.api.service.ShopOrderService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -102,6 +105,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                     update.setShopType(shop.getType());
                     update.setId(orders.get(0).getId());
                     update.setStatus(order.getStatus());
+                    update.setCreateTime(order.getCreateTime());
                     update.setUpdateTime(order.getUpdateTime());
                     update.setPayInfo(order.getPayInfo());
                     update.setAftersaleDetail(order.getAftersaleDetail());
@@ -232,8 +236,12 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                             insert.setTown(weiOrder.getCountyName());
                             insert.setAddress(weiOrder.getDetailInfo());
                             insert.setShipStatus(0);
-                            Long orderTime = weiOrder.getCreateTime().longValue();
-                            insert.setOrderTime(new Date(orderTime * 1000));
+
+                            LocalDateTime orderTime = Instant.ofEpochSecond(weiOrder.getCreateTime()).atZone(ZoneId.of("Asia/Shanghai")).toLocalDateTime();
+
+//                            Long orderTime = weiOrder.getCreateTime().longValue();
+//                            insert.setOrderTime(new Date(orderTime * 1000));
+                            insert.setOrderTime(orderTime);
 
                             insert.setCreateTime(new Date());
                             insert.setCreateBy("手动确认");
@@ -256,8 +264,8 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                             update.setRefundStatus(refundStatus);
                             update.setOrderStatus(orderStatus);
                             update.setUpdateTime(new Date());
-                            Long orderTime = weiOrder.getCreateTime().longValue();
-                            update.setOrderTime(new Date(orderTime * 1000));
+                            LocalDateTime orderTime = Instant.ofEpochSecond(weiOrder.getCreateTime()).atZone(ZoneId.of("Asia/Shanghai")).toLocalDateTime();
+                            update.setOrderTime(orderTime);
                             erpOrderMapper.updateById(update);
                             shopOrderId = update.getId();
                         }

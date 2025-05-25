@@ -2,6 +2,7 @@ package cn.qihangerp.api.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -112,7 +113,7 @@ public class ErpOrder implements Serializable {
     /**
      * 订单时间
      */
-    private Date orderTime;
+    private LocalDateTime orderTime;
 
     /**
      * 发货状态 0 待发货 1 部分发货 2全部发货
