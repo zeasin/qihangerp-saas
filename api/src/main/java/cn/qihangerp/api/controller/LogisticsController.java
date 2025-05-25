@@ -28,10 +28,10 @@ public class LogisticsController extends BaseController {
     }
 
     @GetMapping("/logistics/status_list")
-    public TableDataInfo logisticsStatusList(Integer status, Integer shopId)
+    public TableDataInfo logisticsStatusList(Integer status, Integer shopType)
     {
         if(status == null) status=1;
-        return getDataTable(erpLogisticsCompanyService.queryListByStatus(getUserId(),status, shopId));
+        return getDataTable(erpLogisticsCompanyService.queryListByStatus(getUserId(),status, shopType));
     }
     @PutMapping("/logistics/updateStatus")
     public AjaxResult logisticsUpdateStatus(@RequestBody ErpLogisticsCompany company)

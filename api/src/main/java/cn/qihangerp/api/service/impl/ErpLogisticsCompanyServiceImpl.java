@@ -39,11 +39,11 @@ public class ErpLogisticsCompanyServiceImpl extends ServiceImpl<ErpLogisticsComp
     }
 
     @Override
-    public List<ErpLogisticsCompany> queryListByStatus(Long tenantId, Integer status, Integer shopId) {
+    public List<ErpLogisticsCompany> queryListByStatus(Long tenantId, Integer status, Integer shopType) {
         LambdaQueryWrapper<ErpLogisticsCompany> queryWrapper = new LambdaQueryWrapper<ErpLogisticsCompany>()
                 .eq(ErpLogisticsCompany::getTenantId,tenantId)
                 .eq(ErpLogisticsCompany::getStatus, status)
-                .eq(shopId != null, ErpLogisticsCompany::getShopId, shopId);
+                .eq(shopType != null, ErpLogisticsCompany::getPlatformId, shopType);
         return mapper.selectList(queryWrapper);
     }
 

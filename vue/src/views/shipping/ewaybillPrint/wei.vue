@@ -750,7 +750,7 @@ export default {
         this.form.height=0
         this.form.weight=0.0
         this.form.shippingCost=0.0
-        listLogisticsStatus({}).then(resp=>{
+        listLogisticsStatus({shopType:5}).then(resp=>{
           this.logisticsList = resp.rows
         })
         this.shipOpen = true;
