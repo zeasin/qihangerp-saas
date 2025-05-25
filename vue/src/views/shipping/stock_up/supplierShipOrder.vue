@@ -167,9 +167,9 @@
                 <el-tag size="small" v-if="scope.row.refundStatus === 11">已取消</el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="SKU名" align="left" prop="goodsSpec" width="150"  :show-overflow-tooltip="true">
+            <el-table-column label="SKU名" align="left" prop="skuName" width="150"  :show-overflow-tooltip="true">
               <template slot-scope="scope">
-                {{ scope.row.goodsSpec }}
+                <el-tag size="small" v-if="scope.row.skuName">{{ scope.row.skuName }}</el-tag>
               </template>
             </el-table-column>
             <el-table-column label="Sku编码" align="left" prop="skuNum" width="200"/>
