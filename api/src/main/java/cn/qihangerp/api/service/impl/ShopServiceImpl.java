@@ -39,6 +39,14 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
         mapper.updateById(shop);
     }
 
+    @Override
+    public List<Shop> selectShopByShopType(Integer shopType) {
+        LambdaQueryWrapper<Shop> qw = new LambdaQueryWrapper<Shop>()
+                .eq(Shop::getType,shopType)
+                .eq(Shop::getStatus,0);
+        return mapper.selectList(qw);
+    }
+
 }
 
 

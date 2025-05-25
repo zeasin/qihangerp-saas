@@ -13,4 +13,5 @@ import java.util.List;
 public interface ShopService extends IService<Shop> {
     List<Shop> selectShopList(Shop shop);
     void updateSessionKey(Long shopId,String token,String refreshToken);
+    List<Shop> selectShopByShopType(Integer shopType);
 }

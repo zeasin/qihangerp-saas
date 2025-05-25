@@ -16,10 +16,5 @@ public interface ErpShipmentService extends IService<ErpShipment> {
     PageResult<ErpShipment> queryPageList(ErpShipment shipping, PageQuery pageQuery);
     ErpShipment queryDetailById(Long id);
 
-    /**
-     * 填写供应商发货信息
-     * @param shipping
-     * @return
-     */
-    ResultVo<Integer> supplierAgentShipment(SupplierAgentShipmentRequest shipping);
+
 }

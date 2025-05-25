@@ -12,7 +12,7 @@ export function listLogistics(query) {
 // 查询物流公司详细
 export function getLogistics(id) {
   return request({
-    url: '/api/logistics/' + id,
+    url: '/shipping/logistics/' + id,
     method: 'get'
   })
 }
@@ -29,7 +29,7 @@ export function addLogistics(data) {
 // 修改物流公司
 export function updateLogistics(data) {
   return request({
-    url: '/api/logistics',
+    url: '/shipping/logistics/edit',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateLogistics(data) {
 // 删除物流公司
 export function delLogistics(id) {
   return request({
-    url: '/api/logistics/' + id,
+    url: '/shipping/logistics/del/' + id,
     method: 'delete'
   })
 }
@@ -48,5 +48,20 @@ export function listLogisticsStatus(query) {
     url: '/shipping/logistics/status_list',
     method: 'get',
     params: query
+  })
+}
+// 修改物流状态
+export function updateStatus(data) {
+  return request({
+    url: '/shipping/logistics/updateStatus',
+    method: 'put',
+    data: data
+  })
+}
+//接口拉取快递公司
+export function pullLogisticsCompanyList(platformId) {
+  return request({
+    url: '/logistics/pull_logistics_company?platformId='+platformId,
+    method: 'post'
   })
 }

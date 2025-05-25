@@ -14,7 +14,8 @@ import java.util.List;
 * @createDate 2024-03-22 11:03:11
 */
 public interface ErpLogisticsCompanyService extends IService<ErpLogisticsCompany> {
-    PageResult<ErpLogisticsCompany> queryPageList(Long tenantId, Integer platform, Integer shopId, PageQuery pageQuery);
+    PageResult<ErpLogisticsCompany> queryPageList(Long tenantId, Integer platform, Integer status,String name, PageQuery pageQuery);
     List<ErpLogisticsCompany> queryListByStatus(Long tenantId, Integer status, Integer shopId);
     int updateStatus(String id,Integer status);
+    int insert(ErpLogisticsCompany logisticsCompany);
 }

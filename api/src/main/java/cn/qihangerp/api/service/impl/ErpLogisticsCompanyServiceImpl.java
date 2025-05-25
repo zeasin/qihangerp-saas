@@ -11,6 +11,7 @@ import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.domain.ErpLogisticsCompany;
 import cn.qihangerp.api.mapper.ErpLogisticsCompanyMapper;
 import cn.qihangerp.api.service.ErpLogisticsCompanyService;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -26,11 +27,12 @@ public class ErpLogisticsCompanyServiceImpl extends ServiceImpl<ErpLogisticsComp
     private final ErpLogisticsCompanyMapper mapper;
 
     @Override
-    public PageResult<ErpLogisticsCompany> queryPageList(Long tenantId, Integer platform, Integer shopId, PageQuery pageQuery) {
+    public PageResult<ErpLogisticsCompany> queryPageList(Long tenantId, Integer platform, Integer status, String name,PageQuery pageQuery) {
         LambdaQueryWrapper<ErpLogisticsCompany> queryWrapper = new LambdaQueryWrapper<ErpLogisticsCompany>()
                 .eq(ErpLogisticsCompany::getTenantId,tenantId)
+                .like(StringUtils.hasText(name),ErpLogisticsCompany::getName,name)
                 .eq(platform != null, ErpLogisticsCompany::getPlatformId, platform)
-                .eq(shopId != null, ErpLogisticsCompany::getShopId, shopId);
+                .eq(status != null, ErpLogisticsCompany::getStatus, status);
 
         Page<ErpLogisticsCompany> pages = mapper.selectPage(pageQuery.build(), queryWrapper);
         return PageResult.build(pages);
@@ -51,6 +53,17 @@ public class ErpLogisticsCompanyServiceImpl extends ServiceImpl<ErpLogisticsComp
         update.setId(id);
         update.setStatus(status);
         return mapper.updateById(update);
+    }
+
+    @Override
+    public int insert(ErpLogisticsCompany logisticsCompany) {
+        List<ErpLogisticsCompany> sysLogisticsCompanies = mapper.selectList(new LambdaQueryWrapper<ErpLogisticsCompany>()
+                .eq(ErpLogisticsCompany::getPlatformId, logisticsCompany.getPlatformId())
+                .eq(ErpLogisticsCompany::getLogisticsId, logisticsCompany.getLogisticsId()));
+        if (sysLogisticsCompanies == null || sysLogisticsCompanies.size() == 0) {
+            return mapper.insert(logisticsCompany);
+        }
+        return 0;
     }
 }
 

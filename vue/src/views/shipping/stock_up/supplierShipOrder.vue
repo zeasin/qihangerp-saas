@@ -423,7 +423,7 @@ export default {
       const id = row.id || this.ids
       getShippingDetail(id).then(response => {
         // this.form = response.data;
-        this.form.shipmentId=response.data.id
+        this.form.id = response.data.id
         this.form.orderNum=response.data.orderNum
         this.form.orderTime=response.data.orderTime
         this.form.goodsAmount=response.data.goodsAmount

@@ -1,5 +1,6 @@
 package cn.qihangerp.api.controller;
 
+import cn.qihangerp.api.domain.Shop;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import cn.qihangerp.api.common.*;
@@ -15,11 +16,17 @@ public class LogisticsController extends BaseController {
      * 查询店铺列表logistics
      */
     @GetMapping("/logistics/list")
-    public TableDataInfo logisticsList(PageQuery pageQuery)
+    public TableDataInfo logisticsList(Integer platformId,String name,Integer status,PageQuery pageQuery)
     {
-        PageResult<ErpLogisticsCompany> result = erpLogisticsCompanyService.queryPageList(getUserId(),null, null, pageQuery);
+        PageResult<ErpLogisticsCompany> result = erpLogisticsCompanyService.queryPageList(getUserId(),platformId, status,name, pageQuery);
         return getDataTable(result);
     }
+    @GetMapping(value = "/logistics/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Long id)
+    {
+        return success(erpLogisticsCompanyService.getById(id));
+    }
+
     @GetMapping("/logistics/status_list")
     public TableDataInfo logisticsStatusList(Integer status, Integer shopId)
     {
@@ -44,5 +51,24 @@ public class LogisticsController extends BaseController {
         company.setTenantId(getUserId());
         return toAjax(erpLogisticsCompanyService.save(company));
     }
+    @PutMapping("/logistics/edit")
+    public AjaxResult edit(@RequestBody ErpLogisticsCompany company)
+    {
+        company.setTenantId(getUserId());
+        erpLogisticsCompanyService.updateById(company);
+
+        return AjaxResult.success();
+    }
+    @DeleteMapping("/logistics/del/{id}")
+    public AjaxResult remove(@PathVariable Long id)
+    {
+        ErpLogisticsCompany shopInfo = erpLogisticsCompanyService.getById(id);
+        if(shopInfo.getTenantId()!=getUserId()){
+            return AjaxResult.error("不允许删除别人的店铺");
+        }else {
+            return toAjax(erpLogisticsCompanyService.removeById(id));
+        }
+    }
+
 
 }

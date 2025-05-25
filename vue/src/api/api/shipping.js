@@ -9,12 +9,6 @@ export function listShipping(query) {
   })
 }
 
-export function getLogistics(id) {
-  return request({
-    url: '/api/logistics/' + id,
-    method: 'get'
-  })
-}
 
 // 新增
 export function handShip(data) {

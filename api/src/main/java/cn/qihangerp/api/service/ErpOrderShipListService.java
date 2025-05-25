@@ -2,8 +2,10 @@ package cn.qihangerp.api.service;
 
 import cn.qihangerp.api.common.PageQuery;
 import cn.qihangerp.api.common.PageResult;
+import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.domain.ErpOrderShipList;
 import cn.qihangerp.api.domain.ErpShipment;
+import cn.qihangerp.api.request.SupplierAgentShipmentRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -14,4 +16,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ErpOrderShipListService extends IService<ErpOrderShipList> {
     PageResult<ErpOrderShipList> queryPageList(ErpOrderShipList shipping, PageQuery pageQuery);
     ErpOrderShipList queryDetailById(Long id);
+    /**
+     * 填写供应商发货信息
+     * @param shipping
+     * @return
+     */
+    ResultVo<String> supplierAgentShipment(SupplierAgentShipmentRequest shipping);
 }

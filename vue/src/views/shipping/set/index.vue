@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import LogisticsCompany from "@/views/shipping/set/logistics_company.vue";
+import LogisticsCompany from "@/views/shipping/set/company.vue";
 import ShopWaybillAccount from "@/views/shipping/set/shop_ewaybill_account.vue"
 export default {
   name: "set",

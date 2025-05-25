@@ -23,7 +23,7 @@ public class ErpLogisticsCompany implements Serializable {
     /**
      * 平台id
      */
-    private String platformId;
+    private Integer platformId;
 
     /**
      * 店铺ID
@@ -34,7 +34,7 @@ public class ErpLogisticsCompany implements Serializable {
     /**
      * 物流公司id（值来自于平台返回）
      */
-    private Long logisticsId;
+    private String logisticsId;
 
 
     /**
