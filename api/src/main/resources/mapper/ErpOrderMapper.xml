@@ -16,7 +16,8 @@
             <result property="refundStatus" column="refund_status" jdbcType="INTEGER"/>
             <result property="orderStatus" column="order_status" jdbcType="INTEGER"/>
             <result property="goodsAmount" column="goods_amount" jdbcType="DOUBLE"/>
-            <result property="amount" column="amount" jdbcType="DOUBLE"/>
+            <result property="orderAmount" column="order_amount" jdbcType="DOUBLE"/>
+            <result property="payAmount" column="pay_amount" jdbcType="DOUBLE"/>
             <result property="receiverName" column="receiver_name" jdbcType="VARCHAR"/>
             <result property="receiverMobile" column="receiver_mobile" jdbcType="VARCHAR"/>
             <result property="address" column="address" jdbcType="VARCHAR"/>
@@ -37,7 +38,7 @@
         id,order_num,shop_type,ship_type,
         shop_id,remark,buyer_memo,
         seller_memo,tag,refund_status,
-        order_status,goods_amount,amount,
+        order_status,goods_amount,order_amount,pay_amount,
         receiver_name,receiver_mobile,address,
         province,city,town,
         order_time,ship_status,
@@ -48,7 +49,7 @@
         SELECT
             DATE(order_time) AS date,
             COUNT(*) AS count,
-            SUM(amount) AS amount
+            SUM(order_amount) AS amount
 
         FROM
             erp_order
@@ -68,7 +69,7 @@
         SELECT
 
             COUNT(*) AS count,
-            SUM(amount) AS amount
+            SUM(order_amount) AS amount
 
         FROM
             erp_order

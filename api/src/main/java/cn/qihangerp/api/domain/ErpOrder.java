@@ -78,7 +78,8 @@ public class ErpOrder implements Serializable {
     /**
      * 订单实际金额
      */
-    private Double amount;
+    private Double orderAmount;
+    private Double payAmount;
 
     /**
      * 收件人姓名

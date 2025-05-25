@@ -19,6 +19,7 @@
             <result property="payInfo" column="pay_info" jdbcType="VARCHAR"/>
             <result property="productPrice" column="product_price" jdbcType="INTEGER"/>
             <result property="orderPrice" column="order_price" jdbcType="INTEGER"/>
+            <result property="payAmount" column="pay_amount" jdbcType="INTEGER"/>
             <result property="freight" column="freight" jdbcType="INTEGER"/>
             <result property="discountedPrice" column="discounted_price" jdbcType="INTEGER"/>
             <result property="platformDiscount" column="platform_discount" jdbcType="INTEGER"/>
@@ -46,7 +47,7 @@
     <sql id="Base_Column_List">
         id,shop_id,order_id,tenant_id,shop_type,
         openid,create_time,update_time,
-        unionid,status,aftersale_detail,
+        unionid,status,aftersale_detail,pay_amount,
         pay_info,product_price,order_price,seller_discount,platform_discount,
         freight,discounted_price,user_name,
         postal_code,province_name,city_name,

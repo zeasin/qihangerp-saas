@@ -121,7 +121,7 @@
             </el-row>
           </template>
       </el-table-column>
-      <el-table-column label="订单金额" align="center" prop="amount" :formatter="amountFormatter"/>
+      <el-table-column label="订单金额" align="center" prop="orderAmount" :formatter="amountFormatter"/>
       <el-table-column label="订单备注" align="center" prop="remark" >
         <template slot-scope="scope">
           {{scope.row.buyerMemo}}<br />

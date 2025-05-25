@@ -74,11 +74,13 @@ public class ShopOrder implements Serializable {
      * 商品总价，单位为分
      */
     private Integer productPrice;
+    private Integer payAmount;
 
     /**
      * 订单金额，单位为分，order_price=original_order_price-discounted_price-deduction_price-change_down_price
      */
     private Integer orderPrice;
+
 
     /**
      * 运费，单位为分

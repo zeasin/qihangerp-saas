@@ -105,6 +105,8 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                     update.setShopType(shop.getType());
                     update.setId(orders.get(0).getId());
                     update.setStatus(order.getStatus());
+                    update.setOrderPrice(order.getOrderPrice());
+                    update.setPayAmount(order.getPayAmount());
                     update.setCreateTime(order.getCreateTime());
                     update.setUpdateTime(order.getUpdateTime());
                     update.setPayInfo(order.getPayInfo());
@@ -228,7 +230,8 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                             insert.setOrderStatus(orderStatus);
 
                             insert.setGoodsAmount(weiOrder.getProductPrice().doubleValue() / 100);
-                            insert.setAmount(weiOrder.getOrderPrice().doubleValue() / 100);
+                            insert.setOrderAmount(weiOrder.getOrderPrice().doubleValue() / 100);
+                            insert.setPayAmount(weiOrder.getPayAmount().doubleValue() / 100);
                             insert.setReceiverName(weiOrder.getUserName());
                             insert.setReceiverMobile(weiOrder.getTelNumber());
                             insert.setProvince(weiOrder.getProvinceName());
@@ -263,6 +266,8 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                             update.setId(erpOrders.get(0).getId());
                             update.setRefundStatus(refundStatus);
                             update.setOrderStatus(orderStatus);
+                            update.setOrderAmount(weiOrder.getOrderPrice().doubleValue() / 100);
+                            update.setPayAmount(weiOrder.getPayAmount().doubleValue() / 100);
                             update.setUpdateTime(new Date());
                             LocalDateTime orderTime = Instant.ofEpochSecond(weiOrder.getCreateTime()).atZone(ZoneId.of("Asia/Shanghai")).toLocalDateTime();
                             update.setOrderTime(orderTime);

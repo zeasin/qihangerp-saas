@@ -137,7 +137,7 @@ public class OrderApiController extends BaseController {
                         order.setOrderPrice(orderInfo.getOrder_detail().getPrice_info().getInteger("order_price"));
                         order.setFreight(orderInfo.getOrder_detail().getPrice_info().getInteger("freight"));
                         order.setDiscountedPrice(orderInfo.getOrder_detail().getPrice_info().getInteger("discounted_price"));
-
+                        order.setPayAmount(order.getOrderPrice());
                         var addressInfo = orderInfo.getOrder_detail().getDelivery_info().getAddress_info();
                         order.setUserName(addressInfo.getUser_name());
                         order.setPostalCode(addressInfo.getPostal_code());
@@ -284,12 +284,14 @@ public class OrderApiController extends BaseController {
                         order.setStatus(200);
                     }
                     order.setProductPrice(BigDecimal.valueOf(trade.getGoodsAmount()*100).intValue());
-                    order.setOrderPrice(BigDecimal.valueOf(trade.getPayAmount()*100).intValue());
                     order.setFreight(BigDecimal.valueOf(trade.getPostage()*100).intValue());
                     //优惠金额
                     order.setDiscountedPrice(BigDecimal.valueOf(trade.getDiscountAmount()*100).intValue());
                     order.setPlatformDiscount(BigDecimal.valueOf(trade.getPlatformDiscount()*100).intValue());
                     order.setSellerDiscount(BigDecimal.valueOf(trade.getSellerDiscount()*100).intValue());
+                    order.setPayAmount(BigDecimal.valueOf(trade.getPayAmount()*100).intValue());
+                    Integer orderAmount = order.getProductPrice()+order.getFreight()-order.getSellerDiscount();
+                    order.setOrderPrice(orderAmount);
 
                     order.setUserName(trade.getReceiverNameMask());
                     order.setTelNumber(trade.getReceiverPhoneMask());
@@ -444,7 +446,7 @@ public class OrderApiController extends BaseController {
                     order.setOrderPrice(apiResultVo.getData().getOrder_detail().getPrice_info().getInteger("order_price"));
                     order.setFreight(apiResultVo.getData().getOrder_detail().getPrice_info().getInteger("freight"));
                     order.setDiscountedPrice(apiResultVo.getData().getOrder_detail().getPrice_info().getInteger("discounted_price"));
-
+                    order.setPayAmount(order.getOrderPrice());
                     OrderDetailDeliverInfoAddress addressInfo = apiResultVo.getData().getOrder_detail().getDelivery_info().getAddress_info();
                     order.setUserName(addressInfo.getUser_name());
                     order.setPostalCode(addressInfo.getPostal_code());
@@ -575,12 +577,13 @@ public class OrderApiController extends BaseController {
                     order.setStatus(200);
                 }
                 order.setProductPrice(BigDecimal.valueOf(trade.getGoodsAmount()*100).intValue());
-                order.setOrderPrice(BigDecimal.valueOf(trade.getPayAmount()*100).intValue());
                 order.setFreight(BigDecimal.valueOf(trade.getPostage()*100).intValue());
                 //优惠金额
                 order.setDiscountedPrice(BigDecimal.valueOf(trade.getDiscountAmount()*100).intValue());
                 order.setPlatformDiscount(BigDecimal.valueOf(trade.getPlatformDiscount()*100).intValue());
                 order.setSellerDiscount(BigDecimal.valueOf(trade.getSellerDiscount()*100).intValue());
+                Integer orderAmount = order.getProductPrice()+order.getFreight()-order.getSellerDiscount();
+                order.setOrderPrice(orderAmount);
 
                 order.setUserName(trade.getReceiverNameMask());
                 order.setTelNumber(trade.getReceiverPhoneMask());
