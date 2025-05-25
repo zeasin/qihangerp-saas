@@ -95,6 +95,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         LambdaQueryWrapper<ErpOrder> queryWrapper = new LambdaQueryWrapper<ErpOrder>()
                 .eq(bo.getTenantId()!=null,ErpOrder::getTenantId,bo.getTenantId())
                 .eq(bo.getShopId()!=null,ErpOrder::getShopId,bo.getShopId())
+                .eq(bo.getShopType()!=null,ErpOrder::getShopType,bo.getShopType())
                 .eq(ErpOrder::getOrderStatus,1)
                 .eq(ErpOrder::getRefundStatus,1)
                 .lt(ErpOrder::getShipType,2)//ship_type发货方式 0 自己发货1联合发货2供应商发货
