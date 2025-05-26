@@ -143,12 +143,12 @@
         <template slot-scope="scope">
 
             <el-button
-              v-if="scope.row.type === 'RETURN' && !scope.row.confirmStatus"
+              v-if="scope.row.afterSalesType === 3 && !scope.row.confirmStatus"
               size="mini"
               type="text"
               icon="el-icon-document-checked"
               @click="handleReturnedConfirm(scope.row) "
-            >退货签收</el-button>
+            >退货确认</el-button>
             <el-button
               v-if="scope.row.type === 'REFUND' && !scope.row.confirmStatus"
               size="mini"
@@ -165,12 +165,6 @@
             @click="handleConfirm(scope.row)"
             v-hasPermi="['tao:taoRefund:edit']"
           >更新</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-view"
-            @click="handleDelete(scope.row)"
-          >详情</el-button>
           </el-row>
         </template>
       </el-table-column>

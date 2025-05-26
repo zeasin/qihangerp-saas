@@ -25,11 +25,10 @@
             :label="item.name"
             :value="item.id">
             <span style="float: left">{{ item.name }}</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 1">淘宝天猫</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 2">京东</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 3">抖店</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 4">拼多多</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 5">视频号小店</span>
+
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 3">拼多多</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 9">其他渠道</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 5">微信小店</span>
           </el-option>
         </el-select>
       </el-form-item>
@@ -86,23 +85,29 @@
       <el-table-column label="源订单号" align="center" prop="orderId" />
        <el-table-column label="店铺" align="center" prop="shopId" >
          <template slot-scope="scope">
-           <span>{{ shopList.find(x=>x.id === scope.row.shopId).name  }}</span>
+           <span>{{ shopList.find(x=>x.id == scope.row.shopId).name  }}</span>
          </template>
        </el-table-column>
-       <el-table-column label="订单id" align="center" prop="orderId" />
-       <el-table-column label="子订单id" align="center" prop="subOrderId" />
+       <el-table-column label="订单号" align="center" prop="orderId" />
+<!--       <el-table-column label="子订单id" align="center" prop="subOrderId" />-->
+            <el-table-column label="商品图片" align="center" prop="img" width="100">
+              <template slot-scope="scope">
+                <image-preview :src="scope.row.img" :width="50" :height="50"/>
+              </template>
+            </el-table-column>
        <el-table-column label="商品" align="center" prop="title" />
        <el-table-column label="sku" align="center" prop="skuInfo" />
        <el-table-column label="SKU编码" align="center" prop="skuCode" />
       <el-table-column label="数量" align="center" prop="count" />
        <el-table-column label="物流公司" align="center" prop="shipCompany" />
       <el-table-column label="物流单号" align="center" prop="shipWaybillCode" />
-      <el-table-column label="收货人" align="center" prop="receiverName" />
-      <el-table-column label="手机号" align="center" prop="receiverTel" />
-      <el-table-column label="收货地址" align="center" prop="receiverAddress" />
+<!--      <el-table-column label="收货人" align="center" prop="receiverName" />-->
+<!--      <el-table-column label="手机号" align="center" prop="receiverTel" />-->
+<!--      <el-table-column label="收货地址" align="center" prop="receiverAddress" />-->
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="状态" align="center" prop="status" >
         <template slot-scope="scope">
+          <el-tag size="small" v-if="scope.row.status === 0"> 待处理</el-tag>
           <el-tag size="small" v-if="scope.row.status === 1"> 已发出</el-tag>
           <el-tag size="small" v-if="scope.row.status === 2"> 已签收</el-tag>
           <el-tag size="small" v-if="scope.row.status === 3"> 已完成</el-tag>
@@ -110,6 +115,14 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <el-button
+            v-if="scope.row.status === 0"
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['api:returned:edit']"
+          >更新退货物流</el-button>
           <el-button
             v-if="scope.row.status === 2"
             size="mini"
@@ -210,7 +223,7 @@ import {listReturned, addExchange, shipAgainComplete} from "@/api/afterSale/retu
 import {listShop} from "@/api/shop/shop";
 
 export default {
-  name: "Returned",
+  name: "AfterSaleReturned",
   data() {
     return {
       // 遮罩层

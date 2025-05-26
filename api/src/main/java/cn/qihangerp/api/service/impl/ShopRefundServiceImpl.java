@@ -1,6 +1,8 @@
 package cn.qihangerp.api.service.impl;
 
-import cn.qihangerp.api.domain.Shop;
+import cn.qihangerp.api.domain.*;
+import cn.qihangerp.api.service.ShopOrderItemService;
+import cn.qihangerp.api.service.ShopOrderService;
 import cn.qihangerp.api.service.ShopService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -14,8 +16,6 @@ import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.enums.EnumShopType;
-import cn.qihangerp.api.domain.ErpOrderAfterSale;
-import cn.qihangerp.api.domain.ShopRefund;
 import cn.qihangerp.api.mapper.ErpOrderAfterSaleMapper;
 import cn.qihangerp.api.service.ShopRefundService;
 import cn.qihangerp.api.mapper.ShopRefundMapper;
@@ -35,6 +35,8 @@ import java.util.List;
 public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRefund>
     implements ShopRefundService {
     private final ShopRefundMapper mapper;
+    private final ShopOrderService shopOrderService;
+    private final ShopOrderItemService shopOrderItemService;
     private final ErpOrderAfterSaleMapper afterSaleMapper;
     private final ShopService shopService;
 
@@ -95,34 +97,62 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
     @Override
     public ResultVo<Integer> returnedConfirm(Long id) {
         ShopRefund refund = mapper.selectById(id);
-        if(refund!=null && refund.getConfirmStatus()==null) {
-            ErpOrderAfterSale afterSale = new ErpOrderAfterSale();
-            afterSale.setType(10);
-            afterSale.setShopId(refund.getShopId());
-            afterSale.setShopType(EnumShopType.WEI.getIndex());
-            afterSale.setTenantId(refund.getTenantId());
-            afterSale.setAfterSaleOrderId(refund.getAfterSaleOrderId());
-            afterSale.setOrderId(refund.getOrderId());
-            afterSale.setProductId(refund.getProductId());
-            afterSale.setSkuId(refund.getSkuId());
-            afterSale.setCount(refund.getCount());
-            // TODO：没有记录商品数据
-            afterSale.setReturnCompany(refund.getReturnDeliveryName());
-            afterSale.setReturnWaybillCode(refund.getReturnWaybillId());
-            afterSale.setStatus(2);
-            afterSale.setCreateBy("后台签收");
-            afterSale.setCreateTime(new Date());
-            afterSaleMapper.insert(afterSale);
-            // 插入售后处理表
-            ShopRefund complete = new ShopRefund();
-            complete.setId(id.toString());
-            complete.setConfirmStatus(9);
-            complete.setConfirmTime(LocalDateTime.now());
-            mapper.updateById(complete);
-        }
+        if (refund == null) return ResultVo.error("没有找到店铺退款数据");
+        if (refund.getConfirmStatus() != null && refund.getConfirmStatus() != 0)
+            return ResultVo.error("店铺退款已处理");
+        // 拼多多类型：售后类型 1：全部 2：仅退款 3：退货退款 4：换货 5：缺货补寄 6：维修
+        // 微信小店类型： 售后类型。REFUND:退款；RETURN:退货退款。
+        if (refund.getAfterSalesType() != 3 && !refund.getType().equals("RETURN"))
+            return ResultVo.error("售后类型不是退款退货的售后无法处理");
+        List<ShopOrder> shopOrders = shopOrderService.list(new LambdaQueryWrapper<ShopOrder>().eq(ShopOrder::getOrderId, refund.getOrderId()));
+        if (shopOrders == null || shopOrders.isEmpty()) return ResultVo.error("没有找到店铺订单");
+
+        // 查找子订单
+        List<ShopOrderItem> shopOrderItems = shopOrderItemService.list(new LambdaQueryWrapper<ShopOrderItem>()
+                .eq(ShopOrderItem::getShopOrderId, shopOrders.get(0).getId())
+                .eq(ShopOrderItem::getSkuId, refund.getSkuId()));
+        if (shopOrderItems == null || shopOrderItems.isEmpty()) return ResultVo.error("没有找到店铺订单item");
+
+
+        // 插入售后处理数据
+        ErpOrderAfterSale afterSale = new ErpOrderAfterSale();
+        afterSale.setType(10);
+        afterSale.setShopId(refund.getShopId());
+        afterSale.setShopType(refund.getShopType());
+        afterSale.setTenantId(refund.getTenantId());
+        afterSale.setAfterSaleOrderId(refund.getAfterSaleOrderId());
+        afterSale.setOrderId(refund.getOrderId());
+        afterSale.setSubOrderId(shopOrders.get(0).getId());
+        afterSale.setGoodsId(refund.getProductId());
+        afterSale.setSkuId(refund.getSkuId());
+        afterSale.setCount(refund.getCount());
+        afterSale.setTitle(shopOrderItems.get(0).getTitle());
+        afterSale.setImg(shopOrderItems.get(0).getThumbImg());
+        afterSale.setSkuInfo(shopOrderItems.get(0).getSkuAttrs());
+        afterSale.setSkuCode(shopOrderItems.get(0).getOutSkuId());
+        afterSale.setErpGoodsId(shopOrderItems.get(0).getErpGoodsId());
+        afterSale.setErpSkuId(shopOrderItems.get(0).getErpSkuId());
+        // TODO：没有记录商品数据
+        afterSale.setReturnCompany(refund.getReturnDeliveryName());
+        afterSale.setReturnWaybillCode(refund.getReturnWaybillId());
+        afterSale.setStatus(0);
+        afterSale.setCreateBy("后台确认售后");
+        afterSale.setCreateTime(new Date());
+        afterSaleMapper.insert(afterSale);
+        // 更新店铺售后
+        ShopRefund complete = new ShopRefund();
+        complete.setId(id.toString());
+        complete.setConfirmStatus(1);
+        mapper.updateById(complete);
+
         return ResultVo.success();
     }
 
+    /**
+     * 拦截订单
+     * @param id
+     * @return
+     */
     @Override
     public ResultVo<Integer> orderIntercept(Long id) {
         ShopRefund refund = mapper.selectById(id);
@@ -134,7 +164,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
             afterSale.setTenantId(refund.getTenantId());
             afterSale.setAfterSaleOrderId(refund.getAfterSaleOrderId());
             afterSale.setOrderId(refund.getOrderId());
-            afterSale.setProductId(refund.getProductId());
+            afterSale.setGoodsId(refund.getProductId());
             afterSale.setSkuId(refund.getSkuId());
             afterSale.setCount(refund.getCount());
             // TODO：没有记录商品数据

@@ -13,7 +13,7 @@
             <result property="afterSaleOrderId" column="after_sale_order_id" jdbcType="VARCHAR"/>
             <result property="orderId" column="order_id" jdbcType="VARCHAR"/>
             <result property="subOrderId" column="sub_order_id" jdbcType="VARCHAR"/>
-            <result property="productId" column="product_id" jdbcType="VARCHAR"/>
+            <result property="goodsId" column="goods_id" jdbcType="VARCHAR"/>
             <result property="skuId" column="sku_id" jdbcType="VARCHAR"/>
             <result property="count" column="count" jdbcType="INTEGER"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
@@ -44,7 +44,7 @@
     <sql id="Base_Column_List">
         id,type,shop_id,tenant_id,
         shop_type,after_sale_order_id,order_id,
-        sub_order_id,product_id,sku_id,
+        sub_order_id,goods_id,sku_id,
         count,title,img,
         sku_info,sku_code,erp_goods_id,
         erp_sku_id,return_info,return_waybill_code,

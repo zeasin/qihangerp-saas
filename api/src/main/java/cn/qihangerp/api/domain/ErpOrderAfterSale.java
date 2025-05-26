@@ -53,7 +53,7 @@ public class ErpOrderAfterSale implements Serializable {
     /**
      * 商品spuid
      */
-    private String productId;
+    private String goodsId;
 
     /**
      * 商品skuid
@@ -88,12 +88,12 @@ public class ErpOrderAfterSale implements Serializable {
     /**
      * ERP商品id
      */
-    private Integer erpGoodsId;
+    private Long erpGoodsId;
 
     /**
      * ERP商品skuId
      */
-    private Integer erpSkuId;
+    private Long erpSkuId;
 
     /**
      * 退回人信息json
