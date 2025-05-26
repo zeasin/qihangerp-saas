@@ -43,31 +43,8 @@
         />
       </el-form-item>
 
-      <el-form-item label="订单日期" prop="orderDate">
-        <el-date-picker clearable
-          v-model="queryParams.orderDate"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择订单日期">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="商品ID" prop="goodsId">
-        <el-input
-          v-model="queryParams.goodsId"
-          placeholder="请输入erp系统商品id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
 
-      <el-form-item label="商品编码" prop="goodsNum">
-        <el-input
-          v-model="queryParams.goodsNum"
-          placeholder="请输入商品编码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+
 
       <el-form-item label="物流单号" prop="shipNo">
         <el-input
@@ -114,15 +91,7 @@
           v-hasPermi="['scm:agentShipping:export']"
         >导出</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleImport"
-        >导入</el-button>
-      </el-col>
+
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -227,19 +196,7 @@
       @pagination="getList"
     />
 
-    <el-dialog title="导入商品" :visible.sync="importOpen" width="400px" append-to-body>
-      <el-upload
-        class="upload-demo"
-        :headers="headers"
-        drag
-        action="/dev-api/cost/order_cost/excel_import"
-        accept="xlsx"
-        multiple >
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-      </el-upload>
-    </el-dialog>
+
     <!-- 添加或修改供应商代发货对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
@@ -340,7 +297,7 @@
 </template>
 
 <script>
-import { listAgentShip, getAgentShip, delAgentShip, addAgentShip, updateAgentShip } from "@/api/ship/agent/bill";
+import { listAgentShip, getAgentShip, delAgentShip, addAgentShip, updateAgentShip } from "@/api/financial/supplier_ship_bill";
 import { listSupplier} from "@/api/scm/supplier";
 import { listShop } from "@/api/shop/shop";
 import {listLogistics} from "@/api/api/logistics";
@@ -418,9 +375,7 @@ export default {
     listSupplier({}).then(response => {
       this.supplierList = response.rows;
       });
-    listLogistics({}).then(resp=>{
-      this.logisticsList = resp.rows
-    })
+
   },
   methods: {
     searchSupplier(query){
@@ -540,9 +495,7 @@ export default {
         ...this.queryParams
       }, `agentShipping_${new Date().getTime()}.xlsx`)
     },
-    handleImport(){
-      this.importOpen=true
-    }
+
   }
 };
 </script>

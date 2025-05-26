@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询财务管理-应付款-代发账单列表
 export function listAgentShip(query) {
   return request({
-    url: '/fms/agentShip/list',
+    url: '/financial/supplier_ship_bill/list',
     method: 'get',
     params: query
   })

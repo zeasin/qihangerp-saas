@@ -26,9 +26,8 @@ public class OrderBillController extends BaseController {
     private final ShopService shopService;
     private final ErpBillShopOrderService erpBillShopOrderService;
     /**
-     * 查询商品管理列表
+     * 查询订单账单
      */
-    @PreAuthorize("@ss.hasPermi('goods:goods:list')")
     @GetMapping("/order_bill/list")
     public TableDataInfo list(ErpBillShopOrder goods, PageQuery pageQuery)
     {
