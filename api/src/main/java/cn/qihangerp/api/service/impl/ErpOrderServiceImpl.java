@@ -5,6 +5,7 @@ import cn.qihangerp.api.domain.*;
 import cn.qihangerp.api.domain.vo.SalesDailyVo;
 import cn.qihangerp.api.mapper.*;
 import cn.qihangerp.api.request.OrderSearchRequest;
+import cn.qihangerp.api.service.ErpBillShipmentService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -43,6 +44,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
     private final ErpSupplierMapper erpSupplierMapper;
     private final ErpOrderShipListMapper orderShipListMapper;
     private final ErpOrderShipListItemMapper orderShipListItemMapper;
+    private final ErpBillShipmentService erpBillShipmentService;
 
     private final String DATE_PATTERN =
             "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
@@ -199,6 +201,25 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         erpShipment.setCreateTime(new Date());
 
         shipmentMapper.insert(erpShipment);
+        // 添加发货费用账单
+        ErpBillShipment billShipment = new ErpBillShipment();
+        billShipment.setTenantId(erpShipment.getTenantId());
+        billShipment.setShopId(erpShipment.getShopId());
+        billShipment.setType(1);//账单类型1自己发货2供应商发货
+        billShipment.setSupplierId(0L);
+        billShipment.setSupplierName("");
+        billShipment.setOrderNum(erpShipment.getOrderNum());
+        billShipment.setDate(new Date());
+        billShipment.setShipCompany(erpLogisticsCompany.getName());
+        billShipment.setShipNo(shipBo.getShippingNumber());
+        billShipment.setAmount(shipBo.getShippingCost());
+        billShipment.setShipAmount(shipBo.getShippingCost());
+        billShipment.setGoodsAmount(BigDecimal.ZERO);
+        billShipment.setStatus(0);
+        billShipment.setCreateBy("");
+        billShipment.setCreateTime(new Date());
+        billShipment.setRemark(shipBo.getRemark());
+        erpBillShipmentService.save(billShipment);
 
         for(ErpOrderItem orderItem:oOrderItems){
             // 添加备货清单item

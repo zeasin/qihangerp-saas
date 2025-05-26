@@ -49,6 +49,12 @@ public class OrderShipSupplierController extends BaseController {
         return getDataTable(erpShipmentPageResult);
     }
 
+    /**
+     * 供应商发货 确认下单
+     * @param id
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/supplierShipmentConfirm/{id}")
     public AjaxResult supplierAgentShipment(@PathVariable Long id) throws IOException {
         ErpOrderShipList orderShipList = orderShipListService.getById(id);
@@ -82,16 +88,15 @@ public class OrderShipSupplierController extends BaseController {
         var result = orderShipListService.supplierAgentShipment(shipping);
         if(result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
             // 调用接口api
-//            var checkResult = pddApiCommon.checkBefore(orderShipList.getShopId());
-//            if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
-//                return AjaxResult.error(500, checkResult.getMsg());
-//            }
-//            String accessToken = checkResult.getData().getAccessToken();
-////        String serverUrl = checkResult.getData().getServerUrl();
-//            String appKey = checkResult.getData().getAppKey();
-//            String appSecret = checkResult.getData().getAppSecret();
-//            ApiResultVo apiResultVo = PddLogisticsApiHelper.onlineSend(appKey, appSecret, accessToken, erpLogisticsCompany.getLogisticsId(), orderShipList.getOrderNum(), shipping.shipNo());
-//            log.info("=====发货结果======{}", JSONObject.toJSONString(apiResultVo));
+            var checkResult = pddApiCommon.checkBefore(orderShipList.getShopId());
+            if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
+                return AjaxResult.error(500, checkResult.getMsg());
+            }
+            String accessToken = checkResult.getData().getAccessToken();
+            String appKey = checkResult.getData().getAppKey();
+            String appSecret = checkResult.getData().getAppSecret();
+            ApiResultVo apiResultVo = PddLogisticsApiHelper.onlineSend(appKey, appSecret, accessToken, erpLogisticsCompany.getLogisticsId(), orderShipList.getOrderNum(), shipping.shipNo());
+            log.info("=====发货结果======{}", JSONObject.toJSONString(apiResultVo));
             return AjaxResult.success();
         }else{
             return AjaxResult.error(result.getCode(),result.getMsg());
