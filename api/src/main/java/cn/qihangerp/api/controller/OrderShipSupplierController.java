@@ -95,6 +95,8 @@ public class OrderShipSupplierController extends BaseController {
             String accessToken = checkResult.getData().getAccessToken();
             String appKey = checkResult.getData().getAppKey();
             String appSecret = checkResult.getData().getAppSecret();
+
+            log.info("=====发货参数======logisticsId:{},orderNum:{},shipNo:{}",erpLogisticsCompany.getLogisticsId(),orderShipList.getOrderNum(),shipping.shipNo());
             ApiResultVo apiResultVo = PddLogisticsApiHelper.onlineSend(appKey, appSecret, accessToken, erpLogisticsCompany.getLogisticsId(), orderShipList.getOrderNum(), shipping.shipNo());
             log.info("=====发货结果======{}", JSONObject.toJSONString(apiResultVo));
             return AjaxResult.success();

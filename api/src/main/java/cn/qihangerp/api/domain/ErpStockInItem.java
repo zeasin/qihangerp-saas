@@ -13,7 +13,7 @@ import java.util.Date;
  * 入库单明细
  * @TableName wms_stock_in_item
  */
-@TableName(value ="wms_stock_in_item")
+@TableName(value ="erp_stock_in_item")
 @Data
 public class ErpStockInItem implements Serializable {
     /**

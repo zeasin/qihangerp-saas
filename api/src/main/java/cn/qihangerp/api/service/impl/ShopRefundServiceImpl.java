@@ -14,9 +14,9 @@ import cn.qihangerp.api.common.PageResult;
 import cn.qihangerp.api.common.ResultVo;
 import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.enums.EnumShopType;
-import cn.qihangerp.api.domain.ErpAfterSale;
+import cn.qihangerp.api.domain.ErpOrderAfterSale;
 import cn.qihangerp.api.domain.ShopRefund;
-import cn.qihangerp.api.mapper.ErpAfterSaleMapper;
+import cn.qihangerp.api.mapper.ErpOrderAfterSaleMapper;
 import cn.qihangerp.api.service.ShopRefundService;
 import cn.qihangerp.api.mapper.ShopRefundMapper;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ import java.util.List;
 public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRefund>
     implements ShopRefundService {
     private final ShopRefundMapper mapper;
-    private final ErpAfterSaleMapper afterSaleMapper;
+    private final ErpOrderAfterSaleMapper afterSaleMapper;
     private final ShopService shopService;
 
     @Override
@@ -96,7 +96,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
     public ResultVo<Integer> returnedConfirm(Long id) {
         ShopRefund refund = mapper.selectById(id);
         if(refund!=null && refund.getConfirmStatus()==null) {
-            ErpAfterSale afterSale = new ErpAfterSale();
+            ErpOrderAfterSale afterSale = new ErpOrderAfterSale();
             afterSale.setType(10);
             afterSale.setShopId(refund.getShopId());
             afterSale.setShopType(EnumShopType.WEI.getIndex());
@@ -127,7 +127,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
     public ResultVo<Integer> orderIntercept(Long id) {
         ShopRefund refund = mapper.selectById(id);
         if(refund!=null && refund.getConfirmStatus()==null) {
-            ErpAfterSale afterSale = new ErpAfterSale();
+            ErpOrderAfterSale afterSale = new ErpOrderAfterSale();
             afterSale.setType(99);
             afterSale.setShopId(refund.getShopId());
             afterSale.setShopType(EnumShopType.WEI.getIndex());

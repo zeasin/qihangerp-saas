@@ -12,7 +12,7 @@ import lombok.Data;
  * 出库仓位详情
  * @TableName wms_stock_in_item_position
  */
-@TableName(value ="wms_stock_in_item_position")
+@TableName(value ="erp_stock_in_item_position")
 @Data
 public class ErpStockInItemPosition implements Serializable {
     /**

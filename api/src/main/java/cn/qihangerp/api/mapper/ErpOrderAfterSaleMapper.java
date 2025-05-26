@@ -1,6 +1,6 @@
 package cn.qihangerp.api.mapper;
 
-import cn.qihangerp.api.domain.ErpAfterSale;
+import cn.qihangerp.api.domain.ErpOrderAfterSale;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2024-04-05 21:24:00
 * @Entity cn.qihangerp.api.domain.ErpAfterSale
 */
-public interface ErpAfterSaleMapper extends BaseMapper<ErpAfterSale> {
+public interface ErpOrderAfterSaleMapper extends BaseMapper<ErpOrderAfterSale> {
 
 }
 
