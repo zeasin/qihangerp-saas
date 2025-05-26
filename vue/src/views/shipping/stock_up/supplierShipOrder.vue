@@ -168,6 +168,13 @@
          {{scope.row.address}}
         </template>
       </el-table-column>
+      <el-table-column label="订单备注" align="center" >
+        <template slot-scope="scope">
+          <div style="color: #ed5565">{{scope.row.remark}}</div>
+          <div style="color: #ed5565">{{scope.row.buyerMemo}}</div>
+          <div style="color: #ed5565">{{scope.row.sellerMemo}}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="发货状态" align="center" prop="shipStatus" >
         <template slot-scope="scope">
           {{scope.row.goodsTitle}}

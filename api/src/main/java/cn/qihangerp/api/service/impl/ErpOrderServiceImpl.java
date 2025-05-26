@@ -164,6 +164,9 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         shipList.setOrderId(Long.parseLong(erpOrder.getId()));
         shipList.setOrderNum(erpOrder.getOrderNum());
         shipList.setStatus(0);
+        shipList.setRemark(erpOrder.getRemark());
+        shipList.setBuyerMemo(erpOrder.getBuyerMemo());
+        shipList.setSellerMemo(erpOrder.getSellerMemo());
         shipList.setShipLogisticsCompany(erpLogisticsCompany.getName());
         shipList.setShipLogisticsCompanyCode(erpLogisticsCompany.getCode());
         shipList.setShipLogisticsCode(shipBo.getShippingNumber());
@@ -401,6 +404,8 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
             shipList.setCity(erpOrder.getCity());
             shipList.setTown(erpOrder.getTown());
             shipList.setAddress(shipBo.getAddress());
+
+            shipList.setRemark(erpOrder.getRemark());
             shipList.setSellerMemo(shipBo.getSellerMemo());
             shipList.setBuyerMemo(shipBo.getBuyerMemo());
             shipList.setCreateTime(new Date());

@@ -144,7 +144,13 @@
       <el-table-column label="数量" align="center" prop="quantity" />
 
       <el-table-column label="SKU编码" align="center" prop="skuNum" />
-
+      <el-table-column label="订单备注" align="center" >
+        <template slot-scope="scope">
+          <div style="color: #ed5565">{{scope.row.remark}}</div>
+          <div style="color: #ed5565">{{scope.row.buyerMemo}}</div>
+          <div style="color: #ed5565">{{scope.row.sellerMemo}}</div>
+        </template>
+      </el-table-column>
 
 <!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
 <!--        <template slot-scope="scope">-->
