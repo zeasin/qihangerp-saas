@@ -42,6 +42,9 @@
             <result property="settleInfo" column="settle_info" jdbcType="VARCHAR"/>
             <result property="createOn" column="create_on" jdbcType="TIMESTAMP"/>
             <result property="createOn" column="update_on" jdbcType="TIMESTAMP"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="buyerMemo" column="buyer_memo" jdbcType="VARCHAR"/>
+        <result property="sellerMemo" column="seller_memo" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -51,7 +54,7 @@
         pay_info,product_price,order_price,seller_discount,platform_discount,
         freight,discounted_price,user_name,
         postal_code,province_name,city_name,
-        county_name,detail_info,tel_number,
+        county_name,detail_info,tel_number,remark,buyer_memo,seller_memo,
         house_number,virtual_order_tel_number,tel_number_ext_info,
         use_tel_number,hash_code,delivery_product_info,
         ship_done_time,ewaybill_order_code,settle_info,create_on,update_on

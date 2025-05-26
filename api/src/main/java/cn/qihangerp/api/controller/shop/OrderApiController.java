@@ -303,7 +303,8 @@ public class OrderApiController extends BaseController {
                     order.setConfirmTime(DateUtils.parseDate(trade.getConfirmTime()));
                     order.setErpSendStatus(0);
                     order.setCreateOn(new Date());
-
+                    order.setBuyerMemo(trade.getBuyerMemo());
+                    order.setRemark(trade.getRemark());
                     List<ShopOrderItem> itemList = new ArrayList<>();
                     for (var item:trade.getItemList()) {
                         ShopOrderItem oi = new ShopOrderItem();
@@ -584,7 +585,8 @@ public class OrderApiController extends BaseController {
                 order.setSellerDiscount(BigDecimal.valueOf(trade.getSellerDiscount()*100).intValue());
                 Integer orderAmount = order.getProductPrice()+order.getFreight()-order.getSellerDiscount();
                 order.setOrderPrice(orderAmount);
-
+                order.setBuyerMemo(trade.getBuyerMemo());
+                order.setRemark(trade.getRemark());
                 order.setUserName(trade.getReceiverNameMask());
                 order.setTelNumber(trade.getReceiverPhoneMask());
                 order.setProvinceName(trade.getProvince());
@@ -595,7 +597,7 @@ public class OrderApiController extends BaseController {
                 order.setConfirmTime(DateUtils.parseDate(trade.getConfirmTime()));
                 order.setErpSendStatus(0);
                 order.setCreateOn(new Date());
-
+//                order.set(trade.getBuyerMemo())
                 List<ShopOrderItem> itemList = new ArrayList<>();
                 for (var item:trade.getItemList()) {
                     ShopOrderItem oi = new ShopOrderItem();

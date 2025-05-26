@@ -161,6 +161,13 @@
         <el-tag size="small">{{scope.row.countyName}}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="订单备注" align="center" >
+        <template slot-scope="scope">
+          <div style="color: #ed5565">{{scope.row.remark}}</div>
+          <div style="color: #ed5565">{{scope.row.buyerMemo}}</div>
+          <div style="color: #ed5565">{{scope.row.sellerMemo}}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="订单状态" align="center" prop="status" >
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 10 " size="small">待付款</el-tag>

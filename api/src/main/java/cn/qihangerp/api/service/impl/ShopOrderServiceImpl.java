@@ -94,58 +94,64 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
     @Override
     public ResultVo<Long> saveOrder(Long shopId, ShopOrder order) {
         Shop shop = shopService.getById(shopId);
-        if(shop==null) return ResultVo.error("店铺不存在");
+        if (shop == null) return ResultVo.error("店铺不存在");
         try {
             List<ShopOrder> orders = mapper.selectList(new LambdaQueryWrapper<ShopOrder>().eq(ShopOrder::getOrderId, order.getOrderId()));
             if (orders != null && orders.size() > 0) {
-                    // 存在，修改
-                    ShopOrder update = new ShopOrder();
-                    update.setShopId(shopId);
-                    update.setTenantId(shop.getTenantId());
-                    update.setShopType(shop.getType());
-                    update.setId(orders.get(0).getId());
-                    update.setStatus(order.getStatus());
-                    update.setOrderPrice(order.getOrderPrice());
-                    update.setPayAmount(order.getPayAmount());
-                    update.setCreateTime(order.getCreateTime());
-                    update.setUpdateTime(order.getUpdateTime());
-                    update.setPayInfo(order.getPayInfo());
-                    update.setAftersaleDetail(order.getAftersaleDetail());
-                    update.setDeliveryProductInfo(order.getDeliveryProductInfo());
-                    update.setUpdateOn(new Date());
-                    mapper.updateById(update);
-                    // 更新item
-                    for (var item : order.getItems()) {
-                        List<ShopGoodsSku> shopGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<ShopGoodsSku>().eq(ShopGoodsSku::getSkuId, item.getSkuId()));
-                        if(shopGoodsSkus!=null && shopGoodsSkus.size()>0){
-                            item.setErpGoodsId(shopGoodsSkus.get(0).getErpGoodsId());
-                            item.setErpSkuId(shopGoodsSkus.get(0).getErpGoodsSkuId());
-                        }
-                        List<ShopOrderItem> taoOrderItems = itemMapper.selectList(new LambdaQueryWrapper<ShopOrderItem>().eq(ShopOrderItem::getSkuId, item.getSkuId()));
-                        if (taoOrderItems != null && taoOrderItems.size() > 0) {
-                            // 更新
-                            item.setShopOrderId(update.getId());
-                            item.setOrderId(order.getOrderId());
-                            item.setOrderTime(order.getCreateTime());
-                            item.setId(taoOrderItems.get(0).getId());
-                            item.setShopId(shopId);
-                            item.setShopType(shop.getType());
-                            item.setTenantId(shop.getTenantId());
-                            item.setUpdateOn(new Date());
-                            itemMapper.updateById(item);
-                        } else {
-                            // 新增
-                            item.setOrderId(order.getOrderId());
-                            item.setOrderTime(order.getCreateTime());
-                            item.setShopId(shopId);
-                            item.setShopType(shop.getType());
-                            item.setTenantId(shop.getTenantId());
-                            item.setShopOrderId(update.getId());
-                            item.setCreateOn(new Date());
-                            itemMapper.insert(item);
-                        }
+                // 存在，修改
+                ShopOrder update = new ShopOrder();
+                update.setShopId(shopId);
+                update.setTenantId(shop.getTenantId());
+                update.setShopType(shop.getType());
+                update.setId(orders.get(0).getId());
+                update.setStatus(order.getStatus());
+                update.setBuyerMemo(order.getBuyerMemo());
+                update.setRemark(order.getRemark());
+                update.setOrderPrice(order.getOrderPrice());
+                update.setPayAmount(order.getPayAmount());
+                update.setCreateTime(order.getCreateTime());
+                update.setUpdateTime(order.getUpdateTime());
+                update.setPayInfo(order.getPayInfo());
+                update.setAftersaleDetail(order.getAftersaleDetail());
+                update.setDeliveryProductInfo(order.getDeliveryProductInfo());
+                update.setUpdateOn(new Date());
+                mapper.updateById(update);
+                // 更新item
+                for (var item : order.getItems()) {
+                    List<ShopGoodsSku> shopGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<ShopGoodsSku>().eq(ShopGoodsSku::getSkuId, item.getSkuId()));
+                    if (shopGoodsSkus != null && shopGoodsSkus.size() > 0) {
+                        item.setErpGoodsId(shopGoodsSkus.get(0).getErpGoodsId());
+                        item.setErpSkuId(shopGoodsSkus.get(0).getErpGoodsSkuId());
                     }
-                    return ResultVo.error(ResultVoEnum.DataExist.getIndex(), "订单已经存在，更新成功",Long.parseLong(update.getId()));
+                    List<ShopOrderItem> taoOrderItems = itemMapper.selectList(
+                            new LambdaQueryWrapper<ShopOrderItem>()
+                                    .eq(ShopOrderItem::getSkuId, item.getSkuId())
+                                    .eq(ShopOrderItem::getShopOrderId, update.getId())
+                    );
+                    if (taoOrderItems != null && taoOrderItems.size() > 0) {
+                        // 更新
+//                            item.setShopOrderId(update.getId());
+//                            item.setOrderId(order.getOrderId());
+//                            item.setOrderTime(order.getCreateTime());
+                        item.setId(taoOrderItems.get(0).getId());
+//                            item.setShopId(shopId);
+//                            item.setShopType(shop.getType());
+//                            item.setTenantId(shop.getTenantId());
+                        item.setUpdateOn(new Date());
+                        itemMapper.updateById(item);
+                    } else {
+                        // 新增
+                        item.setOrderId(order.getOrderId());
+                        item.setOrderTime(order.getCreateTime());
+                        item.setShopId(shopId);
+                        item.setShopType(shop.getType());
+                        item.setTenantId(shop.getTenantId());
+                        item.setShopOrderId(update.getId());
+                        item.setCreateOn(new Date());
+                        itemMapper.insert(item);
+                    }
+                }
+                return ResultVo.error(ResultVoEnum.DataExist.getIndex(), "订单已经存在，更新成功", Long.parseLong(update.getId()));
             } else {
                 // 不存在，新增
                 order.setShopId(shopId);
@@ -156,7 +162,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                 // 添加item
                 for (var item : order.getItems()) {
                     List<ShopGoodsSku> shopGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<ShopGoodsSku>().eq(ShopGoodsSku::getSkuId, item.getSkuId()));
-                    if(shopGoodsSkus!=null && shopGoodsSkus.size()>0){
+                    if (shopGoodsSkus != null && shopGoodsSkus.size() > 0) {
                         item.setErpGoodsId(shopGoodsSkus.get(0).getErpGoodsId());
                         item.setErpSkuId(shopGoodsSkus.get(0).getErpGoodsSkuId());
                     }
@@ -239,7 +245,9 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                             insert.setTown(weiOrder.getCountyName());
                             insert.setAddress(weiOrder.getDetailInfo());
                             insert.setShipStatus(0);
-
+                            insert.setBuyerMemo(weiOrder.getBuyerMemo());
+                            insert.setRemark(weiOrder.getRemark());
+                            insert.setSellerMemo(weiOrder.getSellerMemo());
                             LocalDateTime orderTime = Instant.ofEpochSecond(weiOrder.getCreateTime()).atZone(ZoneId.of("Asia/Shanghai")).toLocalDateTime();
 
 //                            Long orderTime = weiOrder.getCreateTime().longValue();
@@ -264,6 +272,9 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                             update.setShopId(weiOrder.getShopId());
                             update.setTenantId(weiOrder.getTenantId());
                             update.setId(erpOrders.get(0).getId());
+                            update.setBuyerMemo(weiOrder.getBuyerMemo());
+                            update.setRemark(weiOrder.getRemark());
+                            update.setSellerMemo(weiOrder.getSellerMemo());
                             update.setRefundStatus(refundStatus);
                             update.setOrderStatus(orderStatus);
                             update.setOrderAmount(weiOrder.getOrderPrice().doubleValue() / 100);

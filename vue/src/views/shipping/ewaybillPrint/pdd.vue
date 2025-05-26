@@ -166,10 +166,11 @@
 <!--          <span>{{ parseTime(scope.row.orderTime) }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="备注" align="center" prop="buyerMessage" >
+      <el-table-column label="订单备注" align="center" >
         <template slot-scope="scope">
-          <span v-if="scope.row.buyerMessage">买家留言:{{ scope.row.buyerMessage }}</span>
-          <span v-if="scope.row.sellerMemo">卖家备注:{{ scope.row.sellerMemo }}</span>
+          <div style="color: #ed5565">{{scope.row.remark}}</div>
+          <div style="color: #ed5565">{{scope.row.buyerMemo}}</div>
+          <div style="color: #ed5565">{{scope.row.sellerMemo}}</div>
         </template>
       </el-table-column>
 <!--      <el-table-column label="收件人" prop="receiverName" width="200px">-->

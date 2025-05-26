@@ -122,25 +122,26 @@
           </template>
       </el-table-column>
       <el-table-column label="订单金额" align="center" prop="orderAmount" :formatter="amountFormatter"/>
-      <el-table-column label="订单备注" align="center" prop="remark" >
+      <el-table-column label="订单备注" align="center" >
         <template slot-scope="scope">
-          {{scope.row.buyerMemo}}<br />
-          {{scope.row.sellerMemo}}
+          <div style="color: #ed5565">{{scope.row.remark}}</div>
+          <div style="color: #ed5565">{{scope.row.buyerMemo}}</div>
+          <div style="color: #ed5565">{{scope.row.sellerMemo}}</div>
         </template>
       </el-table-column>
       <el-table-column label="发货状态" align="center" prop="shipStatus" >
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.shipStatus === 0" style="margin-bottom: 6px;">待发货</el-tag>
-          <el-tag v-if="scope.row.shipStatus === 1" style="margin-bottom: 6px;">部分发货</el-tag>
-          <el-tag v-if="scope.row.shipStatus === 2" style="margin-bottom: 6px;">全部发货</el-tag>
+          <el-tag type="info" v-if="scope.row.shipStatus === 0" style="margin-bottom: 6px;">待发货</el-tag>
+          <el-tag type="info" v-if="scope.row.shipStatus === 1" style="margin-bottom: 6px;">部分发货</el-tag>
+          <el-tag type="info" v-if="scope.row.shipStatus === 2" style="margin-bottom: 6px;">全部发货</el-tag>
           <br />
           <!-- 1：无售后或售后关闭，2：售后处理中，3：退款中，4： 退款成功 -->
-          <el-tag v-if="scope.row.shipType === 0">自己发货</el-tag>
-          <el-tag v-if="scope.row.shipType === 1">联合发货</el-tag>
-          <el-tag v-if="scope.row.shipType === 2">供应商发货</el-tag>
+          <el-tag v-if="scope.row.shipType === 0" type="info">自己发货</el-tag>
+          <el-tag v-if="scope.row.shipType === 1" type="info">联合发货</el-tag>
+          <el-tag v-if="scope.row.shipType === 2" type="info">供应商发货</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="orderStatus" >
+      <el-table-column label="订单状态" align="center" prop="orderStatus" >
         <template slot-scope="scope">
           <el-tag v-if="scope.row.orderStatus === 0" style="margin-bottom: 6px;">待选择发货方式</el-tag>
           <el-tag v-if="scope.row.orderStatus === 1" style="margin-bottom: 6px;">待发货</el-tag>
@@ -168,13 +169,7 @@
           <span>{{ parseTime(scope.row.orderTime) }}</span>
         </template>
       </el-table-column>
-<!--      <el-table-column label="发货信息" align="center" prop="shippingNumber" >-->
-<!--        <template slot-scope="scope">-->
-<!--          {{scope.row.shippingNumber}}&nbsp; {{scope.row.shippingCompany}}<br />-->
-<!--          {{scope.row.shippingTime}}-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-      <el-table-column label="tenant" align="center" prop="tenantId" v-if="isAdmin"/>
+
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

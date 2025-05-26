@@ -186,6 +186,9 @@ public class ShopOrder implements Serializable {
     private Date createOn;
     private Date updateOn;
 
+    private String remark;
+    private String buyerMemo;
+    private String sellerMemo;
     @TableField(exist = false)
     private List<ShopOrderItem> items;
 
