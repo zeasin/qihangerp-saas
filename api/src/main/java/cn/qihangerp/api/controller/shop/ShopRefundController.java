@@ -13,6 +13,7 @@ public class ShopRefundController extends BaseController {
     private final ShopRefundService refundService;
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public TableDataInfo goodsList(ShopRefund bo, PageQuery pageQuery) {
+        bo.setTenantId(getUserId());
         PageResult<ShopRefund> result = refundService.queryPageList(bo, pageQuery);
 
         return getDataTable(result);

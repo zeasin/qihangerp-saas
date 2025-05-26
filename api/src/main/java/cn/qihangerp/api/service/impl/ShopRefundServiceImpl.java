@@ -21,6 +21,7 @@ import cn.qihangerp.api.service.ShopRefundService;
 import cn.qihangerp.api.mapper.ShopRefundMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +41,8 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
     @Override
     public PageResult<ShopRefund> queryPageList(ShopRefund bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ShopRefund> queryWrapper = new LambdaQueryWrapper<ShopRefund>()
+                .eq(ShopRefund::getTenantId, bo.getTenantId())
+                .eq(bo.getShopType()!=null,ShopRefund::getShopType, bo.getShopType())
                 .eq(bo.getShopId()!=null, ShopRefund::getShopId,bo.getShopId())
                 .eq(StringUtils.hasText(bo.getOrderId()), ShopRefund::getOrderId,bo.getOrderId())
                 ;
@@ -70,6 +73,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
                 update.setReturnDeliveryName(refund.getReturnDeliveryName());
                 update.setReturnDeliveryId(refund.getReturnDeliveryId());
                 update.setComplaintId(refund.getComplaintId());
+                update.setUpdateOn(new Date());
                 mapper.updateById(update);
 
                 return ResultVo.error(ResultVoEnum.DataExist, "退款已经存在，更新成功");
@@ -77,6 +81,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
                 // 不存在，新增
                 refund.setShopId(shopId);
                 refund.setTenantId(shop.getTenantId());
+                refund.setCreateOn(new Date());
                 mapper.insert(refund);
                 return ResultVo.success();
             }
@@ -112,7 +117,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
             ShopRefund complete = new ShopRefund();
             complete.setId(id.toString());
             complete.setConfirmStatus(9);
-            complete.setConfirmTime(new Date());
+            complete.setConfirmTime(LocalDateTime.now());
             mapper.updateById(complete);
         }
         return ResultVo.success();
@@ -143,7 +148,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
             ShopRefund complete = new ShopRefund();
             complete.setId(id.toString());
             complete.setConfirmStatus(8);
-            complete.setConfirmTime(new Date());
+            complete.setConfirmTime(LocalDateTime.now());
             mapper.updateById(complete);
         }
         return ResultVo.success();

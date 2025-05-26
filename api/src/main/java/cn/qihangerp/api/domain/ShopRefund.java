@@ -1,18 +1,19 @@
 package cn.qihangerp.api.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.Data;
 
 /**
  * 视频号小店退款
- * @TableName wei_refund
+ * @TableName erp_shop_refund
  */
-@TableName("erp_shop_refund")
+@TableName(value ="erp_shop_refund")
 @Data
 public class ShopRefund implements Serializable {
     /**
@@ -22,9 +23,19 @@ public class ShopRefund implements Serializable {
     private String id;
 
     /**
+     * 租户id
+     */
+    private Long tenantId;
+
+    /**
      * 店铺id
      */
     private Long shopId;
+
+    /**
+     * 店铺类型
+     */
+    private Integer shopType;
 
     /**
      * 售后单号
@@ -47,9 +58,29 @@ public class ShopRefund implements Serializable {
     private String unionid;
 
     /**
+     * 订单号，该字段可用于获取订单
+     */
+    private String orderId;
+
+    /**
+     * 订单金额
+     */
+    private Double orderAmount;
+
+    /**
      * 商品spuid
      */
     private String productId;
+
+    /**
+     * 商品名称
+     */
+    private String goodsName;
+
+    /**
+     * 商品图片
+     */
+    private String goodsImage;
 
     /**
      * 商品skuid
@@ -122,11 +153,6 @@ public class ShopRefund implements Serializable {
     private String type;
 
     /**
-     * 订单号，该字段可用于获取订单
-     */
-    private String orderId;
-
-    /**
      * detail json
      */
     private String details;
@@ -140,9 +166,47 @@ public class ShopRefund implements Serializable {
      * 微信支付退款的响应
      */
     private String refundResp;
-    private Integer confirmStatus;
-    private Date confirmTime;
-    private Long tenantId;
 
+    /**
+     * 确认状态9退货已签收8已拦截
+     */
+    private Integer confirmStatus;
+
+    /**
+     * 确认时间
+     */
+    private LocalDateTime confirmTime;
+
+    /**
+     * 用户发货状态
+     */
+    private Integer userShippingStatus;
+
+    /**
+     * 售后状态（参考拼多多）
+     */
+    private Integer afterSalesStatus;
+
+    /**
+     * 售后类型（参考拼多多）
+     */
+    private Integer afterSalesType;
+
+    /**
+     * 1纠纷退款 0非纠纷退款
+     */
+    private Integer disputeRefundStatus;
+
+    /**
+     * 系统创建时间
+     */
+    private Date createOn;
+
+    /**
+     * 系统更新时间
+     */
+    private Date updateOn;
+
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

@@ -377,14 +377,28 @@ export default {
       this.pullLoading = true
       pullOrderDetail({shopId:row.shopId,orderId:row.orderId}).then(response => {
         console.log('拉取订单详情返回接口返回=====',response)
-        if(response.code>1000){
-          this.$modal.msgError(response.msg);
-        }else{
+        // if(response.code>1000){
+        //   this.$modal.msgError(response.msg);
+        // }else{
+        //   this.$modal.msgSuccess(JSON.stringify(response));
+        //   this.pullLoading = false
+        //   this.getList()
+        // }
+        if(response.code === 200){
           this.$modal.msgSuccess(JSON.stringify(response));
           this.pullLoading = false
           this.getList()
         }
-
+        else if(response.code === 1401) {
+          MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', { confirmButtonText: '前往授权', cancelButtonText: '取消', type: 'warning' }).then(() => {
+            this.$router.push({path:"/shop/list",query:{type:3}})
+          }).catch(() => {
+            isRelogin.show = false;
+          });
+        }else {
+          this.$modal.msgError(JSON.stringify(response));
+          this.pullLoading = false
+        }
 
       })
     },
