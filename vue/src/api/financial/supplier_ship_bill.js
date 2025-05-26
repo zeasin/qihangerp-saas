@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 查询财务管理-应付款-代发账单列表
-export function listAgentShip(query) {
+export function listAgentShipBill(query) {
   return request({
     url: '/financial/supplier_ship_bill/list',
     method: 'get',
@@ -36,9 +36,9 @@ export function updateAgentShip(data) {
 }
 
 // 删除财务管理-应付款-代发账单
-export function delAgentShip(id) {
+export function confirmBillSettlement(id) {
   return request({
-    url: '/fms/agentShip/' + id,
-    method: 'delete'
+    url: '/financial/supplier_ship_bill/confirmBillSettlement/' + id,
+    method: 'post'
   })
 }

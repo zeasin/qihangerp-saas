@@ -7,6 +7,7 @@ import cn.qihangerp.api.common.utils.DateUtils;
 import cn.qihangerp.api.domain.*;
 import cn.qihangerp.api.mapper.*;
 import cn.qihangerp.api.request.SupplierAgentShipmentRequest;
+import cn.qihangerp.api.service.ErpBillShipmentService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -35,6 +36,7 @@ public class ErpOrderShipListServiceImpl extends ServiceImpl<ErpOrderShipListMap
     private final ErpShipmentItemMapper erpShipmentItemMapper;
     private final ErpOrderItemMapper erpOrderItemMapper;
     private final ErpOrderMapper erpOrderMapper;
+    private final ErpBillShipmentService erpBillShipmentService;
 
     @Override
     public PageResult<ErpOrderShipList> queryPageList(ErpOrderShipList shipping, PageQuery pageQuery) {
@@ -43,6 +45,9 @@ public class ErpOrderShipListServiceImpl extends ServiceImpl<ErpOrderShipListMap
                 .eq(ErpOrderShipList::getTenantId,shipping.getTenantId())
                 .eq(StringUtils.hasText(shipping.getOrderNum()), ErpOrderShipList::getOrderNum, shipping.getOrderNum())
                 .eq(StringUtils.hasText(shipping.getShipLogisticsCode()), ErpOrderShipList::getShipLogisticsCode, shipping.getShipLogisticsCode())
+                .eq(shipping.getShipSupplierId() != null, ErpOrderShipList::getShipSupplierId, shipping.getShipSupplierId())
+                .eq(shipping.getShipStatus() != null, ErpOrderShipList::getShipStatus, shipping.getShipStatus())
+                .eq(shipping.getStatus() != null, ErpOrderShipList::getStatus, shipping.getStatus())
                 .eq(shipping.getShopId() != null, ErpOrderShipList::getShopId, shipping.getShopId());
 
         Page<ErpOrderShipList> pages = this.baseMapper.selectPage(pageQuery.build(), queryWrapper);
@@ -98,6 +103,8 @@ public class ErpOrderShipListServiceImpl extends ServiceImpl<ErpOrderShipListMap
         erpShipmentInsert.setOrderNum(erpShipment.getOrderNum());
 //        erpShipmentInsert.setOrderTime(erpOrder.getOrderTime());
         erpShipmentInsert.setShipType(1);//发货类型（1订单发货2商品补发3商品换货）
+        erpShipmentInsert.setSupplierId(erpShipment.getShipSupplierId());
+        erpShipmentInsert.setSupplier(erpShipment.getShipSupplier());
         erpShipmentInsert.setShipCompany(erpLogisticsCompany.getName());
         erpShipmentInsert.setShipCompanyCode(erpLogisticsCompany.getCode());
         erpShipmentInsert.setShipCode(shipping.shipNo());
@@ -161,6 +168,27 @@ public class ErpOrderShipListServiceImpl extends ServiceImpl<ErpOrderShipListMap
             erpOrderItemMapper.updateById(orderItemUpdate);
         }
 
+        // 添加代发账单
+        ErpBillShipment billShipment = new ErpBillShipment();
+        billShipment.setTenantId(erpShipment.getTenantId());
+        billShipment.setShopId(erpShipment.getShopId());
+        billShipment.setType(2);//账单类型1自己发货2供应商发货
+        billShipment.setSupplierId(erpShipment.getShipSupplierId());
+        billShipment.setSupplierName(erpShipment.getShipSupplier());
+        billShipment.setOrderNum(erpShipment.getOrderNum());
+        billShipment.setDate(new Date());
+        billShipment.setShipCompany(erpLogisticsCompany.getName());
+        billShipment.setShipNo(shipping.shipNo());
+        billShipment.setAmount(shipping.shipCost());
+        billShipment.setShipAmount(BigDecimal.ZERO);
+        billShipment.setGoodsAmount(shipping.shipCost());
+        billShipment.setStatus(0);
+        billShipment.setCreateBy("");
+        billShipment.setCreateTime(new Date());
+        billShipment.setRemark(shipping.remark());
+        erpBillShipmentService.save(billShipment);
+
+
         // 更新发货订单
         ErpOrderShipList update = new ErpOrderShipList();
         update.setId(erpShipment.getId());
@@ -169,7 +197,7 @@ public class ErpOrderShipListServiceImpl extends ServiceImpl<ErpOrderShipListMap
         update.setShipLogisticsCompanyCode(erpLogisticsCompany.getCode());
         update.setShipLogisticsCode(shipping.shipNo());
         update.setShipStatus(2);
-        update.setStatus(3);
+        update.setStatus(3);//状态：供应商发货：0待下单1已下单3已发货
         update.setUpdateTime(new Date());
         update.setUpdateBy("手动填写供应商发货信息");
         this.baseMapper.updateById(update);

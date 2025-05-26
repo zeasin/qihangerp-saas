@@ -30,12 +30,13 @@ public class ErpBillShipment implements Serializable {
     /**
      * 店铺id
      */
-    private Integer shopId;
+    private Long shopId;
+    private Integer type;//账单类型1自己发货2供应商发货
 
     /**
      * 供应商id
      */
-    private Integer supplierId;
+    private Long supplierId;
 
     /**
      * 供应商名称

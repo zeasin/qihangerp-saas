@@ -34,6 +34,15 @@ export function supplierAgentShipment(data) {
     data:data
   })
 }
+
+// 供应商代发货-
+export function supplierShipmentConfirm(id) {
+  return request({
+    url: '/orderShip/supplierShipmentConfirm/'+id,
+    method: 'post',
+  })
+}
+
 // 自己发货确认出库
 export function stockOutConfirm(data) {
   return request({

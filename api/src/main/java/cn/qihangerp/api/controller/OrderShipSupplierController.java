@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Date;
 
 @Slf4j
 @AllArgsConstructor
@@ -48,6 +49,21 @@ public class OrderShipSupplierController extends BaseController {
         return getDataTable(erpShipmentPageResult);
     }
 
+    @PostMapping("/supplierShipmentConfirm/{id}")
+    public AjaxResult supplierAgentShipment(@PathVariable Long id) throws IOException {
+        ErpOrderShipList orderShipList = orderShipListService.getById(id);
+        if(orderShipList==null) return AjaxResult.error("没有找到数据");
+        else if (orderShipList.getStatus()!=0) {
+            return AjaxResult.error("备货状态不对，不允许操作");
+        }
+        ErpOrderShipList update = new ErpOrderShipList();
+        update.setId(id);
+        update.setStatus(1);//状态 供应商发货：0待下单1已下单3已发货
+        update.setUpdateBy(getUsername());
+        update.setUpdateTime(new Date());
+        orderShipListService.updateById(update);
+        return AjaxResult.success();
+    }
 
     /**
      * 供应商发货(供应商代发货)
@@ -66,16 +82,16 @@ public class OrderShipSupplierController extends BaseController {
         var result = orderShipListService.supplierAgentShipment(shipping);
         if(result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
             // 调用接口api
-            var checkResult = pddApiCommon.checkBefore(orderShipList.getShopId());
-            if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
-                return AjaxResult.error(500, checkResult.getMsg());
-            }
-            String accessToken = checkResult.getData().getAccessToken();
-//        String serverUrl = checkResult.getData().getServerUrl();
-            String appKey = checkResult.getData().getAppKey();
-            String appSecret = checkResult.getData().getAppSecret();
-            ApiResultVo apiResultVo = PddLogisticsApiHelper.onlineSend(appKey, appSecret, accessToken, erpLogisticsCompany.getLogisticsId(), orderShipList.getOrderNum(), shipping.shipNo());
-            log.info("=====发货结果======{}", JSONObject.toJSONString(apiResultVo));
+//            var checkResult = pddApiCommon.checkBefore(orderShipList.getShopId());
+//            if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
+//                return AjaxResult.error(500, checkResult.getMsg());
+//            }
+//            String accessToken = checkResult.getData().getAccessToken();
+////        String serverUrl = checkResult.getData().getServerUrl();
+//            String appKey = checkResult.getData().getAppKey();
+//            String appSecret = checkResult.getData().getAppSecret();
+//            ApiResultVo apiResultVo = PddLogisticsApiHelper.onlineSend(appKey, appSecret, accessToken, erpLogisticsCompany.getLogisticsId(), orderShipList.getOrderNum(), shipping.shipNo());
+//            log.info("=====发货结果======{}", JSONObject.toJSONString(apiResultVo));
             return AjaxResult.success();
         }else{
             return AjaxResult.error(result.getCode(),result.getMsg());

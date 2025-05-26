@@ -1,32 +1,31 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-<!--      <el-form-item label="店铺" prop="shopId">-->
-<!--        <el-select v-model="queryParams.shopId" filterable  placeholder="搜索店铺" >-->
-<!--          <el-option v-for="item in shopList" :key="item.id" :label="item.name" :value="item.id">-->
-<!--            <span style="float: left">{{ item.name }}</span>-->
-<!--              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 4">淘宝天猫</span>-->
-<!--              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 5">拼多多</span>-->
-<!--              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 6">抖店</span>-->
-<!--              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 7">小红书</span>-->
-<!--              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 13">快手小店</span>-->
-<!--              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 99">其他</span>-->
-<!--          </el-option>-->
-<!--          </el-select>-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="供应商" prop="supplierId">-->
-<!--        <el-select-->
-<!--          v-model="queryParams.supplierId"-->
-<!--          filterable-->
-<!--          placeholder="请输入供应商名称">-->
-<!--          <el-option-->
-<!--            v-for="item in supplierList"-->
-<!--            :key="item.id"-->
-<!--            :label="item.name"-->
-<!--            :value="item.id">-->
-<!--          </el-option>-->
-<!--        </el-select>-->
-<!--      </el-form-item>-->
+      <el-form-item label="店铺" prop="shopId">
+        <el-select v-model="queryParams.shopId" filterable  placeholder="搜索店铺" clearable >
+          <el-option v-for="item in shopList" :key="item.id" :label="item.name" :value="item.id">
+            <span style="float: left">{{ item.name }}</span>
+
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 3">拼多多</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 5">微信小店</span>
+
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 9">其他</span>
+          </el-option>
+          </el-select>
+      </el-form-item>
+      <el-form-item label="供应商" prop="shipSupplierId">
+        <el-select clearable
+          v-model="queryParams.shipSupplierId"
+          filterable
+          placeholder="请输入供应商名称">
+          <el-option
+            v-for="item in supplierList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
 
       <el-form-item label="订单编号" prop="orderNum">
         <el-input
@@ -45,41 +44,14 @@
           placeholder="请选择订单日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="商品ID" prop="goodsId">
-        <el-input
-          v-model="queryParams.goodsId"
-          placeholder="请输入erp系统商品id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="发货状态" prop="shipStatus">
+        <el-select clearable
+                   v-model="queryParams.shipStatus">
+          <el-option label="待发货" value="1"></el-option>
+          <el-option label="已发货" value="2"></el-option>
+        </el-select>
       </el-form-item>
 
-      <el-form-item label="商品编码" prop="goodsNum">
-        <el-input
-          v-model="queryParams.goodsNum"
-          placeholder="请输入商品编码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-
-<!--      <el-form-item label="物流单号" prop="shipNo">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.shipNo"-->
-<!--          placeholder="请输入物流单号"-->
-<!--          clearable-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-
-<!--      <el-form-item label="发货时间" prop="shipTime">-->
-<!--        <el-date-picker clearable-->
-<!--          v-model="queryParams.shipTime"-->
-<!--          type="date"-->
-<!--          value-format="yyyy-MM-dd"-->
-<!--          placeholder="请选择发货时间">-->
-<!--        </el-date-picker>-->
-<!--      </el-form-item>-->
 
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -196,6 +168,19 @@
          {{scope.row.address}}
         </template>
       </el-table-column>
+      <el-table-column label="发货状态" align="center" prop="shipStatus" >
+        <template slot-scope="scope">
+          {{scope.row.goodsTitle}}
+          <!--                <el-tag size="small" v-if="scope.row.refundStatus === 1">无售后或售后关闭</el-tag>-->
+          <el-tag size="small" v-if="scope.row.shipStatus === 1">待发货</el-tag>
+          <div style="padding-top: 6px">
+          <el-tag size="small" v-if="scope.row.shipStatus === 1 && scope.row.status==0">未下单</el-tag>
+          <el-tag size="small" v-if="scope.row.shipStatus === 1 && scope.row.status==1">已下单</el-tag>
+          </div>
+          <el-tag size="small" v-if="scope.row.shipStatus === 2">已发货</el-tag>
+
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" >
         <template slot-scope="scope">
           <el-button
@@ -207,13 +192,21 @@
             v-hasPermi="['scm:agentShipping:edit']"
           >供应商发货</el-button>
           <el-button
-            v-if="scope.row.status === 1"
+            v-if="scope.row.status === 0"
             size="mini"
             type="text"
             icon="el-icon-document-checked"
             @click="handleDelete(scope.row)"
             v-hasPermi="['scm:agentShipping:remove']"
-          >付款确认</el-button>
+          >下单确认</el-button>
+<!--          <el-button-->
+<!--            v-if="scope.row.status === 1"-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-document-checked"-->
+<!--            @click="handleDelete(scope.row)"-->
+<!--            v-hasPermi="['scm:agentShipping:remove']"-->
+<!--          >付款确认</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -233,15 +226,15 @@
           <el-input v-model="form.orderNum" placeholder="请输入订单编号" disabled/>
         </el-form-item>
 
-        <el-form-item label="订单日期" prop="orderDate">
-          <el-date-picker clearable
-            v-model="form.orderTime"
-                          disabled
-            type="datetime"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            placeholder="请选择订单日期">
-          </el-date-picker>
-        </el-form-item>
+<!--        <el-form-item label="订单日期" prop="orderDate">-->
+<!--          <el-date-picker clearable-->
+<!--            v-model="form.orderTime"-->
+<!--                          disabled-->
+<!--            type="datetime"-->
+<!--            value-format="yyyy-MM-dd HH:mm:ss"-->
+<!--            placeholder="请选择订单日期">-->
+<!--          </el-date-picker>-->
+<!--        </el-form-item>-->
 
 <!--        <el-form-item label="商品总价" prop="goodsAmount">-->
 <!--          <el-input type="number" v-model.number="form.goodsAmount"  placeholder="请输入商品总价" />-->
@@ -262,8 +255,8 @@
         <el-form-item label="物流单号" prop="shipNo">
           <el-input v-model="form.shipNo" placeholder="请输入物流单号" />
         </el-form-item>
-        <el-form-item label="运费" prop="shipCost">
-          <el-input type="number" v-model.number="form.shipCost" placeholder="请输入运费" />
+        <el-form-item label="总成本" prop="shipCost">
+          <el-input type="number" v-model.number="form.shipCost" placeholder="请输入总成本" />
         </el-form-item>
         <el-form-item label="发货时间" prop="shipTime">
           <el-date-picker clearable
@@ -293,7 +286,7 @@
 import { listSupplier} from "@/api/scm/supplier";
 import { listShop } from "@/api/shop/shop";
 import {listLogistics, listLogisticsStatus} from "@/api/api/logistics";
-import {listShippingSupplier, getShippingDetail, supplierAgentShipment} from "@/api/wms/order_ship";
+import {listShippingSupplier, getShippingDetail, supplierAgentShipment,supplierShipmentConfirm} from "@/api/wms/order_ship";
 export default {
   name: "supplierShipOrder",
   data() {
@@ -322,9 +315,9 @@ export default {
         pageSize: 10,
         shopId: null,
         shopType: null,
-        supplierId: null,
+        shipSupplierId: null,
         orderNum: null,
-        orderItemId: null
+        shipStatus: '1',
       },
       shopList: [],
       logisticsList:[],
@@ -345,12 +338,12 @@ export default {
   created() {
 
     this.getList();
-    // listShop({}).then(response => {
-    //     this.shopList = response.rows;
-    //   });
-    // listSupplier({}).then(response => {
-    //   this.supplierList = response.rows;
-    //   });
+    listShop({}).then(response => {
+        this.shopList = response.rows;
+      });
+    listSupplier({}).then(response => {
+      this.supplierList = response.rows;
+      });
     // listLogistics({}).then(resp=>{
     //   this.logisticsList = resp.rows
     // })
@@ -427,6 +420,7 @@ export default {
         this.form.orderNum=response.data.orderNum
         this.form.orderTime=response.data.orderTime
         this.form.goodsAmount=response.data.goodsAmount
+        this.form.shipCost = response.data.goodsAmount
         listLogisticsStatus({}).then(resp=>{
           this.logisticsList = resp.rows
           this.open = true;
@@ -450,11 +444,11 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认编号为"' + ids + '"的订单批量付款呢？').then(function() {
-        return delAgentShipping(ids);
+      this.$modal.confirm('编号为"' + ids + '"的供应商发货订单是否确认已下单？').then(function() {
+        return supplierShipmentConfirm(row.id);
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.$modal.msgSuccess("确认下单成功");
       }).catch(() => {});
     },
     /** 导出按钮操作 */
