@@ -15,7 +15,7 @@ import java.util.List;
  * 出库单明细
  * @TableName wms_stock_out_item
  */
-@TableName(value ="wms_stock_out_item")
+@TableName(value ="erp_stock_out_item")
 @Data
 public class ErpStockOutItem implements Serializable {
     /**

@@ -318,7 +318,7 @@
 </template>
 
 <script>
-
+import { listAgentShip, getAgentShip, delAgentShip, addAgentShip, updateAgentShip } from "@/api/ship/agent/bill";
 import { listSupplier} from "@/api/scm/supplier";
 import { listShop } from "@/api/shop/shop";
 import {listLogistics} from "@/api/api/logistics";
@@ -413,7 +413,7 @@ export default {
     /** 查询供应商代发货列表 */
     getList() {
       this.loading = true;
-      listAgentShipping(this.queryParams).then(response => {
+      listAgentShip(this.queryParams).then(response => {
         this.agentShippingList = response.rows;
         this.total = response.total;
         this.loading = false;
