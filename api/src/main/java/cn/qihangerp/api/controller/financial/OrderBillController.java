@@ -1,10 +1,9 @@
-package cn.qihangerp.api.controller.cost;
+package cn.qihangerp.api.controller.financial;
 
 import cn.qihangerp.api.common.*;
-import cn.qihangerp.api.domain.ErpGoods;
-import cn.qihangerp.api.domain.ErpShopBill;
+import cn.qihangerp.api.domain.ErpBillShopOrder;
 import cn.qihangerp.api.domain.Shop;
-import cn.qihangerp.api.service.ErpShopBillService;
+import cn.qihangerp.api.service.ErpBillShopOrderService;
 import cn.qihangerp.api.service.ShopService;
 import com.alibaba.fastjson2.JSONObject;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
@@ -25,18 +24,18 @@ import java.util.*;
 @RequestMapping("/financial")
 public class OrderBillController extends BaseController {
     private final ShopService shopService;
-    private final ErpShopBillService erpShopBillService;
+    private final ErpBillShopOrderService erpBillShopOrderService;
     /**
      * 查询商品管理列表
      */
     @PreAuthorize("@ss.hasPermi('goods:goods:list')")
     @GetMapping("/order_bill/list")
-    public TableDataInfo list(ErpShopBill goods, PageQuery pageQuery)
+    public TableDataInfo list(ErpBillShopOrder goods, PageQuery pageQuery)
     {
         if(getUserId()!=1) {
             goods.setTenantId(getUserId());
         }
-        PageResult<ErpShopBill> pageResult = erpShopBillService.queryPageList(goods, pageQuery);
+        PageResult<ErpBillShopOrder> pageResult = erpBillShopOrderService.queryPageList(goods, pageQuery);
         return getDataTable(pageResult);
     }
 
@@ -46,7 +45,7 @@ public class OrderBillController extends BaseController {
         if(getUserId()==1) {
             return AjaxResult.error("超级管理员账号不允许操作");
         }
-        return toAjax(erpShopBillService.removeBatchByIds(Arrays.stream(ids).toList()));
+        return toAjax(erpBillShopOrderService.removeBatchByIds(Arrays.stream(ids).toList()));
     }
 
     /**
@@ -107,7 +106,7 @@ public class OrderBillController extends BaseController {
             String bizType = row[4];
             String remark = row[5];
             String detail = row[6];
-            ErpShopBill bill = new ErpShopBill();
+            ErpBillShopOrder bill = new ErpBillShopOrder();
             bill.setShopId(shopId);
             bill.setShopType(shop.getType());
             bill.setTenantId(shop.getTenantId());
@@ -130,7 +129,7 @@ public class OrderBillController extends BaseController {
             bill.setRemark(remark);
             bill.setDetail(detail);
             bill.setCreateTime(new Date());
-            erpShopBillService.save(bill);
+            erpBillShopOrderService.save(bill);
         }
         Map<String, Integer> result = new HashMap<>();
         result.put("success",0);

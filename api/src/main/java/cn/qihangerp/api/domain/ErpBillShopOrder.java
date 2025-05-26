@@ -12,9 +12,9 @@ import lombok.Data;
  * 店铺账单
  * @TableName erp_shop_bill
  */
-@TableName(value ="erp_shop_bill")
+@TableName(value ="erp_bill_shop_order")
 @Data
-public class ErpShopBill implements Serializable {
+public class ErpBillShopOrder implements Serializable {
     /**
      * 
      */
