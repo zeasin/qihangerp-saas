@@ -10,7 +10,7 @@
         />
       </el-form-item>
       <el-form-item label="店铺" prop="shopId">
-        <el-select v-model="queryParams.shopId" placeholder="请选择店铺" clearable @change="handleQuery">
+        <el-select v-model="queryParams.shopId" placeholder="请选择店铺" @change="handleQuery">
           <el-option
             v-for="item in shopList"
             :key="item.id"
@@ -409,7 +409,7 @@ import {
   waitSelfShipmentList
 } from "@/api/order/order";
 
-import {getWaybillAccountList,cancelWaybillCode,getWaybillPrintData, getWaybillCode, pushWaybillPrintSuccess,pushShipSend,getWaybillCodeAndSend} from "@/api/ship/ewaybill";
+import {getWaybillAccountList,cancelWaybillCode,getWaybillPrintData, getWaybillCode, pushWaybillPrintSuccess,pushShipSend,getWaybillCodeAndSend} from "@/api/shop/ewaybill";
 import {listLogisticsStatus} from "@/api/api/logistics";
 import {listShop} from "@/api/shop/shop";
 import {parseTime} from "../../../utils/zhijian";
@@ -476,6 +476,9 @@ export default {
     this.openWs()
     listShop({type:5}).then(response => {
       this.shopList = response.rows;
+      if (this.shopList && this.shopList.length > 0) {
+        this.queryParams.shopId = this.shopList[0].id
+      }
       this.getList();
     });
 
@@ -516,18 +519,22 @@ export default {
     },
     // 取号弹窗
     handleGetEwaybillCode() {
-      const ids = this.ids;
-      if (ids) {
-        getWaybillAccountList({shopId: this.queryParams.shopId}).then(response => {
-          this.deliverList = response.data;
-          if(response.data&&response.data.length >0){
-            this.form.accountId = response.data[0].id
-          }
+      if(this.queryParams.shopId) {
+        const ids = this.ids;
+        if (ids) {
+          getWaybillAccountList({shopId: this.queryParams.shopId}).then(response => {
+            this.deliverList = response.rows;
+            if (response.rows && response.rows.length > 0) {
+              this.form.accountId = response.rows[0].id
+            }
 
-          this.getCodeOpen = true
-        });
-      } else {
-        this.$modal.msgError("请选择订单")
+            this.getCodeOpen = true
+          });
+        } else {
+          this.$modal.msgError("请选择订单")
+        }
+      }else {
+        this.$modal.msgError("请选择店铺")
       }
     },
 

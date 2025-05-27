@@ -10,7 +10,7 @@
         />
       </el-form-item>
       <el-form-item label="店铺" prop="shopId">
-        <el-select v-model="queryParams.shopId" placeholder="请选择店铺" clearable @change="handleQuery">
+        <el-select v-model="queryParams.shopId" placeholder="请选择店铺" @change="handleQuery">
           <el-option
             v-for="item in shopList"
             :key="item.id"
@@ -205,7 +205,7 @@
     />
 
     <!-- 取号 -->
-    <el-dialog title="取号" :visible.sync="getCodeOpen" width="500px" append-to-body>
+    <el-dialog title="取号发货" :visible.sync="getCodeOpen" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="电子面单账户" prop="accountId">
           <el-select v-model="form.accountId" placeholder="请选择电子面单账户" clearable>
@@ -409,7 +409,7 @@ import {
   waitSelfShipmentList
 } from "@/api/order/order";
 
-import {getWaybillAccountList,cancelWaybillCode,getWaybillPrintData, getWaybillCode, pushWaybillPrintSuccess,pushShipSend,getWaybillCodeAndSend} from "@/api/ship/ewaybill";
+import {getWaybillAccountList,cancelWaybillCode,getWaybillPrintData, getWaybillCode, pushWaybillPrintSuccess,pushShipSend,getWaybillCodeAndSend} from "@/api/shop/ewaybill";
 import {listLogisticsStatus} from "@/api/api/logistics";
 import {listShop} from "@/api/shop/shop";
 import {parseTime} from "../../../utils/zhijian";
@@ -474,8 +474,11 @@ export default {
   },
   created() {
     this.openWs()
-    listShop({}).then(response => {
+    listShop({type:3}).then(response => {
       this.shopList = response.rows;
+      if (this.shopList && this.shopList.length > 0) {
+        this.queryParams.shopId = this.shopList[0].id
+      }
       this.getList();
     });
 
@@ -516,18 +519,22 @@ export default {
     },
     // 取号弹窗
     handleGetEwaybillCode() {
-      const ids = this.ids;
-      if (ids) {
-        getWaybillAccountList({shopId: this.queryParams.shopId}).then(response => {
-          this.deliverList = response.data;
-          if(response.data&&response.data.length >0){
-            this.form.accountId = response.data[0].id
-          }
+      if (this.queryParams.shopId) {
+        const ids = this.ids;
+        if (ids) {
+          getWaybillAccountList({shopId: this.queryParams.shopId}).then(response => {
+            this.deliverList = response.rows;
+            if (response.rows && response.rows.length > 0) {
+              this.form.accountId = response.rows[0].id
+            }
 
-          this.getCodeOpen = true
-        });
+            this.getCodeOpen = true
+          });
+        } else {
+          this.$modal.msgError("请选择订单")
+        }
       } else {
-        this.$modal.msgError("请选择订单")
+        this.$modal.msgError("请选择店铺")
       }
     },
 
@@ -544,9 +551,13 @@ export default {
               ids: ids,
               accountId: this.form.accountId
             }).then(response => {
-              this.$modal.msgSuccess("取号成功")
-              this.getList()
-              this.getCodeOpen = false
+              if(response.code==200) {
+                this.$modal.msgSuccess("取号成功")
+                this.getList()
+                this.getCodeOpen = false
+              }else{
+                this.$modal.msgError(response.msg)
+              }
             });
           } else {
             this.$modal.msgError("请选择订单")

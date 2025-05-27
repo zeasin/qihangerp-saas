@@ -18,6 +18,16 @@ export function pullWaybillAccount(data) {
   })
 }
 
+// 取号并发货
+export function getWaybillCodeAndSend(data) {
+  return request({
+    url: '/shop/ewaybill/get_waybill_code_and_send',
+    method: 'post',
+    data: data
+  })
+}
+
+
 // 取号
 export function getWaybillCode(data) {
   return request({

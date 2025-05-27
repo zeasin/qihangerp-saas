@@ -10,7 +10,7 @@
         />
       </el-form-item>
       <el-form-item label="店铺" prop="shopId">
-        <el-select v-model="queryParams.shopId" placeholder="请选择店铺" clearable @change="handleQuery">
+        <el-select v-model="queryParams.shopId" placeholder="请选择店铺" @change="handleQuery">
           <el-option
             v-for="item in shopList"
             :key="item.id"
@@ -367,7 +367,7 @@ import {
   waitSelfShipmentList
 } from "@/api/order/order";
 
-import {getWaybillAccountList,cancelWaybillCode,getWaybillPrintData, getWaybillCode, pushWaybillPrintSuccess,pushShipSend,getWaybillCodeAndSend} from "@/api/ship/ewaybill";
+
 import {listLogisticsStatus} from "@/api/api/logistics";
 import {listShop} from "@/api/shop/shop";
 import {parseTime} from "../../../utils/zhijian";
@@ -434,6 +434,9 @@ export default {
 
     listShop({type:9}).then(response => {
       this.shopList = response.rows;
+      if (this.shopList && this.shopList.length > 0) {
+        this.queryParams.shopId = this.shopList[0].id
+      }
       this.getList();
     });
 
