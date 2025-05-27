@@ -410,6 +410,7 @@ public class RefundApiController extends BaseController {
                         afterSaleOrderUpdate.setReturnCompany(data.getShippingName());
                         afterSaleOrderUpdate.setReturnWaybillCode(data.getExpressNo());
                         afterSaleOrderUpdate.setUserShippingStatus(Integer.parseInt(data.getUserShippingStatus()));
+                        afterSaleOrderUpdate.setStatus(1);//
                     }
                     afterSaleOrderUpdate.setShippingStatus(data.getShippingStatus());
                     erpOrderAfterSaleService.updateById(afterSaleOrderUpdate);

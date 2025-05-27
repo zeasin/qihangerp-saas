@@ -132,10 +132,11 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
         afterSale.setSkuCode(shopOrderItems.get(0).getOutSkuId());
         afterSale.setErpGoodsId(shopOrderItems.get(0).getErpGoodsId());
         afterSale.setErpSkuId(shopOrderItems.get(0).getErpSkuId());
-        // TODO：没有记录商品数据
+        afterSale.setShippingStatus(refund.getShippingStatus());
+        afterSale.setUserShippingStatus(refund.getUserShippingStatus());
         afterSale.setReturnCompany(refund.getReturnDeliveryName());
         afterSale.setReturnWaybillCode(refund.getReturnWaybillId());
-        afterSale.setStatus(0);
+        afterSale.setStatus(refund.getUserShippingStatus()==1?1:0);
         afterSale.setCreateBy("后台确认售后");
         afterSale.setCreateTime(new Date());
         afterSaleMapper.insert(afterSale);
@@ -182,6 +183,13 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
             mapper.updateById(complete);
         }
         return ResultVo.success();
+    }
+
+    @Override
+    public ShopRefund getRefundBy(String afterSaleOrderId) {
+        List<ShopRefund> shopRefunds = mapper.selectList(new LambdaQueryWrapper<ShopRefund>().eq(ShopRefund::getAfterSaleOrderId, afterSaleOrderId));
+        if(shopRefunds == null || shopRefunds.isEmpty()) return null;
+        else return shopRefunds.get(0);
     }
 }
 

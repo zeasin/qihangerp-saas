@@ -9,10 +9,18 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="源订单号" prop="orderId">
+      <el-form-item label="订单号" prop="orderId">
         <el-input
           v-model="queryParams.orderId"
-          placeholder="请输入源订单号"
+          placeholder="请输入订单号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="物流单号" prop="returnWaybillCode">
+        <el-input
+          v-model="queryParams.returnWaybillCode"
+          placeholder="请输入物流单号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -33,17 +41,17 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="商品id" prop="goodsId">
+<!--      <el-form-item label="商品ID" prop="erpGoodsId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.erpGoodsId"-->
+<!--          placeholder="请输入商品id"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+      <el-form-item label="Sku ID" prop="erpSkuId">
         <el-input
-          v-model="queryParams.goodsId"
-          placeholder="请输入商品id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="sku编码" prop="skuCode">
-        <el-input
-          v-model="queryParams.skuCode"
+          v-model="queryParams.erpSkuId"
           placeholder="请输入sku编码"
           clearable
           @keyup.enter.native="handleQuery"
@@ -73,31 +81,63 @@
     <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="退货单号" align="center" prop="afterSaleOrderId" />
-      <el-table-column label="退货类型" align="center" prop="type" >
+      <el-table-column label="退货单号" align="left" prop="afterSaleOrderId" width="200" >
         <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.type === 10"> 退货</el-tag>
-          <el-tag size="small" v-if="scope.row.type === 20"> 换货</el-tag>
-          <el-tag size="small" v-if="scope.row.type === 80"> 补发</el-tag>
-          <el-tag size="small" v-if="scope.row.type === 99"> 订单拦截</el-tag>
+      {{scope.row.afterSaleOrderId}}
+        <div>
+            <el-tag size="small" v-if="scope.row.type === 10"> 退货</el-tag>
+            <el-tag size="small" v-if="scope.row.type === 20"> 换货</el-tag>
+            <el-tag size="small" v-if="scope.row.type === 80"> 补发</el-tag>
+            <el-tag size="small" v-if="scope.row.type === 99"> 订单拦截</el-tag>
+
+        </div>
         </template>
       </el-table-column>
-      <el-table-column label="源订单号" align="center" prop="orderId" />
-       <el-table-column label="店铺" align="center" prop="shopId" >
+<!--      <el-table-column label="退货类型" align="center" prop="type" >-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-tag size="small" v-if="scope.row.type === 10"> 退货</el-tag>-->
+<!--          <el-tag size="small" v-if="scope.row.type === 20"> 换货</el-tag>-->
+<!--          <el-tag size="small" v-if="scope.row.type === 80"> 补发</el-tag>-->
+<!--          <el-tag size="small" v-if="scope.row.type === 99"> 订单拦截</el-tag>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+      <el-table-column label="订单号" align="left" prop="orderId" width="200">
          <template slot-scope="scope">
-           <span>{{ shopList.find(x=>x.id == scope.row.shopId).name  }}</span>
+           {{scope.row.orderId}}
+           <el-tag size="small" type="info">{{ shopList.find(x=>x.id == scope.row.shopId).name  }}</el-tag>
          </template>
        </el-table-column>
-       <el-table-column label="订单号" align="center" prop="orderId" />
+<!--       <el-table-column label="订单号" align="center" prop="orderId" />-->
 <!--       <el-table-column label="子订单id" align="center" prop="subOrderId" />-->
-            <el-table-column label="商品图片" align="center" prop="img" width="100">
-              <template slot-scope="scope">
-                <image-preview :src="scope.row.img" :width="50" :height="50"/>
-              </template>
-            </el-table-column>
-       <el-table-column label="商品" align="center" prop="title" />
-       <el-table-column label="sku" align="center" prop="skuInfo" />
-       <el-table-column label="SKU编码" align="center" prop="skuCode" />
+<!--            <el-table-column label="商品图片" align="center" prop="img" width="100">-->
+<!--              <template slot-scope="scope">-->
+<!--                <image-preview :src="scope.row.img" :width="50" :height="50"/>-->
+<!--              </template>-->
+<!--            </el-table-column>-->
+      <el-table-column label="商品" width="350">
+        <template slot-scope="scope">
+
+            <div style="float: left;display: flex;align-items: center;" >
+              <el-image  style="width: 50px; height: 50px;" :src="scope.row.img"></el-image>
+              <div style="margin-left:10px">
+                <p>{{scope.row.title}}</p>
+                <p>
+                  <span>规格： </span>
+                  <el-tag size="small">{{ scope.row.skuInfo}}</el-tag>
+
+                  <span>SkuId：{{scope.row.erpSkuId}} </span>
+
+                </p>
+
+              </div>
+            </div>
+
+        </template>
+      </el-table-column>
+
+<!--       <el-table-column label="商品" align="center" prop="title" />-->
+<!--       <el-table-column label="sku" align="center" prop="skuInfo" />-->
+<!--       <el-table-column label="SKU编码" align="center" prop="skuCode" />-->
       <el-table-column label="数量" align="center" prop="count" />
       <el-table-column label="订单是否发货" align="center" prop="shippingStatus" >
         <template slot-scope="scope">
@@ -111,18 +151,23 @@
           <el-tag size="small" v-else> 未发货</el-tag>
         </template>
       </el-table-column>
-       <el-table-column label="物流公司" align="center" prop="shipCompany" />
-      <el-table-column label="物流单号" align="center" prop="shipWaybillCode" />
+       <el-table-column label="发回物流" align="center" prop="shipCompany" >
+         <template slot-scope="scope">
+           <div>{{scope.row.returnCompany}}</div>
+           <div>{{scope.row.returnWaybillCode}}</div>
+         </template>
+       </el-table-column>
+<!--      <el-table-column label="物流单号" align="center" prop="shipWaybillCode" />-->
 <!--      <el-table-column label="收货人" align="center" prop="receiverName" />-->
 <!--      <el-table-column label="手机号" align="center" prop="receiverTel" />-->
 <!--      <el-table-column label="收货地址" align="center" prop="receiverAddress" />-->
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="状态" align="center" prop="status" >
         <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.status === 0"> 待处理</el-tag>
-          <el-tag size="small" v-if="scope.row.status === 1"> 已发出</el-tag>
-          <el-tag size="small" v-if="scope.row.status === 2"> 已签收</el-tag>
-          <el-tag size="small" v-if="scope.row.status === 3"> 已完成</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 0"> 待用户发货</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 1"> 用户已发货</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 2"> 已收货</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 3"> 已入库</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -132,7 +177,7 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
+            @click="handleUpdateUserShip(scope.row)"
             v-hasPermi="['api:returned:edit']"
           >更新退货物流</el-button>
           <el-button
@@ -231,7 +276,7 @@
 </template>
 
 <script>
-import {listReturned, addExchange, shipAgainComplete} from "@/api/afterSale/returned";
+import {listReturned, updateUserWaybill} from "@/api/afterSale/returned";
 import {listShop} from "@/api/shop/shop";
 
 export default {
@@ -264,6 +309,7 @@ export default {
         afterSaleOrderId: null,
         shopId: null,
         orderId: null,
+        returnWaybillCode: null,
         status: null,
       },
       // 表单参数
@@ -333,6 +379,18 @@ export default {
       this.reset()
       this.open=true
       this.title="手动添加换货"
+    },
+    /** 修改按钮操作 */
+    handleUpdateUserShip(row) {
+      updateUserWaybill({id:row.id}).then(response => {
+        if(response.code==200){
+          this.$modal.msgSuccess("更新成功");
+          this.getList()
+        }else{
+          this.$modal.msgError(response.msg);
+        }
+
+      });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {

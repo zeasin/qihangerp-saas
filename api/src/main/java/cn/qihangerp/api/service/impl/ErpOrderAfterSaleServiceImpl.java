@@ -10,6 +10,7 @@ import cn.qihangerp.api.domain.ErpOrderAfterSale;
 import cn.qihangerp.api.service.ErpOrderAfterSaleService;
 import cn.qihangerp.api.mapper.ErpOrderAfterSaleMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
 * @author qilip
@@ -25,6 +26,11 @@ public class ErpOrderAfterSaleServiceImpl extends ServiceImpl<ErpOrderAfterSaleM
     public PageResult<ErpOrderAfterSale> queryPageList(ErpOrderAfterSale bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ErpOrderAfterSale> queryWrapper = new LambdaQueryWrapper<ErpOrderAfterSale>().
                 eq( ErpOrderAfterSale::getType, bo.getType())
+                .eq(StringUtils.hasText(bo.getOrderId()), ErpOrderAfterSale::getOrderId, bo.getOrderId())
+                .eq(StringUtils.hasText(bo.getAfterSaleOrderId()), ErpOrderAfterSale::getAfterSaleOrderId, bo.getAfterSaleOrderId())
+                .eq(bo.getErpGoodsId()!=null, ErpOrderAfterSale::getErpGoodsId, bo.getErpGoodsId())
+                .eq(bo.getErpSkuId()!=null, ErpOrderAfterSale::getErpSkuId, bo.getErpSkuId())
+                .eq(StringUtils.hasText(bo.getReturnWaybillCode()), ErpOrderAfterSale::getReturnWaybillCode, bo.getReturnWaybillCode())
                 .eq(bo.getShopId() != null, ErpOrderAfterSale::getShopId, bo.getShopId());
 
         Page<ErpOrderAfterSale> pages = mapper.selectPage(pageQuery.build(), queryWrapper);

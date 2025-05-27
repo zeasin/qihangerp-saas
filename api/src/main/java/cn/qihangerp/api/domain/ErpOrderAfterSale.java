@@ -151,7 +151,7 @@ public class ErpOrderAfterSale implements Serializable {
     private String shipCompany;
 
     /**
-     * 状态:1已发出；2已完成(已收货);
+     * 状态:0等待用户发货1用户已发货；2已收货；3已入库
      */
     private Integer status;
 

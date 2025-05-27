@@ -16,4 +16,5 @@ public interface ShopRefundService extends IService<ShopRefund> {
     ResultVo<Integer> saveRefund(Long shopId, ShopRefund refund);
     ResultVo<Integer> returnedConfirm( Long id);
     ResultVo<Integer> orderIntercept( Long id);
+    ShopRefund getRefundBy(String afterSaleOrderId);
 }
