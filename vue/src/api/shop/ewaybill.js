@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 列表
 export function getWaybillAccountList(data) {
   return request({
-    url: '/api/open-api/wei/ewaybill/get_waybill_account_list',
+    url: '/shop/ewaybill/get_waybill_account_list',
     method: 'post',
     data: data
   })
@@ -12,7 +12,7 @@ export function getWaybillAccountList(data) {
 // 更新电子面单账户
 export function pullWaybillAccount(data) {
   return request({
-    url: '/api/open-api/wei/ewaybill/pull_waybill_account',
+    url: '/shop/ewaybill/pull_waybill_account',
     method: 'post',
     data: data
   })
@@ -21,7 +21,7 @@ export function pullWaybillAccount(data) {
 // 取号
 export function getWaybillCode(data) {
   return request({
-    url: '/api/open-api/wei/ewaybill/get_waybill_code',
+    url: '/open-api/wei/ewaybill/get_waybill_code',
     method: 'post',
     data: data
   })
@@ -54,14 +54,6 @@ export function pushShipSend(data) {
   })
 }
 
-
-export function shareSupplier(data) {
-  return request({
-    url: '/api/open-api/wei/ewaybill/shareSupplier',
-    method: 'post',
-    data: data
-  })
-}
 
 export function updateAccount(data) {
   return request({

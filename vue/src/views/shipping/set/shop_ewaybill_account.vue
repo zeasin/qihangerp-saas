@@ -17,6 +17,11 @@
               :key="item.id"
               :label="item.name"
               :value="item.id">
+                <span style="float: left">{{ item.name }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 5">微信小店</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 3">拼多多</span>
+
+                  <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 9">其他</span>
             </el-option>
           </el-select>
         </el-form-item>
@@ -59,13 +64,7 @@
     <el-table v-loading="loading" :data="deliverList" @selection-change="handleSelectionChange">
 <!--       <el-table-column type="selection" width="55" align="center" />-->
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="分配的供应商" align="left" width="211">
-        <template slot-scope="scope">
-          {{ scope.row.supplierIds ? supplierList.filter(item =>
-          scope.row.supplierIds.replace(/^,|,$/g, '').split(',').map(Number).includes(item.id)
-        ).map(item => item.name).join(', ') : '' }}
-        </template>
-      </el-table-column>
+
       <el-table-column label="网点" align="left" prop="siteName">
       </el-table-column>
       <el-table-column label="网点编号" align="center" prop="siteCode" width="100px" />
@@ -104,12 +103,6 @@
             @click="handleUpdate(scope.row)"
             v-hasPermi="['shop:shop:edit']"
           >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-share"
-            @click="handleShareSupplier(scope.row)"
-          >分配给供应商</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -181,24 +174,6 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="分配供应商" :visible.sync="shareOpen" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-        <el-form-item label="供应商" prop="supplierIds">
-          <el-select v-model="form.supplierIds" placeholder="请选择供应商" clearable multiple >
-            <el-option
-              v-for="item in supplierList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="shareSupplierSubmit">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -206,11 +181,10 @@
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 import {listShop} from "@/api/shop/shop";
-import {listOrder, getOrder } from "@/api/order/order";
+
 import {
   getWaybillAccountList,
   pullWaybillAccount,
-  shareSupplier,
   updateAccount
 } from "@/api/shop/ewaybill";
 
@@ -236,7 +210,7 @@ export default {
       // 弹出层标题
       title: "",
       open:false,
-      shareOpen:false,
+
       updateOpen:false,
       // 查询参数
       queryParams: {
@@ -274,7 +248,7 @@ export default {
     };
   },
   created() {
-    listShop({type: this.queryParams.platformId}).then(response => {
+    listShop({}).then(response => {
       this.shopList = response.rows;
       if (this.shopList && this.shopList.length > 0) {
         this.queryParams.shopId = this.shopList[0].id
@@ -289,19 +263,17 @@ export default {
     getList() {
       this.loading = true;
       getWaybillAccountList({shopId: this.queryParams.shopId}).then(response => {
-        this.deliverList = response.data;
-      });
-
-      listOrder(this.queryParams).then(response => {
-        this.orderList = response.rows;
+        this.deliverList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
+
+
     },
     // 取消按钮
     cancel() {
       this.open = false
-      this.shareOpen = false
+
       this.updateOpen = false
       this.reset();
     },
@@ -331,9 +303,14 @@ export default {
     },
     // 更新电子面单信息
     updateWaybillAccount() {
-      pullWaybillAccount({shopId: this.queryParams.shopId}).then(response => {
-        this.getList()
-      });
+      if(this.queryParams.shopId){
+        pullWaybillAccount({shopId: this.queryParams.shopId}).then(response => {
+          this.getList()
+        });
+      }else{
+        this.$modal.msgError("请选择店铺")
+      }
+
     },
     handleAdd() {
       this.open = true
@@ -366,22 +343,6 @@ export default {
       })
 
     },
-    handleShareSupplier(row) {
-      this.form.id = row.id
-      if (row.supplierIds) {
-        let numArray = row.supplierIds.replace(/^,|,$/g, '').split(',').map(Number);
-        this.form.supplierIds = numArray
-      } else this.form.supplierIds = null
-      this.shareOpen = true
-    },
-    shareSupplierSubmit(){
-      console.log("=======分配供应商ID=====",this.form.supplierIds)
-      shareSupplier(this.form).then(resp=>{
-        this.$modal.msgSuccess("保存成功")
-        this.shareOpen =false
-        this.getList()
-      })
-    }
   }
 };
 </script>
