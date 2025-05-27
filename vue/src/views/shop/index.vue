@@ -121,7 +121,7 @@
         </el-form-item>
 
         <el-form-item label="卖家店铺ID" prop="sellerId">
-          <el-input v-model="form.sellerId" placeholder="请输入卖家店铺ID" />
+          <el-input type="number" v-model.number="form.sellerId" placeholder="请输入卖家店铺ID" />
         </el-form-item>
         <el-form-item label="回调URL" prop="apiCallbackUrl">
           <el-input v-model="form.apiCallbackUrl" placeholder="请输入回调URL" />

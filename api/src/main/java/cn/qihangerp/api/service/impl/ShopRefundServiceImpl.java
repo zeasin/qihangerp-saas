@@ -133,10 +133,17 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
         afterSale.setErpGoodsId(shopOrderItems.get(0).getErpGoodsId());
         afterSale.setErpSkuId(shopOrderItems.get(0).getErpSkuId());
         afterSale.setShippingStatus(refund.getShippingStatus());
-        afterSale.setUserShippingStatus(refund.getUserShippingStatus());
+        // 用户是否发货
+        if(StringUtils.hasText(refund.getReturnWaybillId())){
+            afterSale.setUserShippingStatus(1);
+            afterSale.setStatus(1);
+        }else{
+            afterSale.setUserShippingStatus(0);
+            afterSale.setStatus(0);
+        }
         afterSale.setReturnCompany(refund.getReturnDeliveryName());
         afterSale.setReturnWaybillCode(refund.getReturnWaybillId());
-        afterSale.setStatus(refund.getUserShippingStatus()==1?1:0);
+
         afterSale.setCreateBy("后台确认售后");
         afterSale.setCreateTime(new Date());
         afterSaleMapper.insert(afterSale);

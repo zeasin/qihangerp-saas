@@ -77,7 +77,7 @@ public class AfterSaleController extends BaseController {
         if(shopRefund==null){
             return AjaxResult.error("数据错误");
         }
-        if(shopRefund.getUserShippingStatus()==0){
+        if(StringUtils.isEmpty(shopRefund.getReturnWaybillId())){
             return AjaxResult.error("用户还未发回商品");
         }else{
             ErpOrderAfterSale updateBo = new ErpOrderAfterSale();
@@ -85,6 +85,7 @@ public class AfterSaleController extends BaseController {
             updateBo.setUpdateTime(new Date());
             updateBo.setUpdateBy("手动更新用户发回物流");
             updateBo.setStatus(1);
+            updateBo.setUserShippingStatus(1);
             updateBo.setReturnWaybillCode(shopRefund.getReturnWaybillId());
             updateBo.setReturnCompany(shopRefund.getReturnDeliveryName());
             afterSaleService.updateById(updateBo);

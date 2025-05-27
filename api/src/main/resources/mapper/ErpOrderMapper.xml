@@ -31,7 +31,10 @@
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="waybillTime" column="waybill_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="waybillCode" column="waybill_code" jdbcType="VARCHAR"/>
+            <result property="waybillStatus" column="waybill_status" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -40,7 +43,7 @@
         seller_memo,tag,refund_status,
         order_status,goods_amount,order_amount,pay_amount,
         receiver_name,receiver_mobile,address,
-        province,city,town,
+        province,city,town,waybill_code,waybill_status,waybill_time,
         order_time,ship_status,
         has_push_erp,create_time,create_by,update_time,update_by
     </sql>

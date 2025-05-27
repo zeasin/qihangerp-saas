@@ -130,7 +130,7 @@
            <!--售后状态 0：无售后 2：买家申请退款，待商家处理 3：退货退款，待商家处理 4：商家同意退款，退款中 5：平台同意退款，退款中
            6：驳回退款，待买家处理 7：已同意退货退款,待用户发货 8：平台处理中 9：平台拒绝退款，退款关闭 10：退款成功 11：买家撤销 12：买家逾期未处理，退款失败 13：买家逾期，超过有效期 14：换货补寄待商家处理 15：换货补寄待用户处理 16：换货补寄成功 17：换货补寄失败 18：换货补寄待用户确认完成 21：待商家同意维修 22：待用户确认发货 24：维修关闭 25：维修成功 27：待用户确认收货 31：已同意拒收退款，待用户拒收 32：补寄待商家发货 33：待商家召回-->
            <el-tag size="small" v-if="scope.row.afterSalesStatus === 7"> 已同意退货退款,待用户发货</el-tag>
-           <el-tag size="small" v-if="scope.row.status === 'MERCHANT_REFUND_SUCCESS'"> 退款完成</el-tag>
+           <el-tag size="small" v-if="scope.row.afterSalesStatus === 10"> 退款成功</el-tag>
            <el-tag size="small" v-if="scope.row.status === 'USER_CANCELD'"> 用户取消申请</el-tag>
            <el-tag size="small" v-if="scope.row.status === 'MERCHANT_PROCESSING'"> 商家受理中</el-tag>
            <el-tag size="small" v-if="scope.row.status === 'MERCHANT_REJECT_REFUND'">商家拒绝退款</el-tag>

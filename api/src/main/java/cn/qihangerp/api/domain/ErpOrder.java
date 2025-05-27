@@ -152,6 +152,10 @@ public class ErpOrder implements Serializable {
      * 更新人
      */
     private String updateBy;
+    private String waybillCode;
+    private Integer waybillStatus;
+    private Date waybillTime;
+
     @TableField(exist = false)
     private List<ErpOrderItem> itemList;
 

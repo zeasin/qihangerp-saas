@@ -413,6 +413,8 @@ import {getWaybillAccountList,cancelWaybillCode,getWaybillPrintData, getWaybillC
 import {listLogisticsStatus} from "@/api/api/logistics";
 import {listShop} from "@/api/shop/shop";
 import {parseTime} from "../../../utils/zhijian";
+import {MessageBox} from "element-ui";
+import {isRelogin} from "@/utils/request";
 
 export default {
   name: "printPdd",
@@ -551,13 +553,27 @@ export default {
               ids: ids,
               accountId: this.form.accountId
             }).then(response => {
-              if(response.code==200) {
+              console.log('电子面单取号接口返回=====', response)
+              if (response.code == 200) {
                 this.$modal.msgSuccess("取号成功")
                 this.getList()
                 this.getCodeOpen = false
-              }else{
-                this.$modal.msgError(response.msg)
+              } else if (response.code === 1401) {
+                MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', {
+                  confirmButtonText: '前往授权',
+                  cancelButtonText: '取消',
+                  type: 'warning'
+                }).then(() => {
+                  this.$router.push({path: "/shop/list", query: {type: 3}})
+                }).catch(() => {
+                  isRelogin.show = false;
+                });
+              } else {
+                this.$modal.msgError(JSON.stringify(response));
+                this.pullLoading = false
               }
+
+
             });
           } else {
             this.$modal.msgError("请选择订单")

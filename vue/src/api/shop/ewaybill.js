@@ -67,7 +67,7 @@ export function pushShipSend(data) {
 
 export function updateAccount(data) {
   return request({
-    url: '/api/open-api/wei/ewaybill/updateAccount',
+    url: '/shop/ewaybill/updateAccount',
     method: 'post',
     data: data
   })

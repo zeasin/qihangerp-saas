@@ -11,6 +11,7 @@ import cn.qihangerp.open.wei.model.AfterSaleOrder;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -406,12 +407,13 @@ public class RefundApiController extends BaseController {
                 if (afterSaleList != null && afterSaleList.size() > 0) {
                     ErpOrderAfterSale afterSaleOrderUpdate = new ErpOrderAfterSale();
                     afterSaleOrderUpdate.setId(afterSaleList.get(0).getId());
-                    if (Integer.parseInt(data.getUserShippingStatus()) == 1) {
                         afterSaleOrderUpdate.setReturnCompany(data.getShippingName());
                         afterSaleOrderUpdate.setReturnWaybillCode(data.getExpressNo());
-                        afterSaleOrderUpdate.setUserShippingStatus(Integer.parseInt(data.getUserShippingStatus()));
-                        afterSaleOrderUpdate.setStatus(1);//
-                    }
+                        if(StringUtils.hasText(data.getExpressNo())) {
+                            afterSaleOrderUpdate.setUserShippingStatus(1);
+                            afterSaleOrderUpdate.setStatus(1);//
+                        }
+
                     afterSaleOrderUpdate.setShippingStatus(data.getShippingStatus());
                     erpOrderAfterSaleService.updateById(afterSaleOrderUpdate);
 

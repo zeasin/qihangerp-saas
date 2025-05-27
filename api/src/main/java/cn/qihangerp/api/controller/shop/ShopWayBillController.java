@@ -1,9 +1,12 @@
 package cn.qihangerp.api.controller.shop;
 
 import cn.qihangerp.api.common.*;
+import cn.qihangerp.api.common.utils.NumberUtils;
 import cn.qihangerp.api.domain.*;
 import cn.qihangerp.api.request.ShopWaybillGetCodeBo;
+import cn.qihangerp.api.request.ShopWaybillAccountUpdateRequest;
 import cn.qihangerp.api.service.ErpOrderService;
+import cn.qihangerp.api.service.ErpOrderShipWaybillService;
 import cn.qihangerp.api.service.ShopService;
 import cn.qihangerp.api.service.ShopWaybillAccountService;
 import cn.qihangerp.api.vo.ShopWaybillCodeVo;
@@ -13,28 +16,22 @@ import cn.qihangerp.open.pdd.PddWaybillApiHelper;
 import cn.qihangerp.open.pdd.model.WaybillAccount;
 import cn.qihangerp.open.pdd.model.WaybillCodeModule;
 import cn.qihangerp.open.pdd.request.*;
-import cn.qihangerp.open.wei.WeiLogisticsApiHelper;
 import cn.qihangerp.open.wei.WeiWaybillAccountApiHelper;
-import cn.qihangerp.open.wei.WeiWaybillApiHelper;
-import cn.qihangerp.open.wei.bo.DeliveryProductInfo;
-import cn.qihangerp.open.wei.bo.ewaybill.EcOrderInfo;
-import cn.qihangerp.open.wei.bo.ewaybill.GoodsInfo;
-import cn.qihangerp.open.wei.bo.ewaybill.SenderAddressBo;
-import cn.qihangerp.open.wei.bo.ewaybill.WaybillRequest;
 import cn.qihangerp.open.wei.vo.ewaybill.AccountVo;
-import cn.qihangerp.open.wei.vo.ewaybill.EwaybillOrderCreateVo;
 import com.alibaba.fastjson2.JSONObject;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
-@Log
+@Slf4j
 @RequestMapping("/shop/ewaybill")
 @RestController
 @AllArgsConstructor
@@ -44,6 +41,7 @@ public class ShopWayBillController extends BaseController {
     private final ShopWaybillAccountService waybillAccountService;
     private final ShopService shopService;
     private final ErpOrderService orderService;
+    private final ErpOrderShipWaybillService orderShipWaybillService;
     /**
      * 获取电子面单账户
      * @param
@@ -190,6 +188,25 @@ public class ShopWayBillController extends BaseController {
 //        return AjaxResult.success(apiResultVo.getList());
     }
 
+    @RequestMapping(value = "/updateAccount", method = RequestMethod.POST)
+    public AjaxResult updateAccount(@RequestBody ShopWaybillAccountUpdateRequest params) throws Exception {
+        if (params.getId() == null || params.getId() <= 0) return AjaxResult.error("参数错误，没有Id");
+        if (!StringUtils.hasText(params.getName())) return AjaxResult.error("缺少参数");
+        if (!StringUtils.hasText(params.getMobile())) return AjaxResult.error("缺少参数");
+        if (!StringUtils.hasText(params.getSiteName())) return AjaxResult.error("缺少参数");
+        if (!StringUtils.hasText(params.getSiteCode())) return AjaxResult.error("缺少参数");
+
+        ShopWaybillAccount account = new ShopWaybillAccount();
+        account.setId(params.getId());
+        account.setSiteName(params.getSiteName());
+        account.setSiteCode(params.getSiteCode());
+        account.setName(params.getName());
+        account.setMobile(params.getMobile());
+        account.setSellerShopId(Long.parseLong(params.getSellerShopId()));
+        waybillAccountService.updateById(account);
+
+        return AjaxResult.success();
+    }
 //    /**
 //     * 取号
 //     * @param req
@@ -479,7 +496,7 @@ public class ShopWayBillController extends BaseController {
             String appSecret = checkResult.getData().getAppSecret();
 
             WaybillCloudPrintApplyNewRequest cloudPrintRequest = new WaybillCloudPrintApplyNewRequest();
-            cloudPrintRequest.setWp_code(waybillAccount.getSiteCode());
+            cloudPrintRequest.setWp_code(waybillAccount.getDeliveryId());
             cloudPrintRequest.setNeed_encrypt(false);
             // 发货联系人
             WaybillCloudPrintApplyNewRequestContact contact = new WaybillCloudPrintApplyNewRequestContact();
@@ -520,19 +537,22 @@ public class ShopWayBillController extends BaseController {
 
                     WaybillCloudPrintApplyNewRequestContact recipient = new WaybillCloudPrintApplyNewRequestContact();
                     recipient.setName(erpOrder.getReceiverName());
-                    recipient.setMobile(erpOrder.getReceiverMobile());
+                    recipient.setMobile("-");
                     WaybillCloudPrintApplyNewRequestContactAddress recipientAddress = new WaybillCloudPrintApplyNewRequestContactAddress();
                     recipientAddress.setProvince(erpOrder.getProvince());
                     recipientAddress.setCity(erpOrder.getCity());
                     recipientAddress.setDistrict(erpOrder.getTown());
                     recipientAddress.setDetail(erpOrder.getAddress());
                     recipient.setAddress(recipientAddress);
+
                     WaybillCloudPrintApplyNewRequestTradeOrderInfoDto orderInfoDto = new WaybillCloudPrintApplyNewRequestTradeOrderInfoDto();
+                    orderInfoDto.setObject_id(erpOrder.getId());
                     orderInfoDto.setOrder_info(orderInfo);
                     orderInfoDto.setPackage_info(packageInfo);
                     orderInfoDto.setRecipient(recipient);
                     orderInfoDto.setUser_id(0L);
-                    orderInfoDto.setTemplate_url("");
+//                    orderInfoDto.setUser_id(shop.getSellerId());
+                    orderInfoDto.setTemplate_url(waybillAccount.getTemplateUrl());
                     tradeOrderList.add(orderInfoDto);
                 }
 
@@ -540,10 +560,16 @@ public class ShopWayBillController extends BaseController {
 
             // 取号订单信息
             cloudPrintRequest.setTrade_order_info_dtos(tradeOrderList);
-            ApiResultVo<WaybillCodeModule> apiResultVo = PddWaybillApiHelper.getWaybillCode(appKey, appSecret, accessToken,null);
+
+            ApiResultVo<WaybillCodeModule> apiResultVo = PddWaybillApiHelper.getWaybillCode(appKey, appSecret, accessToken,cloudPrintRequest);
             if (apiResultVo.getCode() == 10019) return AjaxResult.error(1401, apiResultVo.getMsg());
             else if (apiResultVo.getCode() != 0) return AjaxResult.error(apiResultVo.getCode(), apiResultVo.getMsg());
-
+            // 循环list
+            for(var item :apiResultVo.getList()){
+                //
+                ResultVo resultVo = orderShipWaybillService.saveWaybill(item.getObject_id(), item.getWaybill_code(), waybillAccount.getDeliveryId(), item.getPrint_data());
+                log.info("=======获取电子面单成功======添加电子面单数据到数据库======={}",JSONObject.toJSONString(resultVo));
+            }
         }
 
         String result = "发货结果：总计：" + total + " 成功：" + success + " 失败：" + fail + " 已发货：" + isSend;
