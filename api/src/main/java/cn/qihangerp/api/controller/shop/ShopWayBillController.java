@@ -1,12 +1,15 @@
 package cn.qihangerp.api.controller.shop;
 
 import cn.qihangerp.api.common.*;
+import cn.qihangerp.api.domain.ErpShopPullLogs;
 import cn.qihangerp.api.domain.Shop;
 import cn.qihangerp.api.domain.ShopRefund;
 import cn.qihangerp.api.domain.ShopWaybillAccount;
 import cn.qihangerp.api.service.ShopService;
 import cn.qihangerp.api.service.ShopWaybillAccountService;
 import cn.qihangerp.open.common.ApiResultVo;
+import cn.qihangerp.open.pdd.PddWaybillAccountApiHelper;
+import cn.qihangerp.open.pdd.model.WaybillAccount;
 import cn.qihangerp.open.wei.WeiLogisticsApiHelper;
 import cn.qihangerp.open.wei.WeiWaybillAccountApiHelper;
 import cn.qihangerp.open.wei.WeiWaybillApiHelper;
@@ -33,6 +36,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ShopWayBillController extends BaseController {
     private final WeiApiCommon apiCommon;
+    private final PddApiCommon pddApiCommon;
     private final ShopWaybillAccountService waybillAccountService;
     private final ShopService shopService;
 
@@ -42,7 +46,7 @@ public class ShopWayBillController extends BaseController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/get_waybill_account_list", method = RequestMethod.POST)
+    @RequestMapping(value = "/get_waybill_account_list", method = RequestMethod.GET)
     public TableDataInfo getWaybillAccountList(ShopWaybillAccount bo, PageQuery pageQuery) throws Exception {
         bo.setTenantId(getUserId());
         PageResult<ShopWaybillAccount> pageList = waybillAccountService.queryPageList(bo, pageQuery);
@@ -121,7 +125,58 @@ public class ShopWayBillController extends BaseController {
             }
         } else if (shop.getType()==3) {
             // 拼多多
-            return AjaxResult.error("暂不支持");
+            var checkResult = pddApiCommon.checkBefore(params.getShopId());
+            if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
+                return AjaxResult.error(500, checkResult.getMsg());
+            }
+            String accessToken = checkResult.getData().getAccessToken();
+            String appKey = checkResult.getData().getAppKey();
+            String appSecret = checkResult.getData().getAppSecret();
+            ApiResultVo<WaybillAccount> apiResultVo = PddWaybillAccountApiHelper.pullWaybillBranchAccountList(appKey, appSecret, accessToken);
+            if (apiResultVo.getCode() == 10019) return AjaxResult.error(1401, apiResultVo.getMsg());
+            else if (apiResultVo.getCode() != 0) return AjaxResult.error(apiResultVo.getCode(), apiResultVo.getMsg());
+            List<ShopWaybillAccount> list = new ArrayList<>();
+            for (var item : apiResultVo.getList()) {
+
+                for(var it:item.getBranchAccountCols()) {
+                    ShopWaybillAccount vo = new ShopWaybillAccount();
+                    vo.setTenantId(shop.getTenantId());
+                    vo.setShopId(params.getShopId());
+                    vo.setShopType(shop.getType());
+                    vo.setIsShow(1);
+                    vo.setDeliveryId(item.getWpCode());
+                    vo.setCompanyType(item.getWpType());
+
+//                    vo.setAcctId(item.getAcctId());
+//                    vo.setAcctType(item.getAcctType());
+                    vo.setStatus(1);
+                    vo.setSiteCode(it.getBranchCode());
+                    vo.setSiteName(it.getBranchName());
+                    vo.setAvailable(it.getQuantity());
+                    vo.setAllocated(it.getAllocatedQuantity());//累积已取单
+                    vo.setCancel(it.getCancelQuantity());//累计已取消
+                    vo.setRecycled(it.getRecycledQuantity());//累积已回收
+                    vo.setMonthlyCard("");
+                    vo.setSiteInfo(JSONObject.toJSONString(it.getShippAddressCols()));
+
+                    if (it.getShippAddressCols() != null) {
+                        vo.setSenderAddress(it.getShippAddressCols().get(0).getDetail());
+                        vo.setSenderProvince(it.getShippAddressCols().get(0).getProvince());
+                        vo.setSenderCity(it.getShippAddressCols().get(0).getCity());
+                        vo.setSenderCounty(it.getShippAddressCols().get(0).getDistrict());
+                    }
+//                    List<OmsWeiLogisticsTemplate> logisticsCode = logisticsTemplateService.getByLogisticsCode(item.getDeliveryId());
+//                    if (logisticsCode != null && logisticsCode.size() > 0) {
+//                        vo.setTemplateUrl(logisticsCode.get(0).getUrl());
+//                    }
+                    list.add(vo);
+                }
+            }
+
+            log.info("========同步pdd电子面单账户信息==========");
+            waybillAccountService.syncAccountList(params.getShopId(), list);
+
+            return AjaxResult.success();
         }else{
             return AjaxResult.error("不支持的平台");
         }

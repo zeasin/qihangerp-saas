@@ -43,6 +43,7 @@
           plain
           icon="el-icon-time"
           size="mini"
+          :loading="pullLoading"
           @click="updateWaybillAccount"
         >更新电子面单账户信息</el-button>
       </el-col>
@@ -187,6 +188,8 @@ import {
   pullWaybillAccount,
   updateAccount
 } from "@/api/shop/ewaybill";
+import {MessageBox} from "element-ui";
+import {isRelogin} from "@/utils/request";
 
 export default {
   name: "ShopWaybillAccount",
@@ -194,6 +197,7 @@ export default {
     return {
       // 遮罩层
       loading: true,
+      pullLoading: false,
       // 选中数组
       ids: [],
       shopList: [],
@@ -262,7 +266,7 @@ export default {
     /** 查询商品管理列表 */
     getList() {
       this.loading = true;
-      getWaybillAccountList({shopId: this.queryParams.shopId}).then(response => {
+      getWaybillAccountList(this.queryParams).then(response => {
         this.deliverList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -305,7 +309,22 @@ export default {
     updateWaybillAccount() {
       if(this.queryParams.shopId){
         pullWaybillAccount({shopId: this.queryParams.shopId}).then(response => {
-          this.getList()
+          console.log('拉取订单接口返回=====',response)
+          if(response.code === 200){
+            this.$modal.msgSuccess(JSON.stringify(response));
+            this.pullLoading = false
+            this.getList()
+          }
+          else if(response.code === 1401) {
+            MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', { confirmButtonText: '前往授权', cancelButtonText: '取消', type: 'warning' }).then(() => {
+              this.$router.push({path:"/shop/list",query:{type:3}})
+            }).catch(() => {
+              isRelogin.show = false;
+            });
+          }else {
+            this.$modal.msgError(JSON.stringify(response));
+            this.pullLoading = false
+          }
         });
       }else{
         this.$modal.msgError("请选择店铺")

@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 列表
-export function getWaybillAccountList(data) {
+export function getWaybillAccountList(params) {
   return request({
     url: '/shop/ewaybill/get_waybill_account_list',
-    method: 'post',
-    data: data
+    method: 'get',
+    params: params
   })
 }
 
