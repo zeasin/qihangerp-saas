@@ -72,7 +72,7 @@
 
     <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column label="ID" align="center" prop="id" />
+<!--      <el-table-column label="ID" align="center" prop="id" />-->
       <el-table-column label="退货单号" align="center" prop="afterSaleOrderId" />
       <el-table-column label="退货类型" align="center" prop="type" >
         <template slot-scope="scope">
@@ -99,6 +99,18 @@
        <el-table-column label="sku" align="center" prop="skuInfo" />
        <el-table-column label="SKU编码" align="center" prop="skuCode" />
       <el-table-column label="数量" align="center" prop="count" />
+      <el-table-column label="订单是否发货" align="center" prop="shippingStatus" >
+        <template slot-scope="scope">
+          <el-tag size="small" v-if="scope.row.shippingStatus === 1"> 已发货</el-tag>
+          <el-tag size="small" v-else> 未发货</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="用户是否发回" align="center" prop="shippingStatus" >
+        <template slot-scope="scope">
+          <el-tag size="small" v-if="scope.row.userShippingStatus === 1"> 已发货</el-tag>
+          <el-tag size="small" v-else> 未发货</el-tag>
+        </template>
+      </el-table-column>
        <el-table-column label="物流公司" align="center" prop="shipCompany" />
       <el-table-column label="物流单号" align="center" prop="shipWaybillCode" />
 <!--      <el-table-column label="收货人" align="center" prop="receiverName" />-->

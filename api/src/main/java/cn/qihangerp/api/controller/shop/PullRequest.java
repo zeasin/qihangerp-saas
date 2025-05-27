@@ -6,5 +6,6 @@ import lombok.Data;
 public class PullRequest {
     private Long shopId;//店铺Id
     private String orderId;//订单编号
+    private Long refundId;//退款id
     private Integer pullType;
 }

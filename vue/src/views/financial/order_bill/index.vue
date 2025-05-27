@@ -181,7 +181,7 @@ export default {
       // 是否显示弹出层
       open: false,
       importOpen: false,
-      importUrl: '/dev-api/cost/order_cost/pdd_bill_import?shopId=',
+      importUrl: '/prod-api/cost/order_cost/pdd_bill_import?shopId=',
       // 查询参数
       queryParams: {
         pageNum: 1,

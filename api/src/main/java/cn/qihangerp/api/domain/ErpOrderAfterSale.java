@@ -179,6 +179,10 @@ public class ErpOrderAfterSale implements Serializable {
      * 
      */
     private String updateBy;
-
+    /**
+     * 用户发货状态
+     */
+    private Integer userShippingStatus;
+    private Integer shippingStatus;
     private static final long serialVersionUID = 1L;
 }

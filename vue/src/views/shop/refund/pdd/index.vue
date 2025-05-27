@@ -105,6 +105,18 @@
           <span>{{ scope.row.refundAmount/100 }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="订单是否发货" align="center" prop="shippingStatus" >
+        <template slot-scope="scope">
+          <el-tag size="small" v-if="scope.row.shippingStatus === 1"> 已发货</el-tag>
+          <el-tag size="small" v-else> 未发货</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="用户是否发回" align="center" prop="shippingStatus" >
+        <template slot-scope="scope">
+          <el-tag size="small" v-if="scope.row.userShippingStatus === 1"> 已发货</el-tag>
+          <el-tag size="small" v-else> 未发货</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime*1000) }}</span>
@@ -143,7 +155,7 @@
         <template slot-scope="scope">
 
             <el-button
-              v-if="scope.row.afterSalesType === 3 && !scope.row.confirmStatus"
+              v-if="scope.row.afterSalesType === 3 && scope.row.confirmStatus==0"
               size="mini"
               type="text"
               icon="el-icon-document-checked"
@@ -162,7 +174,7 @@
             size="mini"
             type="text"
             icon="el-icon-refresh"
-            @click="handleConfirm(scope.row)"
+            @click="handlePullDetail(scope.row)"
             v-hasPermi="['tao:taoRefund:edit']"
           >更新</el-button>
           </el-row>
@@ -230,7 +242,7 @@
 import { listShop } from "@/api/shop/shop";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
-import {listShopRefund, orderIntercept, pullRefund, returnedConfirm} from "@/api/shop/shop_refund";
+import {listShopRefund, orderIntercept, pullRefund, returnedConfirm,pullOrderDetail} from "@/api/shop/shop_refund";
 export default {
   name: "RefundPdd",
   data() {
@@ -331,6 +343,28 @@ export default {
       this.ids = selection.map(item => item.refundId)
       this.single = selection.length!==1
       this.multiple = !selection.length
+    },
+    // 更新详情
+    handlePullDetail(row){
+      pullOrderDetail({refundId:row.id}).then(response => {
+        console.log('拉取退款接口返回=====',response)
+        if(response.code === 200){
+          this.$modal.msgSuccess(JSON.stringify(response));
+          this.pullLoading = false
+          this.getList()
+        }
+        else if(response.code === 1401) {
+          MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', { confirmButtonText: '前往授权', cancelButtonText: '取消', type: 'warning' }).then(() => {
+            this.$router.push({path:"/shop/list",query:{type:3}})
+          }).catch(() => {
+            isRelogin.show = false;
+          });
+        }else {
+          this.$modal.msgError(JSON.stringify(response));
+          this.pullLoading = false
+        }
+
+      })
     },
     handlePull() {
       if(this.queryParams.shopId){

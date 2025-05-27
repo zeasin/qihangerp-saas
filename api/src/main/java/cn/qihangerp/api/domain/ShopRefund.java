@@ -207,6 +207,8 @@ public class ShopRefund implements Serializable {
      */
     private Date updateOn;
 
+    private Integer shippingStatus;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

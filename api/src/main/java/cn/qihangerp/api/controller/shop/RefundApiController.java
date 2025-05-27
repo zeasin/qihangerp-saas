@@ -1,15 +1,15 @@
 package cn.qihangerp.api.controller.shop;
 
 import cn.qihangerp.api.common.BaseController;
-import cn.qihangerp.api.service.ErpShopPullLasttimeService;
-import cn.qihangerp.api.service.ErpShopPullLogsService;
-import cn.qihangerp.api.service.ShopService;
+import cn.qihangerp.api.service.*;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.pdd.PddRefundApiHelper;
 import cn.qihangerp.open.pdd.model.AfterSale;
+import cn.qihangerp.open.pdd.model.AfterSaleDetail;
 import cn.qihangerp.open.wei.WeiRefundApiHelper;
 import cn.qihangerp.open.wei.model.AfterSaleOrder;
 import com.alibaba.fastjson2.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,15 +20,16 @@ import cn.qihangerp.api.common.ResultVoEnum;
 import cn.qihangerp.api.common.enums.EnumShopType;
 import cn.qihangerp.api.common.enums.HttpStatus;
 import cn.qihangerp.api.domain.*;
-import cn.qihangerp.api.service.ShopRefundService;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequestMapping("/shop/refund")
@@ -38,10 +39,17 @@ public class RefundApiController extends BaseController {
     private final WeiApiCommon weiApiCommon;
     private final PddApiCommon pddApiCommon;
     private final ShopRefundService refundService;
+    private final ErpOrderAfterSaleService erpOrderAfterSaleService;
     private final ErpShopPullLogsService pullLogsService;
     private final ErpShopPullLasttimeService pullLasttimeService;
     private final ShopService shopService;
 
+    /**
+     * 拉取退款列表
+     * @param params
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/pull_list", method = RequestMethod.POST)
     public AjaxResult pullList(@RequestBody PullRequest params) throws Exception {
         if (params.getShopId() == null || params.getShopId() <= 0) {
@@ -305,5 +313,111 @@ public class RefundApiController extends BaseController {
         data.put("fail", totalError);
         data.put("total", insertSuccess + hasExistOrder+totalError);
         return AjaxResult.success(data);
+    }
+
+    /**
+     * 拉取退款详情
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/pull_detail", method = RequestMethod.POST)
+    public AjaxResult pullDetail(@RequestBody PullRequest params) throws Exception {
+        if (params.getRefundId() == null || params.getRefundId() <= 0) {
+            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有退款Id");
+        }
+        ShopRefund shopRefund = refundService.getById(params.getRefundId());
+        if(shopRefund == null){
+            return AjaxResult.error("没有找到退款数据");
+        }
+        Shop shop = shopService.getById(shopRefund.getShopId());
+        if(shop==null) return AjaxResult.error("店铺不存在");
+
+        Date currDateTime = new Date();
+        long beginTime = System.currentTimeMillis();
+
+        if(shop.getType()==5) {
+            var checkResult = weiApiCommon.checkBefore(Long.parseLong(shop.getId()));
+            if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
+                return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
+            }
+            String accessToken = checkResult.getData().getAccessToken();
+            String appKey = checkResult.getData().getAppKey();
+            String appSecret = checkResult.getData().getAppSecret();
+
+//            String pullParams = "{startTime:" + startTime.format(formatter) + ",endTime:" + endTime.format(formatter) + "}";
+            ApiResultVo<AfterSaleOrder> apiResultVo = WeiRefundApiHelper.pullRefundDetail(Long.parseLong(shopRefund.getAfterSaleOrderId()), accessToken);
+        }else if (shop.getType()==3) {
+            // 拼多多
+            var checkResult = pddApiCommon.checkBefore(Long.parseLong(shop.getId()));
+
+            String pullParams = "{after_sales_id:" + shopRefund.getAfterSaleOrderId() + ",order_sn:" + shopRefund.getOrderId() + "}";
+
+            if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
+                ErpShopPullLogs logs = new ErpShopPullLogs();
+                logs.setTenantId(shop.getTenantId());
+                logs.setShopType(shop.getType());
+                logs.setShopId(Long.parseLong(shop.getId()));
+                logs.setPullType("REFUND");
+                logs.setPullWay("主动拉取");
+                logs.setPullParams(pullParams);
+                logs.setPullResult(checkResult.getMsg());
+                logs.setPullTime(currDateTime);
+                logs.setDuration(System.currentTimeMillis() - beginTime);
+                pullLogsService.save(logs);
+                return AjaxResult.error(500, checkResult.getMsg());
+            }
+
+            String accessToken = checkResult.getData().getAccessToken();
+            String appKey = checkResult.getData().getAppKey();
+            String appSecret = checkResult.getData().getAppSecret();
+            ApiResultVo<AfterSaleDetail> upResult = PddRefundApiHelper.pullRefundDetail(appKey, appSecret, accessToken, shopRefund.getAfterSaleOrderId(), shopRefund.getOrderId());
+            if (upResult.getCode() == 10019) return AjaxResult.error(1401, upResult.getMsg());
+            else if (upResult.getCode() != 0) return AjaxResult.error(upResult.getCode(), upResult.getMsg());
+            AfterSaleDetail data = upResult.getData();
+            if (data != null) {
+                ShopRefund refund = new ShopRefund();
+                refund.setId(shopRefund.getId());
+                refund.setAfterSalesStatus(data.getAfterSalesStatus());
+                refund.setStatus(data.getAfterSalesStatus() + "");
+                refund.setReasonText(data.getAfterSalesReason());
+                refund.setUpdateTime(data.getUpdatedTime());
+                // 将时间戳转换为 Instant
+                Instant instant = Instant.ofEpochMilli(data.getConfirmTime().longValue() * 1000);
+                // 转换为 LocalDateTime，指定时区
+                LocalDateTime localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
+                refund.setConfirmTime(localDateTime);
+
+                refund.setDisputeRefundStatus(data.getDisputeRefundStatus());
+                refund.setCount(data.getGoodsNumber());
+                refund.setRefundAmount(data.getRefundAmount());
+                refund.setShippingStatus(data.getShippingStatus());
+
+                refund.setReturnDeliveryName(data.getShippingName());
+                refund.setReturnWaybillId(data.getExpressNo());
+                refund.setUserShippingStatus(Integer.parseInt(data.getUserShippingStatus()));
+                refund.setUpdateOn(new Date());
+
+                var result = refundService.updateById(refund);
+
+                // 更新售后处理单
+
+                List<ErpOrderAfterSale> afterSaleList = erpOrderAfterSaleService.list(new LambdaQueryWrapper<ErpOrderAfterSale>().eq(ErpOrderAfterSale::getAfterSaleOrderId, shopRefund.getAfterSaleOrderId()));
+                if (afterSaleList != null && afterSaleList.size() > 0) {
+                    ErpOrderAfterSale afterSaleOrderUpdate = new ErpOrderAfterSale();
+                    afterSaleOrderUpdate.setId(afterSaleList.get(0).getId());
+                    if (Integer.parseInt(data.getUserShippingStatus()) == 1) {
+                        afterSaleOrderUpdate.setReturnCompany(data.getShippingName());
+                        afterSaleOrderUpdate.setReturnWaybillCode(data.getExpressNo());
+                        afterSaleOrderUpdate.setUserShippingStatus(Integer.parseInt(data.getUserShippingStatus()));
+                    }
+                    afterSaleOrderUpdate.setShippingStatus(data.getShippingStatus());
+                    erpOrderAfterSaleService.updateById(afterSaleOrderUpdate);
+
+                }
+            }
+        }
+
+        return AjaxResult.success();
     }
 }

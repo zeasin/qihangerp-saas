@@ -293,7 +293,7 @@ export default {
         return confirmBillSettlement(ids);
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.$modal.msgSuccess("确认结算成功");
       }).catch(() => {});
     },
 

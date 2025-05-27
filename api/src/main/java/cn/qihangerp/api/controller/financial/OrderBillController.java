@@ -77,7 +77,7 @@ public class OrderBillController extends BaseController {
             int i=0;
             for (String[] row : csvData) {
 
-                if (i > 4 && i<csvData.size()-4) {
+                if (i > 4 && i<csvData.size()-5) {
                     newData.add(row);
                     System.out.println(i);
 //                    for (String cell : row) {

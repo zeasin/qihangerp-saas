@@ -39,6 +39,8 @@
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="TIMESTAMP"/>
+        <result property="shippingStatus" column="shipping_status" jdbcType="INTEGER"/>
+        <result property="userShippingStatus" column="user_shipping_status" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -51,7 +53,7 @@
         return_company,receiver_name,receiver_tel,
         receiver_province,receiver_city,receiver_town,
         receiver_address,ship_waybill_code,ship_company,
-        status,remark,create_time,
+        status,remark,create_time,shipping_status,user_shipping_status
         create_by,update_time,update_by
     </sql>
 </mapper>

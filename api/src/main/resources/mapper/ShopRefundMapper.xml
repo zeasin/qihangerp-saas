@@ -41,6 +41,7 @@
             <result property="afterSalesStatus" column="after_sales_status" jdbcType="INTEGER"/>
             <result property="afterSalesType" column="after_sales_type" jdbcType="INTEGER"/>
             <result property="disputeRefundStatus" column="dispute_refund_status" jdbcType="INTEGER"/>
+            <result property="shippingStatus" column="shipping_status" jdbcType="INTEGER"/>
             <result property="createOn" column="create_on" jdbcType="TIMESTAMP"/>
             <result property="updateOn" column="update_on" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -54,7 +55,7 @@
         fast_refund,refund_reason,refund_amount,
         return_waybill_id,return_delivery_id,return_delivery_name,
         merchant_upload_info,create_time,update_time,
-        reason,reason_text,type,
+        reason,reason_text,type,shipping_status,
         details,complaint_id,refund_resp,
         confirm_status,confirm_time,user_shipping_status,
         after_sales_status,after_sales_type,dispute_refund_status,
