@@ -70,12 +70,12 @@ public class OrderApiController extends BaseController {
         LocalDateTime endTime = null;
         ErpShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(getUserId(), params.getShopId(), "ORDER");
         if (lasttime == null) {
-            endTime = LocalDateTime.now();
+            endTime = LocalDateTime.now(zoneId);
             startTime = endTime.minusDays(1);
         } else {
             startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
             endTime = startTime.plusDays(1);//取24小时
-            if (endTime.isAfter(LocalDateTime.now())) {
+            if (endTime.isAfter(LocalDateTime.now(zoneId))) {
 //                endTime = LocalDateTime.now();
                 endTime = LocalDateTime.now(zoneId);
             }

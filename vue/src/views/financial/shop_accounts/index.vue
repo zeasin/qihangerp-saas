@@ -51,6 +51,7 @@
         <span>{{ shopList.find(x=>x.id == scope.row.shopId)?shopList.find(x=>x.id == scope.row.shopId).name:''  }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="日期" align="center" prop="date" />
       <el-table-column label="交易类型" align="center" prop="type" >
         <template slot-scope="scope">
           <el-tag v-if="scope.row.type===1">支出</el-tag>
@@ -60,8 +61,8 @@
 
        <el-table-column label="金额" align="center" prop="amount" />
        <el-table-column label="用途" align="left" prop="usageScenario" />
-      <el-table-column label="描述" align="center" prop="remark" />
-
+      <el-table-column label="描述" align="left" prop="remark" />
+      <el-table-column label="交易时间" align="center" prop="tradeTime" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-row>

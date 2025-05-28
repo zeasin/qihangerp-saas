@@ -83,12 +83,12 @@ public class RefundApiController extends BaseController {
             String appKey = checkResult.getData().getAppKey();
             String appSecret = checkResult.getData().getAppSecret();
             if (lasttime == null) {
-                endTime = LocalDateTime.now();
+                endTime = LocalDateTime.now(zoneId);
                 startTime = endTime.minusDays(1);
             } else {
                 startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
                 endTime = startTime.plusDays(1);//取24小时
-                if (endTime.isAfter(LocalDateTime.now())) {
+                if (endTime.isAfter(LocalDateTime.now(zoneId))) {
 //                endTime = LocalDateTime.now();
                     endTime = LocalDateTime.now(zoneId);
                 }
@@ -151,14 +151,14 @@ public class RefundApiController extends BaseController {
             // 拼多多
             var checkResult = pddApiCommon.checkBefore(params.getShopId());
             if(lasttime == null){
-                endTime = LocalDateTime.now();
+                endTime = LocalDateTime.now(zoneId);
 //            startTime = endTime.minusDays(1);
                 startTime = endTime.minusMinutes(30);
             }else {
                 startTime = lasttime.getLasttime().minusMinutes(5);//取上次结束5分钟前
                 endTime = startTime.plusMinutes(30);//结束时间取开始时间之后30分钟
-                if(endTime.isAfter(LocalDateTime.now())){
-                    endTime = LocalDateTime.now();
+                if(endTime.isAfter(LocalDateTime.now(zoneId))){
+                    endTime = LocalDateTime.now(zoneId);
                 }
             }
             String pullParams = "{startTime:"+startTime.format(formatter)+",endTime:"+endTime.format(formatter)+"}";
