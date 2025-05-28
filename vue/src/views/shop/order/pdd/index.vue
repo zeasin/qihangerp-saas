@@ -156,9 +156,9 @@
       <el-table-column label="收件人" align="center" prop="userName" />
       <el-table-column label="省市区" align="center" >
         <template slot-scope="scope">
-        <el-tag size="small">{{scope.row.provinceName}}</el-tag>
-        <el-tag size="small">{{scope.row.cityName}}</el-tag>
-        <el-tag size="small">{{scope.row.countyName}}</el-tag>
+        <el-tag size="small" v-if="scope.row.provinceName">{{scope.row.provinceName}}</el-tag>
+        <el-tag size="small" v-if="scope.row.cityName">{{scope.row.cityName}}</el-tag>
+        <el-tag size="small" v-if="scope.row.countyName">{{scope.row.countyName}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="订单备注" align="center" >
@@ -171,6 +171,7 @@
       <el-table-column label="订单状态" align="center" prop="status" >
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 10 " size="small">待付款</el-tag>
+          <el-tag v-if="scope.row.status === 11 " size="small">已退款</el-tag>
           <el-tag v-if="scope.row.status === 20 " size="small">待发货</el-tag>
           <el-tag v-if="scope.row.status === 30 " size="small">待收货</el-tag>
           <el-tag v-if="scope.row.status === 100 " size="small">完成</el-tag>

@@ -65,6 +65,15 @@ public class ErpLogisticsCompanyServiceImpl extends ServiceImpl<ErpLogisticsComp
         }
         return 0;
     }
+
+    @Override
+    public ErpLogisticsCompany queryByCode(String code, Integer shopType) {
+
+        List<ErpLogisticsCompany> erpLogisticsCompanies = mapper.selectList(new LambdaQueryWrapper<ErpLogisticsCompany>().eq(ErpLogisticsCompany::getCode, code).eq(ErpLogisticsCompany::getPlatformId, shopType));
+        if (erpLogisticsCompanies == null || erpLogisticsCompanies.size() == 0) {
+            return null;
+        }else return erpLogisticsCompanies.get(0);
+    }
 }
 
 

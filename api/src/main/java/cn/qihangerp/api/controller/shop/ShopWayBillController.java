@@ -5,12 +5,10 @@ import cn.qihangerp.api.common.utils.NumberUtils;
 import cn.qihangerp.api.domain.*;
 import cn.qihangerp.api.request.ShopWaybillGetCodeBo;
 import cn.qihangerp.api.request.ShopWaybillAccountUpdateRequest;
-import cn.qihangerp.api.service.ErpOrderService;
-import cn.qihangerp.api.service.ErpOrderShipWaybillService;
-import cn.qihangerp.api.service.ShopService;
-import cn.qihangerp.api.service.ShopWaybillAccountService;
+import cn.qihangerp.api.service.*;
 import cn.qihangerp.api.vo.ShopWaybillCodeVo;
 import cn.qihangerp.open.common.ApiResultVo;
+import cn.qihangerp.open.pdd.PddLogisticsApiHelper;
 import cn.qihangerp.open.pdd.PddWaybillAccountApiHelper;
 import cn.qihangerp.open.pdd.PddWaybillApiHelper;
 import cn.qihangerp.open.pdd.model.WaybillAccount;
@@ -42,6 +40,7 @@ public class ShopWayBillController extends BaseController {
     private final ShopService shopService;
     private final ErpOrderService orderService;
     private final ErpOrderShipWaybillService orderShipWaybillService;
+    private final ErpLogisticsCompanyService erpLogisticsCompanyService;
     /**
      * 获取电子面单账户
      * @param
@@ -546,7 +545,7 @@ public class ShopWayBillController extends BaseController {
                     recipient.setAddress(recipientAddress);
 
                     WaybillCloudPrintApplyNewRequestTradeOrderInfoDto orderInfoDto = new WaybillCloudPrintApplyNewRequestTradeOrderInfoDto();
-                    orderInfoDto.setObject_id(erpOrder.getId());
+                    orderInfoDto.setObject_id(erpOrder.getOrderNum());
                     orderInfoDto.setOrder_info(orderInfo);
                     orderInfoDto.setPackage_info(packageInfo);
                     orderInfoDto.setRecipient(recipient);
@@ -566,9 +565,19 @@ public class ShopWayBillController extends BaseController {
             else if (apiResultVo.getCode() != 0) return AjaxResult.error(apiResultVo.getCode(), apiResultVo.getMsg());
             // 循环list
             for(var item :apiResultVo.getList()){
-                //
+                // 添加打印数据到数据库
                 ResultVo resultVo = orderShipWaybillService.saveWaybill(item.getObject_id(), item.getWaybill_code(), waybillAccount.getDeliveryId(), item.getPrint_data());
                 log.info("=======获取电子面单成功======添加电子面单数据到数据库======={}",JSONObject.toJSONString(resultVo));
+                // 发货操作
+                ErpLogisticsCompany erpLogisticsCompany = erpLogisticsCompanyService.queryByCode(waybillAccount.getDeliveryId(), shop.getType());
+                if(erpLogisticsCompany!=null){
+                    log.info("=====发货参数======logisticsId:{},orderNum:{},shipNo:{}",erpLogisticsCompany.getLogisticsId(),item.getObject_id(),item.getWaybill_code());
+                    ApiResultVo sendApi = PddLogisticsApiHelper.onlineSend(appKey, appSecret, accessToken, erpLogisticsCompany.getLogisticsId(), item.getObject_id(),item.getWaybill_code());
+                    log.info("=====发货结果======{}", JSONObject.toJSONString(sendApi));
+                }else{
+                    log.error("=========没有找到快递公司信息=====无法发货===========");
+                }
+
             }
         }
 

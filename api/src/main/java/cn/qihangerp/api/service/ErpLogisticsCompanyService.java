@@ -18,4 +18,5 @@ public interface ErpLogisticsCompanyService extends IService<ErpLogisticsCompany
     List<ErpLogisticsCompany> queryListByStatus(Long tenantId, Integer status, Integer shopType);
     int updateStatus(String id,Integer status);
     int insert(ErpLogisticsCompany logisticsCompany);
+    ErpLogisticsCompany queryByCode(String code,Integer shopType);
 }

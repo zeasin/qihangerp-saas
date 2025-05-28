@@ -12,10 +12,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ErpOrderShipWaybillService extends IService<ErpOrderShipWaybill> {
     /**
      * 保存电子面单数据
-     * @param orderId
+     * @param orderNum
      * @param waybillCode
      * @param printData
      * @return
      */
-    ResultVo saveWaybill(String orderId,String waybillCode,String logisticsCode,String printData);
+    ResultVo saveWaybill(String orderNum,String waybillCode,String logisticsCode,String printData);
 }
