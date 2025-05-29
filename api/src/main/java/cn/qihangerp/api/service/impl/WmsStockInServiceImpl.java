@@ -102,7 +102,7 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, ErpStoc
                 if(goodsSku!=null) {
                     ErpGoods goods = goodsService.getById(goodsSku.getGoodsId());
                     ErpStockInItem inItem = new ErpStockInItem();
-                    inItem.setTenantId(inItem.getTenantId());
+                    inItem.setTenantId(insert.getTenantId());
                     inItem.setStockInId(insert.getId());
                     inItem.setStockInType(insert.getStockInType());
                     inItem.setSourceNo(insert.getSourceNo());
