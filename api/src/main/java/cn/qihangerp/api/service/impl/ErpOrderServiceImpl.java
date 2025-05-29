@@ -206,6 +206,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
 
         // 添加到备货单
         ErpOrderShipList shipList = new ErpOrderShipList();
+        shipList.setTenantId(erpOrder.getTenantId());
         shipList.setShopId(erpOrder.getShopId());
         shipList.setShopType(erpOrder.getShopType());
         shipList.setShipper(0);
@@ -277,6 +278,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         for(ErpOrderItem orderItem:oOrderItems){
             // 添加备货清单item
             ErpOrderShipListItem listItem=new ErpOrderShipListItem();
+            listItem.setTenantId(erpOrder.getTenantId());
             listItem.setShopId(erpOrder.getShopId());
             listItem.setShopType(erpOrder.getShopType());
             listItem.setListId(shipList.getId());

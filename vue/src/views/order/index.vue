@@ -95,7 +95,7 @@
           <i class="el-icon-copy-document tag-copy" :data-clipboard-text="scope.row.orderNum" @click="copyActiveCode($event,scope.row.orderNum)" ></i>
           <br/>
           <el-tag type="info">{{ shopList.find(x=>x.id == scope.row.shopId) ? shopList.find(x=>x.id == scope.row.shopId).name : '' }}</el-tag>
-        </template>>
+        </template>
       </el-table-column>
       <el-table-column label="商品" width="400">
           <template slot-scope="scope">
