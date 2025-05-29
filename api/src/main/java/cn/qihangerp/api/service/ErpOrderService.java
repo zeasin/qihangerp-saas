@@ -27,6 +27,14 @@ public interface ErpOrderService extends IService<ErpOrder> {
      * @return
      */
     PageResult<ErpOrder> queryWaitShipmentPageList(OrderSearchRequest bo, PageQuery pageQuery);
+
+    /**
+     * 已经发货的list
+     * @param bo
+     * @param pageQuery
+     * @return
+     */
+    PageResult<ErpOrder> queryShippedPageList(OrderSearchRequest bo, PageQuery pageQuery);
     ErpOrder queryDetailById(Long id);
 
     /**

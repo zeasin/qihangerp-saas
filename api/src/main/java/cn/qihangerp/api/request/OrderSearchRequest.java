@@ -79,9 +79,13 @@ public class OrderSearchRequest implements Serializable {
     private Date orderTime;
 
     /**
-     * 发货类型（0仓库发货；1供应商代发）
+     * 发货方式1电子面单发货2手动发货
      */
     private Integer shipType;
+    /**
+     * 发货方式 0 自己发货1联合发货2供应商发货
+     */
+    private Integer shipper;
 
 
     /**

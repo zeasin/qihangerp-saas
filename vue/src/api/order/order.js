@@ -9,10 +9,19 @@ export function listOrder(query) {
   })
 }
 
-// 查询待自己发货的订单列表
+// 查询待自己发货的订单列表（待发货的）
 export function waitSelfShipmentList(query) {
   return request({
     url: '/order/waitShipmentList',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询待自己发货的订单列表(已发货的-电子面单发货)
+export function selfShippedList(query) {
+  return request({
+    url: '/order/shippedList',
     method: 'get',
     params: query
   })

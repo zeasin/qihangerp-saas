@@ -6,7 +6,7 @@
        <wait-shipment-pdd></wait-shipment-pdd>
       </el-tab-pane>
       <el-tab-pane label="已发货订单" name="EwaybillAccount" lazy>
-        <goods-sku-pdd></goods-sku-pdd>
+        <shipped-list-wei></shipped-list-wei>
       </el-tab-pane>
     </el-tabs>
 
@@ -15,12 +15,12 @@
 
 <script>
 import WaitShipmentPdd from "@/views/shipping/send/print_shipment/wei/print_list.vue";
-import GoodsSkuPdd from "@/views/shop/goods/pdd/goods_sku.vue";
+import ShippedListWei from "@/views/shipping/send/print_shipment/wei/shipped_list.vue";
 
 export default {
   name: "PrintShipmentWei",
   components:{
-    WaitShipmentPdd,GoodsSkuPdd
+    WaitShipmentPdd,ShippedListWei
   },
   data() {
     return {

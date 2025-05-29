@@ -2,11 +2,11 @@
   <div class="app-container">
 
     <el-tabs v-model="activeName" @tab-click="handleClick" type="border-card">
-      <el-tab-pane label="待发货订单" name="LogisticsCompany" >
+      <el-tab-pane label="待发货订单" name="WaitShipmentPdd" >
        <wait-shipment-pdd></wait-shipment-pdd>
       </el-tab-pane>
-      <el-tab-pane label="已发货订单" name="EwaybillAccount" lazy>
-        <goods-sku-pdd></goods-sku-pdd>
+      <el-tab-pane label="已发货订单" name="ShippedListPdd" lazy>
+        <shipped-list-pdd></shipped-list-pdd>
       </el-tab-pane>
     </el-tabs>
 
@@ -15,17 +15,17 @@
 
 <script>
 import WaitShipmentPdd from "@/views/shipping/send/print_shipment/pdd/print_list.vue";
-import GoodsSkuPdd from "@/views/shop/goods/pdd/goods_sku.vue";
+import ShippedListPdd from "@/views/shipping/send/print_shipment/pdd/shipped_list.vue";
 
 export default {
   name: "PrintShipmentPdd",
   components:{
     WaitShipmentPdd,
-    GoodsSkuPdd
+    ShippedListPdd
   },
   data() {
     return {
-      activeName: 'LogisticsCompany',
+      activeName: 'WaitShipmentPdd',
       typeList: [],
     };
   },

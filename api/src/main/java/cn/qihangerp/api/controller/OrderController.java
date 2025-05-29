@@ -56,6 +56,22 @@ public class OrderController extends BaseController
         return getDataTable(pageList);
     }
 
+    /**
+     * 已发货列表（电子面单发货的）
+     * @param order
+     * @param pageQuery
+     * @return
+     */
+    @GetMapping("/shippedList")
+    public TableDataInfo shippedList(OrderSearchRequest order, PageQuery pageQuery)
+    {
+        if(getUserId()!=1) {
+            order.setTenantId(getUserId());
+        }
+        var pageList = orderService.queryShippedPageList(order,pageQuery);
+        return getDataTable(pageList);
+    }
+
 
     /**
      * 获取订单详细信息

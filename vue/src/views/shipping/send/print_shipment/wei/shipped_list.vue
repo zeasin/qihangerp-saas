@@ -415,7 +415,7 @@ import {listShop} from "@/api/shop/shop";
 import {parseTime} from "@/utils/zhijian";
 
 export default {
-  name: "WaitShipmentWei",
+  name: "ShippedListWei",
   data() {
     return {
       // 遮罩层
