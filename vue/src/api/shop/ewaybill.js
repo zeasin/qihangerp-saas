@@ -56,13 +56,6 @@ export function pushWaybillPrintSuccess(data) {
 }
 
 
-export function pushShipSend(data) {
-  return request({
-    url: '/api/open-api/wei/ewaybill/push_ship_send',
-    method: 'post',
-    data: data
-  })
-}
 
 
 export function updateAccount(data) {
