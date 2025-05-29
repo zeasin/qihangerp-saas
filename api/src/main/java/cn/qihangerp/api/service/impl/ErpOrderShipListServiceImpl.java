@@ -164,7 +164,8 @@ public class ErpOrderShipListServiceImpl extends ServiceImpl<ErpOrderShipListMap
             orderItemUpdate.setId(item.getOrderItemId());
             orderItemUpdate.setUpdateBy("手动填写供应商发货信息");
             orderItemUpdate.setUpdateTime(new Date());
-            orderItemUpdate.setShipStatus(1);//发货状态 0 待发货 1 已发货
+            orderItemUpdate.setShipType(2);//发货方式1电子面单发货2手动发货
+            orderItemUpdate.setShipStatus(2);//发货状态 0 待发货 1 已分配供应商发货 2全部发货
             erpOrderItemMapper.updateById(orderItemUpdate);
         }
 
@@ -218,6 +219,7 @@ public class ErpOrderShipListServiceImpl extends ServiceImpl<ErpOrderShipListMap
             // 部分发货了
             orderUpdate.setShipStatus(1);
         }
+        orderUpdate.setShipType(2);
         orderUpdate.setUpdateTime(new Date());
         orderUpdate.setUpdateBy("手动填写供应商发货信息");
         erpOrderMapper.updateById(orderUpdate);

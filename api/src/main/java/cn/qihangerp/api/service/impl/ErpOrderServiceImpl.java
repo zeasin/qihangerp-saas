@@ -166,7 +166,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
                 new LambdaQueryWrapper<ErpOrderItem>()
                 .eq(ErpOrderItem::getOrderId, erpOrder.getId())
                         .eq(ErpOrderItem::getShipStatus,0)
-                        .eq(ErpOrderItem::getShipType,0)
+                        .eq(ErpOrderItem::getShipper,0)
         );
         if(oOrderItems==null) return ResultVo.error("订单 item 数据错误，无法发货！");
 
@@ -295,7 +295,9 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
             orderItemUpdate.setId( orderItem.getId());
             orderItemUpdate.setUpdateBy("手动发货");
             orderItemUpdate.setUpdateTime(new Date());
+            orderItemUpdate.setShipper(0);
             orderItemUpdate.setShipStatus(2);//发货状态 0 待发货 1 已分配供应商发货 2全部发货
+            orderItemUpdate.setShipType(2);//发货方式1电子面单发货2手动发货
             orderItemMapper.updateById(orderItemUpdate);
         }
 
@@ -303,8 +305,10 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         // 更新状态、发货方式
         ErpOrder update = new ErpOrder();
         update.setId(erpOrder.getId());
+        update.setShipper(0);
         update.setShipStatus(2);//发货状态 0 待发货 1 已分配供应商发货 2全部发货
         update.setOrderStatus(2);
+        update.setShipType(2);//发货方式1电子面单发货2手动发货
         update.setUpdateTime(new Date());
         update.setUpdateBy("手动发货");
         mapper.updateById(update);
@@ -493,7 +497,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
                 orderItemUpdate.setUpdateBy("分配供应商发货");
                 orderItemUpdate.setUpdateTime(new Date());
                 orderItemUpdate.setShipStatus(1);//发货状态 0 待发货 1 已分配供应商发货 2全部发货
-                orderItemUpdate.setShipType(2);//发货方式 0 自己发货1联合发货2供应商发货
+                orderItemUpdate.setShipper(2);//发货方式 0 自己发货1联合发货2供应商发货
                 orderItemMapper.updateById(orderItemUpdate);
             }
         }
@@ -532,7 +536,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         ErpOrder update = new ErpOrder();
         update.setId(erpOrder.getId());
         update.setShipStatus(1);//发货状态 0 待发货 1 已分配供应商发货 2全部发货
-        update.setShipType(2);//发发货方式 0 自己发货1联合发货2供应商发货
+        update.setShipper(2);//发发货方式 0 自己发货1联合发货2供应商发货
         update.setUpdateTime(new Date());
         update.setUpdateBy("分配供应商发货");
         mapper.updateById(update);

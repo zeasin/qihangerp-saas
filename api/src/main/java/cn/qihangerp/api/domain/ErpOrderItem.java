@@ -131,10 +131,11 @@ public class ErpOrderItem implements Serializable {
      */
     private String updateBy;
 
-    //发货状态 0 待发货 1 已发货
+    //发货状态 0 待发货 1 已分配供应商发货 2全部发货
     private Integer shipStatus;
-    // 发货方式 0 自己发货 2供应商发货
-    private Integer shipType;
+    // 发货方 0 自己发货1联合发货2供应商发货
+    private Integer shipper;
+    private Integer shipType;//发货方式1电子面单发货2手动发货
 
     private static final long serialVersionUID = 1L;
 }
