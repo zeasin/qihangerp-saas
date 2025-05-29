@@ -21,12 +21,12 @@ public interface ErpOrderService extends IService<ErpOrder> {
     PageResult<ErpOrder> queryPageList(OrderSearchRequest bo, PageQuery pageQuery);
 
     /**
-     * 获取自己待发货list（订单打印发货）
+     * 获取待发货list（去除处理过的）
      * @param bo
      * @param pageQuery
      * @return
      */
-    PageResult<ErpOrder> queryWaitSelfShipmentPageList(OrderSearchRequest bo, PageQuery pageQuery);
+    PageResult<ErpOrder> queryWaitShipmentPageList(OrderSearchRequest bo, PageQuery pageQuery);
     ErpOrder queryDetailById(Long id);
 
     /**

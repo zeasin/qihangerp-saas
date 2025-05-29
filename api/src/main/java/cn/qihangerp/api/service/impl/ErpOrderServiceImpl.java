@@ -91,8 +91,14 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         return PageResult.build(pages);
     }
 
+    /**
+     * 获取待发货list（去除处理过的）
+     * @param bo
+     * @param pageQuery
+     * @return
+     */
     @Override
-    public PageResult<ErpOrder> queryWaitSelfShipmentPageList(OrderSearchRequest bo, PageQuery pageQuery) {
+    public PageResult<ErpOrder> queryWaitShipmentPageList(OrderSearchRequest bo, PageQuery pageQuery) {
 
         LambdaQueryWrapper<ErpOrder> queryWrapper = new LambdaQueryWrapper<ErpOrder>()
                 .eq(bo.getTenantId()!=null,ErpOrder::getTenantId,bo.getTenantId())
@@ -100,7 +106,8 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
                 .eq(bo.getShopType()!=null,ErpOrder::getShopType,bo.getShopType())
                 .eq(ErpOrder::getOrderStatus,1)
                 .eq(ErpOrder::getRefundStatus,1)
-                .lt(ErpOrder::getShipType,2)//ship_type发货方式 0 自己发货1联合发货2供应商发货
+                .eq(ErpOrder::getShipStatus,0)//发货状态 0 待发货 1 已分配供应商发货 2全部发货
+//                .lt(ErpOrder::getShipType,2)//ship_type发货方式 0 自己发货1联合发货2供应商发货
                 .ge(org.springframework.util.StringUtils.hasText(bo.getStartTime()),ErpOrder::getOrderTime,bo.getStartTime())
                 .le(org.springframework.util.StringUtils.hasText(bo.getEndTime()),ErpOrder::getOrderTime,bo.getEndTime())
                 .eq(org.springframework.util.StringUtils.hasText(bo.getOrderNum()),ErpOrder::getOrderNum,bo.getOrderNum())
@@ -113,7 +120,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
                 order.setItemList(orderItemMapper.selectList(new LambdaQueryWrapper<ErpOrderItem>()
                         .eq(ErpOrderItem::getOrderId, order.getId())
                         .eq(ErpOrderItem::getShipStatus,0)
-                        .eq(ErpOrderItem::getShipType,0)
+//                        .eq(ErpOrderItem::getShipType,0)
                 ));
             }
         }
@@ -130,6 +137,12 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         return order;
     }
 
+    /**
+     * 手动发货
+     * @param shipBo
+     * @param createBy
+     * @return
+     */
     @Transactional
     @Override
     public ResultVo<Integer> manualShipmentOrder(ErpOrderShipBo shipBo,String createBy) {
@@ -141,6 +154,9 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
             return ResultVo.error("找不到订单数据");
         } else if (erpOrder.getOrderStatus().intValue() != 1 && erpOrder.getRefundStatus().intValue() != 1) {
             return ResultVo.error("订单状态不对，不允许发货");
+        }
+        if(erpOrder.getShipStatus()!=0){
+            return ResultVo.error("订单已分配供应商发货，不允许手动发货");
         }
         ErpLogisticsCompany erpLogisticsCompany = erpLogisticsCompanyMapper.selectById(shipBo.getShippingCompany());
         if(erpLogisticsCompany==null) return ResultVo.error("快递公司选择错误");
@@ -279,7 +295,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
             orderItemUpdate.setId( orderItem.getId());
             orderItemUpdate.setUpdateBy("手动发货");
             orderItemUpdate.setUpdateTime(new Date());
-            orderItemUpdate.setShipStatus(1);//发货状态 0 待发货 1 已发货
+            orderItemUpdate.setShipStatus(2);//发货状态 0 待发货 1 已分配供应商发货 2全部发货
             orderItemMapper.updateById(orderItemUpdate);
         }
 
@@ -287,7 +303,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         // 更新状态、发货方式
         ErpOrder update = new ErpOrder();
         update.setId(erpOrder.getId());
-        update.setShipStatus(2);
+        update.setShipStatus(2);//发货状态 0 待发货 1 已分配供应商发货 2全部发货
         update.setOrderStatus(2);
         update.setUpdateTime(new Date());
         update.setUpdateBy("手动发货");
@@ -311,9 +327,14 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         if (erpOrder == null) {
             return ResultVo.error("找不到订单数据");
         } else if (erpOrder.getOrderStatus().intValue() != 1 && erpOrder.getRefundStatus().intValue() != 1) {
-            return ResultVo.error("订单状态不对，不允许发货");
+            return ResultVo.error("订单状态不对，不允许分配发货");
         }
-        List<ErpOrderItem> oOrderItems = orderItemMapper.selectList(new LambdaQueryWrapper<ErpOrderItem>().eq(ErpOrderItem::getOrderId, erpOrder.getId()));
+        if(erpOrder.getShipStatus()!=0){
+            return ResultVo.error("订单发货已处理，不允许分配发货");
+        }
+
+        List<ErpOrderItem> oOrderItems = orderItemMapper.selectList(new LambdaQueryWrapper<ErpOrderItem>()
+                .eq(ErpOrderItem::getOrderId, erpOrder.getId()));
         if(oOrderItems==null) return ResultVo.error("订单 item 数据错误，无法发货！");
 
         long skuIdZeroCount = oOrderItems.stream().filter(x -> x.getErpSkuId() == 0).count();
@@ -471,8 +492,8 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
                 orderItemUpdate.setId( item.getId());
                 orderItemUpdate.setUpdateBy("分配供应商发货");
                 orderItemUpdate.setUpdateTime(new Date());
-                orderItemUpdate.setShipStatus(0);//发货状态 0 待发货 1 已发货
-                orderItemUpdate.setShipType(1);//发货方式 0 自己发货1供应商发货2联合发货
+                orderItemUpdate.setShipStatus(1);//发货状态 0 待发货 1 已分配供应商发货 2全部发货
+                orderItemUpdate.setShipType(2);//发货方式 0 自己发货1联合发货2供应商发货
                 orderItemMapper.updateById(orderItemUpdate);
             }
         }
@@ -510,7 +531,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         // 更新状态、发货方式
         ErpOrder update = new ErpOrder();
         update.setId(erpOrder.getId());
-//        update.setShipStatus(1);
+        update.setShipStatus(1);//发货状态 0 待发货 1 已分配供应商发货 2全部发货
         update.setShipType(2);//发发货方式 0 自己发货1联合发货2供应商发货
         update.setUpdateTime(new Date());
         update.setUpdateBy("分配供应商发货");

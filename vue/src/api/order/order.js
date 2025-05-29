@@ -12,7 +12,7 @@ export function listOrder(query) {
 // 查询待自己发货的订单列表
 export function waitSelfShipmentList(query) {
   return request({
-    url: '/order/waitSelfShipmentList',
+    url: '/order/waitShipmentList',
     method: 'get',
     params: query
   })

@@ -138,11 +138,13 @@
           <el-select v-model="form.usageScenario" placeholder="交易类型">
             <el-option label="代发货款" value="代发货款"></el-option>
             <el-option label="采购货款" value="采购货款"></el-option>
-            <el-option label="包装耗材" value="包装耗材"></el-option>
+            <el-option label="快递费用" value="快递费用"></el-option>
             <el-option label="推广费" value="推广费"></el-option>
+            <el-option label="消费者补偿" value="消费者补偿"></el-option>
+            <el-option label="包装耗材" value="包装耗材"></el-option>
             <el-option label="店铺保证金" value="店铺保证金"></el-option>
             <el-option label="提现收入" value="提现收入"></el-option>
-            <el-option label="消费者补偿" value="消费者补偿"></el-option>
+
             <el-option label="店铺扣款" value="店铺扣款"></el-option>
           </el-select>
         </el-form-item>

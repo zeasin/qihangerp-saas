@@ -40,13 +40,19 @@ public class OrderController extends BaseController
         return getDataTable(pageList);
     }
 
-    @GetMapping("/waitSelfShipmentList")
-    public TableDataInfo queryWaitSelfShipmentPageList(OrderSearchRequest order, PageQuery pageQuery)
+    /**
+     * 待发货列表（去除处理过的）
+     * @param order
+     * @param pageQuery
+     * @return
+     */
+    @GetMapping("/waitShipmentList")
+    public TableDataInfo waitShipmentList(OrderSearchRequest order, PageQuery pageQuery)
     {
         if(getUserId()!=1) {
             order.setTenantId(getUserId());
         }
-        var pageList = orderService.queryWaitSelfShipmentPageList(order,pageQuery);
+        var pageList = orderService.queryWaitShipmentPageList(order,pageQuery);
         return getDataTable(pageList);
     }
 
