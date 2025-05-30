@@ -1,13 +1,15 @@
 <template>
   <div class="app-container">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="待发货" name="printOffline">
+      <el-tab-pane label="待发货" name="waitShip">
         <shipment-wait></shipment-wait>
       </el-tab-pane>
-      <el-tab-pane label="已发货" name="printWei" lazy>
+      <el-tab-pane label="已发货" name="shipped" lazy>
         <shipment-shipped></shipment-shipped>
       </el-tab-pane>
-
+      <el-tab-pane label="已分配供应商发货" name="assigned" lazy>
+        <shipment-assigned></shipment-assigned>
+      </el-tab-pane>
 
 
     </el-tabs>
@@ -18,13 +20,14 @@
 <script>
 import ShipmentWait  from "@/views/shipping/send/manual_shipment/wait_ship.vue";
 import ShipmentShipped  from "@/views/shipping/send/manual_shipment/shipped_list.vue";
+import ShipmentAssigned  from "@/views/shipping/send/manual_shipment/assigned_list.vue";
 
 export default {
   name: "Shipment",
-  components:{ShipmentWait,ShipmentShipped},
+  components:{ShipmentWait,ShipmentShipped,ShipmentAssigned},
   data() {
     return {
-      activeName: 'printOffline'
+      activeName: 'waitShip'
     };
   },
   created() {

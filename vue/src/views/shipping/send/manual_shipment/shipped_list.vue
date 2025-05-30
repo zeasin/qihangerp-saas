@@ -161,8 +161,6 @@ import {
 selfShippedList
 } from "@/api/order/order";
 
-import {getWaybillAccountList,cancelWaybillCode,getWaybillPrintData, getWaybillCode, pushWaybillPrintSuccess,pushShipSend,getWaybillCodeAndSend} from "@/api/shop/ewaybill";
-import {listLogisticsStatus} from "@/api/api/logistics";
 import {listShop} from "@/api/shop/shop";
 import {parseTime,amountFormatter} from "@/utils/zhijian";
 

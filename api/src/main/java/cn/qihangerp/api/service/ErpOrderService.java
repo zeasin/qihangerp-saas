@@ -35,6 +35,7 @@ public interface ErpOrderService extends IService<ErpOrder> {
      * @return
      */
     PageResult<ErpOrder> queryShippedPageList(OrderSearchRequest bo, PageQuery pageQuery);
+    PageResult<ErpOrder> queryAssignedShipmentList(OrderSearchRequest bo, PageQuery pageQuery);
     ErpOrder queryDetailById(Long id);
 
     /**

@@ -18,7 +18,7 @@ export function waitSelfShipmentList(query) {
   })
 }
 
-// 查询待自己发货的订单列表(已发货的-电子面单发货)
+// 查询待自己发货的订单列表(已发货的)
 export function selfShippedList(query) {
   return request({
     url: '/order/shippedList',
@@ -26,7 +26,14 @@ export function selfShippedList(query) {
     params: query
   })
 }
-
+// 查询已分配给供应商发货的订单
+export function assignedShipmentList(query) {
+  return request({
+    url: '/order/assignedShipmentList',
+    method: 'get',
+    params: query
+  })
+}
 // 查询订单详细
 export function getOrder(id) {
   return request({
