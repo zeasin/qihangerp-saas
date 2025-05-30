@@ -76,6 +76,13 @@ public class ErpOrderShipWaybillServiceImpl extends ServiceImpl<ErpOrderShipWayb
 
         return ResultVo.success();
     }
+
+    @Override
+    public List<ErpOrderShipWaybill> queryListByErpOrderId(Long[] erpOrderIds) {
+        LambdaQueryWrapper<ErpOrderShipWaybill> qw = new LambdaQueryWrapper<>();
+        qw.in(ErpOrderShipWaybill::getErpOrderId, erpOrderIds);
+        return this.baseMapper.selectList(qw);
+    }
 }
 
 

@@ -40,7 +40,7 @@ export function getWaybillCode(data) {
 // 获取打印的数据
 export function getWaybillPrintData(data) {
   return request({
-    url: '/api/open-api/wei/ewaybill/get_print_data',
+    url: '/shop/ewaybill/get_print_data',
     method: 'post',
     data: data
   })

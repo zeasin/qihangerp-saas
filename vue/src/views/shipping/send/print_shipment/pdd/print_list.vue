@@ -451,57 +451,35 @@ export default {
       getWaybillPrintData({shopId: this.queryParams.shopId, ids: this.ids}).then(response => {
         console.log("======打印======", response.data)
         if (response.data && response.data.length>0) {
-          const ws = new WebSocket('ws://127.0.0.1:12705');
+          const ws = new WebSocket('ws://127.0.0.1:5000');
 
           ws.onopen = () => {
             console.log('开始打印: ');
-            // let printData = []
-            // response.data.forEach(x => printData.push(x.printData))
-            // 打印
-            // https://mmec-shop-1258344707.cos.ap-shanghai.myqcloud.com/shop/public/2023-11-08/ad8e4daf-0e41-4a01-ad44-8db2c419e3f3.html
-            response.data.forEach(x => {
-              console.log('开始打印: ',x);
+            // response.data.forEach(x => {
+              console.log('开始打印: ');
               ws.send(JSON.stringify({
                 command: 'print',
-                version: '2.0', // 必传
+                version: '1.0', // 必传
                 requestID: this.getUUID(8, 16), // String, 调用方保证唯一
-                taskList: [{
-                  taskID: this.getUUID(8, 10),
-                  // printInfo: 'JTdCJTIycHJpbnREYXRhJTIyJTNBJTdCJTIyd2F5YmlsbElkJTIyJTNBJTIyNzM2MTE0NjI1MzgzODUlMjIlMkMlMjJwcmludFRpbWUlMjIlM0ElMjIyMDI0JTJGMDYlMkYwMyUyMDE4JTNBNDUlMjIlMkMlMjJzZXJ2aWNlcyUyMiUzQSU1QiU1RCUyQyUyMnJlY2VpdmVyTmFtZSUyMiUzQSUyMiVFNSVBRSVBMyoqJTIyJTJDJTIycmVjZWl2ZXJQaG9uZSUyMiUzQSUyMjEzNyoqKiozODQwJTIyJTJDJTIycmVjZWl2ZXJBZGRyZXNzJTIyJTNBJTIyJUU0JUI4JThBJUU2JUI1JUI3JUU1JUI4JTgyJUU0JUI4JThBJUU2JUI1JUI3JUU1JUI4JTgyJUU2JUI1JUE2JUU0JUI4JTlDJUU2JTk2JUIwJUU1JThDJUJBJUU1JUJDJUEwJUU2JUIxJTlGJUU5JTk1JTg3JUU1JUFEJTk5JUU2JUExJUE1JUU4JUI3JUFGMjM4JUU1JUJDJTg0MzAlRTUlOEYlQjcyMDIlRTUlQUUlQTQlMjIlMkMlMjJzZW5kZXJOYW1lJTIyJTNBJTIyJUU0JUI4JTgzJUU5JTg3JThDJUU1JTlEJUFBJTIyJTJDJTIyc2VuZGVyUGhvbmUlMjIlM0ElMjIxNTgxODU5MDExOSUyMiUyQyUyMnNlbmRlckFkZHJlc3MlMjIlM0ElMjIlRTUlQjklQkYlRTQlQjglOUMlRTclOUMlODElRTYlQjclQjElRTUlOUMlQjMlRTUlQjglODIlRTUlQUUlOUQlRTUlQUUlODklRTUlOEMlQkF4eHh4eDElRTUlOEYlQjclRTUlOEMlOTclRTklOTclQTglMjIlMkMlMjJzaXRlQ29kZSUyMiUzQSUyMjU1ODMwJTIyJTJDJTIyZXdheWJpbGxPcmRlcklkJTIyJTNBJTIyMzQ4NjYxMzA5Mzg5ODE0MTY5OSUyMiUyQyUyMmJhZ0FkZHIlMjIlM0ElMjIlRTYlQjIlQUElRTQlQjglOUMlMjIlMkMlMjJtYXJrJTIyJTNBJTIyMzEwLSUyMFA2JTIwMDMxJTIwJTVCQjMxJTVEJTIyJTJDJTIyc3RvcmVOYW1lJTIyJTNBJTIyJUU5JUFBJTg0JUU5JUI5JUJGJUU2JTlDJTlCJUU1JUIxJUIxJUU0JUI4JTkzJUU1JThEJTk2JUU1JUJBJTk3JTIyJTJDJTIyY3VzdG9tZXJOb3RlcyUyMiUzQSUyMiUyMiUyQyUyMm1lcmNoYW50Tm90ZXMlMjIlM0ElMjIlMjIlMkMlMjJvcmRlcklkJTIyJTNBJTIyMzcyMDI5MzQxNTUwOTk1NDgxNiUyMiU3RCUyQyUyMnRlbXBsYXRlJTIyJTNBJTdCJTIydGVtcGxhdGVJZCUyMiUzQSUyMnNpbmdsZSUyMiUyQyUyMnRlbXBsYXRlTmFtZSUyMiUzQSUyMiVFOSVCQiU5OCVFOCVBRSVBNCVFNyVBOSVCQSVFNiVBOCVBMSVFNiU5RCVCRiUyMiUyQyUyMnRlbXBsYXRlRGVzYyUyMiUzQSUyMiVFNCVCOCU4MCVFOCU4MSU5NCVFNSU4RCU5NSVFNiVBMCU4NyVFNSU4NyU4NiVFNiVBOCVBMSVFNiU5RCVCRiUyMiUyQyUyMnRlbXBsYXRlVHlwZSUyMiUzQSUyMnNpbmdsZSUyMiUyQyUyMm9wdGlvbkxpc3QlMjIlM0ElN0IlN0QlMkMlMjJvcHRpb25zJTIyJTNBJTVCJTVEJTJDJTIyY29kZSUyMiUzQTAlMkMlMjJkZWxpdmVyeUlkJTIyJTNBJTIyWlRPJTIyJTJDJTIydGVtcGxhdGVVcmwlMjIlM0ElMjJodHRwcyUzQSUyRiUyRm1tZWMtc2hvcC0xMjU4MzQ0NzA3LmNvcy5hcC1zaGFuZ2hhaS5teXFjbG91ZC5jb20lMkZzaG9wJTJGcHVibGljJTJGMjAyMy0xMC0yNSUyRjNlY2JiM2FhLTViY2YtNDA0ZC05NzJhLThhMDhhODE2MjIzYy5odG1sJTIyJTJDJTIyY3VzdG9tQ29uZmlnJTIyJTNBJTdCJTIyd2lkdGglMjIlM0E2NTYlMkMlMjJoZWlnaHQlMjIlM0EzMDAlMkMlMjJsZWZ0JTIyJTNBNjAlMkMlMjJ0b3AlMjIlM0E5MzAlN0QlMkMlMjJ3aWR0aCUyMiUzQTc2JTJDJTIyaGVpZ2h0JTIyJTNBMTMwJTdEJTdE', // String, [获取打印报文]接口返回的print_info
-                  printInfo: x.printData,
-                  // printNum: {
-                  //   curNum: 1, // 打印计数-当前张数
-                  //   sumNum: 2, // 打印计数-总张数
-                  // },
-                  splitControl: 0,// 可不传， 默认为0， 根据自定义内容自动分页；1，禁止分页；2；强制分页， 内容打印在第二页
-                  showDeliveryLogo: 0, // 可不传， 默认为1， 传0时不展示快递公司logo
-                  // 自定义模板信息，没有自定义模板需求可不传
-                  // customInfo: {
-                  //   templateUrl: 'https://mmec-shop-1258344707.cos.ap-shanghai.myqcloud.com/shop/public/2023-11-10/a80c0110-3fb8-4190-bdcc-10124b7dd0ce.html',//'https://mmec-shop-1258344707.cos.ap-shanghai.myqcloud.com/shop/public/2023-11-08/ad8e4daf-0e41-4a01-ad44-8db2c419e3f3.html', // 自定义模板url
-                  //   // 模板里面定义的数据字段
-                  //   // 模板里使用{{{}}}，数据可以通过<br>换行
-                  //   data: {
-                  //     shopName: "测试小店",
-                  //     productInfo: [
-                  //       {name: "商品1", count: 1, code: "asd", description: "商品描述"},
-                  //       // {name: "商品2", count: 2, code: "zxc123", description: "商品<br>描述"}
-                  //     ],
-                  //     imgSrc: "https://www.tencent.com/img/index/tencent_logo.png",
-                  //     productQRcode: "https://www.tencent.com/zh-cn/",
-                  //     productBarcode: "product1"
-                  //   }
-                  // },
-                  // 面单补充信息，用来覆盖寄件人信息，没有这种需求可以不传
+                task: {
+                  documents: [{
+                    contents:[],
+                    encryptedData: "nCGXTLX57Gy747SrsozPkywPsv/CN4Dg93AB5VW7aOYlGo3aM7Dwcs/BWlGXR1RgplnsD78RiIGqME4WX1PxpMfMaQUxSbmwnLgOfJRHyJjRd8+Lgu4NQcBsd6lwrhPzDGeTC3dFKUw1Of/mWMiVJjFQRZD2cC4RdGJjwtPynZnIN5ll/ON45pcIMLqRn1LOyvrq3QgMMIQKkNhmxU9ZrRmm9ZOpGYbMP1jvQaz6lo3ko/bHuvB49v1NBSrkR3MGPnEF4JPcQ+YZVFkyaWKeTbQJppjzGFOJSLlxrF4RfgGmseSzqJWZWSET58QFuOm/fdfytbGpokLyH/Ub1FIeWfBqeelWv6jZ0CYZcDDOJ7bXoPNT0GxG6zuDZHgLijpviCMqs8pVKCmIyj3HNojPophkeNL6r/lE05shyjAM6LAGaMke6/dlUGeyZnSt/s/rWVjNP4eQ0AVFv+5PwdcGRYaCOBKJQmPn94h7iiMH86QT/4Gmyt+aCOddXzWy+EC8c9nSQR1nKzwwHysqqLSCG+u5vzhgPntr8lnY6nE1kwJ9la6LCoMbt9+221sWlaEy22c4mzfW4/d1GLWpLtgYr6nd7SFTBk7Glh3X892X7z7lY233G3dcVMbZJZZSr9ynJeKj3Zjm++6EUTTMng4BOQ+YjrQgxS8CDlVoCMOeF7GnmhB0n/lpGsh9nUDywS1wXe9vBTE+ATgzBCnpGTX/c3k/tYieK16GiKVe+UXhs4XLPJrSjqJUyAq0l4lOqWqhxiX2nBPsuJK8DFfs8k+e62atXLbhqOVyujFgpBaRqExuxOP3GCzUR304zXmCc/TuoH0EQhLNynGS2xYKyIYqPgzYLz92fOSCDtJtLla21m2+5QmB3TgE/o73fosDhGC620/RFnn/4RKaFQjo6OfHL1blDmwdOJipn0RK6yMYfl3fmHYx0tI0vI+OsahsdC8oJ4NRboNfw85/DEsQEfBtfQmruXNlausBYiUAd7T57rKEIUWYXMD8XRKryXicuJSImwu06jn7Pnt/D53m2kEyi1a/lo9/BqBvr6UA8G/rBteYJFhg4Dd104Gp9D4tXbmdtCCw6iwZ4ncjK06jd94a2rfKgzoW+zgb8dpC84VL3SrZccZwyJRaASL78kluN0hE8So65+FOINp/H3RL/ULZuuoTEiZiXQmYh313pG6/zUYl99DBefOnY3SygXXWMB8o34enqNfPVsJs6gfnFXQigRbJVJI3MdKxM1W9NTUZV9XGY9dhqglzNIKCh4UF+3fLZr7z7g7axtlinKwILgO2r9CoICIgBEGCMGdio1ZmaZ4GsiI8ptwtmdcE0QA55u81z4zZ+TwsdBouQsBOFIZAPK3VMFZzIfej376/W5Tq7xbNnj3lNjS7pKaNbnT2aTLvEfOeL+Rbir6NG1I4wYj9UDLbLOJ81nnlQ3dgHBJOsdzi1odXJHX2IQKch4Se618WxM3T1LpKtQdKImP7I4vSUDj3QVxAQIf5U4u2mogjr3yBEX1wrUv9i/SG6yTyP9LJVwuROguveVypvk9Qsv1V+rkL/hpdjNRG9YhF0klEfcAfqK7WHo1P5BpJWklT+doCzYwdeXjMvlSQvQj6a5xDYStwQLjdUhCKsFKg9A6nTv1jC0jvn73Iqo615sqTMupcgXavpEEgDk4dTvd1O6ahWCbBVcLYwSm2IUwYr3Ajux2CpslOjBBnwTMP2NR/jKQXlUzAaWJSZ7CI0kdhQHgZ0GX2vhuXRTZKdeuOZlvDkJSqEt09u3XvK2vaUfLBHpAbx5/zoDIBZoRkA8Sqlg66Zg==?v=11&pv=1",
+                    signature: "YeUTK0I4oeMlVgk6LXcqpwLre0dsg7HwKlR4ELXleNtEM1BVzE9uRSELJmewT9NQVl6Xr2D/YK1G3boQdD3K4//+JfJq4IaAyg/gEFXwEozEFcWU+sqmopbuBfv92MXhl5GbwehEglGZRD1TSe5HbwL5nopl2eM6EOnLTKuclQQ=",
+                    templateUrl: "https://file-link.pinduoduo.com/jtsd_one",
+                    ver: "11"
 
-                }],
-                printType: 1, // Number 打印类型，默认为 1，打印固定高度的面单；如果为2，则打印任意自定义内容，需要传递 size 参数指定纸张尺寸，printInfo 改为传递 base64 格式的 html
-                size: {
-                  width: 76, // 纸张尺寸，单位毫米，printType 为 2 时必传
-                  height: 130
-                },
-                printer: this.form.printer, // 选中的打印机，printer.name
+                  }],
+                  notifyType: [
+                    "print"
+                  ],
+                  preview: false,
+                  previewType: "image",
+                  taskID:  this.getUUID(8, 16),
+                  printer: this.form.printer, // 选中的打印机，printer.name
+                }
               }))
-            })
+            // })
           };
 
 

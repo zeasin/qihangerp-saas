@@ -11,6 +11,7 @@ import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.pdd.PddLogisticsApiHelper;
 import cn.qihangerp.open.pdd.PddWaybillAccountApiHelper;
 import cn.qihangerp.open.pdd.PddWaybillApiHelper;
+import cn.qihangerp.open.pdd.model.Order;
 import cn.qihangerp.open.pdd.model.WaybillAccount;
 import cn.qihangerp.open.pdd.model.WaybillCodeModule;
 import cn.qihangerp.open.pdd.request.*;
@@ -24,10 +25,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @RequestMapping("/shop/ewaybill")
@@ -776,35 +774,40 @@ public class ShopWayBillController extends BaseController {
 //        }
 //        return AjaxResult.success();
 //    }
-//
-//    @PostMapping("/get_print_data")
-//    @ResponseBody
-//    public AjaxResult getPrintData(@RequestBody WeiWaybillGetBo req) {
-//        if (req.getIds() == null || req.getIds().length <= 0) {
-//            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有选择订单");
-//        }
-//        List<OShipWaybill> listByOrderIds = erpShipWaybillService.getListBySupplierShipOrderIds(req.getIds());
-//        return AjaxResult.success(listByOrderIds);
-//    }
-//
-//    @PostMapping("/push_print_success")
-//    @ResponseBody
-//    public AjaxResult pushPrintSuccess(@RequestBody WeiWaybillGetBo req) {
-//        if (req.getIds() == null || req.getIds().length <= 0) {
-//            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有选择订单");
-//        }
-//        int total  = req.getIds().length;
-//        int success =0;
-//        int fail = 0;
+
+    @PostMapping("/get_print_data")
+    @ResponseBody
+    public AjaxResult getPrintData(@RequestBody ShopWaybillGetCodeBo req) {
+        if (req.getIds() == null || req.getIds().length <= 0) {
+            return AjaxResult.error("参数错误，没有选择订单");
+        }
+        List<ErpOrderShipWaybill> listByOrderIds = orderShipWaybillService.queryListByErpOrderId(req.getIds());
+        return AjaxResult.success(listByOrderIds);
+    }
+
+    /***
+     * 打印成功回调
+     * @param req
+     * @return
+     */
+    @PostMapping("/push_print_success")
+    @ResponseBody
+    public AjaxResult pushPrintSuccess(@RequestBody ShopWaybillGetCodeBo req) {
+        if (req.getIds() == null || req.getIds().length <= 0) {
+            return AjaxResult.error( "参数错误，没有选择订单");
+        }
+        int total  = req.getIds().length;
+        int success =0;
+        int fail = 0;
 //        for (String id:req.getIds()) {
 //            ResultVo<Integer> resultVo = erpShipWaybillService.supplierPrintSuccess(id);
 //            if (resultVo.getCode() == 0) success++;
 //            else fail++;
 //        }
-//        String msg ="打印订单，总数："+total+ " 成功："+success+" 失败："+fail;
-//        log.info(msg);
-//        return AjaxResult.success(msg);
-//    }
+        String msg ="打印订单，总数："+total+ " 成功："+success+" 失败："+fail;
+        log.info(msg);
+        return AjaxResult.success(msg);
+    }
 //
 //    /**
 //     * 发货
