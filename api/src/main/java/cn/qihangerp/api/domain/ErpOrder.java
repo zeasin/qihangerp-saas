@@ -157,5 +157,8 @@ public class ErpOrder implements Serializable {
     @TableField(exist = false)
     private List<ErpOrderItem> itemList;
 
+    @TableField(exist = false)
+    private List<ErpShipment> shipmentList;
+
     private static final long serialVersionUID = 1L;
 }

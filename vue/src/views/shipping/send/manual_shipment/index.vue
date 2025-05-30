@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="手动发货" name="printOffline">
-        <manual-shipment></manual-shipment>
+      <el-tab-pane label="待发货" name="printOffline">
+        <shipment-wait></shipment-wait>
       </el-tab-pane>
-      <el-tab-pane label="电子面单发货" name="printWei" lazy>
-        <print-shipment></print-shipment>
+      <el-tab-pane label="已发货" name="printWei" lazy>
+        <shipment-shipped></shipment-shipped>
       </el-tab-pane>
 
 
@@ -16,14 +16,12 @@
 </template>
 
 <script>
-import ManualShipment  from "@/views/shipping/send/manual_shipment.vue";
-import PrintShipment  from "@/views/shipping/send/print_shipment/index.vue";
-
-
+import ShipmentWait  from "@/views/shipping/send/manual_shipment/wait_ship.vue";
+import ShipmentShipped  from "@/views/shipping/send/manual_shipment/shipped_list.vue";
 
 export default {
   name: "Shipment",
-  components:{PrintShipment,ManualShipment},
+  components:{ShipmentWait,ShipmentShipped},
   data() {
     return {
       activeName: 'printOffline'

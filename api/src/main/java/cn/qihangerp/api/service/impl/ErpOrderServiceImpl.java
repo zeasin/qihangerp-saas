@@ -140,6 +140,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
                 .eq(bo.getTenantId()!=null,ErpOrder::getTenantId,bo.getTenantId())
                 .eq(bo.getShopId()!=null,ErpOrder::getShopId,bo.getShopId())
                 .eq(bo.getShopType()!=null,ErpOrder::getShopType,bo.getShopType())
+                .eq(bo.getShipType()!=null,ErpOrder::getShipType,bo.getShipType())
                 .eq(ErpOrder::getShipStatus,2)//发货状态 0 待发货 1 已分配供应商发货 2全部发货
                 .lt(ErpOrder::getShipper,2)//ship_type发货方 0 自己发货1联合发货2供应商发货
                 .ge(org.springframework.util.StringUtils.hasText(bo.getStartTime()),ErpOrder::getOrderTime,bo.getStartTime())
@@ -156,6 +157,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
                                 .eq(ErpOrderItem::getShipStatus,2)
                         .lt(ErpOrderItem::getShipper,2)
                 ));
+                order.setShipmentList(shipmentMapper.selectList(new LambdaQueryWrapper<ErpShipment>().eq(ErpShipment::getOrderId,order.getId())));
             }
         }
 
@@ -345,6 +347,7 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         update.setShipStatus(2);//发货状态 0 待发货 1 已分配供应商发货 2全部发货
         update.setOrderStatus(2);
         update.setShipType(2);//发货方式1电子面单发货2手动发货
+
         update.setUpdateTime(new Date());
         update.setUpdateBy("手动发货");
         mapper.updateById(update);

@@ -33,9 +33,7 @@ public class OrderController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(OrderSearchRequest order, PageQuery pageQuery)
     {
-        if(getUserId()!=1) {
-            order.setTenantId(getUserId());
-        }
+        order.setTenantId(getUserId());
         var pageList = orderService.queryPageList(order,pageQuery);
         return getDataTable(pageList);
     }
@@ -49,9 +47,7 @@ public class OrderController extends BaseController
     @GetMapping("/waitShipmentList")
     public TableDataInfo waitShipmentList(OrderSearchRequest order, PageQuery pageQuery)
     {
-        if(getUserId()!=1) {
-            order.setTenantId(getUserId());
-        }
+        order.setTenantId(getUserId());
         var pageList = orderService.queryWaitShipmentPageList(order,pageQuery);
         return getDataTable(pageList);
     }
@@ -65,9 +61,7 @@ public class OrderController extends BaseController
     @GetMapping("/shippedList")
     public TableDataInfo shippedList(OrderSearchRequest order, PageQuery pageQuery)
     {
-        if(getUserId()!=1) {
-            order.setTenantId(getUserId());
-        }
+        order.setTenantId(getUserId());
         var pageList = orderService.queryShippedPageList(order,pageQuery);
         return getDataTable(pageList);
     }
@@ -79,6 +73,7 @@ public class OrderController extends BaseController
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
+        if(getUserId()==1) return AjaxResult.error("超级管理员不能操作");
         ErpOrder erpOrder = orderService.queryDetailById(id);
 
         return success(erpOrder);
@@ -93,6 +88,7 @@ public class OrderController extends BaseController
     @PostMapping("/manualShipment")
     public AjaxResult manualShipment(@RequestBody ErpOrderShipBo shipBo)
     {
+        if(getUserId()==1) return AjaxResult.error("超级管理员不能操作");
         var result = orderService.manualShipmentOrder(shipBo,getUsername());
         if(result.getCode() == 0) return AjaxResult.success();
         else return AjaxResult.error(result.getMsg());
@@ -106,6 +102,7 @@ public class OrderController extends BaseController
     @PostMapping("/allocateShipmentOrder")
     public AjaxResult allocateShipmentOrder(@RequestBody ErpOrderAllocateShipBo shipBo)
     {
+        if(getUserId()==1) return AjaxResult.error("超级管理员不能操作");
         var result = orderService.allocateShipmentOrder(shipBo,getUsername());
         if(result.getCode() == 0) return AjaxResult.success();
         else return AjaxResult.error(result.getMsg());

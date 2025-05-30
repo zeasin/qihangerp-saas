@@ -370,7 +370,7 @@ INSERT INTO `sys_menu` VALUES (2094, '新建出库单', 6, 26, 'stock_out/create
 INSERT INTO `sys_menu` VALUES (2095, '订单账单管理', 9, 1, 'order_bill', 'financial/order_bill', NULL, 1, 0, 'C', '0', '0', '', 'icon', 'admin', '2025-05-26 09:01:39', 'admin', '2025-05-28 15:23:09', '');
 INSERT INTO `sys_menu` VALUES (2096, '店铺总账', 9, 0, 'shop_accounts', 'financial/shop_accounts', NULL, 1, 0, 'C', '0', '0', NULL, 'date', 'admin', '2025-05-28 15:22:41', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2097, '发货&分配发货', 4, 1, 'send', 'shipping/send/manual_shipment', NULL, 1, 0, 'C', '0', '0', '', 'star', 'admin', '2025-05-29 14:08:43', 'admin', '2025-05-29 15:24:49', '');
-INSERT INTO `sys_menu` VALUES (2098, '电子面单发货', 4, 3, 'print_shipment', 'shipping/send/print_shipment/index.vue', NULL, 1, 0, 'C', '0', '0', '', 'guide', 'admin', '2025-05-29 15:27:13', 'admin', '2025-05-29 15:28:16', '');
+INSERT INTO `sys_menu` VALUES (2098, '电子面单发货', 4, 3, 'print_shipment', 'shipping/send/print_shipment/wait_ship.vue', NULL, 1, 0, 'C', '0', '0', '', 'guide', 'admin', '2025-05-29 15:27:13', 'admin', '2025-05-29 15:28:16', '');
 
 -- ----------------------------
 -- Table structure for sys_oper_log

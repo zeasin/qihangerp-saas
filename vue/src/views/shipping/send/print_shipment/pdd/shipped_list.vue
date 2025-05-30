@@ -260,7 +260,8 @@ export default {
         pageNum: 1,
         pageSize: 10,
         shopType:3,
-        shopId: null
+        shopId: null,
+        shipType:1
       },
       // 打印参数
       printParams: {

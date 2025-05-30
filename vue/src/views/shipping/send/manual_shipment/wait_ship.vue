@@ -59,7 +59,8 @@
       <el-table-column label="订单号" align="left" prop="orderNum" width="200">
         <template slot-scope="scope">
           <span>{{scope.row.orderNum}}</span>
-          <el-tag>{{ parseTime(scope.row.orderTime) }}</el-tag>
+          <br/>
+          <el-tag type="info">{{ shopList.find(x=>x.id == scope.row.shopId) ? shopList.find(x=>x.id == scope.row.shopId).name : '' }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="商品明细" align="center" width="900px" >
@@ -108,37 +109,26 @@
           </el-table>
         </template>
       </el-table-column>
-<!--      <el-table-column label="下单时间" align="center" prop="orderCreateTime" width="180">-->
-<!--        <template slot-scope="scope">-->
-<!--          <span>{{ parseTime(scope.row.orderTime) }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column label="订单金额" align="center" prop="orderAmount" :formatter="amountFormatter"/>
+      <el-table-column label="下单时间" align="center" prop="orderCreateTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.orderTime) }}</span>
+        </template>
+      </el-table-column>
+
+
+      <el-table-column label="收件人" prop="receiverName" width="200px">
+        <template slot-scope="scope">
+          {{scope.row.receiverName}}&nbsp;
+          {{scope.row.receiverMobile}} <br />
+          {{scope.row.province}} {{scope.row.city}} {{scope.row.town}} <br />
+        </template>
+      </el-table-column>
       <el-table-column label="订单备注" align="center" >
         <template slot-scope="scope">
           <div style="color: #ed5565">{{scope.row.remark}}</div>
           <div style="color: #ed5565">{{scope.row.buyerMemo}}</div>
           <div style="color: #ed5565">{{scope.row.sellerMemo}}</div>
-        </template>
-      </el-table-column>
-<!--      <el-table-column label="收件人" prop="receiverName" width="200px">-->
-<!--        <template slot-scope="scope">-->
-<!--          {{scope.row.receiverName}}&nbsp;-->
-<!--          {{scope.row.receiverMobile}} <br />-->
-<!--          {{scope.row.province}} {{scope.row.city}} {{scope.row.town}} <br />-->
-
-<!--        </template>-->
-<!--      </el-table-column>-->
-      <el-table-column label="面单号" align="center" prop="waybillCode" />
-      <el-table-column label="快递公司" align="center" prop="waybillCompany" />
-      <el-table-column label="取号状态" align="center" prop="waybillStatus" >
-        <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.waybillStatus==0">未取号</el-tag>
-          <el-tag size="small" v-if="scope.row.waybillStatus==1">已取号</el-tag>
-          <el-tag size="small" v-if="scope.row.waybillStatus==2">已打印</el-tag>
-          <el-tag size="small" v-if="scope.row.waybillStatus==3">已发货</el-tag>
-          <el-tag size="small" v-if="scope.row.waybillStatus==10">手动发货</el-tag>
-          <br />
-<!--          <el-button type="text" size="small"  @click="cancelCode(scope.row)" v-if="scope.row.waybillStatus==1 || scope.row.waybillStatus==2">取消取号</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -350,7 +340,6 @@
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import {
   getOrder,
-  budadanListOrder,
   manualShipmentOrder,
   allocateShipmentOrder,
   waitSelfShipmentList
@@ -359,10 +348,10 @@ import {
 
 import {listLogisticsStatus} from "@/api/api/logistics";
 import {listShop} from "@/api/shop/shop";
-import {parseTime} from "../../../utils/zhijian";
+import {amountFormatter, parseTime} from "@/utils/zhijian";
 
 export default {
-  name: "ManualShipment",
+  name: "ShipmentWait",
   data() {
     return {
       // 遮罩层
@@ -429,6 +418,7 @@ export default {
 
   },
   methods: {
+    amountFormatter,
     parseTime,
     getSkuValues(spec){
       try {

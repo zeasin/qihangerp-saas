@@ -194,11 +194,7 @@
 <script>
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import {
-  getOrder,
-  budadanListOrder,
-  manualShipmentOrder,
-  allocateShipmentOrder,
-  waitSelfShipmentList
+selfShippedList
 } from "@/api/order/order";
 
 import {getWaybillAccountList,cancelWaybillCode,getWaybillPrintData, getWaybillCode, pushWaybillPrintSuccess,pushShipSend,getWaybillCodeAndSend} from "@/api/shop/ewaybill";
@@ -238,6 +234,7 @@ export default {
         pageSize: 10,
         shopType:5,
         shopId:null,
+        shipType:1
       },
       // 打印参数
       printParams: {
@@ -291,7 +288,7 @@ export default {
     /** 查询列表 */
     getList() {
       this.loading = true;
-      waitSelfShipmentList(this.queryParams).then(response => {
+      selfShippedList(this.queryParams).then(response => {
         this.orderList = response.rows;
         this.total = response.total;
         this.loading = false;
