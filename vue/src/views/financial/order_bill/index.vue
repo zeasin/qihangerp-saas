@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="店铺" prop="shopId">
@@ -19,21 +19,26 @@
       </el-form-item>
 
 
-      <el-form-item label="订单编号" prop="orderNum">
+      <el-form-item label="订单编号" prop="orderId">
         <el-input
-          v-model="queryParams.orderNum"
+          v-model="queryParams.orderId"
           placeholder="请输入订单编号"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-
-      <el-form-item label="日期" prop="orderDate">
+      <el-form-item label="类型" prop="type" >
+        <el-select v-model="queryParams.type" placeholder="请选择类型" clearable @change="handleQuery">
+          <el-option label="收入" value="1"></el-option>
+          <el-option label="支出" value="2"></el-option>
+          </el-select>
+      </el-form-item>
+      <el-form-item label="日期" prop="bizTime">
         <el-date-picker clearable
-          v-model="queryParams.orderDate"
+          v-model="queryParams.bizTime"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择日期">
+          placeholder="请选择日期" @change="handleQuery">
         </el-date-picker>
       </el-form-item>
 
@@ -83,7 +88,7 @@
       <el-table-column label="类型" align="center" prop="type" >
         <template slot-scope="scope">
           <el-tag size="small" v-if="scope.row.type == 1">收入</el-tag>
-          <el-tag size="small" v-if="scope.row.type == 2">支出</el-tag>
+          <el-tag size="small" type="danger" v-if="scope.row.type == 2">支出</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="金额" align="center" prop="amount"  :formatter="amountFormatter"/>
@@ -181,13 +186,16 @@ export default {
       // 是否显示弹出层
       open: false,
       importOpen: false,
-      importUrl: '/prod-api/cost/order_cost/pdd_bill_import?shopId=',
+      importUrl: '',
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         shopId: null,
         shopType: null,
+        bizTime: null,
+        orderId: null,
+        type: null
 
       },
       shopList: [],
@@ -301,7 +309,7 @@ export default {
     },
     handleImport(){
       if(this.queryParams.shopId){
-        this.importUrl= '/dev-api/financial/order_bill/pdd_bill_import?shopId='+this.queryParams.shopId,
+        this.importUrl= '/prod-api/financial/order_bill/pdd_bill_import?shopId='+this.queryParams.shopId,
           this.importOpen=true
       }else {
         this.$modal.msgError("请选择店铺")
