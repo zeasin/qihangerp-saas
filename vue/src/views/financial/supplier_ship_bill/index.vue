@@ -93,7 +93,7 @@
 
     <el-table v-loading="loading" :data="agentShippingList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="订单编号" align="center" prop="orderNum" />
+      <el-table-column label="订单编号" align="left" prop="orderNum" width="200"/>
       <!-- <el-table-column label="主键ID" align="center" prop="id" /> -->
       <el-table-column label="店铺" align="center" prop="shopId" >
         <template slot-scope="scope">
@@ -152,7 +152,7 @@
 </template>
 
 <script>
-import { listAgentShipBill, confirmBillSettlement } from "@/api/financial/supplier_ship_bill";
+import { listSupplierShipBill, confirmBillSettlement } from "@/api/financial/shipment_bill";
 import { listSupplier} from "@/api/scm/supplier";
 import { listShop } from "@/api/shop/shop";
 
@@ -246,7 +246,7 @@ export default {
     /** 查询供应商代发货列表 */
     getList() {
       this.loading = true;
-      listAgentShipBill(this.queryParams).then(response => {
+      listSupplierShipBill(this.queryParams).then(response => {
         this.agentShippingList = response.rows;
         this.total = response.total;
         this.loading = false;

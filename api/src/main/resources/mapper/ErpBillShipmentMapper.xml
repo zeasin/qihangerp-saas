@@ -16,6 +16,7 @@
             <result property="shipNo" column="ship_no" jdbcType="VARCHAR"/>
             <result property="amount" column="amount" jdbcType="DECIMAL"/>
             <result property="shipAmount" column="ship_amount" jdbcType="DECIMAL"/>
+            <result property="packageAmount" column="package_amount" jdbcType="DECIMAL"/>
             <result property="goodsAmount" column="goods_amount" jdbcType="DECIMAL"/>
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="INTEGER"/>
@@ -29,7 +30,7 @@
     <sql id="Base_Column_List">
         id,order_num,shop_id,type,
         supplier_id,supplier_name,date,
-        ship_company,ship_no,amount,
+        ship_company,ship_no,amount,package_amount,
         ship_amount,goods_amount,remark,
         status,create_time,create_by,
         update_time,update_by,tenant_id

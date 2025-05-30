@@ -22,15 +22,28 @@ public class ErpBillShipmentServiceImpl extends ServiceImpl<ErpBillShipmentMappe
     implements ErpBillShipmentService{
 
     @Override
-    public PageResult<ErpBillShipment> queryPageList(ErpBillShipment bo, PageQuery pageQuery) {
+    public PageResult<ErpBillShipment> querySupplierPageList(ErpBillShipment bo, PageQuery pageQuery) {
 
         LambdaQueryWrapper<ErpBillShipment> queryWrapper = new LambdaQueryWrapper<ErpBillShipment>();
         queryWrapper.eq(bo.getTenantId() != null, ErpBillShipment::getTenantId, bo.getTenantId());
         queryWrapper.eq(bo.getShopId() != null, ErpBillShipment::getShopId, bo.getShopId());
+        queryWrapper.eq(bo.getSupplierId() != null, ErpBillShipment::getSupplierId, bo.getSupplierId());
+        queryWrapper.ne(bo.getSupplierId()==null, ErpBillShipment::getSupplierId, 0);
         queryWrapper.eq(StringUtils.hasText(bo.getOrderNum()), ErpBillShipment::getOrderNum, bo.getOrderNum());
         Page<ErpBillShipment> pages = this.baseMapper.selectPage(pageQuery.build(), queryWrapper);
         return PageResult.build(pages);
 
+    }
+
+    @Override
+    public PageResult<ErpBillShipment> queryWarehousePageList(ErpBillShipment bo, PageQuery pageQuery) {
+        LambdaQueryWrapper<ErpBillShipment> queryWrapper = new LambdaQueryWrapper<ErpBillShipment>();
+        queryWrapper.eq(bo.getTenantId() != null, ErpBillShipment::getTenantId, bo.getTenantId());
+        queryWrapper.eq(bo.getShopId() != null, ErpBillShipment::getShopId, bo.getShopId());
+        queryWrapper.eq( ErpBillShipment::getSupplierId, 0);
+        queryWrapper.eq(StringUtils.hasText(bo.getOrderNum()), ErpBillShipment::getOrderNum, bo.getOrderNum());
+        Page<ErpBillShipment> pages = this.baseMapper.selectPage(pageQuery.build(), queryWrapper);
+        return PageResult.build(pages);
     }
 }
 

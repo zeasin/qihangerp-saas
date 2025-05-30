@@ -28,7 +28,7 @@ public class SupplierShipBillController extends BaseController {
         if(getUserId()!=1) {
             goods.setTenantId(getUserId());
         }
-        PageResult<ErpBillShipment> pageResult = erpBillShipmentService.queryPageList(goods, pageQuery);
+        PageResult<ErpBillShipment> pageResult = erpBillShipmentService.querySupplierPageList(goods, pageQuery);
         return getDataTable(pageResult);
     }
 

@@ -137,13 +137,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/open-sdk-1.5.4.jar</systemPath>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>cn.qihangerp.open</groupId>-->
-<!--            <artifactId>pdd-sdk</artifactId>-->
-<!--            <version>1.5</version>-->
-<!--            <scope>system</scope>-->
-<!--            <systemPath>${project.basedir}/libs/pdd-sdk-1.20.25-all.jar</systemPath>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>cn.qihangerp.open</groupId>
+            <artifactId>pdd-sdk</artifactId>
+            <version>1.5</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/pdd-sdk-1.20.25-all.jar</systemPath>
+        </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>

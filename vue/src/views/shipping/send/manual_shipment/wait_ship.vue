@@ -252,6 +252,9 @@
             <el-form-item label="物流单号" prop="shippingNumber">
               <el-input v-model="form.shippingNumber" placeholder="请输入物流单号" style="width:300px" />
             </el-form-item>
+            <el-form-item label="包装费用" prop="packageAmount">
+              <el-input v-model="form.packageAmount" placeholder="请输入包装费用" style="width:300px" />
+            </el-form-item>
             <el-form-item label="物流费用" prop="shippingCost">
               <el-input v-model="form.shippingCost" placeholder="请输入物流费用" style="width:300px" />
             </el-form-item>
@@ -349,6 +352,7 @@ import {
 import {listLogisticsStatus} from "@/api/api/logistics";
 import {listShop} from "@/api/shop/shop";
 import {amountFormatter, parseTime} from "@/utils/zhijian";
+import {getDicts} from "@/api/system/dict/data";
 
 export default {
   name: "ShipmentWait",
@@ -400,6 +404,7 @@ export default {
         weight: [{ required: true, message: '不能为空' }],
         shippingNumber: [{ required: true, message: '不能为空' }],
         shippingCompany: [{ required: true, message: '不能为空' }],
+        packageAmount: [{ required: true, message: '不能为空' }],
         shippingCost: [{ required: true, message: '不能为空' }],
         // shippingMan: [{ required: true, message: '不能为空' }],
         receiverName: [{ required: true, message: '不能为空' }],
@@ -529,9 +534,14 @@ export default {
         this.form.width=0
         this.form.height=0
         this.form.weight=0.0
-        this.form.shippingCost=0.0
+        this.form.shippingCost=4.0
+        this.form.packageAmount=1.0
         listLogisticsStatus({shopType:response.data.shopType}).then(resp=>{
           this.logisticsList = resp.rows
+        })
+        // 获取系统配置的物流费用
+        getDicts('logistics_cost').then(resp=>{
+          console.log("=====获取配置的物流费用=====",resp)
         })
         this.shipOpen = true;
         // this.detailTitle = "订单详情";

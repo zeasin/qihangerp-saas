@@ -67,6 +67,8 @@ public class ErpBillShipment implements Serializable {
      * 物流费用
      */
     private BigDecimal shipAmount;
+    // 包装费用
+    private BigDecimal packageAmount;
 
     /**
      * 商品金额

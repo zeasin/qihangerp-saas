@@ -28,7 +28,7 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
       <el-form-item>
-        <el-select v-model="printParams.printer" placeholder="请选择打印机" clearable>
+        <el-select v-model="form.printer" placeholder="请选择打印机" clearable>
           <el-option
             v-for="item in printerList"
             :key="item.name"
@@ -69,7 +69,7 @@
     <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange">
        <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="订单号" align="left" prop="orderNum" width="180">
+      <el-table-column label="订单号" align="left" prop="orderNum" width="200">
         <template slot-scope="scope">
           <span>{{scope.row.orderNum}}</span>
           <el-tag>{{ parseTime(scope.row.orderTime) }}</el-tag>
@@ -178,12 +178,21 @@
               <span style="float: right; color: #8492a6; font-size: 13px" >{{item.siteName}}:{{item.available}}</span>
             </el-option>
           </el-select>
-
         </el-form-item>
+        <el-form-item  label="选择打印机" prop="printer">
+          <el-select v-model="form.printer" placeholder="请选择打印机" clearable>
+            <el-option
+              v-for="item in printerList"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name">
+            </el-option>
+          </el-select>
+      </el-form-item>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="getCodeOpenForm">取号并发货</el-button>
+        <el-button type="primary" @click="getCodeOpenForm">打印快递单并发货</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -240,16 +249,18 @@ export default {
       // 打印参数
       printParams: {
         deliver: null,
-        printer: null
       },
       // 表单参数
       form: {
-        weight:0.0
+        weight:0.0,
+        printer:'KM-202M(NEW)'
       },
       printerList: [],
       deliverList: [],
       // 表单校验
       rules: {
+        accountId: [{ required: true, message: '不能为空' }],
+        printer: [{ required: true, message: '不能为空' }],
         height: [{ required: true, message: '不能为空' }],
         weight: [{ required: true, message: '不能为空' }],
         shippingNumber: [{ required: true, message: '不能为空' }],
@@ -343,9 +354,10 @@ export default {
             }).then(response => {
               console.log('电子面单取号接口返回=====', response)
               if (response.code == 200) {
-                this.$modal.msgSuccess("取号成功")
-                this.getList()
-                this.getCodeOpen = false
+                this.$modal.msgSuccess("取号成功！开始打印！")
+                this.handlePrintEwaybill()
+                // this.getList()
+                // this.getCodeOpen = false
               } else if (response.code === 1401) {
                 MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', {
                   confirmButtonText: '前往授权',
@@ -432,7 +444,7 @@ export default {
       };
     },
     handlePrintEwaybill() {
-      if (!this.printParams.printer) {
+      if (!this.form.printer) {
         this.$modal.msgError('请选择打印机！');
         return
       }
@@ -487,7 +499,7 @@ export default {
                   width: 76, // 纸张尺寸，单位毫米，printType 为 2 时必传
                   height: 130
                 },
-                printer: this.printParams.printer, // 选中的打印机，printer.name
+                printer: this.form.printer, // 选中的打印机，printer.name
               }))
             })
           };

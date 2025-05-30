@@ -12,5 +12,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-05-26 12:07:59
 */
 public interface ErpBillShipmentService extends IService<ErpBillShipment> {
-    PageResult<ErpBillShipment> queryPageList(ErpBillShipment bo, PageQuery pageQuery);
+    /**
+     * 供应商发货账单
+     * @param bo
+     * @param pageQuery
+     * @return
+     */
+    PageResult<ErpBillShipment> querySupplierPageList(ErpBillShipment bo, PageQuery pageQuery);
+    PageResult<ErpBillShipment> queryWarehousePageList(ErpBillShipment bo, PageQuery pageQuery);
 }

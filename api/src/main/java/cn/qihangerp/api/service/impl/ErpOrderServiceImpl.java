@@ -302,8 +302,9 @@ public class ErpOrderServiceImpl extends ServiceImpl<ErpOrderMapper, ErpOrder>
         billShipment.setDate(new Date());
         billShipment.setShipCompany(erpLogisticsCompany.getName());
         billShipment.setShipNo(shipBo.getShippingNumber());
-        billShipment.setAmount(shipBo.getShippingCost());
+        billShipment.setAmount(shipBo.getShippingCost().add(shipBo.getPackageAmount()));
         billShipment.setShipAmount(shipBo.getShippingCost());
+        billShipment.setPackageAmount(shipBo.getPackageAmount());
         billShipment.setGoodsAmount(BigDecimal.ZERO);
         billShipment.setStatus(0);
         billShipment.setCreateBy("");

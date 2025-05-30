@@ -13,6 +13,7 @@ public class ErpOrderShipBo {
     private Double weight;
     private Double volume;
     private BigDecimal shippingCost;//物流费用
+    private BigDecimal packageAmount;//包装费用
     private String shippingCompany;//发货公司
     private String shippingNumber;//发货单号
     private String shippingMan;//发货人
