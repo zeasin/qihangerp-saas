@@ -30,9 +30,9 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+libs/pdd-sdk-1.20.25-all.jar
 ### VS Code ###
 .vscode/
-
+src/main/java/cn/qihangerp/api/msg/PddMessage.java
 ### Mac OS ###
 .DS_Store

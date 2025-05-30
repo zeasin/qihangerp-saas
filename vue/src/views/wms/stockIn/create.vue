@@ -127,12 +127,30 @@ export default {
   },
   methods: {
     genOrderNum(){
-      const timestamp = Date.now();
+
+      // 获取当前日期和时间
+      const now = new Date();
+      // // 格式化日期和时间
+      // const date = now.toLocaleDateString(); // "YYYY-MM-DD"格式
+      // const time = now.toLocaleTimeString(); // "HH:MM:SS"格式
+
       // 可以使用随机数增加订单号的唯一性
       const randomNumber = Math.floor(Math.random() * 1000);
-      const orderNum = `${timestamp}${randomNumber}`;
-      this.form.stockInNum = orderNum;
-      console.log("======生成单号=======",orderNum)
+
+      // this.form.stockInNum = `${date} ${time} - Random: ${randomNumber}`;
+      var year = now.getFullYear(); //得到年份
+      var month = now.getMonth(); //得到月份
+      var date = now.getDate(); //得到日期
+      // var hour = " 00:00:00"; //默认时分秒 如果传给后台的格式为年月日时分秒，就需要加这个，如若不需要，此行可忽略
+      month = month + 1;
+      month = month.toString().padStart(2, "0");
+      date = date.toString().padStart(2, "0");
+      var dateStr = `${year}${month}${date}`;
+      this.form.stockInNum = `${dateStr}${randomNumber}`;
+      const timestamp = Date.now();
+      // const orderNum = `${timestamp}${randomNumber}`;
+      // this.form.stockInNum = orderNum;
+      console.log("======生成单号=======",this.form.stockInNum)
     },
     // getDate() {
     //   var now = new Date();

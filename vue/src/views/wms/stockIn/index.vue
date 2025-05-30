@@ -170,7 +170,8 @@
               <el-tag size="small">{{scope.row.skuName}} </el-tag>
             </template>
           </el-table-column>
-<!--          <el-table-column label="sku编码" prop="specNum"></el-table-column>-->
+          <el-table-column label="sku编码" prop="skuCode"></el-table-column>
+          <el-table-column label="sku id" prop="skuId"></el-table-column>
           <el-table-column label="数量" prop="quantity"></el-table-column>
           <el-table-column label="已入库数量" prop="inQuantity"></el-table-column>
 <!--          <el-table-column label="来源类型" prop="sourceType" width="150">-->

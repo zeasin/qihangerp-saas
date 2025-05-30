@@ -17,9 +17,9 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="规格ID" prop="specId">
+      <el-form-item label="规格ID" prop="skuId">
         <el-input
-          v-model="queryParams.specId"
+          v-model="queryParams.skuId"
           placeholder="请输入商品规格ID"
           clearable
           @keyup.enter.native="handleQuery"

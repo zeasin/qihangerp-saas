@@ -2,6 +2,7 @@ package cn.qihangerp.api.controller;
 
 import cn.qihangerp.api.common.bo.ErpOrderAllocateShipBo;
 import cn.qihangerp.api.request.OrderSearchRequest;
+import com.pdd.pop.sdk.http.api.pop.request.PddLogisticsOrdertraceGetRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
