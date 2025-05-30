@@ -4,7 +4,7 @@
       <el-form-item label="商品ID" prop="goodsId">
         <el-input
           v-model="queryParams.goodsId"
-          placeholder="请输入商品ID"
+          placeholder="请输入商品I "
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -17,18 +17,18 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="规格ID" prop="skuId">
+      <el-form-item label="SkuId" prop="skuId">
         <el-input
           v-model="queryParams.skuId"
-          placeholder="请输入商品规格ID"
+          placeholder="请输入SkuId"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="规格编码" prop="skuCode">
+      <el-form-item label="Sku编码" prop="skuCode">
         <el-input
           v-model="queryParams.skuCode"
-          placeholder="请输入规格编码"
+          placeholder="请输入Sku编码"
           clearable
           @keyup.enter.native="handleQuery"
         />
