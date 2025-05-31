@@ -20,20 +20,20 @@
           @keyup.enter.native="handleQuery"
         /> -->
       </el-form-item>
-      <el-form-item label="订单编号" prop="orderNo">
+      <el-form-item label="采购单号" prop="orderNo">
         <el-input
           v-model="queryParams.orderNo"
-          placeholder="请输入订单编号"
+          placeholder="请输入采购单号"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="订单日期" prop="orderDate">
+      <el-form-item label="采购日期" prop="orderDate">
         <el-date-picker clearable
           v-model="queryParams.orderDate"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择订单日期">
+          placeholder="请选择采购日期">
         </el-date-picker>
       </el-form-item>
 
@@ -53,30 +53,30 @@
           @click="handleAdd"
         >创建采购订单</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['purchase:purchaseOrder:export']"
-        >导出</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="warning"-->
+<!--          plain-->
+<!--          icon="el-icon-download"-->
+<!--          size="mini"-->
+<!--          @click="handleExport"-->
+<!--          v-hasPermi="['purchase:purchaseOrder:export']"-->
+<!--        >导出</el-button>-->
+<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="purchaseOrderList" @selection-change="handleSelectionChange">
 <!--      <el-table-column type="selection" width="55" align="center" />-->
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="单号" align="center" prop="orderNo" />
+      <el-table-column label="采购单号" align="left" prop="orderNo" width="200px" />
       <el-table-column label="供应商" align="center" prop="contactId" >
         <template slot-scope="scope">
           <span>{{ supplierList.find(x=>x.id === scope.row.supplierId)?supplierList.find(x=>x.id === scope.row.supplierId).name :'' }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="下单日期" align="center" prop="orderDate" width="180">
+      <el-table-column label="采购日期" align="center" prop="orderDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.orderDate, '{y}-{m}-{d}') }}</span>
         </template>
@@ -112,11 +112,11 @@
           <span>{{ parseTime(scope.row.receivedTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="入库时间" align="center" prop="stockInTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.stockInTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="入库时间" align="center" prop="stockInTime" width="180">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ parseTime(scope.row.stockInTime, '{y}-{m}-{d}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-col :span="24">
@@ -338,7 +338,7 @@ export default {
     // 详情
     handleDetail(row){
       // this.$router.push('/scm/purchase/order/detail',{id:row.id});
-      this.$router.push({path :"/scm/purchase/order/detail", query: { id: row.id }});
+      this.$router.push({path :"/purchase/order/detail", query: { id: row.id }});
     },
     // 取消按钮
     cancel() {
