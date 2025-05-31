@@ -451,7 +451,7 @@ export default {
       const ids = this.ids;
       getWaybillPrintData({shopId: this.queryParams.shopId, ids: ids}).then(response => {
         console.log("======打印======", response.data)
-        if (response.data) {
+        if (response.data && response.data.length>0) {
           const ws = new WebSocket('ws://127.0.0.1:5000');
           ws.onopen = () => {
             let printData = []
@@ -494,6 +494,8 @@ export default {
             console.error('WebSocket error:', error);
             // alert('WebSocket error occurred. Check the console for more details.');
           };
+        }else{
+          this.$modal.msgError('没有电子面单信息！');
         }
       });
       // getWaybillPrintData({shopId: this.queryParams.shopId, ids: this.ids}).then(response => {
