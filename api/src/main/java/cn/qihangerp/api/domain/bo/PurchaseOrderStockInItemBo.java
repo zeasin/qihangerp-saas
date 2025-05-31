@@ -23,8 +23,17 @@ public class PurchaseOrderStockInItemBo extends BaseEntity {
     private String colorImage;
     private String sizeValue;
     private String styleValue;
-    private Long quantity;
-    private Long inQty;
+    private Integer quantity;
+    private Integer inQty;
+    private Double purPrice;
+
+    public Double getPurPrice() {
+        return purPrice;
+    }
+
+    public void setPurPrice(Double purPrice) {
+        this.purPrice = purPrice;
+    }
 
     public Long getId() {
         return id;
@@ -114,19 +123,19 @@ public class PurchaseOrderStockInItemBo extends BaseEntity {
         this.styleValue = styleValue;
     }
 
-    public Long getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Long quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public Long getInQty() {
+    public Integer getInQty() {
         return inQty;
     }
 
-    public void setInQty(Long inQty) {
+    public void setInQty(Integer inQty) {
         this.inQty = inQty;
     }
 }

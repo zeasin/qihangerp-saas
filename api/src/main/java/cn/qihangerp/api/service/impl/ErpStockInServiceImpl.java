@@ -8,7 +8,7 @@ import cn.qihangerp.api.common.utils.DateUtils;
 import cn.qihangerp.api.domain.*;
 import cn.qihangerp.api.mapper.ErpGoodsInventoryOperationMapper;
 import cn.qihangerp.api.mapper.WmsStockInItemPositionMapper;
-import cn.qihangerp.api.mapper.WmsStockInMapper;
+import cn.qihangerp.api.mapper.ErpStockInMapper;
 import cn.qihangerp.api.mapper.WmsWarehousePositionMapper;
 import cn.qihangerp.api.request.StockInCreateItem;
 import cn.qihangerp.api.request.StockInCreateRequest;
@@ -36,10 +36,10 @@ import java.util.stream.Collectors;
 */
 @AllArgsConstructor
 @Service
-public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, ErpStockIn>
-    implements WmsStockInService {
-    private final WmsStockInMapper mapper;
-    private final WmsStockInItemService inItemService;
+public class ErpStockInServiceImpl extends ServiceImpl<ErpStockInMapper, ErpStockIn>
+    implements ErpStockInService {
+    private final ErpStockInMapper mapper;
+    private final ErpStockInItemService inItemService;
     private final WmsStockInItemPositionMapper inItemPositionMapper;
     private final WmsWarehousePositionMapper warehousePositionMapper;
     private final ErpGoodsInventoryBatchService inventoryBatchService;

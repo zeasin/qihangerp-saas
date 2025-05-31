@@ -51,7 +51,6 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['purchase:purchaseOrder:add']"
         >创建采购订单</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -388,7 +387,7 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.$router.push('/scm/purchase/order/create');
+      this.$router.push('/purchase/order/create');
     },
     handleUpdateStatus(row,optionType){
       this.form.id = row.id

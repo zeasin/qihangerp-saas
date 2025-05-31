@@ -83,8 +83,8 @@
           <el-image style="width: 100px; height: 100px" :src="goodsForm.colorImage">
           </el-image>
         </el-form-item>
-        <el-form-item label="采购价" prop="">
-          <el-input v-model.number="goodsForm.purPrice" placeholder="" />
+        <el-form-item label="采购价" prop="purPrice">
+          <el-input type="number" v-model="goodsForm.purPrice" placeholder="采购价" />
         </el-form-item>
         <el-form-item label="数量" prop="qty">
           <el-input v-model.number="goodsForm.qty" placeholder="请输入数量" @input="qtyChange" />
@@ -137,6 +137,7 @@ export default {
       },
       goodsRules: {
         id: [{ required: true, message: '请选择商品' }],
+        purPrice: [{ required: true, message: '请填写采购价格' }],
         qty: [{ required: true, message: '请填写数量' }, { type: 'number', message: '数量必须为数字值' }],
         amount: [{ required: true, message: '请填写金额' }, { type: 'number', message: '金额必须为数字值' }],
       },
@@ -308,7 +309,7 @@ export default {
             this.form.goodsList = []
             // 调用全局挂载的方法,关闭当前标签页
             this.$store.dispatch("tagsView/delView", this.$route);
-            this.$router.push('/scm/purchase/order');
+            this.$router.push('/purchase/order_list');
           });
 
         }
