@@ -30,7 +30,9 @@ export default {
 
   },
   mounted() {
-
+    if(this.$route.query.tag){
+      this.activeName = this.$route.query.tag
+    }
   },
   methods: {
     handleClick(tab, event) {

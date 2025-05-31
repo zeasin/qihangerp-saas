@@ -1,5 +1,24 @@
 <template>
   <div class="app-container">
+    <el-row>
+      <el-col span="6">
+        <div style="color: #fff">&nbsp;电子面单发货</div>
+      </el-col>
+      <el-col span="12">
+        <el-steps :active="2"   finish-status="success">
+          <el-step title="拉取店铺商品" >
+
+          </el-step>
+          <el-step title="推送到商品库" >
+          </el-step>
+          <el-step title="或者手动关联商品库" >
+          </el-step>
+
+        </el-steps>
+      </el-col>
+      <el-col span="6">
+      </el-col>
+    </el-row>
     <el-tabs v-model="activeName" @tab-click="handleClick">
 
       <el-tab-pane label="线下渠道" name="offlineGoods" lazy>

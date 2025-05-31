@@ -1,6 +1,44 @@
 <template>
   <div class="dashboard-editor-container">
+    <el-row style="background-color: #ffffff;margin: 10px 10px 10px 10px;padding: 10px 20px 10px 20px" >
 
+      <el-col span="24">
+        <el-steps :active="6"   finish-status="success">
+          <el-step title="添加店铺" >
+            <template slot="description">
+              <el-button size="mini" @click="$router.push('/shop/list')">添加店铺</el-button>
+            </template>
+          </el-step>
+          <el-step title="获取店铺授权" >
+            <template slot="description">
+              <el-button size="mini" @click="$router.push('/shop/list')">店铺授权</el-button>
+            </template>
+          </el-step>
+          <el-step title="拉取店铺商品" >
+              <template slot="description">
+                <el-button size="mini" @click="$router.push('/shop/shop_goods/list')">拉取店铺商品</el-button>
+              </template>
+          </el-step>
+          <el-step title="关联店铺商品" >
+            <template slot="description">
+              推送店铺商品到商品库或者手动绑定商品库商品
+              <el-button size="mini" @click="$router.push('/shop/shop_goods/list')">店铺商品管理</el-button>
+            </template>
+          </el-step>
+          <el-step title="拉取店铺订单" >
+            <template slot="description">
+              <el-button size="mini" @click="$router.push('/order/shop_order')">店铺订单管理</el-button>
+            </template>
+          </el-step>
+          <el-step title="发货处理" >
+            <template slot="description">
+              <el-button size="mini" @click="$router.push('/ship/manual_shipment')">去发货</el-button>
+            </template>
+          </el-step>
+        </el-steps>
+      </el-col>
+
+    </el-row>
     <panel-group :chart-data="report" @handleSetLineChartData="handleSetLineChartData" />
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">

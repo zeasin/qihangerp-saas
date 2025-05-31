@@ -1,5 +1,23 @@
 <template>
   <div class="app-container">
+    <el-row>
+      <el-col span="6">
+        <div style="color: #fff">&nbsp;店铺管理</div>
+      </el-col>
+      <el-col span="12">
+        <el-steps :active="2"   finish-status="success">
+          <el-step title="添加店铺" >
+
+          </el-step>
+          <el-step title="店铺授权" >
+
+          </el-step>
+
+        </el-steps>
+      </el-col>
+      <el-col span="6">
+      </el-col>
+    </el-row>
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="店铺名" prop="name">
         <el-input

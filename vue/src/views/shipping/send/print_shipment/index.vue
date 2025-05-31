@@ -1,6 +1,32 @@
 <template>
   <div class="app-container">
+    <el-row>
+      <el-col span="6">
+        <div style="color: #fff">&nbsp;电子面单发货</div>
+      </el-col>
+      <el-col span="12">
+        <el-steps :active="0"   finish-status="success">
+          <el-step title="拉取店铺电子面单账户" >
+            <template slot="description">
+              <el-button size="mini" @click="$router.push('/ship/setting?tag=EwaybillAccount')">去拉取</el-button>
+            </template>
+          </el-step>
+          <el-step title="设置发货地址" >
+            <template slot="description">
+              <el-button size="mini" @click="$router.push('/ship/setting?tag=EwaybillAccount')">去设置</el-button>
+            </template>
+          </el-step>
+          <el-step title="安装云打印组件" >
+            <template slot="description">
 
+            </template>
+          </el-step>
+          <el-step title="设置快递模版" description="用来获取快递单和打印快递"></el-step>
+        </el-steps>
+      </el-col>
+      <el-col span="6">
+      </el-col>
+    </el-row>
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="拼多多" name="LogisticsCompany" >
        <print-shipment-pdd></print-shipment-pdd>

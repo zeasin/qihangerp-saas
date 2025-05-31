@@ -254,9 +254,9 @@ export default {
   created() {
     listShop({}).then(response => {
       this.shopList = response.rows;
-      if (this.shopList && this.shopList.length > 0) {
-        this.queryParams.shopId = this.shopList[0].id
-      }
+      // if (this.shopList && this.shopList.length > 0) {
+      //   this.queryParams.shopId = this.shopList[0].id
+      // }
 
       this.getList();
     });
