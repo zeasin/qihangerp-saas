@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
@@ -129,6 +130,12 @@ public class ErpGoodsSku implements Serializable {
      * 0启用   1禁用
      */
     private Integer disable;
+
+    /**
+     * 选中的商品数量
+     */
+    @TableField(exist = false)
+    private int quantity=1;
 
     private static final long serialVersionUID = 1L;
 }

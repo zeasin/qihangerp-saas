@@ -13,12 +13,12 @@ import java.math.BigDecimal;
 @Data
 public class PurchaseOrderAddItemBo {
     private static final long serialVersionUID = 1L;
-    private Long id;
+    private Long id;//skuId
     private String colorImage;
     private String name;
     private BigDecimal purPrice;
-    private Long qty;
-    private BigDecimal amount;
+    private Long quantity;
+//    private BigDecimal amount;
     private Long goodsId;
     private String colorValue;
     private String number;

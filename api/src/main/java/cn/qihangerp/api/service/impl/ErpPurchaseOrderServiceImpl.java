@@ -77,12 +77,15 @@ public class ErpPurchaseOrderServiceImpl extends ServiceImpl<ErpPurchaseOrderMap
             orderItem.setSupplierId(ord.getSupplierId());
             orderItem.setOrderId(Long.parseLong(ord.getId()));
             orderItem.setOrderNo(ord.getOrderNo());
-            orderItem.setAmount(item.getAmount().doubleValue());
+
+
             orderItem.setGoodsId(item.getGoodsId());
             orderItem.setGoodsNum(item.getNumber());
             orderItem.setIsDelete(0);
             orderItem.setPrice(item.getPurPrice());
-            orderItem.setQuantity(item.getQty());
+            orderItem.setQuantity(item.getQuantity());
+            orderItem.setAmount(item.getPurPrice().doubleValue()*item.getQuantity());
+
             orderItem.setSpecId(item.getId());
             orderItem.setSpecNum(item.getSpecNum());
             orderItem.setStatus(0);

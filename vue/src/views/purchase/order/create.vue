@@ -30,22 +30,35 @@
                 <el-image style="width: 70px; height: 70px" :src="scope.row.colorImage"></el-image>
               </template>
             </el-table-column>
-            <el-table-column prop="name" label="商品名称"></el-table-column>
+            <el-table-column prop="goodsName" label="商品名称"></el-table-column>
             <el-table-column prop="specNum" label="SKU">
             </el-table-column>
-            <el-table-column prop="colorValue" label="颜色">
+            <el-table-column label="Sku规格" align="center" prop="specName" >
+              <template slot-scope="scope">
+                <el-tag size="small" v-if="scope.row.colorValue">{{ scope.row.colorValue }}</el-tag>
+                <el-tag size="small" v-if="scope.row.sizeValue">{{ scope.row.sizeValue }}</el-tag>
+                <el-tag size="small" v-if="scope.row.styleValue">{{ scope.row.styleValue }}</el-tag>
+              </template>
             </el-table-column>
-            <el-table-column prop="sizeValue" label="尺码">
+<!--            <el-table-column prop="colorValue" label="颜色">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column prop="sizeValue" label="尺码">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column prop="styleValue" label="款式">-->
+<!--            </el-table-column>-->
+            <el-table-column prop="quantity" label="采购数量">
+              <template slot-scope="scope">
+                <el-input v-model.number="scope.row.quantity" @change="qtyChange" placeholder="请输入数量" style="width: 100px" />
+              </template>
             </el-table-column>
-            <el-table-column prop="styleValue" label="款式">
-            </el-table-column>
-            <el-table-column prop="qty" label="采购数量">
-            </el-table-column>
-            <el-table-column prop="amount" label="总金额">
+            <el-table-column prop="purPrice" label="采购单价">
+              <template slot-scope="scope">
+              <el-input type="number" v-model.number="scope.row.purPrice" placeholder="请输入采购单价" @change="qtyChange" style="width: 100px" />
+              </template>
             </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
-                <el-button size="mini" @click="handleEditSku(scope.$index, scope.row)">编辑</el-button>
+<!--                <el-button size="mini" @click="handleEditSku(scope.$index, scope.row)">编辑</el-button>-->
                 <el-button size="mini" type="danger" @click="handleDeleteSku(scope.$index, scope.row)">删除</el-button>
               </template>
             </el-table-column>
@@ -55,7 +68,7 @@
 
       </el-row>
       <el-row style="margin-top: 20px;">
-      <el-form-item label="总金额" prop="amount">
+      <el-form-item label="总金额" prop="orderAmount">
           <el-input type="number" v-model.number="form.orderAmount" placeholder="请输入总金额" />
       </el-form-item>
     </el-row>
@@ -66,6 +79,8 @@
     </el-form>
 
     <!-- 添加采购商品对话框 -->
+
+    <PopupSkuList @data-from-select="handleDataFromPopup" ref="popup"></PopupSkuList>
     <el-dialog title="添加商品" :visible.sync="goodsFormOpen" width="500px" append-to-body :close-on-click-modal="false">
       <el-form ref="goodsForm" :model="goodsForm" :rules="goodsRules" label-width="80px">
 
@@ -105,8 +120,13 @@
 import { listSupplier } from "@/api/scm/supplier";
 import { searchSku } from "@/api/goods/goods";
 import { addPurchaseOrder } from "@/api/purchase/purchaseOrder";
+import PopupSkuList from '@/views/goods/PopupSkuList.vue'
+
 export default {
   name: "PurchaseOrderCreate",
+  components: {
+    PopupSkuList
+  },
   data() {
     return {
       // 表单参数
@@ -193,16 +213,21 @@ export default {
         this.goodsForm.sizeValue = spec.sizeValue
         this.goodsForm.specNum = spec.specNum
         this.goodsForm.styleValue = spec.styleValue
+        this.goodsForm.qty = 0
       }
     },
     qtyChange(nv) {
       console.log('======值变化=====', nv)
-      if (this.goodsForm.qty && this.goodsForm.qty > 0) {
-        if (this.goodsForm.purPrice) {
-          this.goodsForm.amount = this.goodsForm.qty * this.goodsForm.purPrice
-        }
-
-      }
+      let goodsAmount = 0;
+      this.form.goodsList.forEach(item => {
+        goodsAmount+=(item.quantity*item.purPrice)
+      })
+      this.form.orderAmount = goodsAmount
+      // if (this.goodsForm.quantity && this.goodsForm.quantity > 0) {
+      //   if (this.goodsForm.purPrice) {
+      //     this.goodsForm.amount = this.goodsForm.quantity * this.goodsForm.purPrice
+      //   }
+      // }
     },
     // 搜索供应商
     searchSupplier(query) {
@@ -228,7 +253,18 @@ export default {
       this.goodsForm.styleValue = null
       this.goodsForm.qty = null
       this.goodsForm.amount = null
-      this.goodsFormOpen = true
+      // this.goodsFormOpen = true
+      this.$refs.popup.openDialog();
+    },
+    // 接收子组件传来的数据
+    handleDataFromPopup(data) {
+      console.log('Received data from popup:', data);
+      this.form.goodsList = data
+      let goodsAmount = 0;
+      this.form.goodsList.forEach(item => {
+        goodsAmount+=(item.quantity*item.purPrice)
+      })
+      this.form.orderAmount = goodsAmount
     },
     addGoodsCancel() {
       this.goodsForm.id = null
