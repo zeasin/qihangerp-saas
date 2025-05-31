@@ -448,51 +448,42 @@ export default {
         this.$modal.msgError('请选择打印机！');
         return
       }
-      getWaybillPrintData({shopId: this.queryParams.shopId, ids: this.ids}).then(response => {
+      const ids = this.ids;
+      getWaybillPrintData({shopId: this.queryParams.shopId, ids: ids}).then(response => {
         console.log("======打印======", response.data)
-        if (response.data && response.data.length>0) {
+        if (response.data) {
           const ws = new WebSocket('ws://127.0.0.1:5000');
-
           ws.onopen = () => {
-            console.log('开始打印: ');
-            // response.data.forEach(x => {
-              console.log('开始打印: ');
-              ws.send(JSON.stringify({
-                command: 'print',
-                version: '1.0', // 必传
-                requestID: this.getUUID(8, 16), // String, 调用方保证唯一
-                task: {
-                  documents: [{
-                    contents:[],
-                    encryptedData: "nCGXTLX57Gy747SrsozPkywPsv/CN4Dg93AB5VW7aOYlGo3aM7Dwcs/BWlGXR1RgplnsD78RiIGqME4WX1PxpMfMaQUxSbmwnLgOfJRHyJjRd8+Lgu4NQcBsd6lwrhPzDGeTC3dFKUw1Of/mWMiVJjFQRZD2cC4RdGJjwtPynZnIN5ll/ON45pcIMLqRn1LOyvrq3QgMMIQKkNhmxU9ZrRmm9ZOpGYbMP1jvQaz6lo3ko/bHuvB49v1NBSrkR3MGPnEF4JPcQ+YZVFkyaWKeTbQJppjzGFOJSLlxrF4RfgGmseSzqJWZWSET58QFuOm/fdfytbGpokLyH/Ub1FIeWfBqeelWv6jZ0CYZcDDOJ7bXoPNT0GxG6zuDZHgLijpviCMqs8pVKCmIyj3HNojPophkeNL6r/lE05shyjAM6LAGaMke6/dlUGeyZnSt/s/rWVjNP4eQ0AVFv+5PwdcGRYaCOBKJQmPn94h7iiMH86QT/4Gmyt+aCOddXzWy+EC8c9nSQR1nKzwwHysqqLSCG+u5vzhgPntr8lnY6nE1kwJ9la6LCoMbt9+221sWlaEy22c4mzfW4/d1GLWpLtgYr6nd7SFTBk7Glh3X892X7z7lY233G3dcVMbZJZZSr9ynJeKj3Zjm++6EUTTMng4BOQ+YjrQgxS8CDlVoCMOeF7GnmhB0n/lpGsh9nUDywS1wXe9vBTE+ATgzBCnpGTX/c3k/tYieK16GiKVe+UXhs4XLPJrSjqJUyAq0l4lOqWqhxiX2nBPsuJK8DFfs8k+e62atXLbhqOVyujFgpBaRqExuxOP3GCzUR304zXmCc/TuoH0EQhLNynGS2xYKyIYqPgzYLz92fOSCDtJtLla21m2+5QmB3TgE/o73fosDhGC620/RFnn/4RKaFQjo6OfHL1blDmwdOJipn0RK6yMYfl3fmHYx0tI0vI+OsahsdC8oJ4NRboNfw85/DEsQEfBtfQmruXNlausBYiUAd7T57rKEIUWYXMD8XRKryXicuJSImwu06jn7Pnt/D53m2kEyi1a/lo9/BqBvr6UA8G/rBteYJFhg4Dd104Gp9D4tXbmdtCCw6iwZ4ncjK06jd94a2rfKgzoW+zgb8dpC84VL3SrZccZwyJRaASL78kluN0hE8So65+FOINp/H3RL/ULZuuoTEiZiXQmYh313pG6/zUYl99DBefOnY3SygXXWMB8o34enqNfPVsJs6gfnFXQigRbJVJI3MdKxM1W9NTUZV9XGY9dhqglzNIKCh4UF+3fLZr7z7g7axtlinKwILgO2r9CoICIgBEGCMGdio1ZmaZ4GsiI8ptwtmdcE0QA55u81z4zZ+TwsdBouQsBOFIZAPK3VMFZzIfej376/W5Tq7xbNnj3lNjS7pKaNbnT2aTLvEfOeL+Rbir6NG1I4wYj9UDLbLOJ81nnlQ3dgHBJOsdzi1odXJHX2IQKch4Se618WxM3T1LpKtQdKImP7I4vSUDj3QVxAQIf5U4u2mogjr3yBEX1wrUv9i/SG6yTyP9LJVwuROguveVypvk9Qsv1V+rkL/hpdjNRG9YhF0klEfcAfqK7WHo1P5BpJWklT+doCzYwdeXjMvlSQvQj6a5xDYStwQLjdUhCKsFKg9A6nTv1jC0jvn73Iqo615sqTMupcgXavpEEgDk4dTvd1O6ahWCbBVcLYwSm2IUwYr3Ajux2CpslOjBBnwTMP2NR/jKQXlUzAaWJSZ7CI0kdhQHgZ0GX2vhuXRTZKdeuOZlvDkJSqEt09u3XvK2vaUfLBHpAbx5/zoDIBZoRkA8Sqlg66Zg==?v=11&pv=1",
-                    signature: "YeUTK0I4oeMlVgk6LXcqpwLre0dsg7HwKlR4ELXleNtEM1BVzE9uRSELJmewT9NQVl6Xr2D/YK1G3boQdD3K4//+JfJq4IaAyg/gEFXwEozEFcWU+sqmopbuBfv92MXhl5GbwehEglGZRD1TSe5HbwL5nopl2eM6EOnLTKuclQQ=",
-                    templateUrl: "https://file-link.pinduoduo.com/jtsd_one",
-                    ver: "11"
-
-                  }],
-                  notifyType: [
-                    "print"
-                  ],
-                  preview: false,
-                  previewType: "image",
-                  taskID:  this.getUUID(8, 16),
-                  printer: this.form.printer, // 选中的打印机，printer.name
-                }
-              }))
-            // })
+            let printData = []
+            response.data.forEach(x => printData.push(JSON.parse(x.printData)))
+            console.log('开始打印: 组合打印数据：', printData);
+            // 打印
+            ws.send(JSON.stringify({
+              "cmd": "print",
+              "requestID": this.getUUID(8, 16),
+              "version": "1.0",
+              "task": {
+                "taskID": this.getUUID(8,10),
+                "preview": false,
+                "printer": this.printParams.printer,
+                "previewType": "pdf",
+                "firstDocumentNumber": 10,
+                "totalDocumentCount": 100,
+                "documents": [{
+                  "documentID": this.getUUID(8,10),
+                  "contents": printData
+                }]
+              }
+            }))
           };
-
-
           let obj = this.$modal;
           ws.onmessage = (e) => {
             const resp = JSON.parse(e.data || '{}')
-            if (resp.command === 'print') {
+            if (resp.cmd === 'print') {
               console.log('打印结果: ', resp);
+              obj.msgSuccess("打印成功！" + JSON.stringify(resp));
               // 请求回调
-               pushWaybillPrintSuccess({shopId: this.queryParams.shopId, ids: this.ids}).then(resp=>{
-                 this.getList()
-               })
-              // obj.msgError("打印结果！"+JSON.stringify(resp));
+              return pushWaybillPrintSuccess({shopId: this.queryParams.shopId, ids: ids})
             }
           };
 
@@ -503,10 +494,67 @@ export default {
             console.error('WebSocket error:', error);
             // alert('WebSocket error occurred. Check the console for more details.');
           };
-        }else{
-          this.$modal.msgError('没有电子面单信息！');
         }
       });
+      // getWaybillPrintData({shopId: this.queryParams.shopId, ids: this.ids}).then(response => {
+      //   console.log("======打印======", response.data)
+      //   if (response.data && response.data.length>0) {
+      //     const ws = new WebSocket('ws://127.0.0.1:5000');
+      //
+      //     ws.onopen = () => {
+      //       console.log('开始打印: ');
+      //       // response.data.forEach(x => {
+      //         console.log('开始打印: ');
+      //         ws.send(JSON.stringify({
+      //           command: 'print',
+      //           version: '1.0', // 必传
+      //           requestID: this.getUUID(8, 16), // String, 调用方保证唯一
+      //           task: {
+      //             documents: [{
+      //               contents:[],
+      //               encryptedData: "nCGXTLX57Gy747SrsozPkywPsv/CN4Dg93AB5VW7aOYlGo3aM7Dwcs/BWlGXR1RgplnsD78RiIGqME4WX1PxpMfMaQUxSbmwnLgOfJRHyJjRd8+Lgu4NQcBsd6lwrhPzDGeTC3dFKUw1Of/mWMiVJjFQRZD2cC4RdGJjwtPynZnIN5ll/ON45pcIMLqRn1LOyvrq3QgMMIQKkNhmxU9ZrRmm9ZOpGYbMP1jvQaz6lo3ko/bHuvB49v1NBSrkR3MGPnEF4JPcQ+YZVFkyaWKeTbQJppjzGFOJSLlxrF4RfgGmseSzqJWZWSET58QFuOm/fdfytbGpokLyH/Ub1FIeWfBqeelWv6jZ0CYZcDDOJ7bXoPNT0GxG6zuDZHgLijpviCMqs8pVKCmIyj3HNojPophkeNL6r/lE05shyjAM6LAGaMke6/dlUGeyZnSt/s/rWVjNP4eQ0AVFv+5PwdcGRYaCOBKJQmPn94h7iiMH86QT/4Gmyt+aCOddXzWy+EC8c9nSQR1nKzwwHysqqLSCG+u5vzhgPntr8lnY6nE1kwJ9la6LCoMbt9+221sWlaEy22c4mzfW4/d1GLWpLtgYr6nd7SFTBk7Glh3X892X7z7lY233G3dcVMbZJZZSr9ynJeKj3Zjm++6EUTTMng4BOQ+YjrQgxS8CDlVoCMOeF7GnmhB0n/lpGsh9nUDywS1wXe9vBTE+ATgzBCnpGTX/c3k/tYieK16GiKVe+UXhs4XLPJrSjqJUyAq0l4lOqWqhxiX2nBPsuJK8DFfs8k+e62atXLbhqOVyujFgpBaRqExuxOP3GCzUR304zXmCc/TuoH0EQhLNynGS2xYKyIYqPgzYLz92fOSCDtJtLla21m2+5QmB3TgE/o73fosDhGC620/RFnn/4RKaFQjo6OfHL1blDmwdOJipn0RK6yMYfl3fmHYx0tI0vI+OsahsdC8oJ4NRboNfw85/DEsQEfBtfQmruXNlausBYiUAd7T57rKEIUWYXMD8XRKryXicuJSImwu06jn7Pnt/D53m2kEyi1a/lo9/BqBvr6UA8G/rBteYJFhg4Dd104Gp9D4tXbmdtCCw6iwZ4ncjK06jd94a2rfKgzoW+zgb8dpC84VL3SrZccZwyJRaASL78kluN0hE8So65+FOINp/H3RL/ULZuuoTEiZiXQmYh313pG6/zUYl99DBefOnY3SygXXWMB8o34enqNfPVsJs6gfnFXQigRbJVJI3MdKxM1W9NTUZV9XGY9dhqglzNIKCh4UF+3fLZr7z7g7axtlinKwILgO2r9CoICIgBEGCMGdio1ZmaZ4GsiI8ptwtmdcE0QA55u81z4zZ+TwsdBouQsBOFIZAPK3VMFZzIfej376/W5Tq7xbNnj3lNjS7pKaNbnT2aTLvEfOeL+Rbir6NG1I4wYj9UDLbLOJ81nnlQ3dgHBJOsdzi1odXJHX2IQKch4Se618WxM3T1LpKtQdKImP7I4vSUDj3QVxAQIf5U4u2mogjr3yBEX1wrUv9i/SG6yTyP9LJVwuROguveVypvk9Qsv1V+rkL/hpdjNRG9YhF0klEfcAfqK7WHo1P5BpJWklT+doCzYwdeXjMvlSQvQj6a5xDYStwQLjdUhCKsFKg9A6nTv1jC0jvn73Iqo615sqTMupcgXavpEEgDk4dTvd1O6ahWCbBVcLYwSm2IUwYr3Ajux2CpslOjBBnwTMP2NR/jKQXlUzAaWJSZ7CI0kdhQHgZ0GX2vhuXRTZKdeuOZlvDkJSqEt09u3XvK2vaUfLBHpAbx5/zoDIBZoRkA8Sqlg66Zg==?v=11&pv=1",
+      //               signature: "YeUTK0I4oeMlVgk6LXcqpwLre0dsg7HwKlR4ELXleNtEM1BVzE9uRSELJmewT9NQVl6Xr2D/YK1G3boQdD3K4//+JfJq4IaAyg/gEFXwEozEFcWU+sqmopbuBfv92MXhl5GbwehEglGZRD1TSe5HbwL5nopl2eM6EOnLTKuclQQ=",
+      //               templateUrl: "https://file-link.pinduoduo.com/jtsd_one",
+      //               ver: "11"
+      //
+      //             }],
+      //             notifyType: [
+      //               "print"
+      //             ],
+      //             preview: false,
+      //             previewType: "image",
+      //             taskID:  this.getUUID(8, 16),
+      //             printer: this.form.printer, // 选中的打印机，printer.name
+      //           }
+      //         }))
+      //       // })
+      //     };
+      //
+      //
+      //     let obj = this.$modal;
+      //     ws.onmessage = (e) => {
+      //       const resp = JSON.parse(e.data || '{}')
+      //       if (resp.command === 'print') {
+      //         console.log('打印结果: ', resp);
+      //         // 请求回调
+      //          pushWaybillPrintSuccess({shopId: this.queryParams.shopId, ids: this.ids}).then(resp=>{
+      //            this.getList()
+      //          })
+      //         // obj.msgError("打印结果！"+JSON.stringify(resp));
+      //       }
+      //     };
+      //
+      //
+      //     // 当发生错误时触发
+      //     ws.onerror = function (error) {
+      //       obj.msgError("打印失败！");
+      //       console.error('WebSocket error:', error);
+      //       // alert('WebSocket error occurred. Check the console for more details.');
+      //     };
+      //   }else{
+      //     this.$modal.msgError('没有电子面单信息！');
+      //   }
+      // });
     },
     getUUID(len, radix) {
       var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');

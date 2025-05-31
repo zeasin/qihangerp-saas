@@ -49,7 +49,7 @@ export function getWaybillPrintData(data) {
 // 打印成功
 export function pushWaybillPrintSuccess(data) {
   return request({
-    url: '/api/open-api/wei/ewaybill/push_print_success',
+    url: '/shop/ewaybill/push_print_success',
     method: 'post',
     data: data
   })
